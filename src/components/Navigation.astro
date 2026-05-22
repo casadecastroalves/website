@@ -1,0 +1,226 @@
+---
+// Navigation component for Casa de Castro Alves
+---
+
+<header class="main-header">
+  <div class="container header-container">
+    <a href="/" class="logo-link" aria-label="Casa de Castro Alves Home">
+      <img src="/03_logo_horizontal_transparente.png" alt="Casa de Castro Alves" class="logo-image" />
+    </a>
+
+    <!-- Desktop Navigation Links -->
+    <nav class="nav-desktop" aria-label="Desktop menu">
+      <a href="/a-casa" class="nav-link">A Casa</a>
+      <a href="/shows" class="nav-link">Shows</a>
+      <a href="/movimento-irun" class="nav-link">Movimento Irun</a>
+      <a href="/movimento-irun/cursos" class="nav-link">Cursos</a>
+      <a href="/contato" class="btn btn-nav btn-sm">Contato</a>
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <button class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false" id="menuToggle">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+  </div>
+
+  <!-- Mobile Dropdown Navigation -->
+  <nav class="nav-mobile" aria-label="Mobile menu" id="mobileMenu">
+    <a href="/a-casa" class="mobile-nav-link">A Casa</a>
+    <a href="/shows" class="mobile-nav-link">Shows</a>
+    <a href="/movimento-irun" class="mobile-nav-link">Movimento Irun</a>
+    <a href="/movimento-irun/cursos" class="mobile-nav-link">Cursos</a>
+    <a href="/contato" class="mobile-nav-link mobile-nav-link-btn">Contato</a>
+  </nav>
+</header>
+
+<style>
+  .main-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: rgba(255, 250, 230, 0.95); /* Creme with opacity */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+    transition: var(--transition-smooth);
+    height: 80px;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-image {
+    height: 42px;
+    width: auto;
+    transition: var(--transition-smooth);
+  }
+
+  /* Desktop Menu */
+  .nav-desktop {
+    display: none;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .nav-desktop {
+      display: flex;
+    }
+  }
+
+  .nav-link {
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-preto-editorial);
+    position: relative;
+    padding: var(--space-xs) 0;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-preto-editorial);
+    transition: var(--transition-smooth);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .btn-nav {
+    padding: 8px 20px;
+    font-size: 0.8rem;
+    margin-left: var(--space-sm);
+  }
+
+  /* Mobile Toggle */
+  .mobile-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1010;
+  }
+
+  @media (min-width: 768px) {
+    .mobile-menu-toggle {
+      display: none;
+    }
+  }
+
+  .bar {
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-preto-editorial);
+    transition: var(--transition-smooth);
+    transform-origin: left center;
+  }
+
+  .mobile-menu-toggle.active .bar:nth-child(1) {
+    transform: rotate(45deg) translate(-2px, -3px);
+  }
+
+  .mobile-menu-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-toggle.active .bar:nth-child(3) {
+    transform: rotate(-45deg) translate(-2px, 3px);
+  }
+
+  /* Mobile Menu */
+  .nav-mobile {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 80px);
+    background-color: var(--color-creme);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-lg);
+    padding: var(--space-2xl) var(--space-lg);
+    z-index: 1005;
+    transform: translateX(100%);
+    transition: var(--transition-smooth);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .nav-mobile.active {
+    transform: translateX(0);
+  }
+
+  .mobile-nav-link {
+    font-family: var(--font-interface);
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-preto-editorial);
+    transition: var(--transition-fast);
+  }
+
+  .mobile-nav-link:hover {
+    color: var(--color-ouro);
+  }
+
+  .mobile-nav-link-btn {
+    margin-top: var(--space-md);
+    background-color: var(--color-amarelo-cca);
+    padding: 12px 40px;
+    border: 1px solid var(--color-preto-editorial);
+    font-weight: bold;
+  }
+</style>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      const isActive = menuToggle.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      menuToggle.setAttribute('aria-expanded', isActive.toString());
+      document.body.style.overflow = isActive ? 'hidden' : 'auto';
+    });
+
+    // Close mobile menu when a link is clicked
+    const links = mobileMenu.querySelectorAll('a');
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = 'auto';
+      });
+    });
+  }
+</script>

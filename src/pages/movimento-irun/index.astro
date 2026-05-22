@@ -1,0 +1,468 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+// Movimento Irun index page
+const edicoes = [
+  {
+    num: 1,
+    data: "13 de Julho de 2025",
+    artista: "Irma Ferreira & Ruan de Souza",
+    show: "Cantos de Òrìṣà",
+    desc: "Lançamento oficial com ritual Bantu Indígena Caxuté e abertura da Exposição.",
+    slug: "edicao-1",
+    img: "/images/shows/IRMA-FERREIRA-CANTOS-DE-ORIṢA-FEED-JUL-2025-VER3.jpg"
+  },
+  {
+    num: 2,
+    data: "17 de Agosto de 2025",
+    artista: "Ayrá Soares & Ângelo Canja",
+    show: "EletroSamba",
+    desc: "Parceria com o coletivo feminista Tamo Juntas e diálogo sobre resistência cotidiana.",
+    slug: "edicao-2",
+    img: "/images/shows/AYRA-SOARES-FEED-IG-17-DE-AGO-2025.jpeg"
+  },
+  {
+    num: 3,
+    data: "28 de Setembro de 2025",
+    artista: "Enio & Vírus",
+    show: "Encontros Híbridos",
+    desc: "Edição voltada ao tema 'Viva os Santos Meninos', resgatando a potência da infância.",
+    slug: "edicao-3",
+    img: "/images/shows/MOVIMENTO-IRUN-3-EDICAO-SETEMBRO-ENIO-SANTOS-MENINOS-2025.jpg"
+  },
+  {
+    num: 4,
+    data: "26 de Outubro de 2025",
+    artista: "Tito Bahiense & Tiago Nunes",
+    show: "Ijexá",
+    desc: "Imersão na clave e na espiritualidade do ritmo Ijexá, com atabaques e Roda de Conversa.",
+    slug: "edicao-4",
+    img: "/images/shows/FEED-MOV-IRUN-4-EDICAO-IJEXA.gif"
+  },
+  {
+    num: 5,
+    data: "16 de Novembro de 2025",
+    artista: "Dão Black",
+    show: "Sambadelic",
+    desc: "Discotecagem de André Oliveira e o show Sambadelic resgatando as matrizes do samba.",
+    slug: "edicao-5",
+    img: "/images/shows/DAO-BLACK-SAMBADELIC-FEED-MOVIMENTO-IRUN.jpg"
+  },
+  {
+    num: 6,
+    data: "21 de Dezembro de 2025",
+    artista: "Cabuloso Trio",
+    show: "Ocupação Manifesto",
+    desc: "Toré dos Tupinambás, Feira de Saberes e Sabores e a Universidade dos Povos.",
+    slug: "edicao-6",
+    img: "/images/shows/21-DE-DEZEMBRO-TEIA-DOS-POVOS-CASA-DE-CASTRO-ALVES.png"
+  },
+  {
+    num: 7,
+    data: "25 de Janeiro de 2026",
+    artista: "Ícaro Santiago & Eric Mazzone",
+    show: "Jangada",
+    desc: "Ocupação Manifesto Teia dos Povos com Mestre Joelson Ferreira e concerto experimental.",
+    slug: "edicao-7",
+    img: "/images/shows/SHOW-JANGADA-CONVIDADOS-2025-576x1024.png"
+  },
+  {
+    num: 8,
+    data: "15 de Março de 2026",
+    artista: "Yayá Muxima & Ricardo Castro",
+    show: "Tambor de Mulher",
+    desc: "Comemoração dos 179 anos de nascimento de Castro Alves com banda de mulheres negras.",
+    slug: "edicao-8",
+    img: "/images/shows/YAYA-MUXIMA-STORY-REEL-15-DE-MARCO-2026-8°-EDICAO-576x1024.png"
+  },
+  {
+    num: 9,
+    data: "26 de Abril de 2026",
+    artista: "Mariella Santiago",
+    show: "Aqualtunes",
+    desc: "Show solo percussivo e loops dedicados aos povos originários e ao Toré da Aliança.",
+    slug: "edicao-9",
+    img: "/images/shows/MOVIMENTO-IRUN-9-EDICAO-ABRIL-WEBSITE-1024x576.jpg"
+  },
+  {
+    num: 10,
+    data: "17 de Maio de 2026",
+    artista: "Denise Correia",
+    show: "Samba e Releituras",
+    desc: "Fechamento de ciclo com a força do samba tradicional e clássicos dos blocos afro.",
+    slug: "edicao-10",
+    img: "/images/shows/MOVIMENTO-IRUN-10-EDICAO-CASA-DE-CASTRO-ALVES-576x1024.png"
+  }
+];
+---
+
+<Layout title="Movimento Irun | Casa de Castro Alves" description="Saiba mais sobre o Movimento Irun. Uma aliança de design contemporâneo e saberes ancestrais indígenas e quilombolas na Casa de Castro Alves. Inscreva-se na próxima edição.">
+  <!-- Hero Section -->
+  <section class="irun-hero">
+    <div class="container text-center">
+      <span class="badge-irun">Aliança Ancestral</span>
+      <h1>Movimento Irun</h1>
+      <p class="subtitle-irun">Onde a poesia se faz aliança e o design contemporâneo encontra os saberes da terra</p>
+    </div>
+  </section>
+
+  <!-- Conceito -->
+  <section class="conceito-section">
+    <div class="container">
+      <div class="grid-layout">
+        <div class="text-column">
+          <span class="section-badge">O que é</span>
+          <h2>Convergência e Coletividade</h2>
+          <p class="lead-text">
+            O <strong>Movimento Irun</strong> reúne poesia, saberes ancestrais, mulheres da Teia dos Povos, arte popular e música como fundamentos de uma aliança ética, política e cultural pela dignidade humana e pelo Bem Viver.
+          </p>
+          <p>
+            O nome <strong>“Irun”</strong> tem origem no tupi-guarani e carrega o significado de <em>“companheiro”</em> ou <em>“irmão”</em>, refletindo o espírito de colaboração e coletividade do projeto. A iniciativa promove a convergência entre o design contemporâneo e as tradições de povos originários e comunidades quilombolas da Bahia.
+          </p>
+          <p>
+            Idealizada pela estilista Márcia Ganem em conjunto com lideranças da Teia dos Povos, a plataforma desenvolve ciclos de formação de longa duração, giras de saberes, mostras de Design Caboclo e apresentações artísticas que ocupam a Casa de Castro Alves de forma pulsante.
+          </p>
+          <div class="link-box">
+            <a href="/movimento-irun/cursos" class="btn btn-dark">Conhecer Cursos do Ciclo</a>
+          </div>
+        </div>
+        <div class="image-column">
+          <div class="image-wrapper shadow-premium">
+            <img src="/images/movimento_irun/irun_conceito.png" alt="Exposição Movimento Irun na Casa" class="featured-img" onerror="this.src='/images/shows/21-DE-DEZEMBRO-TEIA-DOS-POVOS-CASA-DE-CASTRO-ALVES.png'" />
+            <div class="caption">Mostra de produtos de comunidades tradicionais na feira Design Caboclo.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Inscrição 11ª Edição (Google Forms Iframe) -->
+  <section class="inscricao-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-badge">Participe</span>
+        <h2>Inscrição — 11ª Edição (Junho 2026)</h2>
+        <p class="section-subtitle">Preencha o formulário oficial para garantir sua entrada franca na próxima edição do Movimento Irun.</p>
+      </div>
+
+      <div class="form-iframe-wrapper shadow-premium">
+        <!-- Embedded Google Forms Iframe -->
+        <iframe 
+          src="https://docs.google.com/forms/d/e/1FAIpQLSeOfZND83kHftz1_xb_XOCYgGz8u4r_FTQoiJJHut_A6RUcjw/viewform?embedded=true" 
+          width="100%" 
+          height="800" 
+          style="border:0; background: var(--color-branco);"
+          title="Formulário de Inscrição Oficial Movimento Irun 11ª Edição"
+        >
+          Carregando formulário…
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Edições Anteriores Grid -->
+  <section class="edicoes-grid-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-badge">Registro Histórico</span>
+        <h2>Edições Anteriores</h2>
+        <p class="section-subtitle">Navegue pela história de cada encontro do Movimento Irun, com programações, fotos e vídeos exclusivos.</p>
+      </div>
+
+      <div class="edicoes-grid">
+        {edicoes.map((ed) => (
+          <div class="edicao-card card">
+            <div class="edicao-img-wrapper">
+              <img src={ed.img} alt={`Poster oficial da ${ed.num}ª edição do Movimento Irun`} />
+            </div>
+            <div class="edicao-content">
+              <span class="edicao-date">{ed.data}</span>
+              <h3>Edição {ed.num}: {ed.show}</h3>
+              <p class="edicao-artist">Convidado(a): {ed.artista}</p>
+              <p class="edicao-desc">{ed.desc}</p>
+              <a href={`/movimento-irun/${ed.slug}`} class="edicao-link">Ver detalhes da edição →</a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Apoios e Logos Rodapé -->
+  <section class="apoio-section">
+    <div class="container text-center">
+      <h3>Apoio e Fomento</h3>
+      <p class="apoio-text">
+        Este projeto foi contemplado nos Editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva.
+      </p>
+      <div class="apoio-banner-wrapper">
+        <img src="/MOVIMENTO-IRUN-RODAPE-2026-1024x154.jpg" alt="Logos de apoio do Movimento Irun - Secult-BA, PNAB, Governo da Bahia, Ministério da Cultura" class="apoio-banner-img" />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .irun-hero {
+    background-color: var(--color-amarelo-cca);
+    padding: var(--space-2xl) 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .badge-irun {
+    background-color: transparent;
+    color: var(--color-preto-editorial);
+    border: 1px solid var(--color-preto-editorial);
+    padding: 4px 12px;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: inline-block;
+    margin-bottom: var(--space-sm);
+  }
+
+  .irun-hero h1 {
+    font-size: 3rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .subtitle-irun {
+    font-size: 1.15rem;
+    color: var(--color-carvao);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Conceito Section */
+  .conceito-section {
+    background-color: var(--color-creme);
+  }
+
+  .grid-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 992px) {
+    .grid-layout {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+  }
+
+  .text-column h2 {
+    font-size: 2.25rem;
+    border: none;
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-md);
+    padding: 0;
+  }
+
+  .section-badge {
+    background-color: transparent;
+    color: var(--color-ouro);
+    border: 1px solid var(--color-ouro);
+    padding: 4px 12px;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: inline-block;
+  }
+
+  .lead-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--color-preto-editorial);
+    margin-bottom: var(--space-md);
+  }
+
+  .image-wrapper {
+    position: relative;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: var(--color-branco);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+  }
+
+  .featured-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .caption {
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    color: var(--color-carvao);
+    margin-top: var(--space-sm);
+    font-style: italic;
+  }
+
+  .shadow-premium {
+    box-shadow: 0 15px 35px rgba(26, 26, 26, 0.06);
+  }
+
+  /* Google Form Iframe */
+  .inscricao-section {
+    background-color: var(--color-branco);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .form-iframe-wrapper {
+    background-color: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    padding: var(--space-sm);
+    border-radius: 4px;
+    margin-top: var(--space-xl);
+    overflow: hidden;
+  }
+
+  .form-iframe-wrapper iframe {
+    display: block;
+    border-radius: 2px;
+  }
+
+  /* Edições Grid */
+  .edicoes-grid-section {
+    background-color: var(--color-creme);
+  }
+
+  .edicoes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    margin-top: var(--space-xl);
+  }
+
+  @media (min-width: 768px) {
+    .edicoes-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .edicoes-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .edicao-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .edicao-img-wrapper {
+    height: 280px;
+    overflow: hidden;
+    background-color: var(--color-cinza-claro);
+    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .edicao-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-smooth);
+  }
+
+  .edicao-card:hover .edicao-img-wrapper img {
+    transform: scale(1.03);
+  }
+
+  .edicao-content {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .edicao-date {
+    font-family: var(--font-interface);
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--color-ouro);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-xs);
+    display: block;
+  }
+
+  .edicao-content h3 {
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: var(--space-xs);
+    border: none;
+    padding: 0;
+    line-height: 1.3;
+  }
+
+  .edicao-artist {
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--color-preto-editorial);
+    margin-bottom: var(--space-sm);
+  }
+
+  .edicao-desc {
+    font-size: 0.9rem;
+    color: var(--color-carvao);
+    line-height: 1.5;
+    flex-grow: 1;
+    margin-bottom: var(--space-md);
+  }
+
+  .edicao-link {
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--color-preto-editorial);
+    align-self: flex-start;
+    transition: var(--transition-fast);
+  }
+
+  .edicao-link:hover {
+    color: var(--color-ouro);
+    padding-left: 4px;
+  }
+
+  /* Apoio Section */
+  .apoio-section {
+    background-color: var(--color-branco);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .apoio-text {
+    font-size: 0.95rem;
+    color: var(--color-carvao);
+    max-width: 800px;
+    margin: 0 auto var(--space-xl) auto;
+    line-height: 1.6;
+  }
+
+  .apoio-banner-wrapper {
+    max-width: 850px;
+    margin: 0 auto;
+    background-color: var(--color-cinza-claro);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .apoio-banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

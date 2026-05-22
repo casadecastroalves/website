@@ -1,0 +1,282 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/ContactForm.astro';
+
+// Contato page for Casa de Castro Alves
+---
+
+<Layout title="Contato | Agendamentos e Localização" description="Entre em contato com a Casa de Castro Alves para agendar seu evento ou fazer uma visita guiada. Telefone 71 9 9129 6555. Localizada na Rua do Passo, 52, Santo Antônio Além do Carmo, Salvador.">
+  <section class="contato-header">
+    <div class="container text-center">
+      <span class="badge-contato">Canais Oficiais</span>
+      <h1>Fale Conosco</h1>
+      <p class="subtitle-contato">Agende seu evento, tire suas dúvidas ou planeje uma visita técnica</p>
+    </div>
+  </section>
+
+  <section class="contato-content-section">
+    <div class="container">
+      <div class="contato-grid">
+        <!-- Contact Information Block -->
+        <div class="info-column">
+          <div class="info-card">
+            <h2>Informações de Contato</h2>
+            <p class="lead-text">Selecione o canal de sua preferência. Respondemos com agilidade.</p>
+            
+            <div class="contact-methods">
+              <div class="method-item">
+                <div class="method-icon">📱</div>
+                <div class="method-details">
+                  <h3>Telefone & WhatsApp</h3>
+                  <p class="highlight-val"><a href="tel:+5571991296555">71 9 9129 6555</a></p>
+                  <p class="helper-text">Disponível para agendamento de casamentos e visitas técnicas.</p>
+                </div>
+              </div>
+
+              <div class="method-item">
+                <div class="method-icon">📬</div>
+                <div class="method-details">
+                  <h3>E-mail</h3>
+                  <p class="highlight-val"><a href="mailto:casadecastroalves@gmail.com">casadecastroalves@gmail.com</a></p>
+                  <p class="helper-text">Para propostas artísticas, comerciais ou parcerias institucionais.</p>
+                </div>
+              </div>
+
+              <div class="method-item">
+                <div class="method-icon">🏡</div>
+                <div class="method-details">
+                  <h3>Endereço</h3>
+                  <p class="address-text">
+                    Rua do Passo, 52, Santo Antônio Além do Carmo,<br />
+                    Salvador - Bahia, Brasil<br />
+                    CEP: 40301-408
+                  </p>
+                  <p class="helper-text">Localizada estrategicamente ao lado da Igreja do Passo no Centro Histórico.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form Block -->
+        <div class="form-column">
+          <div class="form-card-wrapper">
+            <h2>Envie uma Mensagem</h2>
+            <p class="form-lead">Preencha o formulário abaixo para registrar sua mensagem em nossa planilha de contatos.</p>
+            <ContactForm />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Location Map Section -->
+  <section class="map-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2>Nossa Localização</h2>
+        <p class="section-subtitle">Visite a Casa de Castro Alves ao lado da escadaria do Passo.</p>
+      </div>
+      <div class="map-wrapper shadow-premium">
+        <!-- Embed Google Maps pointing to Rua do Passo, 52, Salvador -->
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.892408795777!2d-38.508544485178125!3d-12.97230199085526!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x71604e4c274dfd3%3A0xe54ad45199655f05!2sRua%20do%20Passo%2C%2052%20-%20Santo%20Ant%C3%B4nio%20Al%C3%A9m%20do%20Carmo%2C%20Salvador%20-%20BA%2C%2040301-408!5e0!3m2!1spt-BR!2sbr!4v1716300000000!5m2!1spt-BR!2sbr" 
+          width="100%" 
+          height="450" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa de localização da Casa de Castro Alves"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Header section */
+  .contato-header {
+    background-color: var(--color-amarelo-cca);
+    padding: var(--space-2xl) 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .badge-contato {
+    background-color: transparent;
+    color: var(--color-preto-editorial);
+    border: 1px solid var(--color-preto-editorial);
+    padding: 4px 12px;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: inline-block;
+    margin-bottom: var(--space-sm);
+  }
+
+  .contato-header h1 {
+    font-size: 3rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .subtitle-contato {
+    font-size: 1.15rem;
+    color: var(--color-carvao);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Grid layout */
+  .contato-content-section {
+    background-color: var(--color-creme);
+  }
+
+  .contato-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 992px) {
+    .contato-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+    }
+  }
+
+  .info-column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .info-card {
+    background-color: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    padding: var(--space-xl);
+    box-shadow: 0 10px 30px rgba(26, 26, 26, 0.03);
+    height: 100%;
+  }
+
+  .info-card h2 {
+    font-size: 2rem;
+    border: none;
+    margin-top: 0;
+    margin-bottom: var(--space-sm);
+    padding: 0;
+  }
+
+  .lead-text {
+    font-size: 1rem;
+    color: var(--color-carvao);
+    margin-bottom: var(--space-xl);
+  }
+
+  .contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+  }
+
+  .method-item {
+    display: flex;
+    gap: var(--space-md);
+  }
+
+  .method-icon {
+    font-size: 2.25rem;
+    line-height: 1;
+  }
+
+  .method-details h3 {
+    font-family: var(--font-interface);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    margin-top: 0;
+    margin-bottom: var(--space-xs);
+  }
+
+  .highlight-val {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .highlight-val a {
+    color: var(--color-preto-editorial);
+    transition: var(--transition-fast);
+  }
+
+  .highlight-val a:hover {
+    color: var(--color-ouro);
+  }
+
+  .address-text {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: var(--space-xs);
+  }
+
+  .helper-text {
+    font-family: var(--font-interface);
+    font-size: 0.8rem;
+    color: var(--color-carvao);
+    margin-bottom: 0;
+  }
+
+  /* Form Column styling */
+  .form-card-wrapper {
+    background-color: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    padding: var(--space-xl);
+    box-shadow: 0 10px 30px rgba(26, 26, 26, 0.03);
+  }
+
+  .form-card-wrapper h2 {
+    font-size: 2rem;
+    border: none;
+    margin-top: 0;
+    margin-bottom: var(--space-sm);
+    padding: 0;
+  }
+
+  .form-lead {
+    font-size: 1rem;
+    color: var(--color-carvao);
+    margin-bottom: var(--space-lg);
+  }
+
+  /* Map section */
+  .map-section {
+    background-color: var(--color-creme);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+    padding-bottom: var(--space-2xl);
+  }
+
+  .map-section h2 {
+    font-size: 2rem;
+    border: none;
+    margin-top: 0;
+    margin-bottom: var(--space-sm);
+    padding: 0;
+  }
+
+  .map-wrapper {
+    background-color: var(--color-branco);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 4px;
+    margin-top: var(--space-xl);
+    overflow: hidden;
+  }
+
+  .map-wrapper iframe {
+    display: block;
+    border-radius: 2px;
+  }
+
+  .shadow-premium {
+    box-shadow: 0 15px 35px rgba(26, 26, 26, 0.06);
+  }
+</style>

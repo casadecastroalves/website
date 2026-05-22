@@ -1,0 +1,418 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Shows page for Casa de Castro Alves
+---
+
+<Layout title="Programação Cultural e Shows | Casa de Castro Alves" description="Confira os shows, espetáculos e apresentações musicais na Casa de Castro Alves. Destaque para o show de Curumin e o acervo histórico dos concertos do Movimento Irun.">
+  <!-- Hero Section -->
+  <section class="shows-hero">
+    <div class="container text-center">
+      <span class="badge-shows">Música e Performance</span>
+      <h1>Programação de Shows</h1>
+      <p class="subtitle-shows">Espetáculos ao vivo, ritos sonoros e encontros musicais que movimentam nosso casarão</p>
+    </div>
+  </section>
+
+  <!-- Featured Show (Curumin) -->
+  <section class="featured-show-section">
+    <div class="container">
+      <div class="featured-card">
+        <div class="featured-image-wrapper">
+          <img src="/images/shows/CURUMIN-MAIO-2026-819x1024.jpg" alt="Cartaz Oficial do Show de Curumin na Casa de Castro Alves" class="featured-show-img" />
+        </div>
+        <div class="featured-details">
+          <span class="show-status-badge">Destaque da Temporada</span>
+          <h2>Curumin na Casa</h2>
+          <p class="show-date">📅 Maio de 2026 — Sessão Especial</p>
+          <p class="show-price">🎟️ Ingressos a partir de R$ 90,00</p>
+          <p class="show-description">
+            O aclamado multi-instrumentista, cantor e produtor paulistano <strong>Curumin</strong> desembarca no Centro Histórico de Salvador para um show intimista e inesquecível no Jardim da Casa de Castro Alves. Unindo suas influências de samba, soul, funk clássico e hip-hop, o artista traz uma performance calorosa que sintoniza perfeitamente com a brisa da Baía de Todos os Santos.
+          </p>
+          <p class="show-info-text">
+            Um encontro singular entre a rítmica paulista e a pulsação baiana em um dos espaços mais poéticos da cidade. Ingressos limitados para garantir o clima intimista e afetivo do evento.
+          </p>
+          <div class="action-buttons">
+            <a href="/contato" class="btn btn-dark">Comprar Ingresso</a>
+            <a href="#galeria-historica" class="btn">Ver Shows Anteriores</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Historical Shows Grid -->
+  <section id="galeria-historica" class="past-shows-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-badge">Memória Musical</span>
+        <h2>Concertos e Apresentações Históricas</h2>
+        <p class="section-subtitle">Relembre as performances e artistas que já passaram pelo palco da Casa de Castro Alves ao longo do Movimento Irun.</p>
+      </div>
+
+      <div class="shows-grid">
+        <!-- Show 10: Denise Correia -->
+        <div class="show-card card">
+          <div class="card-img-wrapper">
+            <img src="/images/shows/MOVIMENTO-IRUN-10-EDICAO-CASA-DE-CASTRO-ALVES-576x1024.png" alt="Show de Denise Correia" />
+          </div>
+          <div class="card-content">
+            <span class="card-tag">10ª Edição</span>
+            <h3>Denise Correia</h3>
+            <p class="card-date">Maio 2026</p>
+            <p class="card-desc">Samba de alta octanagem e releituras marcantes na voz de uma das maiores intérpretes de Salvador.</p>
+          </div>
+        </div>
+
+        <!-- Show 9: Mariella Santiago -->
+        <div class="show-card card">
+          <div class="card-img-wrapper">
+            <img src="/images/shows/MOVIMENTO-IRUN-9-EDICAO-ABRIL-WEBSITE-1024x576.jpg" alt="Show de Mariella Santiago" />
+          </div>
+          <div class="card-content">
+            <span class="card-tag">9ª Edição</span>
+            <h3>Mariella Santiago</h3>
+            <p class="card-date">Abril 2026</p>
+            <p class="card-desc">Show imersivo <em>“Aqualtunes”</em>, com vocais processados em loops e arranjos afro-jazz contemporâneos.</p>
+          </div>
+        </div>
+
+        <!-- Show 8: Yayá Muxima -->
+        <div class="show-card card">
+          <div class="card-img-wrapper">
+            <img src="/images/shows/YAYA-MUXIMA-STORY-REEL-15-DE-MARCO-2026-8°-EDICAO-576x1024.png" alt="Show da Banda Yayá Muxima" />
+          </div>
+          <div class="card-content">
+            <span class="card-tag">8ª Edição</span>
+            <h3>Banda Yayá Muxima</h3>
+            <p class="card-date">Março 2026</p>
+            <p class="card-desc">Show <em>“Tambor de Mulher que sacode o Mundo”</em>, celebrando os 179 anos de nascimento do poeta Castro Alves.</p>
+          </div>
+        </div>
+
+        <!-- Show 7: Ícaro Santiago & Eric Mazzone -->
+        <div class="show-card card">
+          <div class="card-img-wrapper">
+            <img src="/images/shows/SHOW-JANGADA-CONVIDADOS-2025-576x1024.png" alt="Show Jangada de Ícaro Santiago e Eric Mazzone" />
+          </div>
+          <div class="card-content">
+            <span class="card-tag">7ª Edição</span>
+            <h3>Ícaro Santiago & Éric Mazzone</h3>
+            <p class="card-date">Janeiro 2026</p>
+            <p class="card-desc">Show <em>“Jangada”</em>, uma fusão estética experimental entre sintetizadores, atabaques e jazz futurista.</p>
+          </div>
+        </div>
+
+        <!-- Show 6: Cabuloso Trio -->
+        <div class="show-card card">
+          <div class="card-img-wrapper">
+            <img src="/images/shows/21-DE-DEZEMBRO-TEIA-DOS-POVOS-CASA-DE-CASTRO-ALVES.png" alt="Show do Cabuloso Trio" />
+          </div>
+          <div class="card-content">
+            <span class="card-tag">6ª Edição</span>
+            <h3>Cabuloso Trio</h3>
+            <p class="card-date">Dezembro 2025</p>
+            <p class="card-desc">Destaque da música instrumental e alternativa de Salvador em um encerramento repleto de convidados.</p>
+          </div>
+        </div>
+
+        <!-- Show 5: Dão Black -->
+        <div class="show-card card">
+          <div class="card-img-wrapper">
+            <img src="/images/shows/DAO-BLACK-SAMBADELIC-FEED-MOVIMENTO-IRUN.jpg" alt="Show de Dão Black" />
+          </div>
+          <div class="card-content">
+            <span class="card-tag">5ª Edição</span>
+            <h3>Dão Black</h3>
+            <p class="card-date">Novembro 2025</p>
+            <p class="card-desc">O swing do show <em>“Sambadelic”</em> resgatando as matrizes rítmicas e a malandragem do samba.</p>
+          </div>
+        </div>
+
+        <!-- Show 4: Tito Bahiense & Tiago Nunes -->
+        <div class="show-card card">
+          <div class="card-img-wrapper">
+            <img src="/images/shows/FEED-MOV-IRUN-4-EDICAO-IJEXA.gif" alt="Show de Tito Bahiense" />
+          </div>
+          <div class="card-content">
+            <span class="card-tag">4ª Edição</span>
+            <h3>Tito Bahiense & Tiago Nunes</h3>
+            <p class="card-date">Outubro 2025</p>
+            <p class="card-desc">Celebração da beleza rítmica do Ijexá, com tambores e arranjos melódicos em homenagem a Oxum e Oxalá.</p>
+          </div>
+        </div>
+
+        <!-- Show 3: Enio & Vírus -->
+        <div class="show-card card">
+          <div class="card-img-wrapper">
+            <img src="/images/shows/MOVIMENTO-IRUN-3-EDICAO-SETEMBRO-ENIO-SANTOS-MENINOS-2025.jpg" alt="Show de Enio e Virus" />
+          </div>
+          <div class="card-content">
+            <span class="card-tag">3ª Edição</span>
+            <h3>Enio & Vírus</h3>
+            <p class="card-date">Setembro 2025</p>
+            <p class="card-desc">Performance <em>“Encontros Híbridos”</em> com ritos poéticos sobre a infância e ancestralidade afrocentrada.</p>
+          </div>
+        </div>
+
+        <!-- Show 2: Ayrá Soares & Ângelo Canja -->
+        <div class="show-card card">
+          <div class="card-img-wrapper">
+            <img src="/images/shows/AYRA-SOARES-FEED-IG-17-DE-AGO-2025.jpeg" alt="Show de Ayrá Soares e Ângelo Canja" />
+          </div>
+          <div class="card-content">
+            <span class="card-tag">2ª Edição</span>
+            <h3>Ayrá Soares & Ângelo Canja</h3>
+            <p class="card-date">Agosto 2025</p>
+            <p class="card-desc">Show <em>“EletroSamba”</em> mesclando a voz ativista e percussiva de Ayrá com as texturas elétricas de Canja.</p>
+          </div>
+        </div>
+
+        <!-- Show 1: Irma Ferreira & Ruan de Souza -->
+        <div class="show-card card">
+          <div class="card-img-wrapper">
+            <img src="/images/shows/IRMA-FERREIRA-CANTOS-DE-ORIṢA-FEED-JUL-2025-VER3.jpg" alt="Show de Irma Ferreira" />
+          </div>
+          <div class="card-content">
+            <span class="card-tag">1ª Edição</span>
+            <h3>Irma Ferreira & Ruan de Souza</h3>
+            <p class="card-date">Julho 2025</p>
+            <p class="card-desc">Pocket show de lançamento <em>“Cantos de Òrìṣà”</em>, resgatando cantigas ancestrais e louvações acústicas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Hero Section */
+  .shows-hero {
+    background-color: var(--color-amarelo-cca);
+    padding: var(--space-2xl) 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .badge-shows {
+    background-color: transparent;
+    color: var(--color-preto-editorial);
+    border: 1px solid var(--color-preto-editorial);
+    padding: 4px 12px;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: inline-block;
+    margin-bottom: var(--space-sm);
+  }
+
+  .shows-hero h1 {
+    font-size: 3rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .subtitle-shows {
+    font-size: 1.15rem;
+    color: var(--color-carvao);
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Featured Show Card */
+  .featured-show-section {
+    background-color: var(--color-creme);
+  }
+
+  .featured-card {
+    background-color: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    display: grid;
+    grid-template-columns: 1fr;
+    box-shadow: 0 15px 35px rgba(26, 26, 26, 0.04);
+  }
+
+  @media (min-width: 992px) {
+    .featured-card {
+      grid-template-columns: 0.8fr 1.2fr;
+    }
+  }
+
+  .featured-image-wrapper {
+    overflow: hidden;
+    position: relative;
+    max-height: 500px;
+  }
+
+  .featured-show-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .featured-details {
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .show-status-badge {
+    align-self: flex-start;
+    background-color: var(--color-amarelo-cca);
+    color: var(--color-preto-editorial);
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 12px;
+    margin-bottom: var(--space-md);
+  }
+
+  .featured-details h2 {
+    font-size: 2.5rem;
+    margin-top: 0;
+    margin-bottom: var(--space-sm);
+    border: none;
+    padding: 0;
+  }
+
+  .show-date, .show-price {
+    font-family: var(--font-interface);
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .show-price {
+    color: var(--color-ouro);
+    margin-bottom: var(--space-md);
+  }
+
+  .show-description {
+    font-size: 1.1rem;
+    color: var(--color-preto-editorial);
+    line-height: 1.6;
+    margin-bottom: var(--space-md);
+  }
+
+  .show-info-text {
+    font-size: 0.95rem;
+    color: var(--color-carvao);
+    font-style: italic;
+    margin-bottom: var(--space-lg);
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  /* Past Shows Grid */
+  .past-shows-section {
+    background-color: var(--color-branco);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .shows-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    margin-top: var(--space-xl);
+  }
+
+  @media (min-width: 576px) {
+    .shows-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 992px) {
+    .shows-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .show-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .card-img-wrapper {
+    height: 350px;
+    overflow: hidden;
+    background-color: var(--color-cinza-claro);
+    position: relative;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-smooth);
+  }
+
+  .show-card:hover .card-img-wrapper img {
+    transform: scale(1.03);
+  }
+
+  .card-content {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card-tag {
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--color-ouro);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-xs);
+    display: block;
+  }
+
+  .card-content h3 {
+    font-size: 1.35rem;
+    margin-top: 0;
+    margin-bottom: var(--space-xs);
+    border: none;
+    padding: 0;
+  }
+
+  .card-date {
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    color: var(--color-carvao);
+    margin-bottom: var(--space-md);
+  }
+
+  .card-desc {
+    font-size: 0.95rem;
+    color: var(--color-preto-editorial);
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  .section-badge {
+    background-color: transparent;
+    color: var(--color-ouro);
+    border: 1px solid var(--color-ouro);
+    padding: 4px 12px;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: inline-block;
+  }
+</style>

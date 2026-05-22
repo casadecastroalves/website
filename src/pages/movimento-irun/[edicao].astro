@@ -1,0 +1,461 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const edicoesData = [
+    {
+      num: 1,
+      slug: "edicao-1",
+      titulo: "1ª Edição — Pocket Show 'Cantos de Òrìṣà'",
+      data: "13 de Julho de 2025",
+      artista: "Irma Ferreira & Ruan de Souza",
+      show: "Cantos de Òrìṣà",
+      poster: "/images/shows/IRMA-FERREIRA-CANTOS-DE-ORIṢA-FEED-JUL-2025-VER3.jpg",
+      youtube: "https://www.youtube.com/embed/z2eHDjU_oUw?si=CmGL7S2NaS2OiNT_",
+      descricao: "O lançamento oficial do Movimento IRUN ocorreu no Instituto Casa de Castro Alves. Com forte presença de representantes de comunidades tradicionais, artistas e ativistas culturais, o evento marcou o início de uma plataforma de ações voltada à transformação social por meio da arte, ancestralidade e coletividade.",
+      detalhes: [
+        "Roda de conversa e ritual sagrado conduzido pela Comunidade Bantu Indígena Caxuté, estabelecendo as bases de aliança territorial.",
+        "Lançamento dos cursos de Design Dialógico (co-criação com comunidades locais), Permacultura Urbana (cultura da permanência) e Cidade Cidadã.",
+        "Abertura oficial da Exposição IRUN, apresentando fotografias e manifestações estéticas de povos tradicionais da Bahia.",
+        "Encerramento com o pocket show intimista 'Cantos de Òrìṣà', com Irma Ferreira e Ruan de Souza interpretando cantigas sagradas."
+      ]
+    },
+    {
+      num: 2,
+      slug: "edicao-2",
+      titulo: "2ª Edição — Show 'EletroSamba'",
+      data: "17 de Agosto de 2025",
+      artista: "Ayrá Soares & Ângelo Canja",
+      show: "EletroSamba",
+      poster: "/images/shows/AYRA-SOARES-FEED-IG-17-DE-AGO-2025.jpeg",
+      youtube: "https://www.youtube.com/embed/kaOWHMxagz0",
+      descricao: "A segunda potente ação do Movimento IRUN articulou escuta, exposição e show — reunindo feminismo, ancestralidade e transformação social. A proposta reafirma o papel do casarão histórico de pulsar com a força de vozes coletivas, saberes ancestrais e arte insurgente.",
+      detalhes: [
+        "Show Room Caboclo: Espaço de moda, arte e identidade, com peças exclusivas assinadas por designers e artesãos locais.",
+        "Roda de Conversa com o coletivo Tamo Juntas: Organização feminista que presta assessoria multidisciplinar gratuita (jurídica, psicológica, pedagógica e social) a mulheres em situação de violência.",
+        "Vernissage e visita guiada à Exposição IRUN, promovendo a conexão entre memória, ecologia e estética como prática política.",
+        "Show intimista 'EletroSamba' de Ayrá Soares (ativista da Tamo Juntas) acompanhada pela guitarra marcante de Ângelo Canja."
+      ]
+    },
+    {
+      num: 3,
+      slug: "edicao-3",
+      titulo: "3ª Edição — Show 'Encontros Híbridos'",
+      data: "28 de Setembro de 2025",
+      artista: "Enio & Vírus",
+      show: "Encontros Híbridos",
+      poster: "/images/shows/MOVIMENTO-IRUN-3-EDICAO-SETEMBRO-ENIO-SANTOS-MENINOS-2025.jpg",
+      youtube: "https://www.youtube.com/embed/RNx5kS9YRwA?si=JtWNZnHwCpNb265x",
+      descricao: "Com o tema 'Viva os Santos Meninos', esta edição valorizou a infância e os aprendizados que ela inspira. O encerramento da programação foi marcado pelo espetáculo 'Encontros Híbridos', que uniu música e performance em uma experiência de diálogo intergeracional.",
+      detalhes: [
+        "Showroom criativo focado em design de brinquedos populares e identidade cultural infantojuvenil.",
+        "Estreia do show 'Enio IXI Vírus em Encontros Híbridos', unindo o produtor musical Enio (Prêmio Caymmi) e o multiartista Vírus Carinhoso (Fifty Deep Music Class do YouTube).",
+        "Performance inspirada na paternidade ativa dos dois artistas, trazendo a presença e as lições das crianças para o centro do palco.",
+        "Diálogo sonoro mesclando afro-beats, amapiano, samba-reggae, poesia de rua e tecnologia multissensorial."
+      ]
+    },
+    {
+      num: 4,
+      slug: "edicao-4",
+      titulo: "4ª Edição — Show 'Ijexá'",
+      data: "26 de Outubro de 2025",
+      artista: "Tito Bahiense & Tiago Nunes",
+      show: "Ijexá",
+      poster: "/images/shows/FEED-MOV-IRUN-4-EDICAO-IJEXA.gif",
+      youtube: "https://www.youtube.com/embed/vKX18JHBm4E?si=DLEzuCV-Atsd_cOC",
+      descricao: "A quarta edição propôs uma imersão profunda na estética, bases históricas e espiritualidade do Ijexá — ritmo ancestral dos terreiros de candomblé e dos tradicionais afoxés baianos, articulando música, moda e debate cultural.",
+      detalhes: [
+        "Abertura com o showroom Design Caboclo reunindo artesãos e designers baianos em uma feira de acessórios e vestuário.",
+        "Discotecagem do músico e DJ André Oliveira, construindo um set focado nas células rítmicas e evolução do samba e Ijexá.",
+        "Roda de conversa 'Bases Simbólicas, Históricas e Atuais do Ijexá', conduzida pelo percussionista Tiago Nunes (Orkestra Rumpilezz).",
+        "Show de encerramento do cantor Tito Bahiense, celebrando Oxum e Oxalá com atabaques, agogôs e composições orquestradas."
+      ]
+    },
+    {
+      num: 5,
+      slug: "edicao-5",
+      titulo: "5ª Edição — Show 'Sambadelic'",
+      data: "16 de Novembro de 2025",
+      artista: "Dão Black",
+      show: "Sambadelic",
+      poster: "/images/shows/DAO-BLACK-SAMBADELIC-FEED-MOVIMENTO-IRUN.jpg",
+      youtube: "https://www.youtube.com/embed/Sywh0BGRFCo?si=SgUdqwGcxzHCM2nH",
+      descricao: "Dão Black ocupou a Casa de Castro Alves com samba, design e vinil. O evento integrou o espírito do Movimento Irun reafirmando a coletividade como essência artística e celebrando o samba como força de conexão de corpos e territórios.",
+      detalhes: [
+        "Feira criativa Design Caboclo apresentando criações autorais de moda sustentável e arte popular baiana.",
+        "Discotecagem em vinil de André Oliveira (das 14h às 18h) mapeando a clave do samba e ritmos afrodiaspóricos.",
+        "Show de encerramento 'Sambadelic' com o cantor e compositor Dão Black, apresentando canções autorais como 'Menina do Cabelo Black' e releituras clássicas.",
+        "Destaque para a interpretação de 'Olha o Samba Sinhá' (Candeia) e uma inusitada releitura em ritmo de Rock de Terreiro para 'Tá Escrito' (Xande de Pilares)."
+      ]
+    },
+    {
+      num: 6,
+      slug: "edicao-6",
+      titulo: "6ª Edição — Ocupação Manifesto Teia dos Povos",
+      data: "21 de Dezembro de 2025",
+      artista: "Cabuloso Trio",
+      show: "Ocupação Manifesto",
+      poster: "/images/shows/21-DE-DEZEMBRO-TEIA-DOS-POVOS-CASA-DE-CASTRO-ALVES.png",
+      youtube: "https://www.youtube.com/embed/8xsNSgMrAvw?si=aczPBDtO5D6ccbr2",
+      descricao: "Edição histórica de Ocupação Manifesto reunindo povos e comunidades tradicionais para estruturar estratégias organizativas em defesa da terra, território e soberania alimentar. Idealizada pela Casa de Castro Alves, Teia dos Povos e Universidade dos Povos.",
+      detalhes: [
+        "Abertura oficial com a Feira de Saberes e Sabores da Teia dos Povos e showroom de moda Design Caboclo.",
+        "Toré dos Tupinambás: Ritual sagrado e dança de cura conduzida pelas lideranças da Aldeia Tupinambá, afirmando a resistência indígena.",
+        "Gira de Saberes com mestres e mestras guardiões das escolas da Universidade dos Povos (Favela, Terreiro, Águas, Arco e Flecha, Floresta e Sementes).",
+        "Show da banda de rock alternativo e instrumental de Salvador Cabuloso Trio (Paulo Nascimento, Ricardo Correia, Jackson Almeida) com convidados."
+      ]
+    },
+    {
+      num: 7,
+      slug: "edicao-7",
+      titulo: "7ª Edição — Show 'Jangada'",
+      data: "25 de Janeiro de 2026",
+      artista: "Ícaro Santiago & Eric Mazzone",
+      show: "Jangada",
+      poster: "/images/shows/SHOW-JANGADA-CONVIDADOS-2025-576x1024.png",
+      youtube: "https://www.youtube.com/embed/3g1t911jlA0?si=crFxvG7XzAd7rrdP",
+      descricao: "A sétima edição aprofundou o Manifesto da Teia dos Povos com abordagens ecológicas e pedagógicas. A Casa de Castro Alves consolida-se como território simbólico de resistência, criação, agroecologia e partilha de saberes.",
+      detalhes: [
+        "Exposição Teia dos Povos: Uma Aliança Preta, Indígena e Popular retratando 13 anos de lutas coletivas e mutirões de regeneração.",
+        "Gira de Saberes com Mestre Joelson Ferreira com o tema: 'Agroecologia, Água e Território como Estratégias Populares de Proteção da Vida'.",
+        "Design Caboclo: Vitrine de estilistas tradicionais incorporando bordados, rendas e matérias-primas agroecológicas.",
+        "Concerto 'Jangada' com Ícaro Santiago e Éric Mazzone: Uma travessia sonora híbrida fundindo sintetizadores, atabaques e jazz futurista."
+      ]
+    },
+    {
+      num: 8,
+      slug: "edicao-8",
+      titulo: "8ª Edição — Show 'Tambor de Mulher'",
+      data: "15 de Março de 2026",
+      artista: "Yayá Muxima & Ricardo Castro",
+      show: "Tambor de Mulher",
+      poster: "/images/shows/YAYA-MUXIMA-STORY-REEL-15-DE-MARCO-2026-8°-EDICAO-576x1024.png",
+      youtube: "https://www.youtube.com/embed/zBGcQ43zOh8?si=Tc6UEdjmPY0ofbm6",
+      descricao: "Com o lema 'Quando a poesia se faz aliança: 179 anos de Castro Alves', a oitava edição prestou homenagem ao nascimento do poeta republicano, abolicionista e patrono do casarão com uma programação inteiramente dedicada ao tambor feminino.",
+      detalhes: [
+        "Feira de Saberes e Sabores apresentando produtos ecológicos de comunidades tradicionais da Bahia.",
+        "Gira de Saberes integrando guardiões da Universidade dos Povos debatendo a salvaguarda de sementes crioulas.",
+        "Show espetáculo 'Tambor de Mulher que sacode o Mundo' da Banda Yayá Muxima, grupo composto exclusivamente por mulheres negras.",
+        "Repertório repleto de canções autorais de ativismo feminista, clássicos de blocos afro (Ilê Aiyê, Olodum) e sambas tradicionais."
+      ]
+    },
+    {
+      num: 9,
+      slug: "edicao-9",
+      titulo: "9ª Edição — Show de Mariella Santiago",
+      data: "26 de Abril de 2026",
+      artista: "Mariella Santiago",
+      show: "Aqualtunes",
+      poster: "/images/shows/MOVIMENTO-IRUN-9-EDICAO-ABRIL-WEBSITE-1024x576.jpg",
+      youtube: "https://www.youtube.com/embed/s9w44W419Co?si=pkRoavByGHpLUFFn",
+      descricao: "Dedicada inteiramente aos povos originários e à cura ancestral da terra. O Jardim da Casa serviu de palco para o Toré da Aliança, ritual coletivo reunindo etnias em torno do bem viver e da soberania alimentar.",
+      detalhes: [
+        "Toré da Aliança: Ritual de resistência e espiritualidade com a presença de lideranças Pataxó, Tupinambá e Payayá.",
+        "Oficina de Bordados pela Cidadania com o coletivo Linhas Bahia Axé, estimulando debates de direitos através da manufatura.",
+        "Gira de Saberes 'Escola do Arco da Flecha e do Maracá' conduzida por Nádia Tupinambá e Cacique Ramon (Olivença).",
+        "Concerto 'Aqualtunes' por Mariella Santiago com loops e vocais expandidos acompanhada pelas batidas de Ícaro Santiago."
+      ]
+    },
+    {
+      num: 10,
+      slug: "edicao-10",
+      titulo: "10ª Edição — Show de Denise Correia",
+      data: "17 de Maio de 2026",
+      artista: "Denise Correia",
+      show: "Black Tudo",
+      poster: "/images/shows/MOVIMENTO-IRUN-10-EDICAO-CASA-DE-CASTRO-ALVES-576x1024.png",
+      youtube: "", // Sem vídeo listado
+      descricao: "A décima edição marcou o encerramento do primeiro grande ciclo de encontros do Movimento Irun na Casa de Castro Alves. Reuniu ativistas, lideranças e artistas para celebrar a continuidade da aliança preta, indígena e popular e os portfólios sistematizados das comunidades.",
+      detalhes: [
+        "Apresentação de resultados e balanço geral das atividades formativas semanais do Ciclo Irun 2025/2026.",
+        "Feira de encerramento Design Caboclo trazendo vestuário e biojoias produzidos durante as oficinas dialógicas.",
+        "Roda de partilha sobre o protagonismo das comunidades tradicionais no fomento da economia comunitária e cidadania cultural.",
+        "Show vibrante de Denise Correia cantando sucessos da música negra baiana, sambas clássicos e canções autorais."
+      ]
+    }
+  ];
+
+  return edicoesData.map((ed) => ({
+    params: { edicao: ed.slug },
+    props: { edicaoInfo: ed }
+  }));
+}
+
+const { edicaoInfo } = Astro.props;
+---
+
+<Layout title={`${edicaoInfo.titulo} | Movimento Irun`} description={`Confira a programação e os registros da ${edicaoInfo.num}ª edição do Movimento Irun na Casa de Castro Alves. Convidado(a): ${edicaoInfo.artista}.`}>
+  <!-- Header de Edição -->
+  <section class="edicao-header">
+    <div class="container text-center">
+      <a href="/movimento-irun" class="back-link">← Voltar para o Movimento Irun</a>
+      <span class="badge-edicao">{edicaoInfo.data}</span>
+      <h1>Edição {edicaoInfo.num}</h1>
+      <p class="subtitle-edicao">{edicaoInfo.show}</p>
+    </div>
+  </section>
+
+  <!-- Detalhes da Edição -->
+  <section class="edicao-details-section">
+    <div class="container">
+      <div class="details-grid">
+        <!-- Poster Column -->
+        <div class="poster-column">
+          <div class="poster-wrapper shadow-premium">
+            <img src={edicaoInfo.poster} alt={`Cartaz oficial - ${edicaoInfo.titulo}`} class="edicao-poster-img" />
+            <div class="caption">Cartaz de divulgação do evento na Casa de Castro Alves.</div>
+          </div>
+        </div>
+
+        <!-- Text Column -->
+        <div class="text-column">
+          <span class="section-badge">Memória do Encontro</span>
+          <h2>Sobre esta Edição</h2>
+          <p class="lead-text">{edicaoInfo.descricao}</p>
+
+          <h3 class="program-title">Atividades e Destaques</h3>
+          <ul class="highlights-list">
+            {edicaoInfo.detalhes.map((det) => (
+              <li>{det}</li>
+            ))}
+          </ul>
+
+          <div class="artist-card">
+            <h4>Artista Convidado(a)</h4>
+            <p><strong>{edicaoInfo.artista}</strong></p>
+            <p class="artist-helper">Espetáculo musical realizado no Jardim da Baía ao pôr do sol, celebrando as nossas matrizes culturais e a resistência popular.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Seção do Vídeo (se houver) -->
+  {edicaoInfo.youtube && (
+    <section class="video-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2>Registros em Vídeo</h2>
+          <p class="section-subtitle">Assista à cobertura audiovisual e registros das apresentações desta edição.</p>
+        </div>
+        <div class="video-iframe-wrapper shadow-premium">
+          <iframe 
+            src={edicaoInfo.youtube} 
+            width="100%" 
+            height="500" 
+            style="border:0;" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen
+            title={`Vídeo registro - ${edicaoInfo.titulo}`}
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  )}
+</Layout>
+
+<style>
+  /* Header Section */
+  .edicao-header {
+    background-color: var(--color-amarelo-cca);
+    padding: var(--space-2xl) 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .back-link {
+    display: inline-block;
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-md);
+    transition: var(--transition-fast);
+  }
+
+  .back-link:hover {
+    color: var(--color-ouro);
+    transform: translateX(-4px);
+  }
+
+  .badge-edicao {
+    background-color: transparent;
+    color: var(--color-preto-editorial);
+    border: 1px solid var(--color-preto-editorial);
+    padding: 4px 12px;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: block;
+    width: fit-content;
+    margin: 0 auto var(--space-sm) auto;
+  }
+
+  .edicao-header h1 {
+    font-size: 3rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .subtitle-edicao {
+    font-size: 1.25rem;
+    color: var(--color-carvao);
+    max-width: 600px;
+    margin: 0 auto;
+    font-style: italic;
+  }
+
+  /* Details section */
+  .edicao-details-section {
+    background-color: var(--color-creme);
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: flex-start;
+  }
+
+  @media (min-width: 992px) {
+    .details-grid {
+      grid-template-columns: 0.8fr 1.2fr;
+    }
+  }
+
+  .poster-wrapper {
+    background-color: var(--color-branco);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 4px;
+  }
+
+  .edicao-poster-img {
+    width: 100%;
+    height: auto;
+    max-height: 650px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .caption {
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    color: var(--color-carvao);
+    margin-top: var(--space-sm);
+    font-style: italic;
+  }
+
+  .text-column h2 {
+    font-size: 2.25rem;
+    border: none;
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-md);
+    padding: 0;
+  }
+
+  .section-badge {
+    background-color: transparent;
+    color: var(--color-ouro);
+    border: 1px solid var(--color-ouro);
+    padding: 4px 12px;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: inline-block;
+  }
+
+  .lead-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--color-preto-editorial);
+    margin-bottom: var(--space-lg);
+  }
+
+  .program-title {
+    font-size: 1.5rem;
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-md);
+  }
+
+  .highlights-list {
+    list-style-type: none;
+    margin-bottom: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .highlights-list li {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    position: relative;
+    padding-left: var(--space-lg);
+  }
+
+  .highlights-list li::before {
+    content: "•";
+    color: var(--color-amarelo-cca);
+    font-size: 1.5rem;
+    line-height: 1;
+    position: absolute;
+    left: 0;
+    top: -2px;
+  }
+
+  .artist-card {
+    background-color: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    padding: var(--space-lg);
+    border-left: 3px solid var(--color-ouro);
+  }
+
+  .artist-card h4 {
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-ouro);
+    margin-bottom: var(--space-xs);
+  }
+
+  .artist-card p {
+    font-size: 1.15rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .artist-card .artist-helper {
+    font-size: 0.9rem;
+    color: var(--color-carvao);
+    font-style: italic;
+    margin-bottom: 0;
+  }
+
+  .shadow-premium {
+    box-shadow: 0 15px 35px rgba(26, 26, 26, 0.06);
+  }
+
+  /* Video Section */
+  .video-section {
+    background-color: var(--color-branco);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .video-iframe-wrapper {
+    background-color: var(--color-branco);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    max-width: 900px;
+    margin: var(--space-xl) auto 0 auto;
+    border-radius: 4px;
+  }
+
+  .video-iframe-wrapper iframe {
+    display: block;
+    border-radius: 2px;
+  }
+</style>

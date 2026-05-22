@@ -1,0 +1,568 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Home page for Casa de Castro Alves
+---
+
+<Layout title="Casa de Castro Alves | Memória, Arte e Poesia no Centro Histórico">
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-bg" style="background-image: linear-gradient(to bottom, rgba(26, 26, 26, 0.4), rgba(26, 26, 26, 0.85)), url('/images/a_casa/casa-de-castro-alves-1-1-1024x576.png');"></div>
+    <div class="container hero-content">
+      <h1 class="hero-title animate-fade-in">
+        Onde a poesia se faz<br />
+        <span class="highlight">Aliança e Resistência</span>
+      </h1>
+      <p class="hero-subtitle animate-fade-in-delayed">
+        A antiga residência do poeta Castro Alves hoje abriga um espaço vivo de cultura, memória, arte contemporânea e saberes ancestrais no coração de Salvador.
+      </p>
+      <div class="hero-actions animate-fade-in-delayed">
+        <a href="/a-casa" class="btn btn-primary">Conheça a Casa</a>
+        <a href="/contato" class="btn btn-outline-white">Agendar Visita</a>
+      </div>
+    </div>
+    <div class="hero-scroll-indicator">
+      <span class="mouse-icon"><span class="mouse-wheel"></span></span>
+      <span class="scroll-text">Role para explorar</span>
+    </div>
+  </section>
+
+  <!-- Poetry / Quote Section -->
+  <section class="quote-section">
+    <div class="container text-center">
+      <div class="quote-container">
+        <span class="quote-mark">“</span>
+        <blockquote class="poetic-quote">
+          O livro caindo n'alma é germe — que faz a palma,<br />
+          é chuva — que faz o grão.
+        </blockquote>
+        <cite class="quote-author">— Castro Alves, <em>O Livro e a América</em></cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reorganized Features Section -->
+  <section class="features-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <h2 class="section-title">Nossos Eixos de Atuação</h2>
+        <p class="section-subtitle">Descubra as diferentes frentes que mantêm a Casa pulsando cultura e ativismo.</p>
+      </div>
+
+      <div class="grid-3">
+        <!-- Feature 1: A Casa -->
+        <div class="card feature-card">
+          <div class="card-image-wrapper">
+            <img src="/images/a_casa/casa-de-castro-alves-galeria-arte.jpg" alt="Galeria de Arte Contemporânea da Casa" class="card-img" />
+            <div class="card-category">Espaço Cultural</div>
+          </div>
+          <div class="card-body">
+            <h3>A Casa & Galeria</h3>
+            <p>
+              Explore um casarão do século XVIII que abriga galeria de arte contemporânea, exposições fotográficas, memorial do poeta e um jardim deslumbrante voltado para a Baía de Todos os Santos.
+            </p>
+            <a href="/a-casa" class="card-link">Saber mais →</a>
+          </div>
+        </div>
+
+        <!-- Feature 2: Movimento Irun -->
+        <div class="card feature-card">
+          <div class="card-image-wrapper">
+            <img src="/images/shows/MOVIMENTO-IRUN-9-EDICAO-ABRIL-WEBSITE-1024x576.jpg" alt="Apresentação do Movimento Irun" class="card-img" />
+            <div class="card-category">Movimento</div>
+          </div>
+          <div class="card-body">
+            <h3>Movimento Irun</h3>
+            <p>
+              Uma aliança ética, política e estética entre saberes ancestrais e design contemporâneo. Apoio financeiro PNAB Secult-BA e Ministério da Cultura.
+            </p>
+            <a href="/movimento-irun" class="card-link">Ver edições →</a>
+          </div>
+        </div>
+
+        <!-- Feature 3: Cursos e Formação -->
+        <div class="card feature-card">
+          <div class="card-image-wrapper">
+            <img src="/images/cursos/3-PROGRAMA-BEM-VIVER-CABECALHOS-HEADER-FORMULARIO.png" alt="Programa Bem Viver" class="card-img" />
+            <div class="card-category">Formação</div>
+          </div>
+          <div class="card-body">
+            <h3>Cursos & Oficinas</h3>
+            <p>
+              Iniciativas de capacitação comunitária, Cidade Cidadã, Permacultura Urbana, Design Dialógico e formalização cultural para o fortalecimento de territórios.
+            </p>
+            <a href="/movimento-irun/cursos" class="card-link">Conhecer grade →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Banner / Event Capacity CTA -->
+  <section class="event-cta-section">
+    <div class="cta-bg" style="background-image: linear-gradient(to right, rgba(26, 26, 26, 0.95), rgba(26, 26, 26, 0.7)), url('/images/a_casa/casa-de-castro-alves-3.png');"></div>
+    <div class="container cta-content-wrapper">
+      <div class="cta-text-col">
+        <span class="badge">Eventos e Casamentos</span>
+        <h2>Realize seu evento em um cenário histórico inesquecível</h2>
+        <p>
+          Nosso espaço de 510m² conta com memorial, galeria de arte e um magnífico jardim com vista para a Baía de Todos os Santos. Ideal para casamentos, festas e comemorações corporativas exclusivas no Santo Antônio Além do Carmo.
+        </p>
+        <div class="cta-specs">
+          <div class="spec-item">
+            <span class="spec-val">450</span>
+            <span class="spec-lbl">Convidados</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-val">510m²</span>
+            <span class="spec-lbl">Área Útil</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-val">Pôr do Sol</span>
+            <span class="spec-lbl">Vista para a Baía</span>
+          </div>
+        </div>
+      </div>
+      <div class="cta-btn-col">
+        <div class="glass-card cta-card">
+          <h3>Agendamentos</h3>
+          <p>Entre em contato conosco para verificar datas disponíveis e agendar uma visita técnica ao local.</p>
+          <a href="tel:+5571991296555" class="btn btn-primary btn-cta-phone">📱 71 9 9129 6555</a>
+          <a href="/contato" class="btn btn-outline-dark btn-cta-form">Enviar Mensagem</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  /* Hero Section styles */
+  .hero-section {
+    position: relative;
+    height: calc(100vh - 80px);
+    min-height: 550px;
+    display: flex;
+    align-items: center;
+    color: var(--color-branco);
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    transform: scale(1.05);
+    animation: zoomOut 20s forwards;
+  }
+
+  @keyframes zoomOut {
+    to { transform: scale(1); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 5;
+    max-width: 800px;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    line-height: 1.15;
+    margin-bottom: var(--space-md);
+    color: var(--color-branco);
+  }
+
+  @media (min-width: 768px) {
+    .hero-title {
+      font-size: 4rem;
+    }
+  }
+
+  .hero-title .highlight {
+    color: var(--color-amarelo-cca);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: normal;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin-bottom: var(--space-lg);
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+  }
+
+  .btn-outline-white {
+    border: 1px solid var(--color-branco);
+    color: var(--color-branco);
+    background-color: transparent;
+  }
+
+  .btn-outline-white:hover {
+    background-color: var(--color-branco);
+    color: var(--color-preto-editorial);
+  }
+
+  .hero-scroll-indicator {
+    position: absolute;
+    bottom: var(--space-lg);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-xs);
+    opacity: 0.7;
+  }
+
+  .mouse-icon {
+    width: 24px;
+    height: 38px;
+    border: 2px solid var(--color-branco);
+    border-radius: 12px;
+    position: relative;
+    display: block;
+  }
+
+  .mouse-wheel {
+    width: 4px;
+    height: 8px;
+    background-color: var(--color-branco);
+    border-radius: 2px;
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: scrollMouse 1.5s infinite;
+  }
+
+  @keyframes scrollMouse {
+    0% { opacity: 1; transform: translate(-50%, 0); }
+    100% { opacity: 0; transform: translate(-50%, 15px); }
+  }
+
+  .scroll-text {
+    font-family: var(--font-interface);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-branco);
+  }
+
+  /* Quote Section styles */
+  .quote-section {
+    background-color: var(--color-amarelo-cca);
+    padding: var(--space-2xl) 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .quote-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    padding: 0 var(--space-xl);
+  }
+
+  .quote-mark {
+    font-family: var(--font-display);
+    font-size: 6rem;
+    line-height: 0;
+    position: absolute;
+    top: 20px;
+    left: 0;
+    color: rgba(26, 26, 26, 0.08);
+  }
+
+  .poetic-quote {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-style: italic;
+    line-height: 1.45;
+    margin-bottom: var(--space-md);
+    color: var(--color-preto-editorial);
+  }
+
+  @media (min-width: 768px) {
+    .poetic-quote {
+      font-size: 2.25rem;
+    }
+  }
+
+  .quote-author {
+    font-family: var(--font-interface);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: bold;
+    color: rgba(26, 26, 26, 0.7);
+  }
+
+  /* Features Section */
+  .features-section {
+    background-color: var(--color-creme);
+  }
+
+  .section-header {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-xs);
+    border: none;
+    padding: 0;
+    margin-top: 0;
+  }
+
+  .section-subtitle {
+    font-size: 1.15rem;
+    color: var(--color-carvao);
+  }
+
+  .feature-card {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .card-image-wrapper {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+  }
+
+  .card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-smooth);
+  }
+
+  .feature-card:hover .card-img {
+    transform: scale(1.05);
+  }
+
+  .card-category {
+    position: absolute;
+    bottom: var(--space-sm);
+    left: var(--space-sm);
+    background-color: var(--color-preto-editorial);
+    color: var(--color-branco);
+    padding: 4px 10px;
+    font-family: var(--font-interface);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+  }
+
+  .card-body {
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card-body h3 {
+    font-size: 1.5rem;
+    margin-top: 0;
+    margin-bottom: var(--space-sm);
+  }
+
+  .card-body p {
+    font-size: 0.95rem;
+    color: var(--color-carvao);
+    margin-bottom: var(--space-lg);
+    flex-grow: 1;
+    line-height: 1.6;
+  }
+
+  .card-link {
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-preto-editorial);
+    align-self: flex-start;
+    border-bottom: 2px solid var(--color-amarelo-cca);
+    padding-bottom: 2px;
+  }
+
+  .card-link:hover {
+    color: var(--color-ouro);
+    border-color: var(--color-ouro);
+  }
+
+  /* Event CTA Section */
+  .event-cta-section {
+    position: relative;
+    color: var(--color-branco);
+    padding: var(--space-2xl) 0;
+    overflow: hidden;
+  }
+
+  .cta-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+  }
+
+  .cta-content-wrapper {
+    position: relative;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 992px) {
+    .cta-content-wrapper {
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+  }
+
+  .cta-text-col h2 {
+    color: var(--color-branco);
+    font-size: 2.25rem;
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-md);
+    border: none;
+    padding: 0;
+  }
+
+  @media (min-width: 768px) {
+    .cta-text-col h2 {
+      font-size: 3rem;
+    }
+  }
+
+  .cta-text-col p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: var(--space-xl);
+  }
+
+  .badge {
+    background-color: var(--color-amarelo-cca);
+    color: var(--color-preto-editorial);
+    padding: 6px 12px;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    display: inline-block;
+  }
+
+  .cta-specs {
+    display: flex;
+    gap: var(--space-xl);
+    flex-wrap: wrap;
+  }
+
+  .spec-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .spec-val {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    color: var(--color-amarelo-cca);
+    line-height: 1;
+  }
+
+  .spec-lbl {
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    letter-spacing: 0.05em;
+    margin-top: 4px;
+  }
+
+  /* Glassmorphism card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--color-preto-editorial);
+    padding: var(--space-xl);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+
+  .cta-card h3 {
+    margin-top: 0;
+    margin-bottom: var(--space-sm);
+    font-family: var(--font-interface);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+  }
+
+  .cta-card p {
+    font-size: 0.9rem;
+    color: var(--color-carvao);
+    margin-bottom: var(--space-lg);
+    line-height: 1.6;
+  }
+
+  .btn-cta-phone {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: var(--space-sm);
+  }
+
+  .btn-cta-form {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--color-preto-editorial);
+    color: var(--color-preto-editorial);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .btn-cta-form:hover {
+    background-color: var(--color-preto-editorial);
+    color: var(--color-branco);
+  }
+
+  /* Basic animations */
+  .animate-fade-in {
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  }
+
+  .animate-fade-in-delayed {
+    opacity: 0;
+    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.3s forwards;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

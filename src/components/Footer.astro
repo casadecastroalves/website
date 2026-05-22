@@ -1,0 +1,246 @@
+---
+// Footer component for Casa de Castro Alves
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <!-- Brand / Column 1 -->
+    <div class="footer-col branding-col">
+      <h3 class="footer-logo">Casa de Castro Alves</h3>
+      <p class="footer-desc">
+        Um espaço de cultura dedicado ao diálogo entre a poesia e as artes. A antiga residência do poeta Castro Alves hoje abriga memória, arte, design e eventos no coração do Centro Histórico de Salvador.
+      </p>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/casadecastroalves" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          <span>@casadecastroalves</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Quick Links / Column 2 -->
+    <div class="footer-col links-col">
+      <h4 class="footer-heading">Navegação</h4>
+      <ul class="footer-links">
+        <li><a href="/a-casa">A Casa</a></li>
+        <li><a href="/shows">Shows & Eventos</a></li>
+        <li><a href="/movimento-irun">Movimento Irun</a></li>
+        <li><a href="/movimento-irun/cursos">Cursos</a></li>
+        <li><a href="/contato">Contato</a></li>
+      </ul>
+    </div>
+
+    <!-- Contact Info / Column 3 -->
+    <div class="footer-col contact-col">
+      <h4 class="footer-heading">Contatos & Visitas</h4>
+      <p class="contact-item">
+        <strong>Agende seu Evento:</strong><br />
+        <a href="tel:+5571991296555" class="contact-link">📱 71 9 9129 6555</a>
+      </p>
+      <p class="contact-item">
+        <strong>E-mail:</strong><br />
+        <a href="mailto:casadecastroalves@gmail.com" class="contact-link">📬 casadecastroalves@gmail.com</a>
+      </p>
+      <p class="contact-item">
+        <strong>Endereço:</strong><br />
+        <a href="https://maps.google.com/?q=Rua+do+Passo,+52,+Santo+Antonio+Alem+do+Carmo,+Salvador,+Bahia" target="_blank" rel="noopener noreferrer" class="contact-link">
+          🏡 Rua do Passo, 52,<br />
+          Santo Antônio Além do Carmo,<br />
+          Salvador - BA, 40301-408
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Sponsors / PNAB Banner -->
+  <div class="footer-sponsors">
+    <div class="container">
+      <p class="sponsors-text">
+        Este projeto foi contemplado nos Editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva.
+      </p>
+      <div class="sponsors-banner-wrapper">
+        <img src="/MOVIMENTO-IRUN-RODAPE-2026-1024x154.jpg" alt="Apoio: Lei Aldir Blanc, Bahia Secult, Ministério da Cultura, Governo Federal" class="sponsors-banner" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-bottom">
+    <div class="container bottom-container">
+      <p>&copy; 2026 Casa de Castro Alves. Todos os direitos reservados.</p>
+      <p class="credit">Desenvolvido com carinho em Astro</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--color-preto-editorial);
+    color: var(--color-cinza-claro);
+    padding-top: var(--space-2xl);
+    margin-top: auto;
+    border-top: 3px solid var(--color-amarelo-cca);
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    padding-bottom: var(--space-xl);
+  }
+
+  @media (min-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 2fr 1fr 1.5fr;
+    }
+  }
+
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .footer-logo {
+    color: var(--color-amarelo-cca);
+    font-size: 1.8rem;
+    margin-bottom: var(--space-md);
+  }
+
+  .footer-desc {
+    color: #A5A5A5;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    max-width: 450px;
+  }
+
+  .footer-socials {
+    margin-top: var(--space-md);
+  }
+
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    color: var(--color-amarelo-cca);
+    font-family: var(--font-interface);
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: var(--transition-fast);
+  }
+
+  .social-link:hover {
+    color: var(--color-branco);
+  }
+
+  .footer-heading {
+    color: var(--color-branco);
+    font-family: var(--font-interface);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: bold;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-xs);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+  }
+
+  .footer-links li {
+    margin-bottom: var(--space-sm);
+  }
+
+  .footer-links a {
+    color: #A5A5A5;
+    font-family: var(--font-interface);
+    font-size: 0.9rem;
+    transition: var(--transition-fast);
+  }
+
+  .footer-links a:hover {
+    color: var(--color-amarelo-cca);
+    padding-left: var(--space-xs);
+  }
+
+  .contact-item {
+    font-family: var(--font-interface);
+    font-size: 0.9rem;
+    margin-bottom: var(--space-md);
+    color: #A5A5A5;
+  }
+
+  .contact-item strong {
+    color: var(--color-branco);
+  }
+
+  .contact-link {
+    color: #A5A5A5;
+    transition: var(--transition-fast);
+  }
+
+  .contact-link:hover {
+    color: var(--color-amarelo-cca);
+  }
+
+  /* Sponsors Banner Section */
+  .footer-sponsors {
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background-color: var(--color-noir);
+    padding: var(--space-xl) 0;
+    text-align: center;
+  }
+
+  .sponsors-text {
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    color: #888888;
+    max-width: 800px;
+    margin: 0 auto var(--space-md) auto;
+  }
+
+  .sponsors-banner-wrapper {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: var(--space-sm);
+    border-radius: 4px;
+  }
+
+  .sponsors-banner {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Footer Bottom */
+  .footer-bottom {
+    background-color: var(--color-noir);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: var(--space-md) 0;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    color: #666666;
+  }
+
+  .bottom-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+
+  @media (min-width: 768px) {
+    .bottom-container {
+      flex-direction: row;
+    }
+  }
+
+  .credit {
+    color: #666666;
+  }
+</style>

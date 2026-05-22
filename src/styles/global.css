@@ -1,0 +1,263 @@
+/* Casa de Castro Alves - Global Stylesheet */
+
+:root {
+  /* Colors */
+  --color-amarelo-cca: #FFDD00;
+  --color-preto-editorial: #1A1A1A;
+  --color-ouro: #C9A800;
+  --color-creme: #FFFAE6;
+  --color-cinza-claro: #F2F2F2;
+  --color-carvao: #4A4A4A;
+  --color-branco: #FFFFFF;
+  --color-noir: #111111;
+
+  /* Typography */
+  --font-display: "Times New Roman", Georgia, serif;
+  --font-body: "Times New Roman", Georgia, serif;
+  --font-interface: "Arial", Helvetica, sans-serif;
+
+  /* Grid & Spacing (8px system) */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 48px;
+  --space-2xl: 80px;
+
+  /* Transitions */
+  --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition-fast: all 0.15s ease-out;
+}
+
+/* Base resets and styling */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-creme);
+  color: var(--color-preto-editorial);
+  font-family: var(--font-body);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+/* Selection Color */
+::selection {
+  background-color: var(--color-amarelo-cca);
+  color: var(--color-preto-editorial);
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: normal;
+  line-height: 1.2;
+  margin-bottom: var(--space-md);
+  color: var(--color-preto-editorial);
+}
+
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 2rem;
+  border-bottom: 1px solid rgba(25, 25, 25, 0.1);
+  padding-bottom: var(--space-sm);
+  margin-top: var(--space-xl);
+}
+
+h3 {
+  font-size: 1.5rem;
+  margin-top: var(--space-md);
+}
+
+p {
+  margin-bottom: var(--space-md);
+  font-size: 1.125rem;
+}
+
+a {
+  color: var(--color-preto-editorial);
+  text-decoration: none;
+  transition: var(--transition-fast);
+}
+
+/* Interface elements using Arial */
+button, 
+input, 
+select, 
+textarea, 
+.nav-link, 
+.btn, 
+.metadata, 
+.badge,
+.caption {
+  font-family: var(--font-interface);
+  font-size: 0.9rem;
+}
+
+/* Premium Button System */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  border: 1px solid var(--color-preto-editorial);
+  background-color: transparent;
+  color: var(--color-preto-editorial);
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: var(--transition-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-amarelo-cca);
+  z-index: -1;
+  transform: translateY(100%);
+  transition: var(--transition-smooth);
+}
+
+.btn:hover {
+  border-color: var(--color-amarelo-cca);
+  color: var(--color-preto-editorial);
+}
+
+.btn:hover::after {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background-color: var(--color-amarelo-cca);
+  border-color: var(--color-amarelo-cca);
+}
+
+.btn-primary::after {
+  background-color: var(--color-preto-editorial);
+}
+
+.btn-primary:hover {
+  border-color: var(--color-preto-editorial);
+  color: var(--color-amarelo-cca);
+}
+
+.btn-dark {
+  background-color: var(--color-preto-editorial);
+  color: var(--color-branco);
+  border-color: var(--color-preto-editorial);
+}
+
+.btn-dark::after {
+  background-color: var(--color-amarelo-cca);
+}
+
+.btn-dark:hover {
+  border-color: var(--color-amarelo-cca);
+  color: var(--color-preto-editorial);
+}
+
+/* Layout Utilities */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding: 0 var(--space-2xl);
+  }
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+}
+
+@media (min-width: 768px) {
+  .grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Section styling */
+section {
+  padding: var(--space-2xl) 0;
+  position: relative;
+}
+
+/* Premium Card System */
+.card {
+  background: var(--color-branco);
+  border: 1px solid rgba(26, 26, 26, 0.08);
+  padding: var(--space-lg);
+  transition: var(--transition-smooth);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(26, 26, 26, 0.05);
+  border-color: var(--color-amarelo-cca);
+}
+
+/* Custom Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-creme);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C1BFA8;
+  border: 2px solid var(--color-creme);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-preto-editorial);
+}
+
+/* Quote styles */
+.pull-quote {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-style: italic;
+  line-height: 1.5;
+  border-left: 3px solid var(--color-amarelo-cca);
+  padding-left: var(--space-md);
+  margin: var(--space-lg) 0;
+  color: var(--color-carvao);
+}

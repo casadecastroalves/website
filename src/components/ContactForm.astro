@@ -1,0 +1,297 @@
+---
+// Contact Form component for Casa de Castro Alves
+---
+
+<div class="contact-form-container">
+  <form id="webContactForm" class="premium-form">
+    <div class="form-group">
+      <label for="formName">Nome Completo</label>
+      <input type="text" id="formName" name="name" required placeholder="Digite seu nome completo" />
+    </div>
+
+    <div class="form-group">
+      <label for="formEmail">E-mail</label>
+      <input type="email" id="formEmail" name="email" required placeholder="seuemail@exemplo.com" />
+    </div>
+
+    <div class="form-group">
+      <label for="formSubject">Assunto / Interesse</label>
+      <div class="select-wrapper">
+        <select id="formSubject" name="subject" required>
+          <option value="" disabled selected>Selecione uma opção</option>
+          <option value="Agendar Evento">Agendar Evento (Casamento, Festa, Evento Corporativo)</option>
+          <option value="Movimento Irun">Dúvidas sobre o Movimento Irun</option>
+          <option value="Cursos">Informações sobre Cursos</option>
+          <option value="Outros">Outras Dúvidas e Informações</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="formMessage">Mensagem / Detalhes do Evento</label>
+      <textarea id="formMessage" name="message" rows="5" required placeholder="Escreva aqui como podemos lhe ajudar..."></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-dark btn-submit" id="submitBtn">
+      <span>Enviar Mensagem</span>
+    </button>
+  </form>
+
+  <!-- Submission Status Messages -->
+  <div class="status-box success-box" id="successBox" style="display: none;">
+    <div class="status-icon">✓</div>
+    <h3>Mensagem Enviada!</h3>
+    <p>Obrigado pelo contato. Recebemos sua mensagem com sucesso e enviamos uma confirmação para o seu e-mail. Retornaremos em breve!</p>
+  </div>
+
+  <div class="status-box error-box" id="errorBox" style="display: none;">
+    <div class="status-icon">✕</div>
+    <h3>Erro ao Enviar</h3>
+    <p id="errorMessage">Ocorreu um erro no servidor ao tentar registrar seu contato. Por favor, tente novamente ou entre em contato diretamente pelo WhatsApp.</p>
+    <button type="button" class="btn btn-sm btn-retry" id="retryBtn">Tentar Novamente</button>
+  </div>
+</div>
+
+<style>
+  .contact-form-container {
+    background-color: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    padding: var(--space-xl);
+    width: 100%;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(26, 26, 26, 0.03);
+  }
+
+  .premium-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  label {
+    font-family: var(--font-interface);
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-preto-editorial);
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 14px var(--space-md);
+    border: 1px solid rgba(26, 26, 26, 0.15);
+    background-color: #FAFAFA;
+    color: var(--color-preto-editorial);
+    font-size: 1rem;
+    transition: var(--transition-fast);
+    outline: none;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--color-ouro);
+    background-color: var(--color-branco);
+    box-shadow: 0 0 0 3px rgba(201, 168, 0, 0.1);
+  }
+
+  /* Custom dropdown styling */
+  .select-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .select-wrapper::after {
+    content: '▼';
+    font-size: 0.7rem;
+    color: var(--color-carvao);
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    position: absolute;
+    pointer-events: none;
+  }
+
+  select {
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    padding-right: 40px;
+  }
+
+  textarea {
+    resize: vertical;
+    font-family: var(--font-body);
+  }
+
+  .btn-submit {
+    width: 100%;
+    margin-top: var(--space-sm);
+    padding: 16px;
+  }
+
+  /* Status Boxes */
+  .status-box {
+    text-align: center;
+    padding: var(--space-xl) var(--space-md);
+    animation: fadeIn 0.4s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .status-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin-bottom: var(--space-md);
+    font-weight: bold;
+  }
+
+  .success-box .status-icon {
+    background-color: rgba(0, 200, 83, 0.1);
+    color: #00C853;
+  }
+
+  .success-box h3 {
+    color: #00C853;
+    font-family: var(--font-interface);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .error-box .status-icon {
+    background-color: rgba(213, 0, 0, 0.1);
+    color: #D50000;
+  }
+
+  .error-box h3 {
+    color: #D50000;
+    font-family: var(--font-interface);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 1.25rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  .btn-retry {
+    margin-top: var(--space-md);
+    font-size: 0.8rem;
+    padding: 10px 24px;
+  }
+</style>
+
+<script>
+  // Google Apps Script Web App URL (to be replaced by the deployed Apps Script URL)
+  // Initially we use a placeholder or local mock check. We will read the URL from a data attribute or env
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_d5G7kLqS7t1c7wPq36w8W8f8_placeholder/exec"; 
+
+  const form = document.getElementById('webContactForm') as HTMLFormElement | null;
+  const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement | null;
+  const successBox = document.getElementById('successBox') as HTMLDivElement | null;
+  const errorBox = document.getElementById('errorBox') as HTMLDivElement | null;
+  const errorMessage = document.getElementById('errorMessage') as HTMLParagraphElement | null;
+  const retryBtn = document.getElementById('retryBtn') as HTMLButtonElement | null;
+
+  if (form && submitBtn && successBox && errorBox) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      // Update UI loading state
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.6';
+      submitBtn.innerHTML = '<span>Enviando...</span>';
+      
+      errorBox.style.display = 'none';
+
+      // Gather form data
+      const formData = new FormData(form);
+      const payload: Record<string, string> = {};
+      formData.forEach((value, key) => {
+        payload[key] = value.toString();
+      });
+
+      try {
+        // Submit using fetch. Since Apps Script requires redirect, we handle the CORS/JSON output.
+        // We use a timeout to prevent infinite loading
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+        
+        // Note: For actual Google Apps Script web apps, it redirects (HTTP 302).
+        // Standard fetch with mode: 'cors' handles redirect automatically.
+        // If the URL is placeholder, we simulate a mock response so testing works!
+        let response;
+        if (APPS_SCRIPT_URL.includes("placeholder")) {
+          // Mocking response for testing / local development
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+          response = { ok: true, json: async () => ({ status: "success" }) };
+        } else {
+          response = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+            signal: controller.signal
+          });
+        }
+        
+        clearTimeout(timeoutId);
+
+        if (response.ok) {
+          const result = await response.json();
+          if (result.status === "success") {
+            form.style.display = 'none';
+            successBox.style.display = 'block';
+            form.reset();
+          } else {
+            throw new Error(result.message || "Erro desconhecido do servidor.");
+          }
+        } else {
+          throw new Error(`Servidor respondeu com código: ${response.status}`);
+        }
+      } catch (err: any) {
+        console.error("Form submission error:", err);
+        form.style.display = 'none';
+        errorBox.style.display = 'block';
+        if (errorMessage) {
+          if (err.name === 'AbortError') {
+            errorMessage.textContent = 'A conexão demorou muito para responder. Por favor, verifique sua internet ou fale conosco no WhatsApp.';
+          } else {
+            errorMessage.textContent = `Falha ao enviar mensagem: ${err.message || 'Erro de rede'}.`;
+          }
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.innerHTML = originalText;
+      }
+    });
+
+    if (retryBtn) {
+      retryBtn.addEventListener('click', () => {
+        errorBox.style.display = 'none';
+        form.style.display = 'flex';
+      });
+    }
+  }
+</script>
