@@ -4,7 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 // Cursos page for Movimento Irun / Casa de Castro Alves
 ---
 
-<Layout title="Cursos e Formações | Movimento Irun" showSponsors={true} description="Ciclo Formativo do Movimento Irun na Casa de Castro Alves. Formações em Permacultura Urbana, Cidade Cidadã e o Programa Bem Viver. Inscrições e calendário." ogImage="/images/cursos/3-PROGRAMA-BEM-VIVER-CABECALHOS-HEADER-FORMULARIO.png">
+<Layout title="Cursos e Formações | Movimento Irun" description="Ciclo Formativo do Movimento Irun na Casa de Castro Alves. Formações em Permacultura Urbana, Cidade Cidadã e o Programa Bem Viver. Inscrições e calendário." ogImage="/images/cursos/3-PROGRAMA-BEM-VIVER-CABECALHOS-HEADER-FORMULARIO.png">
   <!-- Hero Section -->
   <section class="subpage-hero">
     <div class="subpage-hero-bg" style="background-image: url('/images/cursos/3-PROGRAMA-BEM-VIVER-CABECALHOS-HEADER-FORMULARIO.png');"></div>
@@ -161,6 +161,19 @@ import Layout from '../../layouts/Layout.astro';
           <p>Assine nossa newsletter ou entre em contato para ser notificado sobre a abertura de novas turmas e chamadas públicas.</p>
           <a href="/contato" class="btn btn-dark">Fale Conosco</a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apoios e Logos Rodapé -->
+  <section class="apoio-section">
+    <div class="container text-center">
+      <h3>Apoio e Fomento</h3>
+      <p class="apoio-text">
+        Este projeto foi contemplado nos Editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva.
+      </p>
+      <div class="apoio-banner-wrapper">
+        <img src="/MOVIMENTO-IRUN-RODAPE-2026-1024x154.jpg" alt="Logos de apoio do Movimento Irun - Secult-BA, PNAB, Governo da Bahia, Ministério da Cultura" class="apoio-banner-img" />
       </div>
     </div>
   </section>
@@ -442,5 +455,34 @@ import Layout from '../../layouts/Layout.astro';
     color: var(--color-carvao);
     margin-bottom: var(--space-lg);
     max-width: 250px;
+  }
+
+  /* Apoio Section */
+  .apoio-section {
+    background-color: var(--color-branco);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+    padding: var(--space-xl) 0;
+  }
+
+  .apoio-text {
+    font-size: 0.95rem;
+    color: var(--color-carvao);
+    max-width: 800px;
+    margin: 0 auto var(--space-xl) auto;
+    line-height: 1.6;
+  }
+
+  .apoio-banner-wrapper {
+    max-width: 850px;
+    margin: 0 auto;
+    background-color: var(--color-cinza-claro);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .apoio-banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 </style>

@@ -255,7 +255,7 @@ const posters = Array.isArray((edicaoInfo as any).posters)
   : (edicaoInfo.poster ? [edicaoInfo.poster] : []);
 ---
 
-<Layout title={`${edicaoInfo.titulo} | Movimento Irun`} showSponsors={true} description={`Confira a programação e os registros da ${edicaoInfo.num}ª edição do Movimento Irun na Casa de Castro Alves. Convidado(a): ${edicaoInfo.artista}.`} ogImage={edicaoInfo.banner || edicaoInfo.poster}>
+<Layout title={`${edicaoInfo.titulo} | Movimento Irun`} description={`Confira a programação e os registros da ${edicaoInfo.num}ª edição do Movimento Irun na Casa de Castro Alves. Convidado(a): ${edicaoInfo.artista}.`} ogImage={edicaoInfo.banner || edicaoInfo.poster}>
   <!-- Header de Edição (Standardized Subpage Hero with Parallax) -->
   <section class="subpage-hero" style="position: relative;">
     <div class="subpage-hero-bg" style={`background-image: url('${edicaoInfo.banner || edicaoInfo.poster}');`}></div>
