@@ -249,11 +249,11 @@ const romanKey = romanNumerals[edicaoInfo.num] || "";
 const parsedData = (parsedEditions as any)[romanKey] || { desc: [], program: [] };
 const descriptionParagraphs = parsedData.desc && parsedData.desc.length > 0 ? parsedData.desc : [edicaoInfo.descricao];
 
-// Dynamically split description paragraph text to limit visible intro text to ~1000 characters.
+// Dynamically split description paragraph text to limit visible intro text to ~550 characters.
 let visibleParagraphs: string[] = [];
 let hiddenParagraphs: string[] = [];
 let currentLen = 0;
-const LIMIT = 1000;
+const LIMIT = 550;
 
 for (let i = 0; i < descriptionParagraphs.length; i++) {
   const para = descriptionParagraphs[i];
