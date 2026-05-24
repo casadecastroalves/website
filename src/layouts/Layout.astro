@@ -1,6 +1,7 @@
 ---
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -67,6 +68,9 @@ const absoluteOgImage = ogImage.startsWith('http')
 
     <!-- Global Footer -->
     <Footer showSponsors={showSponsors} />
+
+    <!-- LGPD Cookie Consent Banner -->
+    <CookieConsent />
 
     <script>
       // GPU-accelerated lightweight requestAnimationFrame scroll listener for parallax headers
