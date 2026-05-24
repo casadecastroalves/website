@@ -21,10 +21,6 @@ import Layout from '../layouts/Layout.astro';
         <a href="/contato" class="btn btn-outline-white">Agendar Visita</a>
       </div>
     </div>
-    <div class="hero-scroll-indicator">
-      <span class="mouse-icon"><span class="mouse-wheel"></span></span>
-      <span class="scroll-text">Role para explorar</span>
-    </div>
   </section>
 
   <!-- Poetry / Quote Section -->
@@ -53,7 +49,7 @@ import Layout from '../layouts/Layout.astro';
         <!-- Feature 1: A Casa -->
         <div class="card feature-card">
           <div class="card-image-wrapper">
-            <img src="/images/a_casa/casa-de-castro-alves-galeria-arte.jpg" alt="Galeria de Arte Contemporânea da Casa" class="card-img" />
+            <img src="/images/a_casa/casa-de-castro-alves-3.png" alt="Galeria de Arte Contemporânea da Casa" class="card-img" />
             <div class="card-category">Espaço Cultural</div>
           </div>
           <div class="card-body">
@@ -65,18 +61,18 @@ import Layout from '../layouts/Layout.astro';
           </div>
         </div>
 
-        <!-- Feature 2: Movimento Irun -->
+        <!-- Feature 2: Shows & Eventos -->
         <div class="card feature-card">
           <div class="card-image-wrapper">
-            <img src="/images/shows/MOVIMENTO-IRUN-9-EDICAO-ABRIL-WEBSITE-1024x576.jpg" alt="Apresentação do Movimento Irun" class="card-img" />
-            <div class="card-category">Movimento</div>
+            <img src="/images/shows/movimento-irun-edicao-9-aqualtunes-mariella-santiago.jpg" alt="Shows e Eventos Culturais na Casa" class="card-img" />
+            <div class="card-category">Programação</div>
           </div>
           <div class="card-body">
-            <h3>Movimento Irun</h3>
+            <h3>Shows & Eventos</h3>
             <p>
-              Uma aliança ética, política e estética entre saberes ancestrais e design contemporâneo. Apoio financeiro PNAB Secult-BA e Ministério da Cultura.
+              Acompanhe a nossa vibrante programação cultural, incluindo shows ao vivo, apresentações musicais e eventos literários no nosso palco histórico.
             </p>
-            <a href="/movimento-irun" class="card-link">Ver edições →</a>
+            <a href="/shows" class="card-link">Ver programação →</a>
           </div>
         </div>
 
@@ -87,7 +83,7 @@ import Layout from '../layouts/Layout.astro';
             <div class="card-category">Formação</div>
           </div>
           <div class="card-body">
-            <h3>Cursos & Oficinas</h3>
+            <h3>Projetos & Cursos</h3>
             <p>
               Iniciativas de capacitação comunitária, Cidade Cidadã, Permacultura Urbana, Design Dialógico e formalização cultural para o fortalecimento de territórios.
             </p>
@@ -106,7 +102,7 @@ import Layout from '../layouts/Layout.astro';
         <span class="badge">Eventos e Casamentos</span>
         <h2>Realize seu evento em um cenário histórico inesquecível</h2>
         <p>
-          Nosso espaço de 510m² conta com memorial, galeria de arte e um magnífico jardim com vista para a Baía de Todos os Santos. Ideal para casamentos, festas e comemorações corporativas exclusivas no Santo Antônio Além do Carmo.
+          Nosso espaço de 510m² integra espaço de memória, galeria de arte e um magnífico jardim com vista para a Baía de Todos os Santos. Ideal para casamentos, festas e comemorações corporativas exclusivas no Santo Antônio Além do Carmo.
         </p>
         <div class="cta-specs">
           <div class="spec-item">
@@ -119,7 +115,7 @@ import Layout from '../layouts/Layout.astro';
           </div>
           <div class="spec-item">
             <span class="spec-val">Pôr do Sol</span>
-            <span class="spec-lbl">Vista para a Baía</span>
+            <span class="spec-lbl">Vista para a Baía de Todos os Santos</span>
           </div>
         </div>
       </div>
@@ -127,7 +123,7 @@ import Layout from '../layouts/Layout.astro';
         <div class="glass-card cta-card">
           <h3>Agendamentos</h3>
           <p>Entre em contato conosco para verificar datas disponíveis e agendar uma visita técnica ao local.</p>
-          <a href="tel:+5571991296555" class="btn btn-primary btn-cta-phone">📱 71 9 9129 6555</a>
+          <a href="https://wa.me/5571991296555?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20da%20Casa%20de%20Castro%20Alves%20e%20gostaria%20de%20informa%C3%A7%C3%B5es." class="btn btn-primary btn-cta-phone" target="_blank" rel="noopener noreferrer">71 9 9129 6555</a>
           <a href="/contato" class="btn btn-outline-dark btn-cta-form">Enviar Mensagem</a>
         </div>
       </div>
@@ -168,6 +164,8 @@ import Layout from '../layouts/Layout.astro';
     position: relative;
     z-index: 5;
     max-width: 800px;
+    text-align: center;
+    margin: 0 auto;
   }
 
   .hero-title {
@@ -193,7 +191,7 @@ import Layout from '../layouts/Layout.astro';
   .hero-subtitle {
     font-size: 1.25rem;
     line-height: 1.6;
-    margin-bottom: var(--space-lg);
+    margin: 0 auto var(--space-lg);
     color: rgba(255, 255, 255, 0.9);
     max-width: 600px;
   }
@@ -202,6 +200,7 @@ import Layout from '../layouts/Layout.astro';
     display: flex;
     gap: var(--space-md);
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .btn-outline-white {
@@ -215,52 +214,7 @@ import Layout from '../layouts/Layout.astro';
     color: var(--color-preto-editorial);
   }
 
-  .hero-scroll-indicator {
-    position: absolute;
-    bottom: var(--space-lg);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--space-xs);
-    opacity: 0.7;
-  }
 
-  .mouse-icon {
-    width: 24px;
-    height: 38px;
-    border: 2px solid var(--color-branco);
-    border-radius: 12px;
-    position: relative;
-    display: block;
-  }
-
-  .mouse-wheel {
-    width: 4px;
-    height: 8px;
-    background-color: var(--color-branco);
-    border-radius: 2px;
-    position: absolute;
-    top: 6px;
-    left: 50%;
-    transform: translateX(-50%);
-    animation: scrollMouse 1.5s infinite;
-  }
-
-  @keyframes scrollMouse {
-    0% { opacity: 1; transform: translate(-50%, 0); }
-    100% { opacity: 0; transform: translate(-50%, 15px); }
-  }
-
-  .scroll-text {
-    font-family: var(--font-interface);
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-branco);
-  }
 
   /* Quote Section styles */
   .quote-section {
@@ -313,23 +267,6 @@ import Layout from '../layouts/Layout.astro';
   /* Features Section */
   .features-section {
     background-color: var(--color-creme);
-  }
-
-  .section-header {
-    margin-bottom: var(--space-2xl);
-  }
-
-  .section-title {
-    font-size: 2.5rem;
-    margin-bottom: var(--space-xs);
-    border: none;
-    padding: 0;
-    margin-top: 0;
-  }
-
-  .section-subtitle {
-    font-size: 1.15rem;
-    color: var(--color-carvao);
   }
 
   .feature-card {

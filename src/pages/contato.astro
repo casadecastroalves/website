@@ -6,11 +6,13 @@ import ContactForm from '../components/ContactForm.astro';
 ---
 
 <Layout title="Contato | Agendamentos e Localização" description="Entre em contato com a Casa de Castro Alves para agendar seu evento ou fazer uma visita guiada. Telefone 71 9 9129 6555. Localizada na Rua do Passo, 52, Santo Antônio Além do Carmo, Salvador.">
-  <section class="contato-header">
-    <div class="container text-center">
-      <span class="badge-contato">Canais Oficiais</span>
-      <h1>Fale Conosco</h1>
-      <p class="subtitle-contato">Agende seu evento, tire suas dúvidas ou planeje uma visita técnica</p>
+  <!-- Hero Section -->
+  <section class="subpage-hero">
+    <div class="subpage-hero-bg" style="background-image: url('/images/a_casa/casa-de-castro-alves-santo-antonio-alem-do-carmo-1-1024x576.jpg');"></div>
+    <div class="subpage-hero-overlay"></div>
+    <div class="container subpage-hero-content">
+      <h1 class="subpage-hero-title">Fale Conosco</h1>
+      <p class="subpage-hero-subtitle">Canais Oficiais</p>
     </div>
   </section>
 
@@ -25,16 +27,20 @@ import ContactForm from '../components/ContactForm.astro';
             
             <div class="contact-methods">
               <div class="method-item">
-                <div class="method-icon">📱</div>
+                <div class="method-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                </div>
                 <div class="method-details">
                   <h3>Telefone & WhatsApp</h3>
-                  <p class="highlight-val"><a href="tel:+5571991296555">71 9 9129 6555</a></p>
+                  <p class="highlight-val"><a href="https://wa.me/5571991296555?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20da%20Casa%20de%20Castro%20Alves%20e%20gostaria%20de%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener noreferrer">71 9 9129 6555</a></p>
                   <p class="helper-text">Disponível para agendamento de casamentos e visitas técnicas.</p>
                 </div>
               </div>
 
               <div class="method-item">
-                <div class="method-icon">📬</div>
+                <div class="method-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
                 <div class="method-details">
                   <h3>E-mail</h3>
                   <p class="highlight-val"><a href="mailto:casadecastroalves@gmail.com">casadecastroalves@gmail.com</a></p>
@@ -43,7 +49,9 @@ import ContactForm from '../components/ContactForm.astro';
               </div>
 
               <div class="method-item">
-                <div class="method-icon">🏡</div>
+                <div class="method-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                </div>
                 <div class="method-details">
                   <h3>Endereço</h3>
                   <p class="address-text">
@@ -95,39 +103,6 @@ import ContactForm from '../components/ContactForm.astro';
 </Layout>
 
 <style>
-  /* Header section */
-  .contato-header {
-    background-color: var(--color-amarelo-cca);
-    padding: var(--space-2xl) 0;
-    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
-  }
-
-  .badge-contato {
-    background-color: transparent;
-    color: var(--color-preto-editorial);
-    border: 1px solid var(--color-preto-editorial);
-    padding: 4px 12px;
-    font-family: var(--font-interface);
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    display: inline-block;
-    margin-bottom: var(--space-sm);
-  }
-
-  .contato-header h1 {
-    font-size: 3rem;
-    margin-bottom: var(--space-xs);
-  }
-
-  .subtitle-contato {
-    font-size: 1.15rem;
-    color: var(--color-carvao);
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
   /* Grid layout */
   .contato-content-section {
     background-color: var(--color-creme);
@@ -184,8 +159,15 @@ import ContactForm from '../components/ContactForm.astro';
   }
 
   .method-icon {
-    font-size: 2.25rem;
-    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-ouro);
+    width: 48px;
+    height: 48px;
+    background-color: rgba(212, 175, 55, 0.1);
+    border-radius: 50%;
+    flex-shrink: 0;
   }
 
   .method-details h3 {

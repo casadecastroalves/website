@@ -1,5 +1,9 @@
 ---
 // Footer component for Casa de Castro Alves
+interface Props {
+  showSponsors?: boolean;
+}
+const { showSponsors = false } = Astro.props;
 ---
 
 <footer class="site-footer">
@@ -25,7 +29,7 @@
         <li><a href="/a-casa">A Casa</a></li>
         <li><a href="/shows">Shows & Eventos</a></li>
         <li><a href="/movimento-irun">Movimento Irun</a></li>
-        <li><a href="/movimento-irun/cursos">Cursos</a></li>
+        <li><a href="/movimento-irun/cursos">Projetos & Cursos</a></li>
         <li><a href="/contato">Contato</a></li>
       </ul>
     </div>
@@ -35,16 +39,16 @@
       <h4 class="footer-heading">Contatos & Visitas</h4>
       <p class="contact-item">
         <strong>Agende seu Evento:</strong><br />
-        <a href="tel:+5571991296555" class="contact-link">📱 71 9 9129 6555</a>
+        <a href="https://wa.me/5571991296555?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20da%20Casa%20de%20Castro%20Alves%20e%20gostaria%20de%20informa%C3%A7%C3%B5es." class="contact-link" target="_blank" rel="noopener noreferrer">71 9 9129 6555</a>
       </p>
       <p class="contact-item">
         <strong>E-mail:</strong><br />
-        <a href="mailto:casadecastroalves@gmail.com" class="contact-link">📬 casadecastroalves@gmail.com</a>
+        <a href="mailto:casadecastroalves@gmail.com" class="contact-link">casadecastroalves@gmail.com</a>
       </p>
       <p class="contact-item">
         <strong>Endereço:</strong><br />
         <a href="https://maps.google.com/?q=Rua+do+Passo,+52,+Santo+Antonio+Alem+do+Carmo,+Salvador,+Bahia" target="_blank" rel="noopener noreferrer" class="contact-link">
-          🏡 Rua do Passo, 52,<br />
+          Rua do Passo, 52,<br />
           Santo Antônio Além do Carmo,<br />
           Salvador - BA, 40301-408
         </a>
@@ -53,22 +57,24 @@
   </div>
 
   <!-- Sponsors / PNAB Banner -->
-  <div class="footer-sponsors">
-    <div class="container">
-      <p class="sponsors-text">
-        Este projeto foi contemplado nos Editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva.
-      </p>
-      <div class="sponsors-banner-wrapper">
-        <img src="/MOVIMENTO-IRUN-RODAPE-2026-1024x154.jpg" alt="Apoio: Lei Aldir Blanc, Bahia Secult, Ministério da Cultura, Governo Federal" class="sponsors-banner" />
+  {showSponsors && (
+    <div class="footer-sponsors">
+      <div class="container">
+        <p class="sponsors-text">
+          Este projeto foi contemplado nos Editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva.
+        </p>
+        <div class="sponsors-banner-wrapper">
+          <img src="/MOVIMENTO-IRUN-RODAPE-2026-1024x154.jpg" alt="Apoio: Lei Aldir Blanc, Bahia Secult, Ministério da Cultura, Governo Federal" class="sponsors-banner" />
+        </div>
       </div>
     </div>
-  </div>
+  )}
 
   <!-- Copyright -->
   <div class="footer-bottom">
     <div class="container bottom-container">
       <p>&copy; 2026 Casa de Castro Alves. Todos os direitos reservados.</p>
-      <p class="credit">Desenvolvido com carinho em Astro</p>
+      <p class="credit">Desenvolvido com carinho por Astro & Grimaux</p>
     </div>
   </div>
 </footer>

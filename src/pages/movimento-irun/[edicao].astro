@@ -1,197 +1,284 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import parsedEditions from '../../data/parsed_editions.json';
+
 
 export async function getStaticPaths() {
   const edicoesData = [
-    {
-      num: 1,
-      slug: "edicao-1",
-      titulo: "1ª Edição — Pocket Show 'Cantos de Òrìṣà'",
-      data: "13 de Julho de 2025",
-      artista: "Irma Ferreira & Ruan de Souza",
-      show: "Cantos de Òrìṣà",
-      poster: "/images/shows/IRMA-FERREIRA-CANTOS-DE-ORIṢA-FEED-JUL-2025-VER3.jpg",
-      youtube: "https://www.youtube.com/embed/z2eHDjU_oUw?si=CmGL7S2NaS2OiNT_",
-      descricao: "O lançamento oficial do Movimento IRUN ocorreu no Instituto Casa de Castro Alves. Com forte presença de representantes de comunidades tradicionais, artistas e ativistas culturais, o evento marcou o início de uma plataforma de ações voltada à transformação social por meio da arte, ancestralidade e coletividade.",
-      detalhes: [
-        "Roda de conversa e ritual sagrado conduzido pela Comunidade Bantu Indígena Caxuté, estabelecendo as bases de aliança territorial.",
-        "Lançamento dos cursos de Design Dialógico (co-criação com comunidades locais), Permacultura Urbana (cultura da permanência) e Cidade Cidadã.",
-        "Abertura oficial da Exposição IRUN, apresentando fotografias e manifestações estéticas de povos tradicionais da Bahia.",
-        "Encerramento com o pocket show intimista 'Cantos de Òrìṣà', com Irma Ferreira e Ruan de Souza interpretando cantigas sagradas."
-      ]
-    },
-    {
-      num: 2,
-      slug: "edicao-2",
-      titulo: "2ª Edição — Show 'EletroSamba'",
-      data: "17 de Agosto de 2025",
-      artista: "Ayrá Soares & Ângelo Canja",
-      show: "EletroSamba",
-      poster: "/images/shows/AYRA-SOARES-FEED-IG-17-DE-AGO-2025.jpeg",
-      youtube: "https://www.youtube.com/embed/kaOWHMxagz0",
-      descricao: "A segunda potente ação do Movimento IRUN articulou escuta, exposição e show — reunindo feminismo, ancestralidade e transformação social. A proposta reafirma o papel do casarão histórico de pulsar com a força de vozes coletivas, saberes ancestrais e arte insurgente.",
-      detalhes: [
-        "Show Room Caboclo: Espaço de moda, arte e identidade, com peças exclusivas assinadas por designers e artesãos locais.",
-        "Roda de Conversa com o coletivo Tamo Juntas: Organização feminista que presta assessoria multidisciplinar gratuita (jurídica, psicológica, pedagógica e social) a mulheres em situação de violência.",
-        "Vernissage e visita guiada à Exposição IRUN, promovendo a conexão entre memória, ecologia e estética como prática política.",
-        "Show intimista 'EletroSamba' de Ayrá Soares (ativista da Tamo Juntas) acompanhada pela guitarra marcante de Ângelo Canja."
-      ]
-    },
-    {
-      num: 3,
-      slug: "edicao-3",
-      titulo: "3ª Edição — Show 'Encontros Híbridos'",
-      data: "28 de Setembro de 2025",
-      artista: "Enio & Vírus",
-      show: "Encontros Híbridos",
-      poster: "/images/shows/MOVIMENTO-IRUN-3-EDICAO-SETEMBRO-ENIO-SANTOS-MENINOS-2025.jpg",
-      youtube: "https://www.youtube.com/embed/RNx5kS9YRwA?si=JtWNZnHwCpNb265x",
-      descricao: "Com o tema 'Viva os Santos Meninos', esta edição valorizou a infância e os aprendizados que ela inspira. O encerramento da programação foi marcado pelo espetáculo 'Encontros Híbridos', que uniu música e performance em uma experiência de diálogo intergeracional.",
-      detalhes: [
-        "Showroom criativo focado em design de brinquedos populares e identidade cultural infantojuvenil.",
-        "Estreia do show 'Enio IXI Vírus em Encontros Híbridos', unindo o produtor musical Enio (Prêmio Caymmi) e o multiartista Vírus Carinhoso (Fifty Deep Music Class do YouTube).",
-        "Performance inspirada na paternidade ativa dos dois artistas, trazendo a presença e as lições das crianças para o centro do palco.",
-        "Diálogo sonoro mesclando afro-beats, amapiano, samba-reggae, poesia de rua e tecnologia multissensorial."
-      ]
-    },
-    {
-      num: 4,
-      slug: "edicao-4",
-      titulo: "4ª Edição — Show 'Ijexá'",
-      data: "26 de Outubro de 2025",
-      artista: "Tito Bahiense & Tiago Nunes",
-      show: "Ijexá",
-      poster: "/images/shows/FEED-MOV-IRUN-4-EDICAO-IJEXA.gif",
-      youtube: "https://www.youtube.com/embed/vKX18JHBm4E?si=DLEzuCV-Atsd_cOC",
-      descricao: "A quarta edição propôs uma imersão profunda na estética, bases históricas e espiritualidade do Ijexá — ritmo ancestral dos terreiros de candomblé e dos tradicionais afoxés baianos, articulando música, moda e debate cultural.",
-      detalhes: [
-        "Abertura com o showroom Design Caboclo reunindo artesãos e designers baianos em uma feira de acessórios e vestuário.",
-        "Discotecagem do músico e DJ André Oliveira, construindo um set focado nas células rítmicas e evolução do samba e Ijexá.",
-        "Roda de conversa 'Bases Simbólicas, Históricas e Atuais do Ijexá', conduzida pelo percussionista Tiago Nunes (Orkestra Rumpilezz).",
-        "Show de encerramento do cantor Tito Bahiense, celebrando Oxum e Oxalá com atabaques, agogôs e composições orquestradas."
-      ]
-    },
-    {
-      num: 5,
-      slug: "edicao-5",
-      titulo: "5ª Edição — Show 'Sambadelic'",
-      data: "16 de Novembro de 2025",
-      artista: "Dão Black",
-      show: "Sambadelic",
-      poster: "/images/shows/DAO-BLACK-SAMBADELIC-FEED-MOVIMENTO-IRUN.jpg",
-      youtube: "https://www.youtube.com/embed/Sywh0BGRFCo?si=SgUdqwGcxzHCM2nH",
-      descricao: "Dão Black ocupou a Casa de Castro Alves com samba, design e vinil. O evento integrou o espírito do Movimento Irun reafirmando a coletividade como essência artística e celebrando o samba como força de conexão de corpos e territórios.",
-      detalhes: [
-        "Feira criativa Design Caboclo apresentando criações autorais de moda sustentável e arte popular baiana.",
-        "Discotecagem em vinil de André Oliveira (das 14h às 18h) mapeando a clave do samba e ritmos afrodiaspóricos.",
-        "Show de encerramento 'Sambadelic' com o cantor e compositor Dão Black, apresentando canções autorais como 'Menina do Cabelo Black' e releituras clássicas.",
-        "Destaque para a interpretação de 'Olha o Samba Sinhá' (Candeia) e uma inusitada releitura em ritmo de Rock de Terreiro para 'Tá Escrito' (Xande de Pilares)."
-      ]
-    },
-    {
-      num: 6,
-      slug: "edicao-6",
-      titulo: "6ª Edição — Ocupação Manifesto Teia dos Povos",
-      data: "21 de Dezembro de 2025",
-      artista: "Cabuloso Trio",
-      show: "Ocupação Manifesto",
-      poster: "/images/shows/21-DE-DEZEMBRO-TEIA-DOS-POVOS-CASA-DE-CASTRO-ALVES.png",
-      youtube: "https://www.youtube.com/embed/8xsNSgMrAvw?si=aczPBDtO5D6ccbr2",
-      descricao: "Edição histórica de Ocupação Manifesto reunindo povos e comunidades tradicionais para estruturar estratégias organizativas em defesa da terra, território e soberania alimentar. Idealizada pela Casa de Castro Alves, Teia dos Povos e Universidade dos Povos.",
-      detalhes: [
-        "Abertura oficial com a Feira de Saberes e Sabores da Teia dos Povos e showroom de moda Design Caboclo.",
-        "Toré dos Tupinambás: Ritual sagrado e dança de cura conduzida pelas lideranças da Aldeia Tupinambá, afirmando a resistência indígena.",
-        "Gira de Saberes com mestres e mestras guardiões das escolas da Universidade dos Povos (Favela, Terreiro, Águas, Arco e Flecha, Floresta e Sementes).",
-        "Show da banda de rock alternativo e instrumental de Salvador Cabuloso Trio (Paulo Nascimento, Ricardo Correia, Jackson Almeida) com convidados."
-      ]
-    },
-    {
-      num: 7,
-      slug: "edicao-7",
-      titulo: "7ª Edição — Show 'Jangada'",
-      data: "25 de Janeiro de 2026",
-      artista: "Ícaro Santiago & Eric Mazzone",
-      show: "Jangada",
-      poster: "/images/shows/SHOW-JANGADA-CONVIDADOS-2025-576x1024.png",
-      youtube: "https://www.youtube.com/embed/3g1t911jlA0?si=crFxvG7XzAd7rrdP",
-      descricao: "A sétima edição aprofundou o Manifesto da Teia dos Povos com abordagens ecológicas e pedagógicas. A Casa de Castro Alves consolida-se como território simbólico de resistência, criação, agroecologia e partilha de saberes.",
-      detalhes: [
-        "Exposição Teia dos Povos: Uma Aliança Preta, Indígena e Popular retratando 13 anos de lutas coletivas e mutirões de regeneração.",
-        "Gira de Saberes com Mestre Joelson Ferreira com o tema: 'Agroecologia, Água e Território como Estratégias Populares de Proteção da Vida'.",
-        "Design Caboclo: Vitrine de estilistas tradicionais incorporando bordados, rendas e matérias-primas agroecológicas.",
-        "Concerto 'Jangada' com Ícaro Santiago e Éric Mazzone: Uma travessia sonora híbrida fundindo sintetizadores, atabaques e jazz futurista."
-      ]
-    },
-    {
-      num: 8,
-      slug: "edicao-8",
-      titulo: "8ª Edição — Show 'Tambor de Mulher'",
-      data: "15 de Março de 2026",
-      artista: "Yayá Muxima & Ricardo Castro",
-      show: "Tambor de Mulher",
-      poster: "/images/shows/YAYA-MUXIMA-STORY-REEL-15-DE-MARCO-2026-8°-EDICAO-576x1024.png",
-      youtube: "https://www.youtube.com/embed/zBGcQ43zOh8?si=Tc6UEdjmPY0ofbm6",
-      descricao: "Com o lema 'Quando a poesia se faz aliança: 179 anos de Castro Alves', a oitava edição prestou homenagem ao nascimento do poeta republicano, abolicionista e patrono do casarão com uma programação inteiramente dedicada ao tambor feminino.",
-      detalhes: [
-        "Feira de Saberes e Sabores apresentando produtos ecológicos de comunidades tradicionais da Bahia.",
-        "Gira de Saberes integrando guardiões da Universidade dos Povos debatendo a salvaguarda de sementes crioulas.",
-        "Show espetáculo 'Tambor de Mulher que sacode o Mundo' da Banda Yayá Muxima, grupo composto exclusivamente por mulheres negras.",
-        "Repertório repleto de canções autorais de ativismo feminista, clássicos de blocos afro (Ilê Aiyê, Olodum) e sambas tradicionais."
-      ]
-    },
-    {
-      num: 9,
-      slug: "edicao-9",
-      titulo: "9ª Edição — Show de Mariella Santiago",
-      data: "26 de Abril de 2026",
-      artista: "Mariella Santiago",
-      show: "Aqualtunes",
-      poster: "/images/shows/MOVIMENTO-IRUN-9-EDICAO-ABRIL-WEBSITE-1024x576.jpg",
-      youtube: "https://www.youtube.com/embed/s9w44W419Co?si=pkRoavByGHpLUFFn",
-      descricao: "Dedicada inteiramente aos povos originários e à cura ancestral da terra. O Jardim da Casa serviu de palco para o Toré da Aliança, ritual coletivo reunindo etnias em torno do bem viver e da soberania alimentar.",
-      detalhes: [
-        "Toré da Aliança: Ritual de resistência e espiritualidade com a presença de lideranças Pataxó, Tupinambá e Payayá.",
-        "Oficina de Bordados pela Cidadania com o coletivo Linhas Bahia Axé, estimulando debates de direitos através da manufatura.",
-        "Gira de Saberes 'Escola do Arco da Flecha e do Maracá' conduzida por Nádia Tupinambá e Cacique Ramon (Olivença).",
-        "Concerto 'Aqualtunes' por Mariella Santiago com loops e vocais expandidos acompanhada pelas batidas de Ícaro Santiago."
-      ]
-    },
-    {
-      num: 10,
-      slug: "edicao-10",
-      titulo: "10ª Edição — Show de Denise Correia",
-      data: "17 de Maio de 2026",
-      artista: "Denise Correia",
-      show: "Black Tudo",
-      poster: "/images/shows/MOVIMENTO-IRUN-10-EDICAO-CASA-DE-CASTRO-ALVES-576x1024.png",
-      youtube: "", // Sem vídeo listado
-      descricao: "A décima edição marcou o encerramento do primeiro grande ciclo de encontros do Movimento Irun na Casa de Castro Alves. Reuniu ativistas, lideranças e artistas para celebrar a continuidade da aliança preta, indígena e popular e os portfólios sistematizados das comunidades.",
-      detalhes: [
-        "Apresentação de resultados e balanço geral das atividades formativas semanais do Ciclo Irun 2025/2026.",
-        "Feira de encerramento Design Caboclo trazendo vestuário e biojoias produzidos durante as oficinas dialógicas.",
-        "Roda de partilha sobre o protagonismo das comunidades tradicionais no fomento da economia comunitária e cidadania cultural.",
-        "Show vibrante de Denise Correia cantando sucessos da música negra baiana, sambas clássicos e canções autorais."
-      ]
-    }
-  ];
-
+  {
+    num: 1,
+    slug: "edicao-1",
+    titulo: "1ª Edição — Pocket Show 'Cantos de Òrìṣà'",
+    data: "13 de Julho de 2025",
+    artista: "Irma Ferreira",
+    show: "Cantos de Òrìṣà",
+    poster: "/images/edicoes/edicao-1/cards/irma-ferreira-cantos-de-orisa-movimento-irun-edicao-1-card-1.jpg",
+    thumb: "/images/edicoes/edicao-1/header/irma-ferreira-cantos-de-orisa-movimento-irun-edicao-1-header.jpg",
+    banner: "/images/edicoes/edicao-1/header/irma-ferreira-cantos-de-orisa-movimento-irun-edicao-1-header.jpg",
+    youtube: "https://www.youtube.com/embed/s9w44W419Co",
+    descricao: "O lançamento oficial do Movimento IRUN ocorreu no Instituto Casa de Castro Alves. Com forte presença de representantes de comunidades tradicionais, artistas e ativistas culturais, o evento marcou o início de uma plataforma de ações voltada à transformação social por meio da arte, ancestralidade e coletividade.",
+    detalhes: [
+      "Roda de conversa e ritual sagrado conduzido pela Comunidade Bantu Indígena Caxuté, estabelecendo as bases de aliança territorial.",
+      "Lançamento dos cursos de Design Dialógico (co-criação com comunidades locais), Permacultura Urbana (cultura da permanência) e Cidade Cidadã.",
+      "Abertura oficial da Exposição IRUN, apresentando fotografias e manifestações estéticas de povos tradicionais da Bahia.",
+      "Encerramento com o pocket show intimista 'Cantos de Òrìṣà', com Irma Ferreira interpretando cantigas sagradas."
+    ]
+  },
+  {
+    num: 2,
+    slug: "edicao-2",
+    titulo: "2ª Edição — Show 'EletroSamba'",
+    data: "17 de Agosto de 2025",
+    artista: "Ayrá Soares & Ângelo Canja",
+    show: "EletroSamba",
+    poster: "/images/edicoes/edicao-2/cards/ayra-soares-angelo-canja-eletrosamba-movimento-irun-edicao-2-card-1.jpg",
+    thumb: "/images/edicoes/edicao-2/header/ayra-soares-angelo-canja-eletrosamba-movimento-irun-edicao-2-header.jpg",
+    banner: "/images/edicoes/edicao-2/header/ayra-soares-angelo-canja-eletrosamba-movimento-irun-edicao-2-header.jpg",
+    youtube: "https://www.youtube.com/embed/3g1t911jlA0",
+    youtubeSec: "https://www.youtube.com/embed/zBGcQ43zOh8",
+    videoSecTitle: "Exposição Irun",
+    descricao: "A segunda potente ação do Movimento IRUN articulou escuta, exposição e show — reunindo feminismo, ancestralidade e transformação social. A proposta reafirma o papel do casarão histórico de pulsar com a força de vozes coletivas, saberes ancestrais e arte insurgente.",
+    detalhes: [
+      "Show Room Caboclo: Espaço de moda, arte e identidade, com peças exclusivas assinadas por designers e artesãos locais.",
+      "Roda de Conversa com o coletivo Tamo Juntas: Organização feminista que presta assessoria multidisciplinar gratuita (jurídica, psicológica, pedagógica e social) a mulheres em situação de violência.",
+      "Vernissage e visita guiada à Exposição IRUN, promovendo a conexão entre memória, ecologia e estética como prática política.",
+      "Show intimista 'EletroSamba' de Ayrá Soares (ativista da Tamo Juntas) acompanhada pela guitarra marcante de Ângelo Canja."
+    ]
+  },
+  {
+    num: 3,
+    slug: "edicao-3",
+    titulo: "3ª Edição — Show 'Encontros Híbridos'",
+    data: "28 de Setembro de 2025",
+    artista: "Enio & Vírus",
+    show: "Encontros Híbridos",
+    poster: "/images/edicoes/edicao-3/cards/enio-virus-encontros-hibridos-movimento-irun-edicao-3-card-1.jpg",
+    thumb: "/images/edicoes/edicao-3/header/enio-virus-encontros-hibridos-movimento-irun-edicao-3-header.jpg",
+    banner: "/images/edicoes/edicao-3/header/enio-virus-encontros-hibridos-movimento-irun-edicao-3-header.jpg",
+    youtube: "https://www.youtube.com/embed/8xsNSgMrAvw",
+    descricao: "Com o tema 'Viva os Santos Meninos', esta edição valorizou a infância e os aprendizados que ela inspira. O encerramento da programação foi marcado pelo espetáculo 'Encontros Híbridos', que uniu música e performance em uma experiência de diálogo intergeracional.",
+    detalhes: [
+      "Showroom criativo focado em design de brinquedos populares e identidade cultural infantojuvenil.",
+      "Estreia do show 'Enio IXI Vírus em Encontros Híbridos', unindo o produtor musical Enio (Prêmio Caymmi) e o multiartista Vírus Carinhoso (Fifty Deep Music Class do YouTube).",
+      "Performance inspirada na paternidade ativa dos dois artistas, trazendo a presença e as lições das crianças para o centro do palco.",
+      "Diálogo sonoro mesclando afro-beats, amapiano, samba-reggae, poesia de rua e tecnologia multissensorial."
+    ]
+  },
+  {
+    num: 4,
+    slug: "edicao-4",
+    titulo: "4ª Edição — Show 'Ijexá'",
+    data: "26 de Outubro de 2025",
+    artista: "Tito Bahiense",
+    show: "Ijexá",
+    poster: "/images/edicoes/edicao-4/cards/tito-bahiense-tiago-nunes-ijexa-movimento-irun-edicao-4-card-1.gif",
+    thumb: "/images/edicoes/edicao-4/header/tito-bahiense-tiago-nunes-ijexa-movimento-irun-edicao-4-header.jpg",
+    banner: "/images/edicoes/edicao-4/header/tito-bahiense-tiago-nunes-ijexa-movimento-irun-edicao-4-header.jpg",
+    youtube: "https://www.youtube.com/embed/Sywh0BGRFCo",
+    descricao: "A quarta edição propôs uma imersão profunda na estética, bases históricas e espiritualidade do Ijexá — ritmo ancestral dos terreiros de candomblé e dos tradicionais afoxés baianos, articulando música, moda e debate cultural.",
+    detalhes: [
+      "Abertura com o showroom Design Caboclo reunindo artesãos e designers baianos em uma feira de acessórios e vestuário.",
+      "Discotecagem do músico e DJ André Oliveira, construindo um set focado nas células rítmicas e evolução do samba e Ijexá.",
+      "Roda de conversa 'Bases Simbólicas, Históricas e Atuais do Ijexá', conduzida pelo percussionista Tiago Nunes (Orkestra Rumpilezz).",
+      "Show de encerramento do cantor Tito Bahiense, celebrando Oxum e Oxalá com atabaques, agogôs e composições orquestradas."
+    ]
+  },
+  {
+    num: 5,
+    slug: "edicao-5",
+    titulo: "5ª Edição — Show 'Sambadelic'",
+    data: "16 de Novembro de 2025",
+    artista: "Dão Black",
+    show: "Sambadelic",
+    poster: "/images/edicoes/edicao-5/cards/dao-black-sambadelic-movimento-irun-edicao-5-card-1.jpg",
+    thumb: "/images/edicoes/edicao-5/header/dao-black-sambadelic-movimento-irun-edicao-5-header.jpg",
+    banner: "/images/edicoes/edicao-5/header/dao-black-sambadelic-movimento-irun-edicao-5-header.jpg",
+    youtube: "https://www.youtube.com/embed/v_1ItcV1JNE",
+    descricao: "Dão Black ocupou a Casa de Castro Alves com samba, design e vinil. O evento integrot o espírito do Movimento Irun reafirmando a coletividade como essência artística e celebrando o samba como força de conexão de corpos e territórios.",
+    detalhes: [
+      "Feira criativa Design Caboclo apresentando criações autorais de moda sustentável e arte popular baiana.",
+      "Discotecagem em vinil de André Oliveira (das 14h às 18h) mapeando a clave do samba e ritmos afrodiaspóricos.",
+      "Show de encerramento 'Sambadelic' com o cantor e compositor Dão Black, apresentando canções autorais como 'Menina do Cabelo Black' e releituras clássicas.",
+      "Destaque para a interpretação de 'Olha o Samba Sinhá' (Candeia) e uma inusitada releitura em ritmo de Rock de Terreiro para 'Tá Escrito' (Xande de Pilares)."
+    ]
+  },
+  {
+    num: 6,
+    slug: "edicao-6",
+    titulo: "6ª Edição — Ocupação Manifesto Teia dos Povos",
+    data: "21 de Dezembro de 2025",
+    artista: "Cabuloso Trio",
+    show: "Ocupação Manifesto",
+    posters: [
+      "/images/edicoes/edicao-6/cards/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-card-2.jpg",
+      "/images/edicoes/edicao-6/cards/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-card-1.png"
+    ],
+    poster: "/images/edicoes/edicao-6/cards/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-card-1.png",
+    thumb: "/images/edicoes/edicao-6/header/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-header.jpg",
+    banner: "/images/edicoes/edicao-6/header/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-header.jpg",
+    youtube: "https://www.youtube.com/embed/RNx5kS9YRwA",
+    youtubeSec: "https://www.youtube.com/embed/vKX18JHBm4E",
+    videoSecTitle: "Cabuloso Trio",
+    descricao: "Edição histórica de Ocupação Manifesto reunindo povos e comunidades tradicionais para estruturar estratégias organizativas em defesa da terra, território e soberania alimentar. Idealizada pela Casa de Castro Alves, Teia dos Povos e Universidade dos Povos.",
+    detalhes: [
+      "Abertura oficial com a Feira de Saberes e Sabores da Teia dos Povos e showroom de moda Design Caboclo.",
+      "Toré dos Tupinambás: Ritual sagrado e dança de cura conduzida pelas lideranças da Aldeia Tupinambá, afirmando a resistência indígena.",
+      "Gira de Saberes com mestres e mestras guardiões das escolas da Universidade dos Povos (Favela, Terreiro, Águas, Arco e Flecha, Floresta e Sementes).",
+      "Show da banda de rock alternativo e instrumental de Salvador Cabuloso Trio (Paulo Nascimento, Ricardo Correia, Jackson Almeida) com convidados."
+    ]
+  },
+  {
+    num: 7,
+    slug: "edicao-7",
+    titulo: "7ª Edição — Show 'Jangada'",
+    data: "25 de Janeiro de 2026",
+    artista: "Ícaro Santiago & Eric Mazzone",
+    show: "Jangada",
+    poster: "/images/edicoes/edicao-7/cards/icaro-santiago-eric-mazzone-jangada-movimento-irun-edicao-7-card-1.png",
+    thumb: "/images/edicoes/edicao-7/header/icaro-santiago-eric-mazzone-jangada-movimento-irun-edicao-7-header.jpg",
+    banner: "/images/edicoes/edicao-7/header/icaro-santiago-eric-mazzone-jangada-movimento-irun-edicao-7-header.jpg",
+    youtube: "https://www.youtube.com/embed/z2eHDjU_oUw",
+    youtubeSec: "https://www.youtube.com/embed/kaOWHMxagz0",
+    videoSecTitle: "Ícaro Santiago & Eric Mazzone",
+    descricao: "A sétima edição aprofundou o Manifesto da Teia dos Povos com abordagens ecológicas e pedagógicas. A Casa de Castro Alves consolida-se como território simbólico de resistência, criação, agroecologia e partilha de saberes.",
+    detalhes: [
+      "Exposição Teia dos Povos: Uma Aliança Preta, Indígena e Popular retratando 13 anos de lutas coletivas e mutirões de regeneração.",
+      "Gira de Saberes com Mestre Joelson Ferreira com o tema: 'Agroecologia, Água e Território como Estratégias Populares de Proteção da Vida'.",
+      "Design Caboclo: Vitrine de estilistas tradicionais incorporando bordados, rendas e matérias-primas agroecológicas.",
+      "Concerto 'Jangada' com Ícaro Santiago e Éric Mazzone: Uma travessia sonora híbrida fundindo sintetizadores, atabaques e jazz futurista."
+    ]
+  },
+  {
+    num: 8,
+    slug: "edicao-8",
+    titulo: "8ª Edição — Show 'Tambor de Mulher'",
+    data: "15 de Março de 2026",
+    artista: "Yayá Muxima & Banda",
+    show: "Tambor de Mulher",
+    poster: "/images/edicoes/edicao-8/cards/yaya-muxima-tambor-de-mulher-movimento-irun-edicao-8-card-1.jpg",
+    thumb: "/images/edicoes/edicao-8/header/yaya-muxima-tambor-de-mulher-movimento-irun-edicao-8-header.jpg",
+    banner: "/images/edicoes/edicao-8/header/yaya-muxima-tambor-de-mulher-movimento-irun-edicao-8-header.jpg",
+    youtube: "https://www.youtube.com/embed/GcVCVR7_7A4",
+    descricao: "Com o lema 'Quando a poesia se faz aliança: 179 anos de Castro Alves', a oitava edição prestou homenagem ao nascimento do poeta republicano, abolicionista e patrono do casarão com uma programação inteiramente dedicada ao tambor feminino.",
+    detalhes: [
+      "Feira de Saberes e Sabores apresentando produtos ecológicos de comunidades tradicionais da Bahia.",
+      "Gira de Saberes integrando guardiões da Universidade dos Povos debatendo a salvaguarda de sementes crioulas.",
+      "Show espetáculo 'Tambor de Mulher que sacode o Mundo' da Banda Yayá Muxima, grupo composto exclusivamente por mulheres negras.",
+      "Repertório repleto de canções autorais de ativismo feminista, clássicos de blocos afro (Ilê Aiyê, Olodum) e sambas tradicionais."
+    ]
+  },
+  {
+    num: 9,
+    slug: "edicao-9",
+    titulo: "9ª Edição — Show de Mariella Santiago",
+    data: "26 de Abril de 2026",
+    artista: "Mariella Santiago",
+    show: "Aqualtunes",
+    poster: "/images/edicoes/edicao-9/cards/mariella-santiago-aqualtunes-movimento-irun-edicao-9-card-1.png",
+    thumb: "/images/edicoes/edicao-9/header/mariella-santiago-aqualtunes-movimento-irun-edicao-9-header.jpg",
+    banner: "/images/edicoes/edicao-9/header/mariella-santiago-aqualtunes-movimento-irun-edicao-9-header.jpg",
+    youtube: "https://www.youtube.com/embed/GcVCVR7_7A4",
+    descricao: "Dedicada inteiramente aos povos originários e à cura ancestral da terra. O Jardim da Casa serviu de palco para o Toré da Aliança, ritual coletivo reunindo etnias em torno do bem viver e da soberania alimentar.",
+    detalhes: [
+      "Toré da Aliança: Ritual de resistência e espiritualidade com a presença de lideranças Pataxó, Tupinambá e Payayá.",
+      "Oficina de Bordados pela Cidadania com o coletivo Linhas Bahia Axé, estimulando debates de direitos através da manufatura.",
+      "Gira de Saberes 'Escola do Arco da Flecha e do Maracá' conduzida por Nádia Tupinambá e Cacique Ramon (Olivença).",
+      "Concerto 'Aqualtunes' por Mariella Santiago com loops e vocais expandidos acompanhada pelas batidas de Ícaro Santiago."
+    ]
+  },
+  {
+    num: 10,
+    slug: "edicao-10",
+    titulo: "10ª Edição — Show de Denise Correia",
+    data: "17 de Maio de 2026",
+    artista: "Denise Correia",
+    show: "Black Tudo",
+    poster: "/images/edicoes/edicao-10/cards/denise-correia-black-tudo-movimento-irun-edicao-10-card-1.png",
+    thumb: "/images/edicoes/edicao-10/header/denise-correia-black-tudo-movimento-irun-edicao-10-header.jpg",
+    banner: "/images/edicoes/edicao-10/header/denise-correia-black-tudo-movimento-irun-edicao-10-header.jpg",
+    youtube: "",
+    descricao: "A décima edição marcou o encerramento do primeiro grande ciclo de encontros do Movimento Irun na Casa de Castro Alves. Reuniu ativistas, lideranças e artistas para celebrar a continuidade da aliança preta, indígena e popular e os portfólios sistematizados das comunidades.",
+    detalhes: [
+      "Feira de encerramento Design Caboclo trazendo vestuário e biojoias produzidos durante as oficinas dialógicas.",
+      "Roda de partilha sobre o protagonismo das comunidades tradicionais no fomento da economia comunitária e cidadania cultural.",
+      "Show vibrante de Denise Correia cantando sucessos da música negra baiana, sambas clássicos e canções autorais."
+    ]
+  },
+  {
+    num: 11,
+    slug: "edicao-11",
+    titulo: "11ª Edição — Duo iRê iRê",
+    data: "07 de Junho de 2026",
+    artista: "Duo iRê iRê (Maíra & Ícaro Santiago)",
+    show: "Sente O Tempo Passar",
+    posters: [
+      "/images/edicoes/edicao-11/cards/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-card-1.png",
+      "/images/edicoes/edicao-11/cards/exposicao-olhe-bem-movimento-irun-edicao-11-card-1.png",
+      "/images/edicoes/edicao-11/cards/exposicao-olhe-bem-movimento-irun-edicao-11-card-2.png"
+    ],
+    poster: "/images/edicoes/edicao-11/cards/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-card-1.png",
+    thumb: "/images/edicoes/edicao-11/header/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-header.jpg",
+    banner: "/images/edicoes/edicao-11/header/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-header.jpg",
+    youtube: "",
+    descricao: "No dia 7 de Junho de 2026, às 19h, o Instituto Casa de Castro Alves sedia a 11ª edição do Movimento Irun, trazendo a estreia do show 'Sente O Tempo Passar', do Duo iRê iRê, formado pelos artistas Maíra e Ícaro Santiago. Esta edição é guiada pelo tema-manifesto: 'Olhe bem as montanhas, as águas e os povos: Escola das Águas Nascentes'.",
+    detalhes: [
+      "Estreia do show 'Sente O Tempo Passar', unindo cânticos tradicionais, ritmos afro-diaspóricos, jazz e sintetizadores eletrônicos.",
+      "Reflexão coletiva guiada pelo tema-manifesto focado na agroecologia, preservação e escuta das comunidades tradicionais.",
+      "Exposição e Mostra Design Caboclo celebrando a economia solidária e o artesanato de identidade cultural no casarão.",
+      "Conclusão e encerramento do primeiro ciclo de encontros e atividades integradas no Jardim da Casa de Castro Alves."
+    ]
+  }
+];
   return edicoesData.map((ed) => ({
     params: { edicao: ed.slug },
-    props: { edicaoInfo: ed }
+    props: {
+      edicaoInfo: ed,
+      allEdicoes: edicoesData
+    }
   }));
 }
 
-const { edicaoInfo } = Astro.props;
+const { edicaoInfo, allEdicoes } = Astro.props;
+
+const currentIndex = allEdicoes.findIndex(e => e.num === edicaoInfo.num);
+const prevEdition = currentIndex > 0 ? allEdicoes[currentIndex - 1] : null;
+const nextEdition = currentIndex < allEdicoes.length - 1 ? allEdicoes[currentIndex + 1] : null;
+
+const romanNumerals = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
+const romanKey = romanNumerals[edicaoInfo.num] || "";
+const parsedData = (parsedEditions as any)[romanKey] || { desc: [], program: [] };
+const descriptionParagraphs = parsedData.desc && parsedData.desc.length > 0 ? parsedData.desc : [edicaoInfo.descricao];
+const programItems = parsedData.program && parsedData.program.length > 0 ? parsedData.program : edicaoInfo.detalhes;
+const hasMainVideo = edicaoInfo.youtube && edicaoInfo.num !== 9 && edicaoInfo.num !== 10 && edicaoInfo.num !== 11;
+const posters = Array.isArray((edicaoInfo as any).posters) 
+  ? (edicaoInfo as any).posters 
+  : (edicaoInfo.poster ? [edicaoInfo.poster] : []);
 ---
 
-<Layout title={`${edicaoInfo.titulo} | Movimento Irun`} description={`Confira a programação e os registros da ${edicaoInfo.num}ª edição do Movimento Irun na Casa de Castro Alves. Convidado(a): ${edicaoInfo.artista}.`}>
-  <!-- Header de Edição -->
-  <section class="edicao-header">
-    <div class="container text-center">
-      <a href="/movimento-irun" class="back-link">← Voltar para o Movimento Irun</a>
-      <span class="badge-edicao">{edicaoInfo.data}</span>
-      <h1>Edição {edicaoInfo.num}</h1>
-      <p class="subtitle-edicao">{edicaoInfo.show}</p>
+<Layout title={`${edicaoInfo.titulo} | Movimento Irun`} showSponsors={true} description={`Confira a programação e os registros da ${edicaoInfo.num}ª edição do Movimento Irun na Casa de Castro Alves. Convidado(a): ${edicaoInfo.artista}.`} ogImage={edicaoInfo.banner || edicaoInfo.poster}>
+  <!-- Header de Edição (Standardized Subpage Hero with Parallax) -->
+  <section class="subpage-hero" style="position: relative;">
+    <div class="subpage-hero-bg" style={`background-image: url('${edicaoInfo.banner || edicaoInfo.poster}');`}></div>
+    <div class="subpage-hero-overlay"></div>
+    
+    {prevEdition && (
+      <a href={`/movimento-irun/${prevEdition.slug}`} class="page-nav-arrow prev-page-arrow" aria-label="Edição Anterior">
+        <svg viewBox="0 0 24 24" width="36" height="36"><path fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></svg>
+      </a>
+    )}
+    {nextEdition && (
+      <a href={`/movimento-irun/${nextEdition.slug}`} class="page-nav-arrow next-page-arrow" aria-label="Próxima Edição">
+        <svg viewBox="0 0 24 24" width="36" height="36"><path fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+      </a>
+    )}
+
+    <div class="container subpage-hero-content">
+      <h1 class="subpage-hero-title">Edição {edicaoInfo.num}</h1>
+      <p class="header-show-title">{edicaoInfo.show}</p>
+      <p class="header-artist-name">{edicaoInfo.artista}</p>
+      <div style="margin-top: 2rem;">
+        <span class="badge-edicao-dark">{edicaoInfo.data}</span>
+      </div>
     </div>
   </section>
 
@@ -201,21 +288,53 @@ const { edicaoInfo } = Astro.props;
       <div class="details-grid">
         <!-- Poster Column -->
         <div class="poster-column">
-          <div class="poster-wrapper shadow-premium">
-            <img src={edicaoInfo.poster} alt={`Cartaz oficial - ${edicaoInfo.titulo}`} class="edicao-poster-img" />
-            <div class="caption">Cartaz de divulgação do evento na Casa de Castro Alves.</div>
-          </div>
+          {posters.length > 1 ? (
+            <div class="edition-slideshow shadow-premium">
+              <div class="edition-slideshow-track-wrapper">
+                <div class="edition-slideshow-track">
+                  {posters.map((post, idx) => (
+                    <div class="edition-slide">
+                      <img src={post} alt={`Cartaz oficial ${idx + 1} - ${edicaoInfo.titulo}`} class="edicao-poster-img-contain" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <!-- Navigation Controls -->
+              <button class="edition-nav-btn prev-btn" aria-label="Card anterior">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+              </button>
+              <button class="edition-nav-btn next-btn" aria-label="Próximo card">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+              </button>
+              
+              <!-- Dots Indicator -->
+              <div class="edition-slideshow-dots">
+                {posters.map((_, idx) => (
+                  <button class={`edition-dot ${idx === 0 ? 'active' : ''}`} aria-label={`Ir para card ${idx + 1}`}></button>
+                ))}
+              </div>
+              
+              <div class="caption">Card de divulgação oficial (navegue pelas setas ou arraste para ver mais).</div>
+            </div>
+          ) : (
+            <div class="poster-wrapper shadow-premium">
+              <img src={edicaoInfo.poster} alt={`Cartaz oficial - ${edicaoInfo.titulo}`} class="edicao-poster-img-contain" />
+              <div class="caption">Card de divulgação oficial do show e artistas no palco da Casa de Castro Alves.</div>
+            </div>
+          )}
         </div>
 
         <!-- Text Column -->
         <div class="text-column">
-          <span class="section-badge">Memória do Encontro</span>
           <h2>Sobre esta Edição</h2>
-          <p class="lead-text">{edicaoInfo.descricao}</p>
+          {descriptionParagraphs.map((para, index) => (
+            <p class={index === 0 ? "lead-text" : "body-text"}>{para}</p>
+          ))}
 
           <h3 class="program-title">Atividades e Destaques</h3>
           <ul class="highlights-list">
-            {edicaoInfo.detalhes.map((det) => (
+            {programItems.map((det) => (
               <li>{det}</li>
             ))}
           </ul>
@@ -223,65 +342,281 @@ const { edicaoInfo } = Astro.props;
           <div class="artist-card">
             <h4>Artista Convidado(a)</h4>
             <p><strong>{edicaoInfo.artista}</strong></p>
-            <p class="artist-helper">Espetáculo musical realizado no Jardim da Baía ao pôr do sol, celebrando as nossas matrizes culturais e a resistência popular.</p>
+            <p class="artist-helper">Espetáculo musical realizado no Jardim da Casa de Castro Alves ao pôr do sol, celebrando as nossas matrizes culturais e a resistência popular.</p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Seção do Vídeo (se houver) -->
-  {edicaoInfo.youtube && (
-    <section class="video-section">
+  <!-- Main Video Section (if applicable) -->
+  {hasMainVideo && (
+    <section class="main-video-section">
       <div class="container">
         <div class="section-header text-center">
-          <h2>Registros em Vídeo</h2>
-          <p class="section-subtitle">Assista à cobertura audiovisual e registros das apresentações desta edição.</p>
+          <h2>{edicaoInfo.num}° Edição do Movimento Irun</h2>
+          <p class="section-subtitle">Acompanhe a apresentação e sinta a atmosfera única deste encontro.</p>
         </div>
-        <div class="video-iframe-wrapper shadow-premium">
+
+        <div class="video-wrapper shadow-premium">
           <iframe 
             src={edicaoInfo.youtube} 
             width="100%" 
-            height="500" 
-            style="border:0;" 
+            style="border:0; aspect-ratio: 16/9; display: block;" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             allowfullscreen
-            title={`Vídeo registro - ${edicaoInfo.titulo}`}
+            title={`Vídeo principal - ${edicaoInfo.titulo}`}
           ></iframe>
         </div>
       </div>
     </section>
   )}
+
+  <!-- Seção do Vídeo Secundário (se houver) -->
+  {edicaoInfo.youtubeSec && (
+    <section class="video-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2>{edicaoInfo.videoSecTitle || "Registro Especial"}</h2>
+          <p class="section-subtitle">Assista à cobertura complementar e registro do encontro e exposição.</p>
+        </div>
+
+        <div class="video-iframe-wrapper shadow-premium">
+          <iframe 
+            src={edicaoInfo.youtubeSec} 
+            width="100%" 
+            height="500" 
+            style="border:0;" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen
+            title={`Registro Especial - Exposição Irun`}
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Carousel de Outras Edições (Maratona) -->
+  <section class="carousel-section">
+    <div class="container">
+      <div class="carousel-header">
+        <div>
+          <h2>Maratone as Edições</h2>
+          <p>Navegue por todos os encontros do Movimento Irun na Casa.</p>
+        </div>
+        <div class="carousel-controls">
+          <button class="carousel-arrow prev" aria-label="Edição anterior">
+            <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+          </button>
+          <button class="carousel-arrow next" aria-label="Próxima edição">
+            <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="carousel-container">
+        <div class="carousel-track">
+          {allEdicoes.map((ed) => {
+            const isCurrent = ed.num === edicaoInfo.num;
+            return (
+              <a href={`/movimento-irun/${ed.slug}`} class={`carousel-card ${isCurrent ? 'active' : ''}`}>
+                <div class="card-img-wrapper">
+                  <img src={(ed as any).thumb || ed.poster} alt={ed.titulo} />
+                  {isCurrent && <span class="active-badge">Você está aqui</span>}
+                </div>
+                <div class="card-info">
+                  <span class="card-num">Edição {ed.num}</span>
+                  <p class="card-title">{ed.show}</p>
+                  <p class="card-artist">{ed.artista.split(" & ")[0].split(" (")[0]}</p>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Apoios e Logos Rodapé -->
+  <section class="apoio-section" style="padding-bottom: 2rem; padding-top: 3rem;">
+    <div class="container text-center">
+      <h3 style="margin-bottom: 1rem;">Apoio e Fomento</h3>
+      <p class="apoio-text">
+        Este projeto foi contemplado nos Editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva.
+      </p>
+      <div class="apoio-banner-wrapper">
+        <img src="/MOVIMENTO-IRUN-RODAPE-2026-1024x154.jpg" alt="Logos de apoio do Movimento Irun - Secult-BA, PNAB, Governo da Bahia, Ministério da Cultura" class="apoio-banner-img" />
+      </div>
+    </div>
+  </section>
 </Layout>
 
+<script is:inline>
+  (function() {
+    document.addEventListener('DOMContentLoaded', function() {
+      // 1. Maratona Carousel Track
+      var carousel = document.querySelector('.carousel-track');
+      var btnLeft = document.querySelector('.carousel-arrow.prev');
+      var btnRight = document.querySelector('.carousel-arrow.next');
+
+      if (carousel && btnLeft && btnRight) {
+        var getScrollAmount = function() {
+          var firstCard = carousel.firstElementChild;
+          if (!firstCard) return 300;
+          return firstCard.offsetWidth + 16;
+        };
+
+        btnLeft.addEventListener('click', function() {
+          carousel.scrollBy({ left: -getScrollAmount() * 2, behavior: 'smooth' });
+        });
+
+        btnRight.addEventListener('click', function() {
+          carousel.scrollBy({ left: getScrollAmount() * 2, behavior: 'smooth' });
+        });
+
+        document.addEventListener('keydown', function(e) {
+          // If the page has an active input/textarea, ignore keys
+          if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+            return;
+          }
+          var rect = carousel.getBoundingClientRect();
+          var inView = (rect.top < window.innerHeight && rect.bottom > 0);
+          if (inView) {
+            if (e.key === 'ArrowRight') {
+              e.preventDefault();
+              carousel.scrollBy({ left: getScrollAmount() * 2, behavior: 'smooth' });
+            } else if (e.key === 'ArrowLeft') {
+              e.preventDefault();
+              carousel.scrollBy({ left: -getScrollAmount() * 2, behavior: 'smooth' });
+            }
+          }
+        });
+
+        // Mouse drag-scrollable on desktop
+        var isDown = false;
+        var startX;
+        var scrollLeft;
+
+        carousel.addEventListener('mousedown', function(e) {
+          isDown = true;
+          carousel.classList.add('dragging');
+          startX = e.pageX - carousel.offsetLeft;
+          scrollLeft = carousel.scrollLeft;
+        });
+
+        carousel.addEventListener('mouseleave', function() {
+          isDown = false;
+          carousel.classList.remove('dragging');
+        });
+
+        carousel.addEventListener('mouseup', function() {
+          isDown = false;
+          carousel.classList.remove('dragging');
+        });
+
+        carousel.addEventListener('mousemove', function(e) {
+          if (!isDown) return;
+          e.preventDefault();
+          var x = e.pageX - carousel.offsetLeft;
+          var walk = (x - startX) * 1.5; // scroll speed multiplier
+          carousel.scrollLeft = scrollLeft - walk;
+        });
+      }
+
+      // 2. Edition Poster/Cards Slideshow
+      var edTrack = document.querySelector('.edition-slideshow-track');
+      var edSlides = document.querySelectorAll('.edition-slide');
+      var edPrevBtn = document.querySelector('.edition-nav-btn.prev-btn');
+      var edNextBtn = document.querySelector('.edition-nav-btn.next-btn');
+      var edDots = document.querySelectorAll('.edition-dot');
+
+      if (edTrack && edSlides.length > 0) {
+        var edIndex = 0;
+
+        var updateEdSlider = function() {
+          edTrack.style.transform = 'translateX(-' + (edIndex * 100) + '%)';
+          edDots.forEach(function(dot, idx) {
+            dot.classList.toggle('active', idx === edIndex);
+          });
+        };
+
+        var nextEdSlide = function() {
+          edIndex = (edIndex + 1) % edSlides.length;
+          updateEdSlider();
+        };
+
+        var prevEdSlide = function() {
+          edIndex = (edIndex - 1 + edSlides.length) % edSlides.length;
+          updateEdSlider();
+        };
+
+        if (edPrevBtn) {
+          edPrevBtn.addEventListener('click', prevEdSlide);
+        }
+
+        if (edNextBtn) {
+          edNextBtn.addEventListener('click', nextEdSlide);
+        }
+
+        edDots.forEach(function(dot, idx) {
+          dot.addEventListener('click', function() {
+            edIndex = idx;
+            updateEdSlider();
+          });
+        });
+
+        // Keyboard arrow navigation for edition slideshow (when in view)
+        document.addEventListener('keydown', function(e) {
+          if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+            return;
+          }
+          var rect = edTrack.getBoundingClientRect();
+          var inView = (rect.top < window.innerHeight && rect.bottom > 0);
+          if (inView) {
+            if (e.key === 'ArrowRight') {
+              e.preventDefault();
+              nextEdSlide();
+            } else if (e.key === 'ArrowLeft') {
+              e.preventDefault();
+              prevEdSlide();
+            }
+          }
+        });
+
+        // Swipe support
+        var touchStartX = 0;
+        var isTouchDragging = false;
+
+        edTrack.addEventListener('touchstart', function(e) {
+          touchStartX = e.touches[0].clientX;
+          isTouchDragging = true;
+        }, { passive: true });
+
+        edTrack.addEventListener('touchend', function(e) {
+          if (!isTouchDragging) return;
+          var touchEndX = e.changedTouches[0].clientX;
+          var diffX = touchStartX - touchEndX;
+
+          if (Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+              nextEdSlide();
+            } else {
+              prevEdSlide();
+            }
+          }
+          isTouchDragging = false;
+        }, { passive: true });
+      }
+    });
+  })();
+</script>
+
 <style>
-  /* Header Section */
-  .edicao-header {
-    background-color: var(--color-amarelo-cca);
-    padding: var(--space-2xl) 0;
-    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
-  }
-
-  .back-link {
-    display: inline-block;
-    font-family: var(--font-interface);
-    font-size: 0.85rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: var(--space-md);
-    transition: var(--transition-fast);
-  }
-
-  .back-link:hover {
-    color: var(--color-ouro);
-    transform: translateX(-4px);
-  }
-
-  .badge-edicao {
+  /* Header Section Redesign */
+  .badge-edicao-dark {
     background-color: transparent;
-    color: var(--color-preto-editorial);
-    border: 1px solid var(--color-preto-editorial);
+    color: var(--color-amarelo-cca);
+    border: 1px solid var(--color-amarelo-cca);
     padding: 4px 12px;
     font-family: var(--font-interface);
     font-size: 0.75rem;
@@ -293,17 +628,73 @@ const { edicaoInfo } = Astro.props;
     margin: 0 auto var(--space-sm) auto;
   }
 
-  .edicao-header h1 {
-    font-size: 3rem;
-    margin-bottom: var(--space-xs);
+  .back-link-dark {
+    display: inline-block;
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-md);
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: var(--transition-fast);
   }
 
-  .subtitle-edicao {
-    font-size: 1.25rem;
-    color: var(--color-carvao);
-    max-width: 600px;
-    margin: 0 auto;
+  .back-link-dark:hover {
+    color: var(--color-amarelo-cca);
+    transform: translateY(-2px);
+  }
+
+  .header-show-title {
+    font-size: 1.5rem;
+    color: var(--color-amarelo-cca);
     font-style: italic;
+    margin-bottom: var(--space-xs);
+    font-family: var(--font-display);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  .header-artist-name {
+    font-family: var(--font-interface);
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Dedicated main video section styles */
+  .main-video-section {
+    background-color: var(--color-branco);
+    padding: var(--space-xl) 0;
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .main-video-section .video-wrapper {
+    background-color: var(--color-branco);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    max-width: 900px;
+    margin: var(--space-lg) auto 0 auto;
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(26, 26, 26, 0.06);
+  }
+
+  .main-video-section .video-wrapper iframe {
+    display: block;
+    border-radius: 2px;
+  }
+
+  /* Carousel Drag styles */
+  .carousel-track {
+    cursor: grab;
+  }
+
+  .carousel-track.dragging {
+    scroll-behavior: auto;
+    cursor: grabbing;
+    user-select: none;
   }
 
   /* Details section */
@@ -355,18 +746,7 @@ const { edicaoInfo } = Astro.props;
     padding: 0;
   }
 
-  .section-badge {
-    background-color: transparent;
-    color: var(--color-ouro);
-    border: 1px solid var(--color-ouro);
-    padding: 4px 12px;
-    font-family: var(--font-interface);
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    display: inline-block;
-  }
+  /* Inherits global .section-badge styling for high-contrast accessibility */
 
   .lead-text {
     font-size: 1.2rem;
@@ -419,7 +799,7 @@ const { edicaoInfo } = Astro.props;
     font-weight: bold;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--color-ouro);
+    color: var(--color-carvao);
     margin-bottom: var(--space-xs);
   }
 
@@ -439,10 +819,25 @@ const { edicaoInfo } = Astro.props;
     box-shadow: 0 15px 35px rgba(26, 26, 26, 0.06);
   }
 
+  .card-highlight-label {
+    display: inline-block;
+    background-color: var(--color-preto-editorial);
+    color: var(--color-amarelo-cca);
+    padding: 6px 12px;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-sm);
+    border-radius: 2px;
+  }
+
   /* Video Section */
   .video-section {
     background-color: var(--color-branco);
     border-top: 1px solid rgba(26, 26, 26, 0.05);
+    padding: var(--space-xl) 0;
   }
 
   .video-iframe-wrapper {
@@ -458,4 +853,468 @@ const { edicaoInfo } = Astro.props;
     display: block;
     border-radius: 2px;
   }
+
+  /* Carousel Section */
+  .carousel-section {
+    background-color: var(--color-creme);
+    padding: var(--space-xl) 0 var(--space-2xl) 0;
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+    overflow: hidden;
+  }
+
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--space-lg);
+  }
+
+  .carousel-header h2 {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+    border: none;
+    padding: 0;
+    font-family: var(--font-display);
+    color: var(--color-preto-editorial);
+  }
+
+  .carousel-header p {
+    color: var(--color-carvao);
+    margin: 0;
+  }
+
+  .carousel-controls {
+    display: none;
+  }
+
+  @media (min-width: 1025px) {
+    .carousel-controls {
+      display: flex;
+      gap: var(--space-xs);
+    }
+  }
+
+  .carousel-arrow {
+    background-color: var(--color-branco);
+    color: var(--color-preto-editorial);
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .carousel-arrow:hover {
+    background-color: var(--color-preto-editorial);
+    color: var(--color-branco);
+    border-color: var(--color-preto-editorial);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .carousel-arrow svg {
+    display: block;
+  }
+
+  .carousel-container {
+    position: relative;
+    width: 100%;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: var(--space-sm) 0;
+  }
+
+  .carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-card {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
+    background-color: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 12px rgba(26, 26, 26, 0.02);
+  }
+
+  @media (min-width: 576px) {
+    .carousel-card {
+      flex: 0 0 45%;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .carousel-card {
+      flex: 0 0 28%;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .carousel-card {
+      flex: 0 0 calc(100% / 6 - 14px);
+    }
+  }
+
+  .carousel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(26, 26, 26, 0.06);
+    border-color: rgba(26, 26, 26, 0.15);
+  }
+
+  .carousel-card.active {
+    border: 2px solid var(--color-ouro);
+  }
+
+  .carousel-card .card-img-wrapper {
+    height: 180px;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-cinza-claro);
+  }
+
+  .carousel-card .card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-smooth);
+  }
+
+  .carousel-card:hover .card-img-wrapper img {
+    transform: scale(1.03);
+  }
+
+  .active-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: var(--color-ouro);
+    color: var(--color-branco);
+    font-size: 0.65rem;
+    font-family: var(--font-interface);
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+
+  .card-info {
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card-num {
+    font-family: var(--font-interface);
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: var(--color-ouro);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+    color: var(--color-preto-editorial);
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-artist {
+    font-family: var(--font-interface);
+    font-size: 0.8rem;
+    color: var(--color-carvao);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Edition Slideshow Styles */
+  .edition-slideshow {
+    position: relative;
+    background-color: var(--color-branco);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .edition-slideshow-track-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .edition-slideshow-track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 100%;
+  }
+
+  .edition-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .edicao-poster-img-contain {
+    width: 100%;
+    height: auto;
+    max-height: 650px;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Edition Navigation Buttons */
+  .edition-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(26, 26, 26, 0.8);
+    color: var(--color-amarelo-cca);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .edition-nav-btn:hover {
+    background-color: var(--color-preto-editorial);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .edition-nav-btn.prev-btn {
+    left: var(--space-md);
+  }
+
+  .edition-nav-btn.next-btn {
+    right: var(--space-md);
+  }
+
+  /* Edition Dots indicator */
+  .edition-slideshow-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-xs);
+  }
+
+  .edition-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(26, 26, 26, 0.2);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .edition-dot:hover {
+    background-color: rgba(26, 26, 26, 0.5);
+  }
+
+  .edition-dot.active {
+    background-color: var(--color-ouro);
+    transform: scale(1.2);
+  }
+
+  /* Apoio Section */
+  .apoio-section {
+    background-color: var(--color-branco);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .apoio-text {
+    font-size: 0.95rem;
+    color: var(--color-carvao);
+    max-width: 800px;
+    margin: 0 auto var(--space-xl) auto;
+    line-height: 1.6;
+  }
+
+  .apoio-banner-wrapper {
+    max-width: 850px;
+    margin: 0 auto;
+    background-color: var(--color-cinza-claro);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .apoio-banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Page Navigation Arrows */
+  .page-nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: all var(--transition-fast);
+    padding: var(--space-sm);
+  }
+  .page-nav-arrow:hover {
+    color: var(--color-amarelo-cca);
+    transform: translateY(-50%) scale(1.1);
+  }
+  .page-nav-arrow.prev-page-arrow {
+    left: var(--space-lg);
+  }
+  .page-nav-arrow.next-page-arrow {
+    right: var(--space-lg);
+  }
+  
+  @media (max-width: 768px) {
+    .page-nav-arrow {
+      padding: var(--space-xs);
+    }
+    .page-nav-arrow.prev-page-arrow {
+      left: var(--space-xs);
+    }
+    .page-nav-arrow.next-page-arrow {
+      right: var(--space-xs);
+    }
+  }
 </style>
+
+<script>
+  // Edition Slideshow Logic
+  const tracks = document.querySelectorAll('.edition-slideshow-track');
+  
+  tracks.forEach(track => {
+    const container = track.closest('.edition-slideshow');
+    if (!container) return;
+    
+    const slides = container.querySelectorAll('.edition-slide');
+    const dots = container.querySelectorAll('.edition-dot');
+    const prevBtn = container.querySelector('.edition-nav-btn.prev-btn');
+    const nextBtn = container.querySelector('.edition-nav-btn.next-btn');
+
+    if (slides.length > 1) {
+      let currentIndex = 0;
+      let startX = 0;
+      let isDragging = false;
+      let currentTranslate = 0;
+      let prevTranslate = 0;
+
+      const updateSlider = () => {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentIndex);
+        });
+        prevTranslate = currentIndex * -track.offsetWidth;
+      };
+
+      const nextSlide = () => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateSlider();
+      };
+
+      const prevSlide = () => {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateSlider();
+      };
+
+      if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+      if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          currentIndex = index;
+          updateSlider();
+        });
+      });
+
+      // Touch and Drag events
+      track.addEventListener('touchstart', (e) => touchStart(e.touches[0].clientX));
+      track.addEventListener('touchend', touchEnd);
+      track.addEventListener('touchmove', (e) => touchMove(e.touches[0].clientX));
+
+      track.addEventListener('mousedown', (e) => touchStart(e.clientX));
+      track.addEventListener('mouseup', touchEnd);
+      track.addEventListener('mouseleave', touchEnd);
+      track.addEventListener('mousemove', (e) => touchMove(e.clientX));
+
+      function touchStart(x) {
+        isDragging = true;
+        startX = x;
+        track.style.transition = 'none';
+      }
+
+      function touchMove(x) {
+        if (!isDragging) return;
+        const currentPosition = x - startX;
+        currentTranslate = prevTranslate + currentPosition;
+        track.style.transform = `translateX(${currentTranslate}px)`;
+      }
+
+      function touchEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        const movedBy = currentTranslate - prevTranslate;
+        track.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+        
+        if (movedBy < -50 && currentIndex < slides.length - 1) currentIndex += 1;
+        else if (movedBy > 50 && currentIndex > 0) currentIndex -= 1;
+        else if (movedBy < -50 && currentIndex === slides.length - 1) currentIndex = 0; // wrap
+        else if (movedBy > 50 && currentIndex === 0) currentIndex = slides.length - 1; // wrap
+        
+        updateSlider();
+      }
+
+      // Keyboard support
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+      });
+      
+      // Update sizes on resize
+      window.addEventListener('resize', updateSlider);
+    }
+  });
+</script>

@@ -6,12 +6,21 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  showSponsors?: boolean;
+  ogImage?: string;
 }
 
 const { 
   title = "Casa de Castro Alves | Memória, Arte e Poesia", 
-  description = "A Casa de Castro Alves é um espaço de cultura e resistência em Salvador, Bahia. Dedicado ao diálogo entre a poesia e as artes, oferece galeria de arte contemporânea, eventos e o Movimento Irun." 
+  description = "A Casa de Castro Alves é um espaço de cultura e resistência em Salvador, Bahia. Dedicado ao diálogo entre a poesia e as artes, oferece galeria de arte contemporânea, eventos e o Movimento Irun.",
+  showSponsors = false,
+  ogImage = "/01_logo_amarelo_ig.png"
 } = Astro.props;
+
+// Ensure absolute URL for ogImage
+const absoluteOgImage = ogImage.startsWith('http') 
+  ? ogImage 
+  : `https://casadecastroalves.com.br${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`;
 ---
 
 <!doctype html>
@@ -34,14 +43,14 @@ const {
     <meta property="og:url" content="https://casadecastroalves.com.br/" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/01_logo_amarelo_ig.png" />
+    <meta property="og:image" content={absoluteOgImage} />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://casadecastroalves.com.br/" />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content="/01_logo_amarelo_ig.png" />
+    <meta property="twitter:image" content={absoluteOgImage} />
 
     <!-- Google Fonts Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -57,7 +66,44 @@ const {
     </main>
 
     <!-- Global Footer -->
-    <Footer />
+    <Footer showSponsors={showSponsors} />
+
+    <script>
+      // GPU-accelerated lightweight requestAnimationFrame scroll listener for parallax headers
+      let ticking = false;
+
+      function updateParallax() {
+        const bgElements = document.querySelectorAll('.subpage-hero-bg');
+        bgElements.forEach((bg) => {
+          const parent = bg.parentElement;
+          if (parent) {
+            const rect = parent.getBoundingClientRect();
+            // Only transform if the element is visible in the viewport
+            if (rect.bottom > 0 && rect.top < window.innerHeight) {
+              // Apply GPU-accelerated translate3d using a 0.35 parallax speed multiplier
+              bg.style.transform = `translate3d(0, ${window.scrollY * 0.35}px, 0)`;
+            }
+          }
+        });
+        ticking = false;
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      }
+
+      // Listen for scroll events with passive performance options
+      window.addEventListener('scroll', onScroll, { passive: true });
+      
+      // Initialize on load
+      window.addEventListener('DOMContentLoaded', updateParallax);
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        updateParallax();
+      }
+    </script>
   </body>
 </html>
 

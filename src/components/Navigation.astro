@@ -10,6 +10,7 @@
 
     <!-- Desktop Navigation Links -->
     <nav class="nav-desktop" aria-label="Desktop menu">
+      <a href="/" class="nav-link">Home</a>
       <a href="/a-casa" class="nav-link">A Casa</a>
       <a href="/shows" class="nav-link">Shows</a>
       <a href="/movimento-irun" class="nav-link">Movimento Irun</a>
@@ -27,6 +28,7 @@
 
   <!-- Mobile Dropdown Navigation -->
   <nav class="nav-mobile" aria-label="Mobile menu" id="mobileMenu">
+    <a href="/" class="mobile-nav-link">Home</a>
     <a href="/a-casa" class="mobile-nav-link">A Casa</a>
     <a href="/shows" class="mobile-nav-link">Shows</a>
     <a href="/movimento-irun" class="mobile-nav-link">Movimento Irun</a>
@@ -40,9 +42,9 @@
     position: sticky;
     top: 0;
     z-index: 1000;
-    background-color: rgba(255, 250, 230, 0.95); /* Creme with opacity */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background-color: rgba(245, 245, 245, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(26, 26, 26, 0.08);
     transition: var(--transition-smooth);
     height: 80px;
@@ -160,7 +162,9 @@
     left: 0;
     width: 100%;
     height: calc(100vh - 80px);
-    background-color: var(--color-creme);
+    background-color: rgba(245, 245, 245, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     display: flex;
     flex-direction: column;
     align-items: center;

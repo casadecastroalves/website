@@ -4,40 +4,31 @@ import Layout from '../../layouts/Layout.astro';
 // Cursos page for Movimento Irun / Casa de Castro Alves
 ---
 
-<Layout title="Cursos e Formações | Movimento Irun" description="Ciclo Formativo do Movimento Irun na Casa de Castro Alves. Formações em Permacultura Urbana, Cidade Cidadã e o Programa Bem Viver. Inscrições e calendário.">
+<Layout title="Cursos e Formações | Movimento Irun" showSponsors={true} description="Ciclo Formativo do Movimento Irun na Casa de Castro Alves. Formações em Permacultura Urbana, Cidade Cidadã e o Programa Bem Viver. Inscrições e calendário." ogImage="/images/cursos/3-PROGRAMA-BEM-VIVER-CABECALHOS-HEADER-FORMULARIO.png">
   <!-- Hero Section -->
-  <section class="cursos-hero">
-    <div class="container text-center">
-      <span class="badge-cursos">Ciclo Formativo</span>
-      <h1>Formações e Cursos</h1>
-      <p class="subtitle-cursos">Uma plataforma para fomentar experiências decoloniais de transformação social, ambiental e cultural</p>
+  <section class="subpage-hero">
+    <div class="subpage-hero-bg" style="background-image: url('/images/cursos/3-PROGRAMA-BEM-VIVER-CABECALHOS-HEADER-FORMULARIO.png');"></div>
+    <div class="subpage-hero-overlay"></div>
+    <div class="container subpage-hero-content">
+      <h1 class="subpage-hero-title">Projetos & Cursos</h1>
+      <p class="subpage-hero-subtitle">Ciclo Formativo</p>
     </div>
   </section>
 
   <!-- Programa Bem Viver -->
   <section class="bem-viver-section">
     <div class="container">
-      <div class="grid-layout">
-        <div class="text-column">
-          <span class="section-badge">Fortalecimento de Territórios</span>
-          <h2>Programa Bem Viver</h2>
-          <p class="lead-text">
-            O <strong>Programa Bem Viver</strong> é uma ação de formação pensada para fortalecer territórios indígenas, quilombolas e comunidades do campo e da cidade, articulando cultura, organização comunitária e acesso a direitos e políticas públicas.
-          </p>
-          <p>
-            Organizado em três eixos integrados, o programa ajuda a mapear saberes, práticas culturais e potencialidades de cada localidade, apoiando na realização de diagnósticos territoriais e na sistematização dessas informações em portfólios que facilitem a captação de recursos e a autogestão.
-          </p>
-          <p>
-            O programa estimula a articulação direta com órgãos governamentais e instituições do terceiro setor, ensinando caminhos práticos para captação e sustentabilidade de projetos, complementado por atividades presenciais como <strong>Giras de Saberes</strong> e <strong>Diálogos Institucionais</strong>.
-          </p>
-        </div>
-        <div class="image-column">
-          <div class="image-wrapper shadow-premium">
-            <img src="/images/cursos/cursos_gira.png" alt="Gira de saberes no casarão" class="featured-img" onerror="this.src='/images/a_casa/voce-ja-visitou-a-gente.webp'" />
-            <div class="caption">Espaço de troca de saberes e construção coletiva na Casa de Castro Alves.</div>
-          </div>
-        </div>
-      </div>
+      <span class="section-badge">Fortalecimento de Territórios</span>
+      <h2>Programa Bem Viver</h2>
+      <p class="lead-text">
+        O <strong>Programa Bem Viver</strong> é uma ação de formação pensada para fortalecer territórios indígenas, quilombolas e comunidades do campo e da cidade, articulando cultura, organização comunitária e acesso a direitos e políticas públicas.
+      </p>
+      <p>
+        Organizado em três eixos integrados, o programa ajuda a mapear saberes, práticas culturais e potencialidades de cada localidade, apoiando na realização de diagnósticos territoriais e na sistematização dessas informações em portfólios que facilitem a captação de recursos e a autogestão.
+      </p>
+      <p>
+        O programa estimula a articulação direta com órgãos governamentais e instituições do terceiro setor, ensinando caminhos práticos para captação e sustentabilidade de projetos, complementado por atividades presenciais como <strong>Giras de Saberes</strong> e <strong>Diálogos Institucionais</strong>.
+      </p>
     </div>
   </section>
 
@@ -53,7 +44,9 @@ import Layout from '../../layouts/Layout.astro';
         <!-- Eixo 1 -->
         <div class="eixo-card card">
           <span class="eixo-number">01</span>
-          <h3>Espaços Comuns do Bem Viver</h3>
+          <div class="eixo-header">
+            <h3>Espaços Comuns<br />do Bem Viver</h3>
+          </div>
           <p class="eixo-instructor">Facilitadora: Aline Bento</p>
           <ul class="eixo-topics">
             <li>Mapeamento de pontos de cultura e rede territorial.</li>
@@ -66,7 +59,9 @@ import Layout from '../../layouts/Layout.astro';
         <!-- Eixo 2 -->
         <div class="eixo-card card">
           <span class="eixo-number">02</span>
-          <h3>Gestão Criativa de Território</h3>
+          <div class="eixo-header">
+            <h3>Gestão Criativa<br />de Território</h3>
+          </div>
           <p class="eixo-instructor">Facilitadora: Márcia Ganem</p>
           <p class="eixo-subtitle-detail">Metodologia: Design Dialógico</p>
           <ul class="eixo-topics">
@@ -79,7 +74,9 @@ import Layout from '../../layouts/Layout.astro';
         <!-- Eixo 3 -->
         <div class="eixo-card card">
           <span class="eixo-number">03</span>
-          <h3>Formalização e Sustentabilidade</h3>
+          <div class="eixo-header">
+            <h3>Formalização e<br />Sustentabilidade</h3>
+          </div>
           <p class="eixo-instructor">Facilitadora: Lucyvanda Moura</p>
           <ul class="eixo-topics">
             <li>Estruturação jurídica e administrativa de entidades culturais.</li>
@@ -88,6 +85,7 @@ import Layout from '../../layouts/Layout.astro';
             <li>Giras de Saberes voltadas à sustentabilidade comunitária.</li>
           </ul>
         </div>
+
       </div>
     </div>
   </section>
@@ -156,7 +154,9 @@ import Layout from '../../layouts/Layout.astro';
           </div>
         </div>
         <div class="calendario-status text-center">
-          <div class="lock-icon">🔒</div>
+          <div class="lock-icon" style="color: var(--color-ouro); margin-bottom: var(--space-sm);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock" style="display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
           <h3>Inscrições para o Ciclo Atual Encerradas</h3>
           <p>Assine nossa newsletter ou entre em contato para ser notificado sobre a abertura de novas turmas e chamadas públicas.</p>
           <a href="/contato" class="btn btn-dark">Fale Conosco</a>
@@ -167,76 +167,9 @@ import Layout from '../../layouts/Layout.astro';
 </Layout>
 
 <style>
-  /* Hero Section */
-  .cursos-hero {
-    background-color: var(--color-amarelo-cca);
-    padding: var(--space-2xl) 0;
-    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
-  }
-
-  .badge-cursos {
-    background-color: transparent;
-    color: var(--color-preto-editorial);
-    border: 1px solid var(--color-preto-editorial);
-    padding: 4px 12px;
-    font-family: var(--font-interface);
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    display: inline-block;
-    margin-bottom: var(--space-sm);
-  }
-
-  .cursos-hero h1 {
-    font-size: 3rem;
-    margin-bottom: var(--space-xs);
-  }
-
-  .subtitle-cursos {
-    font-size: 1.15rem;
-    color: var(--color-carvao);
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
   /* Grid layout for intro */
   .bem-viver-section {
     background-color: var(--color-creme);
-  }
-
-  .grid-layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-xl);
-    align-items: center;
-  }
-
-  @media (min-width: 992px) {
-    .grid-layout {
-      grid-template-columns: 1.1fr 0.9fr;
-    }
-  }
-
-  .text-column h2 {
-    font-size: 2.25rem;
-    border: none;
-    margin-top: var(--space-sm);
-    margin-bottom: var(--space-md);
-    padding: 0;
-  }
-
-  .section-badge {
-    background-color: transparent;
-    color: var(--color-ouro);
-    border: 1px solid var(--color-ouro);
-    padding: 4px 12px;
-    font-family: var(--font-interface);
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    display: inline-block;
   }
 
   .lead-text {
@@ -246,33 +179,7 @@ import Layout from '../../layouts/Layout.astro';
     margin-bottom: var(--space-md);
   }
 
-  .image-wrapper {
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-    background-color: var(--color-branco);
-    padding: var(--space-sm);
-    border: 1px solid rgba(26, 26, 26, 0.08);
-  }
 
-  .featured-img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-  }
-
-  .caption {
-    font-family: var(--font-interface);
-    font-size: 0.75rem;
-    color: var(--color-carvao);
-    margin-top: var(--space-sm);
-    font-style: italic;
-  }
-
-  .shadow-premium {
-    box-shadow: 0 15px 35px rgba(26, 26, 26, 0.06);
-  }
 
   /* Eixos structure */
   .eixos-section {
@@ -296,9 +203,11 @@ import Layout from '../../layouts/Layout.astro';
 
   .eixo-card {
     position: relative;
-    padding-top: var(--space-xl);
+    padding: var(--space-lg);
+    padding-top: 56px; /* Aumentado para dar mais respiração em relação ao número */
     display: flex;
     flex-direction: column;
+    height: 100%;
   }
 
   .eixo-number {
@@ -307,42 +216,51 @@ import Layout from '../../layouts/Layout.astro';
     right: var(--space-lg);
     font-size: 2.5rem;
     font-family: var(--font-display);
-    color: rgba(245, 200, 0, 0.2);
+    color: rgba(135, 103, 0, 0.5);
     font-weight: bold;
     line-height: 1;
   }
 
+  .eixo-header {
+    height: 64px; /* Altura fixa para alinhar os nomes dos facilitadores abaixo dos títulos */
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
   .eixo-card h3 {
     font-size: 1.35rem;
-    margin-top: 0;
-    margin-bottom: var(--space-xs);
+    margin: 0;
     border: none;
     padding: 0;
+    line-height: 1.3;
   }
 
   .eixo-instructor {
+    display: block;
     font-family: var(--font-interface);
     font-size: 0.8rem;
-    color: var(--color-ouro);
+    color: var(--color-ouro); /* Texto dourado, sem background (design limpo e premium) */
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     font-weight: bold;
-    margin-bottom: var(--space-sm);
+    margin-bottom: 12px;
   }
 
   .eixo-subtitle-detail {
     font-size: 0.85rem;
     color: var(--color-carvao);
-    margin-bottom: var(--space-sm);
+    margin-bottom: 16px;
     font-style: italic;
   }
 
   .eixo-topics {
     list-style-type: none;
-    margin-top: var(--space-sm);
+    margin-top: 0; /* Remove o margin-top auto para manter o espaço em branco na base do card */
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
+    padding-top: var(--space-sm);
   }
 
   .eixo-topics li {
@@ -354,7 +272,7 @@ import Layout from '../../layouts/Layout.astro';
 
   .eixo-topics li::before {
     content: "•";
-    color: var(--color-amarelo-cca);
+    color: var(--color-ouro);
     font-weight: bold;
     position: absolute;
     left: 0;

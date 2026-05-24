@@ -4,38 +4,57 @@ import Layout from '../layouts/Layout.astro';
 // Shows page for Casa de Castro Alves
 ---
 
-<Layout title="Programação Cultural e Shows | Casa de Castro Alves" description="Confira os shows, espetáculos e apresentações musicais na Casa de Castro Alves. Destaque para o show de Curumin e o acervo histórico dos concertos do Movimento Irun.">
+<Layout title="Programação Cultural e Shows | Casa de Castro Alves" description="Confira os shows, espetáculos e apresentações musicais na Casa de Castro Alves. Destaque para o show de Curumin e o acervo histórico dos concertos do Movimento Irun." ogImage="/images/shows/movimento-irun-edicao-9-aqualtunes-mariella-santiago.jpg">
   <!-- Hero Section -->
-  <section class="shows-hero">
-    <div class="container text-center">
-      <span class="badge-shows">Música e Performance</span>
-      <h1>Programação de Shows</h1>
-      <p class="subtitle-shows">Espetáculos ao vivo, ritos sonoros e encontros musicais que movimentam nosso casarão</p>
+  <section class="subpage-hero">
+    <div class="subpage-hero-bg" style="background-image: url('/images/shows/movimento-irun-edicao-9-aqualtunes-mariella-santiago.jpg');"></div>
+    <div class="subpage-hero-overlay"></div>
+    <div class="container subpage-hero-content">
+      <h1 class="subpage-hero-title">Programação de Shows</h1>
+      <p class="subpage-hero-subtitle">Música e Performance</p>
     </div>
   </section>
 
-  <!-- Featured Show (Curumin) -->
+  <!-- Featured Shows (Movimento Irun 11ª Edição & Curumin) -->
   <section class="featured-show-section">
     <div class="container">
+      <!-- Duo iRê iRê - 11ª Edição -->
+      <div class="featured-card" style="margin-bottom: var(--space-xl);">
+        <div class="featured-image-wrapper" style="background-color: #111111; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/shows/MOVIMENTO-IRUN-11-EDICAO-7-DE-JUNHO-SENTE-O-TEMPO-PASSAR-DUO-IRE-IRE.png" alt="Cartaz Oficial do Show Sente o Tempo Passar - Duo iRê iRê" class="featured-show-img" style="object-fit: contain; max-height: 500px;" />
+        </div>
+        <div class="featured-details">
+          <h2>Duo iRê iRê — Sente o Tempo Passar</h2>
+          <p class="show-date">7 de Junho de 2026 • 19:00 — Movimento Irun 11ª Edição</p>
+          
+          <div style="margin-bottom: var(--space-md);">
+            <a href="https://forms.gle/CkVmQFEnvuTqAdJE6" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Inscreva-se</a>
+          </div>
+
+          <p class="show-description">
+            O <strong>Duo iRê iRê</strong>, formado por <strong>Maíra & Ícaro Santiago</strong>, apresenta o show <em>“Sente o Tempo Passar”</em> na Casa de Castro Alves. Sob a temática <em>“Águas Nascentes: Tempo de Recomeços”</em>, a performance traz uma fusão sensível de ritmos, afeto e poesia.
+          </p>
+          <p class="show-info-text">
+            A apresentação celebra o lançamento da 11ª Edição do Movimento Irun. A entrada é gratuita mediante inscrição prévia.
+          </p>
+        </div>
+      </div>
+
+      <!-- Featured Show (Curumin) -->
       <div class="featured-card">
         <div class="featured-image-wrapper">
           <img src="/images/shows/CURUMIN-MAIO-2026-819x1024.jpg" alt="Cartaz Oficial do Show de Curumin na Casa de Castro Alves" class="featured-show-img" />
         </div>
         <div class="featured-details">
-          <span class="show-status-badge">Destaque da Temporada</span>
           <h2>Curumin na Casa</h2>
-          <p class="show-date">📅 Maio de 2026 — Sessão Especial</p>
-          <p class="show-price">🎟️ Ingressos a partir de R$ 90,00</p>
+          <p class="show-date">Maio de 2026 — Sessão Especial</p>
+
           <p class="show-description">
             O aclamado multi-instrumentista, cantor e produtor paulistano <strong>Curumin</strong> desembarca no Centro Histórico de Salvador para um show intimista e inesquecível no Jardim da Casa de Castro Alves. Unindo suas influências de samba, soul, funk clássico e hip-hop, o artista traz uma performance calorosa que sintoniza perfeitamente com a brisa da Baía de Todos os Santos.
           </p>
           <p class="show-info-text">
             Um encontro singular entre a rítmica paulista e a pulsação baiana em um dos espaços mais poéticos da cidade. Ingressos limitados para garantir o clima intimista e afetivo do evento.
           </p>
-          <div class="action-buttons">
-            <a href="/contato" class="btn btn-dark">Comprar Ingresso</a>
-            <a href="#galeria-historica" class="btn">Ver Shows Anteriores</a>
-          </div>
         </div>
       </div>
     </div>
@@ -45,29 +64,41 @@ import Layout from '../layouts/Layout.astro';
   <section id="galeria-historica" class="past-shows-section">
     <div class="container">
       <div class="section-header text-center">
-        <span class="section-badge">Memória Musical</span>
-        <h2>Concertos e Apresentações Históricas</h2>
+        <h2>Concertos e Apresentações Anteriores</h2>
         <p class="section-subtitle">Relembre as performances e artistas que já passaram pelo palco da Casa de Castro Alves ao longo do Movimento Irun.</p>
       </div>
 
       <div class="shows-grid">
-        <!-- Show 10: Denise Correia -->
-        <div class="show-card card">
+        <!-- Show 11: Duo iRê iRê -->
+        <a href="/movimento-irun/edicao-11" class="show-card card">
           <div class="card-img-wrapper">
-            <img src="/images/shows/MOVIMENTO-IRUN-10-EDICAO-CASA-DE-CASTRO-ALVES-576x1024.png" alt="Show de Denise Correia" />
+            <img src="/images/edicoes/edicao-11/header/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-header.jpg" alt="Show do Duo iRê iRê" />
+          </div>
+          <div class="card-content">
+            <span class="card-tag">11ª Edição</span>
+            <h3>Duo iRê iRê</h3>
+            <p class="card-date">Junho 2026</p>
+            <p class="card-desc">Show de estreia "Sente O Tempo Passar" com uma fusão sensível de ritmos, afeto e poesia.</p>
+          </div>
+        </a>
+
+        <!-- Show 10: Denise Correia -->
+        <a href="/movimento-irun/edicao-10" class="show-card card">
+          <div class="card-img-wrapper">
+            <img src="/images/edicoes/edicao-10/header/denise-correia-black-tudo-movimento-irun-edicao-10-header.jpg" alt="Show de Denise Correia" />
           </div>
           <div class="card-content">
             <span class="card-tag">10ª Edição</span>
             <h3>Denise Correia</h3>
             <p class="card-date">Maio 2026</p>
-            <p class="card-desc">Samba de alta octanagem e releituras marcantes na voz de uma das maiores intérpretes de Salvador.</p>
+            <p class="card-desc">Show “BLACK TUDO”, com Denise Correia e Banda Naveiadanêga, uma explosão de Afro Pop, samba rock e MPB.</p>
           </div>
-        </div>
+        </a>
 
         <!-- Show 9: Mariella Santiago -->
-        <div class="show-card card">
+        <a href="/movimento-irun/edicao-9" class="show-card card">
           <div class="card-img-wrapper">
-            <img src="/images/shows/MOVIMENTO-IRUN-9-EDICAO-ABRIL-WEBSITE-1024x576.jpg" alt="Show de Mariella Santiago" />
+            <img src="/images/edicoes/edicao-9/header/mariella-santiago-aqualtunes-movimento-irun-edicao-9-header.jpg" alt="Show de Mariella Santiago" />
           </div>
           <div class="card-content">
             <span class="card-tag">9ª Edição</span>
@@ -75,12 +106,12 @@ import Layout from '../layouts/Layout.astro';
             <p class="card-date">Abril 2026</p>
             <p class="card-desc">Show imersivo <em>“Aqualtunes”</em>, com vocais processados em loops e arranjos afro-jazz contemporâneos.</p>
           </div>
-        </div>
+        </a>
 
         <!-- Show 8: Yayá Muxima -->
-        <div class="show-card card">
+        <a href="/movimento-irun/edicao-8" class="show-card card">
           <div class="card-img-wrapper">
-            <img src="/images/shows/YAYA-MUXIMA-STORY-REEL-15-DE-MARCO-2026-8°-EDICAO-576x1024.png" alt="Show da Banda Yayá Muxima" />
+            <img src="/images/edicoes/edicao-8/header/yaya-muxima-tambor-de-mulher-movimento-irun-edicao-8-header.jpg" alt="Show da Banda Yayá Muxima" />
           </div>
           <div class="card-content">
             <span class="card-tag">8ª Edição</span>
@@ -88,12 +119,12 @@ import Layout from '../layouts/Layout.astro';
             <p class="card-date">Março 2026</p>
             <p class="card-desc">Show <em>“Tambor de Mulher que sacode o Mundo”</em>, celebrando os 179 anos de nascimento do poeta Castro Alves.</p>
           </div>
-        </div>
+        </a>
 
         <!-- Show 7: Ícaro Santiago & Eric Mazzone -->
-        <div class="show-card card">
+        <a href="/movimento-irun/edicao-7" class="show-card card">
           <div class="card-img-wrapper">
-            <img src="/images/shows/SHOW-JANGADA-CONVIDADOS-2025-576x1024.png" alt="Show Jangada de Ícaro Santiago e Eric Mazzone" />
+            <img src="/images/edicoes/edicao-7/header/icaro-santiago-eric-mazzone-jangada-movimento-irun-edicao-7-header.jpg" alt="Show de Ícaro Santiago e Eric Mazzone" />
           </div>
           <div class="card-content">
             <span class="card-tag">7ª Edição</span>
@@ -101,12 +132,12 @@ import Layout from '../layouts/Layout.astro';
             <p class="card-date">Janeiro 2026</p>
             <p class="card-desc">Show <em>“Jangada”</em>, uma fusão estética experimental entre sintetizadores, atabaques e jazz futurista.</p>
           </div>
-        </div>
+        </a>
 
         <!-- Show 6: Cabuloso Trio -->
-        <div class="show-card card">
+        <a href="/movimento-irun/edicao-6" class="show-card card">
           <div class="card-img-wrapper">
-            <img src="/images/shows/21-DE-DEZEMBRO-TEIA-DOS-POVOS-CASA-DE-CASTRO-ALVES.png" alt="Show do Cabuloso Trio" />
+            <img src="/images/edicoes/edicao-6/header/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-header.jpg" alt="Show do Cabuloso Trio" />
           </div>
           <div class="card-content">
             <span class="card-tag">6ª Edição</span>
@@ -114,38 +145,38 @@ import Layout from '../layouts/Layout.astro';
             <p class="card-date">Dezembro 2025</p>
             <p class="card-desc">Destaque da música instrumental e alternativa de Salvador em um encerramento repleto de convidados.</p>
           </div>
-        </div>
+        </a>
 
         <!-- Show 5: Dão Black -->
-        <div class="show-card card">
+        <a href="/movimento-irun/edicao-5" class="show-card card">
           <div class="card-img-wrapper">
-            <img src="/images/shows/DAO-BLACK-SAMBADELIC-FEED-MOVIMENTO-IRUN.jpg" alt="Show de Dão Black" />
+            <img src="/images/edicoes/edicao-5/header/dao-black-sambadelic-movimento-irun-edicao-5-header.jpg" alt="Show de Dão Black" />
           </div>
           <div class="card-content">
             <span class="card-tag">5ª Edição</span>
             <h3>Dão Black</h3>
             <p class="card-date">Novembro 2025</p>
-            <p class="card-desc">O swing do show <em>“Sambadelic”</em> resgatando as matrizes rítmicas e a malandragem do samba.</p>
+            <p class="card-desc">Dão Black apresenta o show Sambadelic, que revisita as matrizes e influências do samba brasileiro</p>
           </div>
-        </div>
+        </a>
 
         <!-- Show 4: Tito Bahiense & Tiago Nunes -->
-        <div class="show-card card">
+        <a href="/movimento-irun/edicao-4" class="show-card card">
           <div class="card-img-wrapper">
-            <img src="/images/shows/FEED-MOV-IRUN-4-EDICAO-IJEXA.gif" alt="Show de Tito Bahiense" />
+            <img src="/images/edicoes/edicao-4/header/tito-bahiense-tiago-nunes-ijexa-movimento-irun-edicao-4-header.jpg" alt="Show de Tito Bahiense e Tiago Nunes" />
           </div>
           <div class="card-content">
             <span class="card-tag">4ª Edição</span>
-            <h3>Tito Bahiense & Tiago Nunes</h3>
+            <h3>Tito Bahiense</h3>
             <p class="card-date">Outubro 2025</p>
             <p class="card-desc">Celebração da beleza rítmica do Ijexá, com tambores e arranjos melódicos em homenagem a Oxum e Oxalá.</p>
           </div>
-        </div>
+        </a>
 
         <!-- Show 3: Enio & Vírus -->
-        <div class="show-card card">
+        <a href="/movimento-irun/edicao-3" class="show-card card">
           <div class="card-img-wrapper">
-            <img src="/images/shows/MOVIMENTO-IRUN-3-EDICAO-SETEMBRO-ENIO-SANTOS-MENINOS-2025.jpg" alt="Show de Enio e Virus" />
+            <img src="/images/edicoes/edicao-3/header/enio-virus-encontros-hibridos-movimento-irun-edicao-3-header.jpg" alt="Show de Enio e Vírus" />
           </div>
           <div class="card-content">
             <span class="card-tag">3ª Edição</span>
@@ -153,12 +184,12 @@ import Layout from '../layouts/Layout.astro';
             <p class="card-date">Setembro 2025</p>
             <p class="card-desc">Performance <em>“Encontros Híbridos”</em> com ritos poéticos sobre a infância e ancestralidade afrocentrada.</p>
           </div>
-        </div>
+        </a>
 
         <!-- Show 2: Ayrá Soares & Ângelo Canja -->
-        <div class="show-card card">
+        <a href="/movimento-irun/edicao-2" class="show-card card">
           <div class="card-img-wrapper">
-            <img src="/images/shows/AYRA-SOARES-FEED-IG-17-DE-AGO-2025.jpeg" alt="Show de Ayrá Soares e Ângelo Canja" />
+            <img src="/images/edicoes/edicao-2/header/ayra-soares-angelo-canja-eletrosamba-movimento-irun-edicao-2-header.jpg" alt="Show de Ayrá Soares e Ângelo Canja" />
           </div>
           <div class="card-content">
             <span class="card-tag">2ª Edição</span>
@@ -166,59 +197,26 @@ import Layout from '../layouts/Layout.astro';
             <p class="card-date">Agosto 2025</p>
             <p class="card-desc">Show <em>“EletroSamba”</em> mesclando a voz ativista e percussiva de Ayrá com as texturas elétricas de Canja.</p>
           </div>
-        </div>
+        </a>
 
-        <!-- Show 1: Irma Ferreira & Ruan de Souza -->
-        <div class="show-card card">
+        <!-- Show 1: Irma Ferreira -->
+        <a href="/movimento-irun/edicao-1" class="show-card card">
           <div class="card-img-wrapper">
-            <img src="/images/shows/IRMA-FERREIRA-CANTOS-DE-ORIṢA-FEED-JUL-2025-VER3.jpg" alt="Show de Irma Ferreira" />
+            <img src="/images/edicoes/edicao-1/header/irma-ferreira-cantos-de-orisa-movimento-irun-edicao-1-header.jpg" alt="Show de Irma Ferreira" />
           </div>
           <div class="card-content">
             <span class="card-tag">1ª Edição</span>
-            <h3>Irma Ferreira & Ruan de Souza</h3>
+            <h3>Irma Ferreira</h3>
             <p class="card-date">Julho 2025</p>
             <p class="card-desc">Pocket show de lançamento <em>“Cantos de Òrìṣà”</em>, resgatando cantigas ancestrais e louvações acústicas.</p>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
 </Layout>
 
 <style>
-  /* Hero Section */
-  .shows-hero {
-    background-color: var(--color-amarelo-cca);
-    padding: var(--space-2xl) 0;
-    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
-  }
-
-  .badge-shows {
-    background-color: transparent;
-    color: var(--color-preto-editorial);
-    border: 1px solid var(--color-preto-editorial);
-    padding: 4px 12px;
-    font-family: var(--font-interface);
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    display: inline-block;
-    margin-bottom: var(--space-sm);
-  }
-
-  .shows-hero h1 {
-    font-size: 3rem;
-    margin-bottom: var(--space-xs);
-  }
-
-  .subtitle-shows {
-    font-size: 1.15rem;
-    color: var(--color-carvao);
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
   /* Featured Show Card */
   .featured-show-section {
     background-color: var(--color-creme);
@@ -287,7 +285,13 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .show-price {
-    color: var(--color-ouro);
+    display: inline-block;
+    align-self: flex-start;
+    background-color: var(--color-preto-editorial);
+    color: var(--color-amarelo-cca);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
     margin-bottom: var(--space-md);
   }
 
@@ -342,6 +346,8 @@ import Layout from '../layouts/Layout.astro';
     height: 100%;
     padding: 0;
     overflow: hidden;
+    text-decoration: none;
+    color: inherit;
   }
 
   .card-img-wrapper {
@@ -371,14 +377,18 @@ import Layout from '../layouts/Layout.astro';
   }
 
   .card-tag {
+    align-self: flex-start;
     font-family: var(--font-interface);
-    font-size: 0.75rem;
+    font-size: 0.95rem; /* Slightly larger than date (0.85rem) */
     font-weight: bold;
-    color: var(--color-ouro);
+    background-color: var(--color-preto-editorial);
+    color: var(--color-amarelo-cca);
+    padding: 6px 12px;
+    border-radius: 4px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: var(--space-xs);
-    display: block;
+    letter-spacing: 0.06em;
+    margin-bottom: var(--space-sm);
+    display: inline-block;
   }
 
   .card-content h3 {
@@ -401,18 +411,5 @@ import Layout from '../layouts/Layout.astro';
     color: var(--color-preto-editorial);
     line-height: 1.5;
     margin-bottom: 0;
-  }
-
-  .section-badge {
-    background-color: transparent;
-    color: var(--color-ouro);
-    border: 1px solid var(--color-ouro);
-    padding: 4px 12px;
-    font-family: var(--font-interface);
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    display: inline-block;
   }
 </style>

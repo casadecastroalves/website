@@ -20,7 +20,6 @@
         <select id="formSubject" name="subject" required>
           <option value="" disabled selected>Selecione uma opção</option>
           <option value="Agendar Evento">Agendar Evento (Casamento, Festa, Evento Corporativo)</option>
-          <option value="Movimento Irun">Dúvidas sobre o Movimento Irun</option>
           <option value="Cursos">Informações sobre Cursos</option>
           <option value="Outros">Outras Dúvidas e Informações</option>
         </select>
@@ -39,13 +38,17 @@
 
   <!-- Submission Status Messages -->
   <div class="status-box success-box" id="successBox" style="display: none;">
-    <div class="status-icon">✓</div>
+    <div class="status-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="status-svg"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
     <h3>Mensagem Enviada!</h3>
     <p>Obrigado pelo contato. Recebemos sua mensagem com sucesso e enviamos uma confirmação para o seu e-mail. Retornaremos em breve!</p>
   </div>
 
   <div class="status-box error-box" id="errorBox" style="display: none;">
-    <div class="status-icon">✕</div>
+    <div class="status-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="status-svg"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </div>
     <h3>Erro ao Enviar</h3>
     <p id="errorMessage">Ocorreu um erro no servidor ao tentar registrar seu contato. Por favor, tente novamente ou entre em contato diretamente pelo WhatsApp.</p>
     <button type="button" class="btn btn-sm btn-retry" id="retryBtn">Tentar Novamente</button>
@@ -201,7 +204,7 @@
 <script>
   // Google Apps Script Web App URL (to be replaced by the deployed Apps Script URL)
   // Initially we use a placeholder or local mock check. We will read the URL from a data attribute or env
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz_d5G7kLqS7t1c7wPq36w8W8f8_placeholder/exec"; 
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyUWR19CcKAMDxRk7qYaL6kKmshMPCVO3tLlNA8N5DfQHs3huYl8ViNP1QOo8UMQEUc/exec"; 
 
   const form = document.getElementById('webContactForm') as HTMLFormElement | null;
   const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement | null;
@@ -230,45 +233,27 @@
       });
 
       try {
-        // Submit using fetch. Since Apps Script requires redirect, we handle the CORS/JSON output.
-        // We use a timeout to prevent infinite loading
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
-        
-        // Note: For actual Google Apps Script web apps, it redirects (HTTP 302).
-        // Standard fetch with mode: 'cors' handles redirect automatically.
-        // If the URL is placeholder, we simulate a mock response so testing works!
-        let response;
-        if (APPS_SCRIPT_URL.includes("placeholder")) {
-          // Mocking response for testing / local development
-          await new Promise((resolve) => setTimeout(resolve, 1500));
-          response = { ok: true, json: async () => ({ status: "success" }) };
-        } else {
-          response = await fetch(APPS_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-            signal: controller.signal
-          });
-        }
+
+        // We send JSON but pretend it's text/plain to bypass Google's strict CORS preflight (OPTIONS) restrictions
+        await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8',
+          },
+          body: JSON.stringify(payload),
+          signal: controller.signal
+        });
         
         clearTimeout(timeoutId);
 
-        if (response.ok) {
-          const result = await response.json();
-          if (result.status === "success") {
-            form.style.display = 'none';
-            successBox.style.display = 'block';
-            form.reset();
-          } else {
-            throw new Error(result.message || "Erro desconhecido do servidor.");
-          }
-        } else {
-          throw new Error(`Servidor respondeu com código: ${response.status}`);
-        }
+        // With 'no-cors', we get an opaque response, so we assume success if no network error occurred
+        form.style.display = 'none';
+        successBox.style.display = 'block';
+        form.reset();
+
       } catch (err: any) {
         console.error("Form submission error:", err);
         form.style.display = 'none';

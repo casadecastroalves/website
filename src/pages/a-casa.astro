@@ -4,163 +4,261 @@ import Layout from '../layouts/Layout.astro';
 // A Casa page for Casa de Castro Alves
 ---
 
-<Layout title="A Casa | História, Espaços e Eventos" description="Descubra a história e os espaços da Casa de Castro Alves. Um casarão do século XVIII com 510m², memorial, galeria de arte contemporânea e jardim com vista para a Baía de Todos os Santos.">
+<Layout title="A Casa | Casa de Castro Alves" description="Descubra a história e os espaços da Casa de Castro Alves. Um casarão do século XVIII com 510m², memorial, galeria de arte contemporânea e jardim com vista para a Baía de Todos os Santos." ogImage="/images/a_casa/casa-de-castro-alves-1-1-1024x576.png">
   <!-- Hero Section -->
-  <section class="acasa-hero">
-    <div class="hero-bg" style="background-image: linear-gradient(to bottom, rgba(26, 26, 26, 0.5), rgba(26, 26, 26, 0.85)), url('/images/a_casa/casa-de-castro-alves-2.png');"></div>
-    <div class="container hero-content text-center">
-      <h1 class="hero-title">A Casa</h1>
-      <p class="hero-subtitle">Um patrimônio histórico que une a memória lírica de Castro Alves à arte contemporânea</p>
+  <section class="subpage-hero">
+    <div class="subpage-hero-bg" style="background-image: url('/images/a_casa/casa-de-castro-alves-1-1-1024x576.png');"></div>
+  </section>
+
+  <!-- 1. A Casa (Text 35% / Image 65%) -->
+  <section class="acasa-section" style="background-color: #f5f5f5;">
+    <div class="col-35 text-col">
+      <h2>A Casa</h2>
+      <p>A Casa de Castro Alves é um espaço de cultura dedicado ao diálogo entre a poesia e as artes, em suas mais diversas manifestações</p>
+    </div>
+    <div class="col-65 img-col">
+      <img src="/images/a_casa/voce-ja-visitou-a-gente.webp" alt="A Casa de Castro Alves" />
     </div>
   </section>
 
-  <!-- Histórico & Conceito -->
-  <section class="history-section">
-    <div class="container">
-      <div class="grid-layout">
-        <div class="text-column">
-          <span class="section-badge">Memória viva</span>
-          <h2>A Nossa História</h2>
-          <p>
-            A história deste casarão secular remonta a <strong>1855</strong>, ano em que a família do célebre poeta baiano Castro Alves passa a residir nele. Seu pai, o renomado médico Dr. Antônio José Alves, abre na residência um consultório e estabelece a <strong>primeira escola de doenças tropicais da Bahia</strong>.
-          </p>
-          <p>
-            Localizado no histórico e vibrante bairro do Santo Antônio Além do Carmo, o casarão do século XVIII ergue-se ao lado da célebre <strong>Igreja do Passo</strong>, cenário icônico do filme premiado com a Palma de Ouro, <em>“O Pagador de Promessas”</em>.
-          </p>
-          <p>
-            Hoje, preservando sua estrutura e seu espírito provocativo, o casarão ressurge não apenas como memorial de um dos maiores poetas republicanos e abolicionistas brasileiros, mas como espaço pulsante de convergência artística e emancipação cultural.
-          </p>
-        </div>
-        <div class="image-column">
-          <div class="image-wrapper shadow-premium">
-            <img src="/images/a_casa/casa-de-castro-alves-santo-antonio-alem-do-carmo-1-1024x576.jpg" alt="Faixada da Casa de Castro Alves e Igreja do Passo" class="featured-img" />
-            <div class="caption">Vista do casarão no Centro Histórico de Salvador.</div>
+  <!-- 2. História (Image 65% / Text 35%) -->
+  <section class="acasa-section" style="background-color: #ffffff;">
+    <div class="col-65 img-col">
+      <img src="/images/a_casa/casa-de-castro-alves-santo-antonio-alem-do-carmo-1-1024x576.jpg" alt="História - Casa de Castro Alves" />
+    </div>
+    <div class="col-35 text-col">
+      <h2>História</h2>
+      <p>Sua história tem início em 1855, quando a família de Castro Alves vem residir nela e o Dr. Antonio José Alves, pai do poeta, abre um consultório médico e a primeira escola de doenças tropicais da Bahia.</p>
+    </div>
+  </section>
+
+  <!-- 3. Localização (Text 35% / Image 65%) -->
+  <section class="acasa-section" style="background-color: #f5f5f5;">
+    <div class="col-35 text-col">
+      <h2>Localização</h2>
+      <p>A casa está localizada ao lado da Igreja do Passo – Cenário do filme “O Pagador de Promessas” Um sobrado do século XVIII, no bairro do Santo Antonio, Rua do Passo – Centro Histórico de Salvador</p>
+    </div>
+    <div class="col-65 img-col">
+      <img src="/images/a_casa/casa-de-castro-alves-santo-antonio-alem-do-carmo-2-1024x576.jpg" alt="Localização - Rua do Passo" />
+    </div>
+  </section>
+
+  <!-- 4. Espaços (Image 35% / Text 65%) -->
+  <section class="acasa-section" style="background-color: #cad4db;">
+    <div class="col-35 img-col">
+      <img src="/images/a_casa/3-003-1024x464.jpg" alt="Espaços da Casa" />
+    </div>
+    <div class="col-65 text-col">
+      <h2>Espaços</h2>
+      <p>A Casa integra espaço de memória, galeria de arte, galeria de design, espaço de apresentações artísticas, eventos, espaço de cursos e jardim, em seus três andares e um jardim com vista para a Baía de Todos os Santos, com 510m2</p>
+    </div>
+  </section>
+
+  <!-- 5. Galeria de Arte (Text 35% / Slideshow 65%) -->
+  <section class="acasa-section" style="background-color: #e8e4db;">
+    <div class="col-35 text-col">
+      <h2>Galeria de Arte Contemporânea</h2>
+      <p>Exposições de fotografia, pintura, instalações e novas linguagens.</p>
+    </div>
+    <div class="col-65 img-col">
+      <div class="slideshow-container">
+        <div class="slideshow-track">
+          <div class="slide">
+            <img src="/images/a_casa/casa-de-castro-alves-3.png" alt="Galeria de Arte 1" />
+          </div>
+          <div class="slide">
+            <img src="/images/a_casa/casa-de-castro-alves-2.png" alt="Galeria de Arte 2" />
+          </div>
+          <div class="slide">
+            <img src="/images/a_casa/casa-de-castro-alves-galeria-arte.jpg" alt="Galeria de Arte 3" />
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Espaços -->
-  <section class="spaces-section">
-    <div class="container">
-      <div class="section-header text-center">
-        <span class="section-badge">Estrutura</span>
-        <h2>Os Nossos Espaços</h2>
-        <p class="section-subtitle">Três pavimentos e um jardim que somam 510m² de possibilidades culturais e afetivas.</p>
-      </div>
-
-      <div class="spaces-grid">
-        <div class="space-item card">
-          <div class="space-icon">📚</div>
-          <h3>Memorial & Acervo</h3>
-          <p>Dedicado a abrigar a lírica e a história de Castro Alves, conectando os visitantes aos ideais libertários e humanistas do poeta.</p>
-        </div>
-
-        <div class="space-item card">
-          <div class="space-icon">🖼️</div>
-          <h3>Galeria de Arte Contemporânea</h3>
-          <p>Espaço para exposições temporárias e permanentes de fotografia, artes plásticas e novas mídias de artistas locais e nacionais.</p>
-        </div>
-
-        <div class="space-item card">
-          <div class="space-icon">🧶</div>
-          <h3>Galeria de Design Caboclo</h3>
-          <p>Vitrine e showroom de moda, joalheria e design dialógico em parceria com comunidades tradicionais da Bahia.</p>
-        </div>
-
-        <div class="space-item card">
-          <div class="space-icon">🌿</div>
-          <h3>Jardim da Baía</h3>
-          <p>Área externa ao ar livre com vista panorâmica para a Baía de Todos os Santos, cenário de um pôr do sol inesquecível e shows intimistas.</p>
+        
+        <button class="nav-btn prev-btn" aria-label="Anterior">&lsaquo;</button>
+        <button class="nav-btn next-btn" aria-label="Próximo">&rsaquo;</button>
+        
+        <div class="dots-container">
+          <div class="dot active" data-index="0"></div>
+          <div class="dot" data-index="1"></div>
+          <div class="dot" data-index="2"></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Casamentos & Aluguel de Espaço -->
-  <section class="events-detail-section">
-    <div class="container">
-      <div class="grid-layout reverse">
-        <div class="text-column">
-          <span class="section-badge">Celebrações</span>
-          <h2>Casamentos e Eventos Especiais</h2>
-          <p>
-            Com sua atmosfera carregada de história, arte e uma vista poética incomparável, a Casa de Castro Alves abre suas portas para a realização de casamentos, recepções, aniversários, comemorações e eventos corporativos de alto padrão.
-          </p>
-          <div class="specs-box">
-            <div class="spec-detail">
-              <strong>Capacidade:</strong> <span>Até 450 convidados</span>
-            </div>
-            <div class="spec-detail">
-              <strong>Espaço Físico:</strong> <span>510m² com 3 pavimentos e área ao ar livre</span>
-            </div>
-            <div class="spec-detail">
-              <strong>Diferencial:</strong> <span>Vista desimpedida para o pôr do sol da Baía de Todos os Santos</span>
-            </div>
-          </div>
-          <p class="helper-text">
-            Fornecemos infraestrutura básica de suporte, banheiros adaptados, acessibilidade parcial e assessoria de recepção. Entre em contato para agendar uma visita guiada.
-          </p>
-          <a href="/contato" class="btn btn-dark">Solicitar Orçamento</a>
-        </div>
-        <div class="image-column">
-          <div class="image-wrapper shadow-premium">
-            <img src="/images/a_casa/casa-de-castro-alves-3.png" alt="Área interna e jardim da Casa de Castro Alves" class="featured-img" />
-            <div class="caption">Jardim e área externa da Casa, perfeito para celebrações ao pôr do sol.</div>
-          </div>
-        </div>
-      </div>
+  <!-- 6. Eventos (Image 35% / Text 65%) -->
+  <section class="acasa-section" style="background-color: #ffffff;">
+    <div class="col-35 img-col">
+      <img src="/images/a_casa/PhotoGrid_1450089579483-e1777131544256.png" alt="Eventos na Casa de Castro Alves" />
+    </div>
+    <div class="col-65 text-col">
+      <h2>Eventos</h2>
+      <p>Casamentos, festas, comemorações</p>
+      <p>Capacidade: 450 convidados</p>
     </div>
   </section>
 
-  <!-- Galeria de Imagens -->
-  <section class="gallery-section">
-    <div class="container">
-      <div class="section-header text-center">
-        <span class="section-badge">Registros</span>
-        <h2>Galeria da Casa</h2>
-        <p class="section-subtitle">Instalações, detalhes arquitetônicos e as belezas da nossa sede.</p>
-      </div>
-
-      <div class="gallery-grid">
-        <div class="gallery-item">
-          <img src="/images/a_casa/casa-de-castro-alves-santo-antonio-alem-do-carmo-2-1024x576.jpg" alt="Fachada lateral e Igreja do Passo" />
-        </div>
-        <div class="gallery-item">
-          <img src="/images/a_casa/casa-de-castro-alves-galeria-arte.jpg" alt="Interior da Galeria de Arte" />
-        </div>
-        <div class="gallery-item">
-          <img src="/images/a_casa/casa-de-castro-alves-2.png" alt="Salão nobre no casarão" />
-        </div>
-        <div class="gallery-item">
-          <img src="/images/a_casa/voce-ja-visitou-a-gente.webp" alt="Visita guiada ao acervo" />
-        </div>
-        <div class="gallery-item">
-          <img src="/images/a_casa/3-003-1024x464.jpg" alt="Detalhe do jardim ao anoitecer" />
-        </div>
-        <div class="gallery-item">
-          <img src="/images/a_casa/PhotoGrid_1450089579483-e1777131544256.png" alt="Painéis de poesia" />
-        </div>
-      </div>
+  <!-- 7. Jardim (Text 35% / Image 65%) -->
+  <section class="acasa-section" style="background-color: #f5f5f5;">
+    <div class="col-35 text-col">
+      <h2>Jardim</h2>
+      <p>Vista pra Baía de Todos os Santos, com um pôr do sol inesquecível</p>
+    </div>
+    <div class="col-65 img-col">
+      <img src="/images/a_casa/casa-de-castro-alves-1-1-1024x576.png" alt="Jardim com vista para a baía" />
     </div>
   </section>
 </Layout>
 
-<style>
-  /* Hero section */
-  .acasa-hero {
-    position: relative;
-    padding: var(--space-2xl) 0;
-    height: 350px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-branco);
-    overflow: hidden;
-  }
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.querySelector('.slideshow-track') as HTMLElement;
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const dots = Array.from(document.querySelectorAll('.dot'));
+    
+    if (!track || slides.length === 0) return;
+    
+    let currentIndex = 0;
+    let autoplayTimer: any = null;
+    
+    const updateSlider = () => {
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    };
+    
+    const nextSlide = () => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      updateSlider();
+    };
+    
+    const prevSlide = () => {
+      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+      updateSlider();
+    };
+    
+    const startAutoplay = () => {
+      autoplayTimer = setInterval(nextSlide, 5000);
+    };
+    
+    const resetAutoplay = () => {
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+      }
+      startAutoplay();
+    };
+    
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        prevSlide();
+        resetAutoplay();
+      });
+    }
+    
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        nextSlide();
+        resetAutoplay();
+      });
+    }
+    
+    dots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        currentIndex = idx;
+        updateSlider();
+        resetAutoplay();
+      });
+    });
+    
+    // Keyboard navigation (when slideshow is in viewport)
+    document.addEventListener('keydown', (e) => {
+      const rect = track.getBoundingClientRect();
+      const inView = (rect.top < window.innerHeight && rect.bottom > 0);
+      if (inView) {
+        if (e.key === 'ArrowRight') {
+          nextSlide();
+          resetAutoplay();
+        } else if (e.key === 'ArrowLeft') {
+          prevSlide();
+          resetAutoplay();
+        }
+      }
+    });
+    
+    // Swipe support for touch devices
+    let startX = 0;
+    let isDragging = false;
+    
+    track.addEventListener('touchstart', (e: TouchEvent) => {
+      startX = e.touches[0].clientX;
+      isDragging = true;
+      if (autoplayTimer) clearInterval(autoplayTimer);
+    }, { passive: true });
+    
+    track.addEventListener('touchend', (e: TouchEvent) => {
+      if (!isDragging) return;
+      const endX = e.changedTouches[0].clientX;
+      const diffX = startX - endX;
+      
+      if (Math.abs(diffX) > 50) {
+        if (diffX > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+      }
+      isDragging = false;
+      startAutoplay();
+    }, { passive: true });
+    
+    // Mouse drag support for desktop
+    track.addEventListener('mousedown', (e: MouseEvent) => {
+      startX = e.clientX;
+      isDragging = true;
+      if (autoplayTimer) clearInterval(autoplayTimer);
+    });
+    
+    track.addEventListener('mouseup', (e: MouseEvent) => {
+      if (!isDragging) return;
+      const endX = e.clientX;
+      const diffX = startX - endX;
+      
+      if (Math.abs(diffX) > 50) {
+        if (diffX > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+      }
+      isDragging = false;
+      startAutoplay();
+    });
+    
+    track.addEventListener('mouseleave', () => {
+      if (isDragging) {
+        isDragging = false;
+        startAutoplay();
+      }
+    });
+    
+    startAutoplay();
+  });
+</script>
 
-  .hero-bg {
+<style>
+  /* Hero subpage adjustments */
+  .subpage-hero {
+    position: relative;
+    height: 60vh;
+    min-height: 350px;
+    overflow: hidden;
+    padding: 0;
+  }
+  
+  .subpage-hero-bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -168,222 +266,194 @@ import Layout from '../layouts/Layout.astro';
     height: 100%;
     background-size: cover;
     background-position: center;
-    z-index: 1;
+    will-change: transform;
   }
 
-  .hero-content {
-    position: relative;
-    z-index: 5;
-  }
-
-  .hero-title {
-    font-size: 3rem;
-    color: var(--color-branco);
-    margin-bottom: var(--space-xs);
-  }
-
-  .hero-subtitle {
-    font-family: var(--font-interface);
-    font-size: 1.1rem;
-    color: var(--color-amarelo-cca);
-    max-width: 600px;
-    margin: 0 auto;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  /* History & Concept layouts */
-  .grid-layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-xl);
-    align-items: center;
-  }
-
-  @media (min-width: 992px) {
-    .grid-layout {
-      grid-template-columns: 1.1fr 0.9fr;
-    }
-    
-    .grid-layout.reverse {
-      grid-template-columns: 0.9fr 1.1fr;
-    }
-    
-    .grid-layout.reverse .text-column {
-      grid-column: 2;
-    }
-    
-    .grid-layout.reverse .image-column {
-      grid-column: 1;
-      grid-row: 1;
-    }
-  }
-
-  .text-column h2 {
-    font-size: 2.25rem;
+  /* Full bleed section container */
+  .acasa-section {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    align-items: stretch;
+    overflow: hidden;
     border: none;
-    margin-top: var(--space-sm);
-    margin-bottom: var(--space-md);
+  }
+
+  /* Columns */
+  .col-35 {
+    width: 35%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .col-65 {
+    width: 65%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  /* Text column spacing & typography */
+  .text-col {
+    padding: 6% 8%;
+  }
+
+  .text-col h2 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: normal;
+    color: #162e58; /* Premium slate/navy blue */
+    margin: 0 0 1.25rem 0;
+    padding: 0;
+    border-bottom: none; /* Override standard global.css h2 borders */
+    line-height: 1.2;
+  }
+
+  .text-col p {
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: #2c3e50; /* Refined editorial grey-blue body */
+    margin: 0;
     padding: 0;
   }
 
-  .section-badge {
-    background-color: transparent;
-    color: var(--color-ouro);
-    border: 1px solid var(--color-ouro);
-    padding: 4px 12px;
-    font-family: var(--font-interface);
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    display: inline-block;
+  .text-col p + p {
+    margin-top: 1rem;
   }
 
-  .image-wrapper {
-    position: relative;
-    border-radius: 4px;
-    overflow: hidden;
-    background-color: var(--color-branco);
-    padding: var(--space-sm);
-    border: 1px solid rgba(26, 26, 26, 0.08);
-  }
-
-  .featured-img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover;
-  }
-
-  .caption {
-    font-family: var(--font-interface);
-    font-size: 0.75rem;
-    color: var(--color-carvao);
-    margin-top: var(--space-sm);
-    font-style: italic;
-  }
-
-  .shadow-premium {
-    box-shadow: 0 15px 35px rgba(26, 26, 26, 0.06);
-  }
-
-  /* Spaces section */
-  .spaces-section {
-    background-color: var(--color-branco);
-    border-top: 1px solid rgba(26, 26, 26, 0.05);
-    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
-  }
-
-  .spaces-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-lg);
-    margin-top: var(--space-xl);
-  }
-
-  @media (min-width: 768px) {
-    .spaces-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .spaces-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .space-item {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .space-icon {
-    font-size: 2.5rem;
-    margin-bottom: var(--space-sm);
-  }
-
-  .space-item h3 {
-    font-size: 1.25rem;
-    margin-top: 0;
-    margin-bottom: var(--space-sm);
-  }
-
-  .space-item p {
-    font-size: 0.9rem;
-    color: var(--color-carvao);
-    line-height: 1.6;
-    margin-bottom: 0;
-  }
-
-  /* Specs Box */
-  .specs-box {
-    background-color: var(--color-creme);
-    padding: var(--space-lg);
-    border-left: 3px solid var(--color-amarelo-cca);
-    margin: var(--space-md) 0 var(--space-lg) 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-sm);
-  }
-
-  .spec-detail {
-    font-family: var(--font-interface);
-    font-size: 0.9rem;
-  }
-
-  .spec-detail strong {
-    color: var(--color-preto-editorial);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .helper-text {
-    font-size: 0.9rem;
-    color: var(--color-carvao);
-    font-style: italic;
-  }
-
-  /* Gallery section */
-  .gallery-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-md);
-    margin-top: var(--space-xl);
-  }
-
-  @media (min-width: 576px) {
-    .gallery-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 992px) {
-    .gallery-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .gallery-item {
+  /* Image column content sizing */
+  .img-col {
     position: relative;
     overflow: hidden;
-    height: 250px;
-    border: 1px solid rgba(26, 26, 26, 0.05);
-    background-color: var(--color-branco);
-    padding: var(--space-xs);
   }
 
-  .gallery-item img {
+  .img-col img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition-smooth);
+    display: block;
   }
 
-  .gallery-item:hover img {
-    transform: scale(1.05);
+  /* Slideshow Custom Styling */
+  .slideshow-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .slideshow-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: grab;
+  }
+
+  .slideshow-track:active {
+    cursor: grabbing;
+  }
+
+  .slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+  }
+
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  /* Sutil chevron arrows directly overlaying the image */
+  .nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 3.5rem;
+    font-weight: 300;
+    cursor: pointer;
+    padding: 1.5rem;
+    z-index: 10;
+    transition: color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .nav-btn:hover {
+    color: rgba(255, 255, 255, 1);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .prev-btn {
+    left: 10px;
+  }
+
+  .next-btn {
+    right: 10px;
+  }
+
+  /* Subtle dots indicators */
+  .dots-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .dot.active {
+    background-color: rgba(255, 255, 255, 1);
+    transform: scale(1.2);
+  }
+
+  /* Responsive stacking on tablet/mobile screens */
+  @media (max-width: 991px) {
+    .acasa-section {
+      flex-direction: column;
+    }
+
+    .col-35, .col-65 {
+      width: 100%;
+    }
+
+    /* Keep slideshow landscape on mobile */
+    .slideshow-container {
+      aspect-ratio: 16 / 10;
+      height: auto;
+    }
+
+    /* Reverse some layout directions on mobile so text always goes first */
+    .acasa-section:nth-of-type(even) {
+      flex-direction: column-reverse;
+    }
   }
 </style>
