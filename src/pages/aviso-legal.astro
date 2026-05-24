@@ -1,0 +1,100 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Aviso Legal | Casa de Castro Alves" description="Aviso Legal e Termos de Uso do website da Casa de Castro Alves.">
+  <section class="legal-page-section">
+    <div class="container legal-container">
+      <h1 class="legal-title">Aviso Legal</h1>
+      
+      <div class="legal-content">
+        <p class="last-updated">Última atualização: 24 de maio de 2026</p>
+        
+        <h2>1. Informações de Identificação</h2>
+        <p>
+          Este website é de propriedade e gerido pelo <strong>Instituto Casa de Castro Alves</strong>, sediado na Rua do Passo, 52, Santo Antônio Além do Carmo, Salvador - BA, CEP 40301-408.
+        </p>
+        <p>
+          Para qualquer esclarecimento ou contato, disponibilizamos o e-mail <a href="mailto:casadecastroalves@gmail.com">casadecastroalves@gmail.com</a> e o telefone/WhatsApp <a href="tel:+5571991296555">71 99129-6555</a>.
+        </p>
+
+        <h2>2. Propriedade Intelectual</h2>
+        <p>
+          Todo o conteúdo deste website, incluindo textos, imagens, vídeos, fotografias, logotipos, ícones e design gráfico, é de propriedade do Instituto Casa de Castro Alves ou de terceiros que autorizaram o seu uso, estando protegido pelas leis brasileiras e internacionais de propriedade intelectual.
+        </p>
+        <p>
+          É proibida qualquer reprodução, distribuição, modificação ou uso comercial de qualquer parte do conteúdo deste site sem a autorização prévia e expressa por escrito do Instituto.
+        </p>
+
+        <h2>3. Limitação de Responsabilidade</h2>
+        <p>
+          O Instituto Casa de Castro Alves envida esforços constantes para manter as informações do website precisas e atualizadas. No entanto, não nos responsabilizamos por eventuais erros tipográficos, omissões ou desatualizações temporárias nos conteúdos, especialmente em programações de shows e eventos que estão sujeitos a alterações sem aviso prévio.
+        </p>
+        <p>
+          Este site pode conter links para sites de terceiros (como formulários do Google ou redes sociais). Esses links são fornecidos para sua conveniência e não implicam qualquer aprovação ou responsabilidade pelo conteúdo desses sites externos.
+        </p>
+
+        <h2>4. Lei Aplicável e Foro</h2>
+        <p>
+          Este Aviso Legal é regido pelas leis da República Federativa do Brasil. Fica eleito o Foro da Comarca de Salvador, Bahia, para dirimir qualquer controvérsia decorrente da utilização deste website.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .legal-page-section {
+    background-color: var(--color-creme);
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-2xl);
+  }
+
+  .legal-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .legal-title {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-lg);
+    border-bottom: 2px solid var(--color-amarelo-cca);
+    padding-bottom: var(--space-sm);
+  }
+
+  .last-updated {
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    color: var(--color-carvao);
+    margin-bottom: var(--space-lg);
+    font-style: italic;
+  }
+
+  .legal-content {
+    line-height: 1.8;
+  }
+
+  .legal-content h2 {
+    font-size: 1.5rem;
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-sm);
+    border: none;
+    padding-bottom: 0;
+  }
+
+  .legal-content p {
+    margin-bottom: var(--space-md);
+    font-size: 1.05rem;
+    color: var(--color-carvao);
+  }
+
+  .legal-content a {
+    color: var(--color-ouro);
+    text-decoration: underline;
+    transition: var(--transition-fast);
+  }
+
+  .legal-content a:hover {
+    color: var(--color-preto-editorial);
+  }
+</style>

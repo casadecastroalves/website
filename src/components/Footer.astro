@@ -73,8 +73,17 @@ const { showSponsors = false } = Astro.props;
   <!-- Copyright -->
   <div class="footer-bottom">
     <div class="container bottom-container">
-      <p>&copy; 2026 Casa de Castro Alves. Todos os direitos reservados.</p>
-      <p class="credit">Desenvolvido com carinho por Astro & Grimaux</p>
+      <div class="bottom-left">
+        <p>&copy; 2026 Casa de Castro Alves. Todos os direitos reservados.</p>
+        <p class="credit">Desenvolvido com carinho por Astro & Grimaux</p>
+      </div>
+      <div class="bottom-right">
+        <nav class="footer-legal-nav" aria-label="Menu Legal">
+          <a href="/aviso-legal">Aviso Legal</a>
+          <a href="/politica-de-privacidade">Política de Privacidade</a>
+          <a href="/politica-de-cookies">Política de Cookies</a>
+        </nav>
+      </div>
     </div>
   </div>
 </footer>
@@ -243,7 +252,43 @@ const { showSponsors = false } = Astro.props;
   @media (min-width: 768px) {
     .bottom-container {
       flex-direction: row;
+      align-items: center;
     }
+  }
+
+  .bottom-left {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .bottom-right {
+    margin-top: var(--space-sm);
+  }
+
+  @media (min-width: 768px) {
+    .bottom-right {
+      margin-top: 0;
+    }
+  }
+
+  .footer-legal-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  .footer-legal-nav a {
+    color: #666666;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: var(--transition-fast);
+  }
+
+  .footer-legal-nav a:hover {
+    color: var(--color-amarelo-cca);
   }
 
   .credit {
