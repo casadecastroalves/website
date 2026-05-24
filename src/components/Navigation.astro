@@ -165,9 +165,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: var(--space-lg);
-    padding: var(--space-2xl) var(--space-lg);
+    padding: var(--space-xl) var(--space-lg);
     z-index: 1005;
     transform: translateX(100%);
     visibility: hidden;
@@ -212,7 +212,7 @@
       const isActive = menuToggle.classList.toggle('active');
       mobileMenu.classList.toggle('active');
       menuToggle.setAttribute('aria-expanded', isActive.toString());
-      document.body.style.overflow = isActive ? 'hidden' : 'auto';
+      document.body.classList.toggle('menu-open', isActive);
     });
 
     // Close mobile menu when a link is clicked
@@ -222,7 +222,7 @@
         menuToggle.classList.remove('active');
         mobileMenu.classList.remove('active');
         menuToggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = 'auto';
+        document.body.classList.remove('menu-open');
       });
     });
   }

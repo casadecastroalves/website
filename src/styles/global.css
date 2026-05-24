@@ -343,3 +343,9 @@ section {
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
+/* Mobile menu scroll-lock support */
+body.menu-open {
+  overflow: hidden;
+  height: 100vh;
+}
+
