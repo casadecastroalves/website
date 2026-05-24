@@ -224,6 +224,7 @@ export async function getStaticPaths() {
     thumb: "/images/edicoes/edicao-11/header/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-header.jpg",
     banner: "/images/edicoes/edicao-11/header/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-header.jpg",
     youtube: "",
+    inscricaoLink: "https://docs.google.com/forms/d/e/1FAIpQLSeOfZND83kHftz1_xb_XOCYgGz8u4r_FTQoiJJHut_A6RUcjw/viewform",
     descricao: "No dia 7 de Junho de 2026, às 19h, o Instituto Casa de Castro Alves sedia a 11ª edição do Movimento Irun, trazendo a estreia do show 'Sente O Tempo Passar', do Duo iRê iRê, formado pelos artistas Maíra e Ícaro Santiago. Esta edição é guiada pelo tema-manifesto: 'Olhe bem as montanhas, as águas e os povos: Escola das Águas Nascentes'. Registro fotográfico por Eric Lawrence.",
     detalhes: [
       "Estreia do show 'Sente O Tempo Passar', unindo cânticos tradicionais, ritmos afro-diaspóricos, jazz e sintetizadores eletrônicos.",
@@ -320,6 +321,11 @@ const posters = Array.isArray((edicaoInfo as any).posters)
       <div style="margin-top: 2rem;">
         <span class="badge-edicao-dark">{edicaoInfo.data}</span>
       </div>
+      {(edicaoInfo as any).inscricaoLink && (
+        <div style="margin-top: 1.5rem;">
+          <a href={(edicaoInfo as any).inscricaoLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary">Inscreva-se</a>
+        </div>
+      )}
     </div>
   </section>
 
@@ -387,11 +393,17 @@ const posters = Array.isArray((edicaoInfo as any).posters)
           )}
 
           <h3 class="program-title">Atividades e Destaques</h3>
-          <ul class="highlights-list">
+          <ul class="highlights-list" style="margin-bottom: 2rem;">
             {programItems.map((det) => (
               <li>{det}</li>
             ))}
           </ul>
+
+          {(edicaoInfo as any).inscricaoLink && (
+            <div style="margin-bottom: 2.5rem;">
+              <a href={(edicaoInfo as any).inscricaoLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 12px 32px;">Inscreva-se na Próxima Edição</a>
+            </div>
+          )}
 
           <div class="artist-card">
             <h4>Artista Convidado(a)</h4>
