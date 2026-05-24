@@ -173,12 +173,14 @@
     padding: var(--space-2xl) var(--space-lg);
     z-index: 1005;
     transform: translateX(100%);
+    visibility: hidden;
     transition: var(--transition-smooth);
     border-top: 1px solid rgba(26, 26, 26, 0.05);
   }
 
   .nav-mobile.active {
     transform: translateX(0);
+    visibility: visible;
   }
 
   .mobile-nav-link {
