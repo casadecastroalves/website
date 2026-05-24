@@ -5,7 +5,15 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Casa de Castro Alves | Memória, Arte e Poesia no Centro Histórico">
-  <!-- Hero Section -->
+  <!-- 
+    ========================================================================
+    HERO PADRÃO (DESATIVADO TEMPORARIAMENTE)
+    Para restaurar no dia 8 de Junho:
+    1. Descomente a seção "<section class="hero-section"> ... </section>" abaixo.
+    2. Comente ou remova a seção "<section class="hero-section hero-promo-11"> ... </section>" da 11ª Edição.
+    ========================================================================
+  -->
+  <!--
   <section class="hero-section">
     <div class="hero-bg" style="background-image: linear-gradient(to bottom, rgba(26, 26, 26, 0.4), rgba(26, 26, 26, 0.85)), url('/images/a_casa/casa-de-castro-alves-1-1-1024x576.png');"></div>
     <div class="container hero-content">
@@ -19,6 +27,25 @@ import Layout from '../layouts/Layout.astro';
       <div class="hero-actions animate-fade-in-delayed">
         <a href="/a-casa" class="btn btn-primary">Conheça a Casa</a>
         <a href="/contato" class="btn btn-outline-white">Agendar Visita</a>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <!-- HERO PROMOCIONAL — 11ª EDIÇÃO DO MOVIMENTO IRUN (Ativo até 7 de Junho) -->
+  <section class="hero-section hero-promo-11">
+    <div class="hero-bg" style="background-image: linear-gradient(to bottom, rgba(26, 26, 26, 0.55), rgba(26, 26, 26, 0.9)), url('/images/shows/MOVIMENTO-IRUN-11-EDICAO-7-DE-JUNHO-WEBSITE.jpg');"></div>
+    <div class="container hero-content">
+      <h1 class="hero-title animate-fade-in">
+        11ª Edição do Movimento Irun<br />
+        <span class="highlight">Sente O Tempo Passar</span>
+      </h1>
+      <p class="hero-subtitle animate-fade-in-delayed">
+        Participe do encerramento de ciclo na Casa de Castro Alves. Estreia do Duo iRê iRê, exposição da Escola das Águas Nascentes, feira agroecológica e mostras de Design Caboclo.
+      </p>
+      <div class="hero-actions animate-fade-in-delayed">
+        <a href="https://forms.gle/73Xom6hrDvVTsZwr7" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Garanta Seu Ingresso Gratuito</a>
+        <a href="/movimento-irun/edicao-11" class="btn btn-outline-white">Ver Programação</a>
       </div>
     </div>
   </section>

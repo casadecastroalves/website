@@ -116,20 +116,34 @@ const edicoes = [
     </div>
   </section>
 
-  <!-- Conceito (Text-Only Editorial Block) -->
+  <!-- Conceito (Editorial Block with Image) -->
   <section class="conceito-section">
-    <div class="container">
-      <span class="section-badge">O que é</span>
-      <h2>Convergência e Coletividade</h2>
-      <p class="lead-text">
-        O <strong>Movimento Irun</strong> reúne poesia, saberes ancestrais, mulheres da Teia dos Povos, arte popular e música como fundamentos de uma aliança ética, política e cultural pela dignidade humana e pelo Bem Viver.
-      </p>
-      <p>
-        O nome <strong>“Irun”</strong> tem origem no tupi-guarani e carrega o significado de <em>“companheiro”</em> ou <em>“irmão”</em>, refletindo o espírito de colaboração e coletividade do projeto. A iniciativa promove a convergência entre o design contemporâneo e as tradições de povos originários e comunidades quilombolas da Bahia.
-      </p>
-      <p>
-        Idealizada pela estilista Márcia Ganem em conjunto com lideranças da Teia dos Povos, a plataforma desenvolve ciclos de formação de longa duração, giras de saberes, mostras de Design Caboclo e apresentações artísticas que ocupam a Casa de Castro Alves de forma pulsante.
-      </p>
+    <div class="container conceito-grid-layout">
+      <div class="conceito-text">
+        <span class="section-badge">O que é</span>
+        <h2>Convergência e Coletividade</h2>
+        <p class="lead-text">
+          O <strong>Movimento Irun</strong> reúne poesia, saberes ancestrais, mulheres da Teia dos Povos, arte popular e música como fundamentos de uma aliança ética, política e cultural pela dignidade humana e pelo Bem Viver.
+        </p>
+        <p>
+          O nome <strong>“Irun”</strong> tem origem no tupi-guarani e carrega o significado de <em>“companheiro”</em> ou <em>“irmão”</em>, refletindo o espírito de colaboração e coletividade do projeto. A iniciativa promove a convergência entre o design contemporâneo e as tradições de povos originários e comunidades quilombolas da Bahia.
+        </p>
+        <p>
+          Idealizada pela estilista Márcia Ganem em conjunto com lideranças da Teia dos Povos, a plataforma desenvolve ciclos de formação de longa duração, giras de saberes, mostras de Design Caboclo e apresentações artísticas que ocupam a Casa de Castro Alves de forma pulsante.
+        </p>
+      </div>
+      <div class="conceito-image-wrapper">
+        <div class="tamandua-image-card shadow-premium">
+          <img 
+            src="/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg" 
+            alt="Tamanduá Tupinambá por Luciano Payayá" 
+            class="tamandua-img"
+          />
+          <div class="tamandua-credit">
+            TAMANDUA TUPINAMBA por LUCIANO PAYAYÁ
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -480,6 +494,44 @@ const edicoes = [
   /* Conceito Section */
   .conceito-section {
     background-color: var(--color-creme);
+  }
+
+  .conceito-grid-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+
+  @media (min-width: 992px) {
+    .conceito-grid-layout {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+  }
+
+  .tamandua-image-card {
+    background-color: var(--color-branco);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 4px;
+  }
+
+  .tamandua-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .tamandua-credit {
+    font-family: var(--font-interface);
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-carvao);
+    margin-top: var(--space-xs);
+    text-align: right;
   }
 
   .text-center-editorial {
