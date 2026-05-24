@@ -248,6 +248,43 @@ const romanNumerals = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX
 const romanKey = romanNumerals[edicaoInfo.num] || "";
 const parsedData = (parsedEditions as any)[romanKey] || { desc: [], program: [] };
 const descriptionParagraphs = parsedData.desc && parsedData.desc.length > 0 ? parsedData.desc : [edicaoInfo.descricao];
+
+// Dynamically split description paragraph text to limit visible intro text to ~1000 characters.
+let visibleParagraphs: string[] = [];
+let hiddenParagraphs: string[] = [];
+let currentLen = 0;
+const LIMIT = 1000;
+
+for (let i = 0; i < descriptionParagraphs.length; i++) {
+  const para = descriptionParagraphs[i];
+  if (currentLen >= LIMIT) {
+    hiddenParagraphs.push(para);
+  } else if (currentLen + para.length <= LIMIT) {
+    visibleParagraphs.push(para);
+    currentLen += para.length;
+  } else {
+    // This paragraph crosses the 1000-character mark
+    const remainingAllowed = LIMIT - currentLen;
+    let splitIndex = para.lastIndexOf(' ', remainingAllowed);
+    if (splitIndex === -1) {
+      splitIndex = para.indexOf(' ', remainingAllowed);
+    }
+    
+    if (splitIndex !== -1 && splitIndex > 0) {
+      const firstPart = para.substring(0, splitIndex).trim();
+      const secondPart = para.substring(splitIndex).trim();
+      if (firstPart) visibleParagraphs.push(firstPart);
+      if (secondPart) hiddenParagraphs.push(secondPart);
+    } else {
+      const firstPart = para.substring(0, remainingAllowed).trim();
+      const secondPart = para.substring(remainingAllowed).trim();
+      if (firstPart) visibleParagraphs.push(firstPart);
+      if (secondPart) hiddenParagraphs.push(secondPart);
+    }
+    currentLen = LIMIT;
+  }
+}
+
 const programItems = parsedData.program && parsedData.program.length > 0 ? parsedData.program : edicaoInfo.detalhes;
 const hasMainVideo = edicaoInfo.youtube && edicaoInfo.num !== 9 && edicaoInfo.num !== 10 && edicaoInfo.num !== 11;
 const posters = Array.isArray((edicaoInfo as any).posters) 
@@ -328,13 +365,16 @@ const posters = Array.isArray((edicaoInfo as any).posters)
         <!-- Text Column -->
         <div class="text-column">
           <h2>Sobre esta Edição</h2>
-          {descriptionParagraphs.length > 0 && (
-            <p class="lead-text">{descriptionParagraphs[0]}</p>
+          {visibleParagraphs.length > 0 && (
+            <p class="lead-text">{visibleParagraphs[0]}</p>
           )}
-          {descriptionParagraphs.length > 1 && (
+          {visibleParagraphs.slice(1).map((para) => (
+            <p class="body-text">{para}</p>
+          ))}
+          {hiddenParagraphs.length > 0 && (
             <>
               <div class="description-expandable-content closed" id="description-expandable-wrapper">
-                {descriptionParagraphs.slice(1).map((para) => (
+                {hiddenParagraphs.map((para) => (
                   <p class="body-text">{para}</p>
                 ))}
               </div>
