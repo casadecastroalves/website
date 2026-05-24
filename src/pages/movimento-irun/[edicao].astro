@@ -328,9 +328,19 @@ const posters = Array.isArray((edicaoInfo as any).posters)
         <!-- Text Column -->
         <div class="text-column">
           <h2>Sobre esta Edição</h2>
-          {descriptionParagraphs.map((para, index) => (
-            <p class={index === 0 ? "lead-text" : "body-text"}>{para}</p>
-          ))}
+          {descriptionParagraphs.length > 0 && (
+            <p class="lead-text">{descriptionParagraphs[0]}</p>
+          )}
+          {descriptionParagraphs.length > 1 && (
+            <>
+              <div class="description-expandable-content closed" id="description-expandable-wrapper">
+                {descriptionParagraphs.slice(1).map((para) => (
+                  <p class="body-text">{para}</p>
+                ))}
+              </div>
+              <button class="btn-read-more" id="btn-toggle-description">Leia +</button>
+            </>
+          )}
 
           <h3 class="program-title">Atividades e Destaques</h3>
           <ul class="highlights-list">
@@ -1209,18 +1219,74 @@ const posters = Array.isArray((edicaoInfo as any).posters)
     right: var(--space-lg);
   }
   
-  @media (max-width: 768px) {
-    .page-nav-arrow {
-      padding: var(--space-xs);
+    @media (max-width: 768px) {
+      .page-nav-arrow {
+        padding: var(--space-xs);
+      }
+      .page-nav-arrow.prev-page-arrow {
+        left: var(--space-xs);
+      }
+      .page-nav-arrow.next-page-arrow {
+        right: var(--space-xs);
+      }
     }
-    .page-nav-arrow.prev-page-arrow {
-      left: var(--space-xs);
+
+    /* Collapsible / Expandable description text */
+    .description-expandable-content {
+      max-height: 1000px;
+      opacity: 1;
+      overflow: hidden;
+      transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
     }
-    .page-nav-arrow.next-page-arrow {
-      right: var(--space-xs);
+
+    .description-expandable-content.closed {
+      max-height: 0;
+      opacity: 0;
+      pointer-events: none;
     }
-  }
-</style>
+
+    .btn-read-more {
+      background: none;
+      border: none;
+      color: var(--color-ouro);
+      font-family: var(--font-interface);
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      padding: var(--space-xs) 0;
+      margin-top: var(--space-xs);
+      margin-bottom: var(--space-md);
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-read-more::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: var(--color-ouro);
+      transform: scaleX(0.3);
+      transform-origin: left;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+    }
+
+    .btn-read-more:hover {
+      color: var(--color-amarelo-cca);
+      transform: translateX(4px);
+    }
+
+    .btn-read-more:hover::after {
+      transform: scaleX(1);
+      background-color: var(--color-amarelo-cca);
+    }
+  </style>
 
 <script>
   // Edition Slideshow Logic
@@ -1317,4 +1383,21 @@ const posters = Array.isArray((edicaoInfo as any).posters)
       window.addEventListener('resize', updateSlider);
     }
   });
+
+  // Leia + Toggle Logic
+  const toggleBtn = document.getElementById('btn-toggle-description');
+  const expandableContent = document.getElementById('description-expandable-wrapper');
+
+  if (toggleBtn && expandableContent) {
+    toggleBtn.addEventListener('click', () => {
+      const isClosed = expandableContent.classList.contains('closed');
+      if (isClosed) {
+        expandableContent.classList.remove('closed');
+        toggleBtn.textContent = 'Recolher';
+      } else {
+        expandableContent.classList.add('closed');
+        toggleBtn.textContent = 'Leia +';
+      }
+    });
+  }
 </script>
