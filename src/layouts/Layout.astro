@@ -53,7 +53,14 @@ const absoluteOgImage = ogImage.startsWith('http')
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={absoluteOgImage} />
 
-
+    <!-- Google Analytics (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-2J7VGG46JY"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){window.dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-2J7VGG46JY');
+    </script>
   </head>
   <body>
     <!-- Top-level Navigation -->
