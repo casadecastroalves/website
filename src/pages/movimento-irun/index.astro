@@ -1036,46 +1036,50 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
       });
     }
 
-    selectorItems.forEach(item => {
-      item.addEventListener('click', () => {
-        selectorItems.forEach(el => el.classList.remove('active'));
-        item.classList.add('active');
+    function selectDesigner(item: Element) {
+      selectorItems.forEach(el => el.classList.remove('active'));
+      item.classList.add('active');
 
-        // De-activate cover state
-        if (showroomStage) {
-          showroomStage.classList.remove('cover-active');
-        }
+      // De-activate cover state
+      if (showroomStage) {
+        showroomStage.classList.remove('cover-active');
+      }
 
-        // Extract attributes
-        const name = item.getAttribute('data-name') || '';
-        const specialty = item.getAttribute('data-specialty') || '';
-        const instagram = item.getAttribute('data-instagram') || '';
-        const quote = item.getAttribute('data-quote') || '';
-        const obrasRaw = item.getAttribute('data-obras') || '[]';
-        const obras = JSON.parse(obrasRaw);
+      // Extract attributes
+      const name = item.getAttribute('data-name') || '';
+      const specialty = item.getAttribute('data-specialty') || '';
+      const instagram = item.getAttribute('data-instagram') || '';
+      const quote = item.getAttribute('data-quote') || '';
+      const obrasRaw = item.getAttribute('data-obras') || '[]';
+      const obras = JSON.parse(obrasRaw);
 
-        // Update Text Info
-        if (stageName) stageName.textContent = name;
-        if (stageSpecialty) stageSpecialty.textContent = specialty;
-        if (stageQuote) stageQuote.textContent = `"${quote}"`;
-        
-        if (stageInstagram) {
+      // Update Text Info
+      if (stageName) stageName.textContent = name;
+      if (stageSpecialty) stageSpecialty.textContent = specialty;
+      if (stageQuote) stageQuote.textContent = `"${quote}"`;
+      
+      if (stageInstagram) {
+        if (instagram) {
           stageInstagram.style.display = 'inline-flex';
           stageInstagram.href = `https://instagram.com/${instagram.substring(1)}`;
           const span = stageInstagram.querySelector('span');
           if (span) span.textContent = instagram;
+        } else {
+          stageInstagram.style.display = 'none';
         }
+      }
 
-        // Update Stage Main Image
-        if (stageImg && obras.length > 0) {
-          stageImg.src = obras[0].src;
-          stageImg.alt = obras[0].titulo;
-          const globalIdx = allShowroomObras.findIndex(o => o.src === obras[0].src);
-          stageImg.setAttribute('data-index', globalIdx.toString());
-        }
+      // Update Stage Main Image
+      if (stageImg && obras.length > 0) {
+        stageImg.src = obras[0].src;
+        stageImg.alt = obras[0].titulo;
+        const globalIdx = allShowroomObras.findIndex(o => o.src === obras[0].src);
+        stageImg.setAttribute('data-index', globalIdx.toString());
+      }
 
-        // Rebuild Stage Thumbnails
-        if (stageThumbs) {
+      // Rebuild Stage Thumbnails
+      if (stageThumbs) {
+        if (obras.length > 0) {
           stageThumbs.style.display = 'flex';
           stageThumbs.innerHTML = obras.map((obra: any, idx: number) => `
             <button 
@@ -1088,7 +1092,16 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
           `).join('');
           
           bindStageThumbEvents();
+        } else {
+          stageThumbs.style.display = 'none';
+          stageThumbs.innerHTML = '';
         }
+      }
+    }
+
+    selectorItems.forEach(item => {
+      item.addEventListener('click', () => {
+        selectDesigner(item);
       });
     });
 
@@ -1114,9 +1127,19 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         
         const nextItem = items[nextIndex] as HTMLButtonElement;
         if (nextItem) {
-          nextItem.click();
-          // Scroll the list horizontally to center the circle
-          nextItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          selectDesigner(nextItem);
+          // Scroll only the list container horizontally to center the circle, preventing page jumps
+          const selectorList = document.querySelector('.selector-list');
+          if (selectorList) {
+            const listWidth = selectorList.clientWidth;
+            const itemOffset = nextItem.getBoundingClientRect().left - selectorList.getBoundingClientRect().left + selectorList.scrollLeft;
+            const itemWidth = nextItem.clientWidth;
+            const scrollTarget = itemOffset - (listWidth / 2) + (itemWidth / 2);
+            selectorList.scrollTo({
+              left: scrollTarget,
+              behavior: 'smooth'
+            });
+          }
         }
       }, 6000);
     }
@@ -1850,7 +1873,6 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     flex-direction: row;
     overflow-x: auto;
     flex-grow: 1;
-    scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
   }
@@ -1859,7 +1881,6 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     .selector-list {
       flex-direction: column;
       overflow-y: auto;
-      scroll-snap-type: none;
     }
   }
 
@@ -1875,7 +1896,6 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     text-align: left;
     transition: var(--transition-fast);
     min-width: 260px;
-    scroll-snap-align: start;
   }
 
   @media (min-width: 992px) {
