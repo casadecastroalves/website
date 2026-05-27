@@ -10,8 +10,18 @@ import Layout from '../../layouts/Layout.astro';
     <div class="subpage-hero-bg" style="background-image: url('/images/cursos/3-PROGRAMA-BEM-VIVER-CABECALHOS-HEADER-FORMULARIO.png');"></div>
     <div class="subpage-hero-overlay"></div>
     <div class="container subpage-hero-content">
-      <h1 class="subpage-hero-title">Projetos & Cursos</h1>
+      <h1 class="subpage-hero-title">Cursos</h1>
       <p class="subpage-hero-subtitle">Ciclo Formativo</p>
+      <div style="margin-top: 2rem;">
+        <a 
+          href="https://forms.gle/oBxBMZ4YBeDeugB57" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="btn btn-outline-amarelo"
+        >
+          INSCREVA-SE
+        </a>
+      </div>
     </div>
   </section>
 
@@ -86,6 +96,17 @@ import Layout from '../../layouts/Layout.astro';
           </ul>
         </div>
 
+      </div>
+
+      <div class="eixos-footer">
+        <a 
+          href="https://forms.gle/oBxBMZ4YBeDeugB57" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="btn btn-primary"
+        >
+          INSCREVA-SE NO PROGRAMA BEM VIVER
+        </a>
       </div>
     </div>
   </section>
@@ -484,5 +505,23 @@ import Layout from '../../layouts/Layout.astro';
     width: 100%;
     height: auto;
     display: block;
+  }
+
+  /* Outline yellow button for hero overlays */
+  .btn-outline-amarelo {
+    border-color: var(--color-amarelo-cca);
+    color: var(--color-amarelo-cca);
+    background-color: transparent;
+  }
+  .btn-outline-amarelo:hover {
+    background-color: var(--color-amarelo-cca);
+    color: var(--color-preto-editorial);
+    border-color: var(--color-amarelo-cca);
+  }
+
+  .eixos-footer {
+    margin-top: var(--space-xl);
+    display: flex;
+    justify-content: center;
   }
 </style>

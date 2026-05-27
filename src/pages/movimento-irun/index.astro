@@ -128,12 +128,6 @@ const designers = [
         detalhes: ""
       },
       {
-        src: "/images/design_caboclo/artes-daura-3.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
         src: "/images/design_caboclo/artes-daura-4.webp",
         titulo: "",
         tecnica: "",
@@ -261,12 +255,6 @@ const designers = [
       },
       {
         src: "/images/design_caboclo/joao-serafim-5.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/joao-serafim-6.jpg",
         titulo: "",
         tecnica: "",
         detalhes: ""
@@ -480,12 +468,6 @@ const designers = [
         titulo: "",
         tecnica: "",
         detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/sa-criacoes-4.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
       }
     ]
   }
@@ -579,6 +561,17 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
             <li>Giras de Saberes voltadas à sustentabilidade comunitária.</li>
           </ul>
         </div>
+      </div>
+
+      <div class="eixos-footer">
+        <a 
+          href="https://forms.gle/oBxBMZ4YBeDeugB57" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="btn btn-primary"
+        >
+          INSCREVA-SE NO PROGRAMA BEM VIVER
+        </a>
       </div>
     </div>
   </section>
@@ -823,10 +816,53 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     const lightboxInstagram = document.getElementById('lightbox-instagram') as HTMLAnchorElement | null;
     const lightboxInstagramHandle = document.getElementById('lightbox-instagram-handle');
     const lightboxDesc = document.getElementById('lightbox-desc');
+    const lightboxImageContainer = document.querySelector('.lightbox-image-container');
     
     const closeBtn = document.getElementById('lightbox-close-btn');
     const prevBtnL = document.getElementById('lightbox-prev-btn');
     const nextBtnL = document.getElementById('lightbox-next-btn');
+
+    function resetZoom() {
+      if (lightboxImageContainer) {
+        lightboxImageContainer.classList.remove('zoomed');
+      }
+      if (lightboxImg) {
+        lightboxImg.style.transformOrigin = 'center center';
+      }
+    }
+
+    function toggleZoom(e?: MouseEvent) {
+      if (lightboxImageContainer && lightboxImg) {
+        const isZoomed = lightboxImageContainer.classList.toggle('zoomed');
+        if (isZoomed && e) {
+          updateZoomOrigin(e);
+        } else {
+          lightboxImg.style.transformOrigin = 'center center';
+        }
+      }
+    }
+
+    function updateZoomOrigin(e: MouseEvent) {
+      if (lightboxImageContainer && lightboxImg && lightboxImageContainer.classList.contains('zoomed')) {
+        const rect = lightboxImageContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const xPercent = (x / rect.width) * 100;
+        const yPercent = (y / rect.height) * 100;
+        lightboxImg.style.transformOrigin = `${xPercent}% ${yPercent}%`;
+      }
+    }
+
+    if (lightboxImg) {
+      lightboxImg.addEventListener('click', (e) => toggleZoom(e));
+    }
+
+    if (lightboxImageContainer) {
+      lightboxImageContainer.addEventListener('mousemove', (e) => {
+        updateZoomOrigin(e as MouseEvent);
+      });
+      lightboxImageContainer.addEventListener('mouseleave', resetZoom);
+    }
 
     function openLightbox(obrasList: LightboxItem[], index: number) {
       activeObras = obrasList;
@@ -844,10 +880,12 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         lightbox.style.display = 'none';
         lightbox.setAttribute('aria-hidden', 'true');
         document.body.style.overflow = ''; // Restore scroll
+        resetZoom();
       }
     }
 
     function updateLightboxContent() {
+      resetZoom();
       if (activeObras.length > 0 && activeIndex >= 0 && activeIndex < activeObras.length) {
         const item = activeObras[activeIndex];
         if (lightboxImg) lightboxImg.src = item.src;
@@ -2534,6 +2572,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     border-radius: 2px;
     overflow: hidden;
     margin-bottom: var(--space-md);
+    position: relative;
   }
 
   @media (max-width: 576px) {
@@ -2547,6 +2586,14 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     height: 100%;
     object-fit: contain;
     display: block;
+    cursor: zoom-in;
+    transition: transform 0.25s ease-out;
+    transform-origin: center center;
+  }
+
+  .lightbox-image-container.zoomed img {
+    transform: scale(3.0);
+    cursor: zoom-out;
   }
 
   .lightbox-meta {
@@ -2665,6 +2712,12 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     grid-template-columns: 1fr;
     gap: var(--space-xl);
     margin-top: var(--space-xl);
+  }
+
+  .eixos-footer {
+    margin-top: var(--space-xl);
+    display: flex;
+    justify-content: center;
   }
 
   @media (min-width: 768px) {
