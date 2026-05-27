@@ -570,7 +570,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
           rel="noopener noreferrer" 
           class="btn btn-primary"
         >
-          INSCREVA-SE NO PROGRAMA BEM VIVER
+          INSCREVA-SE
         </a>
       </div>
     </div>
@@ -653,8 +653,8 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
   <section class="showroom-section">
     <div class="container">
       <div class="section-header text-center">
-        <span class="section-badge">Exposição e Moda</span>
-        <h2>Showroom Design Caboclo</h2>
+        <span class="section-badge">Showroom</span>
+        <h2>Design Caboclo</h2>
         <p class="section-subtitle">Conheça os designers que unem sustentabilidade e inovação contemporânea na Bahia. Clique nas imagens para ampliar em alta definição.</p>
       </div>
 
@@ -933,6 +933,18 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     if (nextBtnL) nextBtnL.addEventListener('click', nextImage);
     if (prevBtnL) prevBtnL.addEventListener('click', prevImage);
 
+    // Close Lightbox when clicking outside the frame (on large screens only)
+    if (lightbox) {
+      lightbox.addEventListener('click', (e) => {
+        if (window.innerWidth > 768) {
+          const target = e.target as HTMLElement;
+          if (target === lightbox || target.classList.contains('lightbox-content-wrapper')) {
+            closeLightbox();
+          }
+        }
+      });
+    }
+
     // Keyboard navigation
     window.addEventListener('keydown', (e) => {
       if (lightbox && lightbox.style.display === 'flex') {
@@ -1079,6 +1091,53 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         }
       });
     });
+
+    // Showroom Autoplay for Exhibitor Circles (especially on Mobile)
+    let showroomAutoplayTimer: any = null;
+    let userInteractedWithShowroom = false;
+
+    function startShowroomAutoplay() {
+      // Autoplay interval of 6 seconds
+      showroomAutoplayTimer = setInterval(() => {
+        if (userInteractedWithShowroom) return;
+        
+        const items = document.querySelectorAll('.selector-item');
+        if (!items.length) return;
+        
+        const activeItem = document.querySelector('.selector-item.active');
+        let nextIndex = 0;
+        
+        if (activeItem) {
+          const currentIndex = Array.from(items).indexOf(activeItem);
+          nextIndex = (currentIndex + 1) % items.length;
+        }
+        
+        const nextItem = items[nextIndex] as HTMLButtonElement;
+        if (nextItem) {
+          nextItem.click();
+          // Scroll the list horizontally to center the circle
+          nextItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+        }
+      }, 6000);
+    }
+
+    function stopShowroomAutoplay() {
+      userInteractedWithShowroom = true;
+      if (showroomAutoplayTimer) {
+        clearInterval(showroomAutoplayTimer);
+        showroomAutoplayTimer = null;
+      }
+    }
+
+    // Start on load
+    startShowroomAutoplay();
+
+    // Listen for manual interactions to stop autoplay and let the user browse at their own pace
+    const selectorListContainer = document.querySelector('.selector-list');
+    if (selectorListContainer) {
+      selectorListContainer.addEventListener('touchstart', stopShowroomAutoplay, { passive: true });
+      selectorListContainer.addEventListener('mousedown', stopShowroomAutoplay, { passive: true });
+    }
 
     // 2. Carousel Controller & Lightbox Binding for General Photos
     const track = document.getElementById('carousel-track');
