@@ -327,7 +327,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
           href="https://docs.google.com/forms/d/e/1FAIpQLSdYlaHZ_6jtI8SrXIyznc4ejZ9JRGsyC8JqBJ85dG9HoKNdhA/viewform" 
           target="_blank" 
           rel="noopener noreferrer" 
-          class="btn btn-primary"
+          class="btn btn-outline-amarelo"
         >
           INSCREVA-SE
         </a>
@@ -1092,6 +1092,18 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
 </Layout>
 
 <style>
+  /* Outline yellow button for hero overlays */
+  .btn-outline-amarelo {
+    border-color: var(--color-amarelo-cca);
+    color: var(--color-amarelo-cca);
+    background-color: transparent;
+  }
+  .btn-outline-amarelo:hover {
+    background-color: var(--color-amarelo-cca);
+    color: var(--color-preto-editorial);
+    border-color: var(--color-amarelo-cca);
+  }
+
   /* Showroom Section Styles */
   .showroom-section {
     background-color: var(--color-branco);
