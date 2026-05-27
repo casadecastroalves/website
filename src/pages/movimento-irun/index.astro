@@ -106,32 +106,44 @@ const edicoes = [
 
 const designers = [
   {
-    id: "djanira-breu",
-    nome: "Djanira Breu",
-    instagram: "@djanira_arte",
-    especialidade: "Arte Têxtil e Bordado",
-    citacao: "Mapas de meu Múndi é a cartografia bordada da trajetória de meu corpo-espaço no espaço-mundo. É o corpo individual que se constrói e se recria dinamicamente com os espaços geográficos, afetivos, políticos e socioculturais do mundo.",
+    id: "artes-daura",
+    nome: "Artes D'Aura",
+    artista: "Kelly Santos Marques",
+    projeto: "Artes D'Aura",
+    instagram: "@artesd.aura",
+    especialidade: "Acessórios de Identidade",
+    citacao: "Aura é mais que uma marca de acessórios: é expressão de ancestralidade, beleza e encanto. Cada peça carrega significado, magia e exclusividade, sempre no inconfundível Padrão Aura.",
+    thumb: "/images/design_caboclo/aura-logo.svg",
     obras: [
       {
-        src: "/images/design_caboclo/djanira-breu-1.png",
-        titulo: "Mapas de meu Múndi I",
-        tecnica: "Bordado e Cartografia Afetiva",
-        detalhes: "Bordado manual com linhas coloridas sobre tecido de algodão cru, representando caminhos de identidade."
+        src: "/images/design_caboclo/artes-daura-1.jpg",
+        titulo: "Colar Padrão Aura",
+        tecnica: "Acessórios de Identidade e Sementes",
+        detalhes: "Colar feito à mão combinando elementos rústicos, contas coloridas e fios estruturados."
       },
       {
-        src: "/images/design_caboclo/djanira-breu-2.jpg",
-        titulo: "Mapas de meu Múndi II",
-        tecnica: "Bordado e Cartografia Afetiva",
-        detalhes: "Trajetórias geométricas em fios e texturas que desenham o corpo no espaço-mundo."
+        src: "/images/design_caboclo/artes-daura-2.png",
+        titulo: "Brincos Encanto",
+        tecnica: "Biojoia com Metais e Elementos Naturais",
+        detalhes: "Brincos exclusivos inspirados na magia e na força das divindades da natureza."
+      },
+      {
+        src: "/images/design_caboclo/artes-daura-3.jpg",
+        titulo: "Pulseira Identidade",
+        tecnica: "Bijuteria Fina Artesanal",
+        detalhes: "Pulseira de montagem manual com pedras e contas de alto contraste estético."
       }
     ]
   },
   {
     id: "itu-croma",
-    nome: "Itú",
+    nome: "CROMA",
+    artista: "Itú",
+    projeto: "CROMA",
     instagram: "@so.itu",
     especialidade: "Crochê e Moda Sustentável",
     citacao: "CROMA é uma marca artesanal de crochê voltada para moda e sustentabilidade, com foco em bolsas, bucket hats e acessórios. Inspira-se em cores, formas e padrões da natureza e da cultura soteropolitana.",
+    thumb: "/images/design_caboclo/so-croma.png",
     obras: [
       {
         src: "/images/design_caboclo/itu-croma-1.png",
@@ -154,11 +166,38 @@ const designers = [
     ]
   },
   {
+    id: "djanira-breu",
+    nome: "Djanira Breu",
+    artista: "Djanira Breu",
+    projeto: null,
+    instagram: "@djanira_arte",
+    especialidade: "Arte Têxtil e Bordado",
+    citacao: "Mapas de meu Múndi é a cartografia bordada da trajetória de meu corpo-espaço no espaço-mundo. É o corpo individual que se constrói e se recria dinamicamente com os espaços geográficos, afetivos, políticos e socioculturais do mundo.",
+    thumb: "/images/design_caboclo/djanira-breu.jpg",
+    obras: [
+      {
+        src: "/images/design_caboclo/djanira-breu-1.png",
+        titulo: "Mapas de meu Múndi I",
+        tecnica: "Bordado e Cartografia Afetiva",
+        detalhes: "Bordado manual com linhas coloridas sobre tecido de algodão cru, representando caminhos de identidade."
+      },
+      {
+        src: "/images/design_caboclo/djanira-breu-2.jpg",
+        titulo: "Mapas de meu Múndi II",
+        tecnica: "Bordado e Cartografia Afetiva",
+        detalhes: "Trajetórias geométricas em fios e texturas que desenham o corpo no espaço-mundo."
+      }
+    ]
+  },
+  {
     id: "joao-serafim",
     nome: "João Serafim",
+    artista: "João Serafim",
+    projeto: null,
     instagram: "@joaoserafimpereira",
     especialidade: "Moda Ética em Fios Naturais",
     citacao: "Ateliê sustentável com compromisso com o cliente e o meio ambiente. Peças em fios naturais como linho, algodão e cânhamo, estampas que refletem identidade e desperdício zero no corte. Retalhos são doados para artesãos locais.",
+    thumb: "/images/design_caboclo/joao-serafim-1.png",
     obras: [
       {
         src: "/images/design_caboclo/joao-serafim-1.png",
@@ -183,9 +222,12 @@ const designers = [
   {
     id: "jurema",
     nome: "Jurema",
+    artista: "Tai Oliver",
+    projeto: "Jurema",
     instagram: "@jurematelie",
     especialidade: "Biojoias e Acessórios Ancestrais",
     citacao: "A Jurema é uma marca que desenvolve art joias inspiradas na estética Afrodiaspórica e Tupinambá, conectadas com elementos das religiões de matriz africana. Suas peças realçam a alma e fortalecem o Ser Feminino.",
+    thumb: "/images/design_caboclo/jurema-1.png",
     obras: [
       {
         src: "/images/design_caboclo/jurema-1.png",
@@ -202,38 +244,14 @@ const designers = [
     ]
   },
   {
-    id: "artes-daura",
-    nome: "Artes D'Aura",
-    instagram: "@artesd.aura",
-    especialidade: "Acessórios de Identidade",
-    citacao: "Aura é mais que uma marca de acessórios: é expressão de ancestralidade, beleza e encanto. Cada peça carrega significado, magia e exclusividade, sempre no inconfundível Padrão Aura.",
-    obras: [
-      {
-        src: "/images/design_caboclo/artes-daura-1.jpg",
-        titulo: "Colar Padrão Aura",
-        tecnica: "Acessórios de Identidade e Sementes",
-        detalhes: "Colar feito à mão combinando elementos rústicos, contas coloridas e fios estruturados."
-      },
-      {
-        src: "/images/design_caboclo/artes-daura-2.png",
-        titulo: "Brincos Encanto",
-        tecnica: "Biojoia com Metais e Elementos Naturais",
-        detalhes: "Brincos exclusivos inspirados na magia e na força das divindades da natureza."
-      },
-      {
-        src: "/images/design_caboclo/artes-daura-3.jpg",
-        titulo: "Pulseira Identidade",
-        tecnica: "Bijuteria Fina Artesanal",
-        detalhes: "Pulseira de montagem manual com pedras e contas de alto contraste estético."
-      }
-    ]
-  },
-  {
     id: "lu-moura",
     nome: "Lu Moura",
+    artista: "Lu Moura",
+    projeto: null,
     instagram: "@luamorimoura",
     especialidade: "Moda e Expressão Social",
-    citacao: "Camisetas como espaço de expressão. Símbolos de paz, espiritualidade e música transformaram-se em mensagens sociais, políticas e culturais. Criações que dialogam com a força dos orixás, associando nomes e cores.",
+    citacao: "Camisetas como espaço de expressão. Símbolos de paz, espiritualidade e música transformaram-se em mensagens sociais, políticas e culturais. Criações que dialogam com a força dos Orixás, associando nomes e cores.",
+    thumb: "/images/design_caboclo/lu-moura-perfil.jpg",
     obras: [
       {
         src: "/images/design_caboclo/lu-moura-1.jpg",
@@ -256,11 +274,74 @@ const designers = [
     ]
   },
   {
+    id: "morena-do-mar",
+    nome: "Morena do Mar",
+    artista: "Deborah Nunez",
+    projeto: "Morena do Mar",
+    instagram: "@morena.domar",
+    especialidade: "Crochê Contemporâneo e Memória",
+    citacao: "Morena do Mar é crochê contemporâneo inspirado em ancestralidade e andanças. Peças que traduzem memória e movimento.",
+    thumb: "/images/design_caboclo/morena-do-mar-perfil.jpg",
+    obras: [
+      {
+        src: "/images/design_caboclo/deborah-morena-do-mar-1.png",
+        titulo: "Vestido Andanças",
+        tecnica: "Crochê Manual Contemporâneo",
+        detalhes: "Vestido longo em crochê unindo pontos fluidos e cores inspiradas no mar baiano."
+      },
+      {
+        src: "/images/design_caboclo/deborah-morena-do-mar-2.png",
+        titulo: "Top Memória",
+        tecnica: "Crochê Estruturado",
+        detalhes: "Top modelado à mão em fios de algodão com acabamento orgânico."
+      },
+      {
+        src: "/images/design_caboclo/deborah-morena-do-mar-3.jpg",
+        titulo: "Acessório Andanças",
+        tecnica: "Crochê e Adereços",
+        detalhes: "Criação exclusiva para a exposição unindo moda, ancestralidade e design autoral."
+      }
+    ]
+  },
+  {
+    id: "quarto-amarelo",
+    nome: "Quarto Amarelo",
+    artista: "Tai Oliver",
+    projeto: "Quarto Amarelo Ateliê",
+    instagram: "@quartoamareloatelie",
+    especialidade: "Design Étnico e Ancestral",
+    citacao: "Design e artesanato com referências africanas e indígenas. Peças em couro, madeira e outros materiais, criadas por Tai Oliver em diálogo com a ancestralidade, inovação e identidade cultural.",
+    thumb: "/images/design_caboclo/quarto-amarelo-1.jpg",
+    obras: [
+      {
+        src: "/images/design_caboclo/quarto-amarelo-1.jpg",
+        titulo: "Ibejis do Ateliê",
+        tecnica: "Modelagem e Pintura Ancestral",
+        detalhes: "Escultura inspirada na força dos santos meninos da tradição."
+      },
+      {
+        src: "/images/design_caboclo/quarto-amarelo-2.jpg",
+        titulo: "Bolsa de Couro e Fios",
+        tecnica: "Couro Estruturado e Entrançado",
+        detalhes: "Acessório geométrico combinando marcenaria têxtil e acabamento em couro ecológico."
+      },
+      {
+        src: "/images/design_caboclo/quarto-amarelo-3.jpg",
+        titulo: "Sandálias Étnicas",
+        tecnica: "Calçado Artesanal Customizado",
+        detalhes: "Calçado de couro com amarrações e detalhes de design focado na identidade cabocla."
+      }
+    ]
+  },
+  {
     id: "sa-criacoes",
     nome: "Sá Criações",
+    artista: "Sara Alves",
+    projeto: "Sá Criações",
     instagram: "@sa.criacoes",
     especialidade: "Brinquedos Afetivos em Feltro",
     citacao: "Brinquedos e livros criativos em feltro e tecido, feitos à mão. Cada peça busca estimular o desenvolvimento infantil com afeto, inclusão e imaginação. Uma infância mais humana, distante das telas e próxima do brincar.",
+    thumb: "/images/design_caboclo/sa-criacoes-1.jpg",
     obras: [
       {
         src: "/images/design_caboclo/sa-criacoes-1.jpg",
@@ -279,33 +360,6 @@ const designers = [
         titulo: "Livro Sensorial II",
         tecnica: "Livro Texturizado e Feito à Mão",
         detalhes: "Páginas interativas com atividades lúdicas e tecidos variados para desenvolvimento tátil."
-      }
-    ]
-  },
-  {
-    id: "quarto-amarelo",
-    nome: "Quarto Amarelo",
-    instagram: "@quartoamareloatelie",
-    especialidade: "Cerâmica e Design Étnico",
-    citacao: "Design e artesanato com referências africanas e indígenas. Peças em cerâmica, porcelana, couro e outros materiais, criadas por Tai Oliver em diálogo com a ancestralidade, inovação e identidade cultural.",
-    obras: [
-      {
-        src: "/images/design_caboclo/quarto-amarelo-1.jpg",
-        titulo: "Ibejis em Cerâmica",
-        tecnica: "Modelagem e Pintura em Cerâmica",
-        detalhes: "Escultura em barro modelada à mão representando a força dos santos meninos da tradição."
-      },
-      {
-        src: "/images/design_caboclo/quarto-amarelo-2.jpg",
-        titulo: "Bolsa de Couro e Fios",
-        tecnica: "Couro Estruturado e Entrançado",
-        detalhes: "Acessório geométrico combinando marcenaria têxtil e acabamento em couro ecológico."
-      },
-      {
-        src: "/images/design_caboclo/quarto-amarelo-3.jpg",
-        titulo: "Sandálias Étnicas",
-        tecnica: "Calçado Artesanal Customizado",
-        detalhes: "Calçado de couro com amarrações e detalhes de design focado na identidade cabocla."
       }
     ]
   }
@@ -339,18 +393,25 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
   <!-- Conceito (Editorial Block) -->
   <section class="conceito-section">
     <div class="container text-center-editorial">
-      <span class="section-badge">O que é</span>
-      <h2>Convergência e Coletividade</h2>
-      <div class="editorial-text-block">
-        <p class="lead-text">
-          O <strong>Movimento Irun</strong> reúne poesia, saberes ancestrais, mulheres da Teia dos Povos, arte popular e música como fundamentos de uma aliança ética, política e cultural pela dignidade humana e pelo Bem Viver.
-        </p>
-        <p>
-          O nome <strong>“Irun”</strong> tem origem no tupi-guarani e carrega o significado de <em>“companheiro”</em> ou <em>“irmão”</em>, refletindo o espírito de colaboração e coletividade do projeto. A iniciativa promove a convergência entre o design contemporâneo e as tradições de povos originários e comunidades quilombolas da Bahia.
-        </p>
-        <p>
-          Idealizada pela estilista Márcia Ganem em conjunto com lideranças da Teia dos Povos, a plataforma desenvolve ciclos de formação de longa duração, giras de saberes, mostras de Design Caboclo e apresentações artísticas que ocupam a Casa de Castro Alves de forma pulsante.
-        </p>
+      <blockquote class="editorial-quote">
+        “O Movimento Irun promove a convergência entre o design contemporâneo e as tradições de povos originários e comunidades quilombolas da Bahia, unindo poesia, arte popular e música em uma aliança ética, política e cultural pelo Bem Viver.”
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- Cursos Preview Section -->
+  <section class="cursos-preview-section">
+    <div class="container">
+      <div class="cursos-preview-card shadow-premium">
+        <div class="cursos-preview-content">
+          <span class="section-badge">Ciclo Formativo</span>
+          <h2>Cursos e Formações</h2>
+          <p class="lead-text">
+            O Movimento Irun promove ciclos contínuos de aprendizagem teórica e prática. Do Programa Bem Viver ao Design Dialógico, as formações capacitam agentes culturais e fortalecem a autogestão de territórios tradicionais baianos.
+          </p>
+          <a href="/movimento-irun/cursos" class="btn btn-outline-ouro">Conheça os Cursos</a>
+        </div>
+        <div class="cursos-preview-image" style="background-image: url('/images/cursos/3-PROGRAMA-BEM-VIVER-CABECALHOS-HEADER-FORMULARIO.png');"></div>
       </div>
     </div>
   </section>
@@ -361,53 +422,48 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
       <div class="section-header text-center">
         <span class="section-badge">Exposição e Moda</span>
         <h2>Showroom Design Caboclo</h2>
-        <p class="section-subtitle">Conheça os criadores que unem técnicas ancestrais, sustentabilidade e inovação contemporânea na Bahia. Clique nas imagens para ampliar em alta definição.</p>
+        <p class="section-subtitle">Conheça os criadores que unem sustentabilidade e inovação contemporânea na Bahia. Clique nas imagens para ampliar em alta definição.</p>
       </div>
 
       <div class="showroom-layout shadow-premium">
+        <!-- Pass serialized designers array to client-side JS -->
+        <div id="designers-data" data-json={JSON.stringify(designers)} style="display: none;"></div>
+
         <!-- Main Stage (Active Designer Display) -->
-        <div class="showroom-stage" id="showroom-stage">
+        <div class="showroom-stage cover-active" id="showroom-stage">
           <div class="stage-gallery">
             <div class="stage-image-container">
               <img 
                 id="stage-img" 
-                src={designers[0].obras[0].src} 
-                alt={designers[0].obras[0].titulo} 
+                src="/images/movimento_irun/galeria/movimento-irun-exposicao-design-caboclo-17.jpg" 
+                alt="Design Caboclo" 
                 class="stage-main-img clickable-lightbox"
-                data-index="0"
+                data-index="-1"
               />
             </div>
-            <!-- Sub-gallery thumbnails for the active designer -->
-            <div class="stage-thumbs" id="stage-thumbs">
-              {designers[0].obras.map((obra, idx) => (
-                <button 
-                  class={`stage-thumb-btn ${idx === 0 ? 'active' : ''}`}
-                  data-img={obra.src}
-                  data-index={idx}
-                >
-                  <img src={obra.src} alt={obra.titulo} />
-                </button>
-              ))}
+            <!-- Sub-gallery thumbnails for the active designer (initially empty for cover) -->
+            <div class="stage-thumbs" id="stage-thumbs" style="display: none;">
             </div>
           </div>
 
           <div class="stage-details">
             <div class="details-header">
-              <span id="stage-specialty" class="designer-badge">{designers[0].especialidade}</span>
-              <h3 id="stage-name" class="designer-name">{designers[0].nome}</h3>
+              <span id="stage-specialty" class="designer-badge">Exposição</span>
+              <h3 id="stage-name" class="designer-name">Design Caboclo</h3>
               <a 
                 id="stage-instagram" 
-                href={`https://instagram.com/${designers[0].instagram.substring(1)}`}
+                href=""
                 target="_blank" 
                 rel="noopener noreferrer" 
                 class="designer-ig-link"
+                style="display: none;"
               >
-                <span>{designers[0].instagram}</span>
+                <span></span>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
               </a>
             </div>
             <div class="details-body">
-              <p id="stage-quote" class="designer-quote">"{designers[0].citacao}"</p>
+              <p id="stage-quote" class="designer-quote">"Conheça os criadores que unem sustentabilidade e inovação contemporânea na Bahia. Clique nas imagens para ampliar em alta definição."</p>
             </div>
           </div>
         </div>
@@ -418,9 +474,9 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
             <h4>Expositores</h4>
           </div>
           <div class="selector-list">
-            {designers.map((designer, idx) => (
+            {designers.map((designer) => (
               <button 
-                class={`selector-item ${idx === 0 ? 'active' : ''}`}
+                class="selector-item"
                 data-id={designer.id}
                 data-name={designer.nome}
                 data-specialty={designer.especialidade}
@@ -429,7 +485,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
                 data-obras={JSON.stringify(designer.obras)}
               >
                 <div class="selector-item-thumb">
-                  <img src={designer.obras[0].src} alt={designer.nome} />
+                  <img src={designer.thumb} alt={designer.nome} />
                 </div>
                 <div class="selector-item-meta">
                   <span class="selector-item-name">{designer.nome}</span>
@@ -447,8 +503,8 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
   <section class="general-gallery-section">
     <div class="container">
       <div class="section-header text-center">
-        <span class="section-badge">Imersão e Ambiente</span>
-        <h2>Registros da Exposição</h2>
+        <span class="section-badge">Galeria de Imagens</span>
+        <h2>Conheça o Espaço</h2>
         <p class="section-subtitle">Uma seleção de registros fotográficos capturando o showroom, as vestimentas, as biojoias e o clima de celebração na Casa de Castro Alves. Clique nas fotos para ver detalhes.</p>
       </div>
 
@@ -492,27 +548,45 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
       titulo: string;
       tecnica: string;
       detalhes: string;
+      projeto?: string | null;
+      artista?: string;
+      instagram?: string;
     }
 
-    let activeObras: LightboxItem[] = [];
+    // Parse designers list from the hidden data element
+    const designersDataEl = document.getElementById('designers-data');
+    const designersList = JSON.parse(designersDataEl ? designersDataEl.getAttribute('data-json') || '[]' : '[]');
+
+    // Build the flat array of all showroom works for global slideshow
+    const allShowroomObras: LightboxItem[] = [];
+    designersList.forEach((designer: any) => {
+      designer.obras.forEach((obra: any) => {
+        allShowroomObras.push({
+          src: obra.src,
+          titulo: obra.titulo,
+          tecnica: obra.tecnica,
+          detalhes: obra.detalhes,
+          projeto: designer.projeto,
+          artista: designer.artista,
+          instagram: designer.instagram
+        });
+      });
+    });
+
+    let activeObras: LightboxItem[] = allShowroomObras; // Default to all works flat list
     let activeIndex = 0;
 
     const lightbox = document.getElementById('premium-lightbox');
     const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
     const lightboxTitle = document.getElementById('lightbox-title');
-    const lightboxTech = document.getElementById('lightbox-tech');
+    const lightboxAuthor = document.getElementById('lightbox-author');
+    const lightboxInstagram = document.getElementById('lightbox-instagram') as HTMLAnchorElement | null;
+    const lightboxInstagramHandle = document.getElementById('lightbox-instagram-handle');
     const lightboxDesc = document.getElementById('lightbox-desc');
     
     const closeBtn = document.getElementById('lightbox-close-btn');
     const prevBtnL = document.getElementById('lightbox-prev-btn');
     const nextBtnL = document.getElementById('lightbox-next-btn');
-
-    // Load initial designer obras for lightbox
-    const initialItem = document.querySelector('.selector-item.active');
-    if (initialItem) {
-      const obrasRaw = initialItem.getAttribute('data-obras') || '[]';
-      activeObras = JSON.parse(obrasRaw);
-    }
 
     function openLightbox(obrasList: LightboxItem[], index: number) {
       activeObras = obrasList;
@@ -538,7 +612,26 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         const item = activeObras[activeIndex];
         if (lightboxImg) lightboxImg.src = item.src;
         if (lightboxTitle) lightboxTitle.textContent = item.titulo;
-        if (lightboxTech) lightboxTech.textContent = item.tecnica;
+        
+        // Format Projeto — Artista or just Artista
+        if (lightboxAuthor) {
+          if (item.projeto) {
+            lightboxAuthor.textContent = `${item.projeto} — ${item.artista}`;
+          } else {
+            lightboxAuthor.textContent = item.artista || '';
+          }
+        }
+
+        // Instagram Link
+        if (lightboxInstagram && item.instagram) {
+          lightboxInstagram.style.display = 'inline-flex';
+          lightboxInstagram.href = `https://instagram.com/${item.instagram.substring(1)}`;
+          if (lightboxInstagramHandle) lightboxInstagramHandle.textContent = item.instagram;
+        } else if (lightboxInstagram) {
+          lightboxInstagram.style.display = 'none';
+        }
+
+        // Description
         if (lightboxDesc) lightboxDesc.textContent = item.detalhes;
       }
     }
@@ -606,6 +699,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     const stageName = document.getElementById('stage-name');
     const stageInstagram = document.getElementById('stage-instagram') as HTMLAnchorElement | null;
     const stageQuote = document.getElementById('stage-quote');
+    const showroomStage = document.getElementById('showroom-stage');
 
     // Function to bind click event to stage thumbnails
     function bindStageThumbEvents() {
@@ -615,11 +709,13 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
           thumbBtns.forEach(b => b.classList.remove('active'));
           btn.classList.add('active');
           const newImgUrl = btn.getAttribute('data-img');
-          const idxRaw = btn.getAttribute('data-index') || '0';
+          const srcAttr = btn.getAttribute('data-img') || '';
           
           if (stageImg && newImgUrl) {
             stageImg.src = newImgUrl;
-            stageImg.setAttribute('data-index', idxRaw);
+            // Set index of the active image to its global index
+            const globalIdx = allShowroomObras.findIndex(o => o.src === srcAttr);
+            stageImg.setAttribute('data-index', globalIdx.toString());
           }
         });
       });
@@ -628,19 +724,27 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     // Click on Main Stage Image opens Lightbox
     if (stageImg) {
       stageImg.addEventListener('click', () => {
-        const idxRaw = stageImg.getAttribute('data-index') || '0';
-        const index = parseInt(idxRaw);
-        openLightbox(activeObras, index);
+        const srcAttr = stageImg.src ? new URL(stageImg.src, window.location.href).pathname : '';
+        // Find in allShowroomObras
+        let globalIdx = allShowroomObras.findIndex(o => o.src === srcAttr || srcAttr.endsWith(o.src));
+        if (globalIdx === -1) {
+          // If cover photo is clicked, open lightbox at index 0 of all works
+          openLightbox(allShowroomObras, 0);
+        } else {
+          openLightbox(allShowroomObras, globalIdx);
+        }
       });
     }
-
-    // Initialize first stage thumbs
-    bindStageThumbEvents();
 
     selectorItems.forEach(item => {
       item.addEventListener('click', () => {
         selectorItems.forEach(el => el.classList.remove('active'));
         item.classList.add('active');
+
+        // De-activate cover state
+        if (showroomStage) {
+          showroomStage.classList.remove('cover-active');
+        }
 
         // Extract attributes
         const name = item.getAttribute('data-name') || '';
@@ -649,7 +753,6 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         const quote = item.getAttribute('data-quote') || '';
         const obrasRaw = item.getAttribute('data-obras') || '[]';
         const obras = JSON.parse(obrasRaw);
-        activeObras = obras; // Update global lightbox list for designer
 
         // Update Text Info
         if (stageName) stageName.textContent = name;
@@ -657,6 +760,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         if (stageQuote) stageQuote.textContent = `"${quote}"`;
         
         if (stageInstagram) {
+          stageInstagram.style.display = 'inline-flex';
           stageInstagram.href = `https://instagram.com/${instagram.substring(1)}`;
           const span = stageInstagram.querySelector('span');
           if (span) span.textContent = instagram;
@@ -666,11 +770,13 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         if (stageImg && obras.length > 0) {
           stageImg.src = obras[0].src;
           stageImg.alt = obras[0].titulo;
-          stageImg.setAttribute('data-index', '0');
+          const globalIdx = allShowroomObras.findIndex(o => o.src === obras[0].src);
+          stageImg.setAttribute('data-index', globalIdx.toString());
         }
 
         // Rebuild Stage Thumbnails
         if (stageThumbs) {
+          stageThumbs.style.display = 'flex';
           stageThumbs.innerHTML = obras.map((obra: any, idx: number) => `
             <button 
               class="stage-thumb-btn ${idx === 0 ? 'active' : ''}"
@@ -696,14 +802,18 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     const totalSlides = slides.length;
     let currentIndex = 0;
 
-    // Define the list of general photos as LightboxItem objects
+    // Define the list of general photos as LightboxItem objects for the general gallery lightbox
     const generalObrasList: LightboxItem[] = Array.from(slides).map((slide, idx) => {
       const img = slide.querySelector('img');
+      const srcVal = img ? img.getAttribute('src') || '' : '';
       return {
-        src: img ? img.getAttribute('src') || '' : '',
+        src: srcVal,
         titulo: `Registros de Exposição — Showroom Design Caboclo`,
         tecnica: "Fotografia e Registro Social",
-        detalhes: `Registro número ${idx + 1} capturando o showroom de moda sustentável, biojoias, ateliês e a vivência coletiva do Movimento Irun na Casa de Castro Alves.`
+        detalhes: `Registro número ${idx + 1} capturando o showroom de moda sustentável, biojoias, ateliês e a vivência coletiva do Movimento Irun na Casa de Castro Alves.`,
+        projeto: null,
+        artista: "Movimento Irun",
+        instagram: "@casadecastroalves"
       };
     });
 
@@ -757,6 +867,72 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
       window.addEventListener('resize', updateCarousel);
     }
   </script>
+
+  <!-- Exposições Section -->
+  <section class="exposicoes-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-badge">Territórios</span>
+        <h2>Exposições</h2>
+        <p class="section-subtitle">Mostras fotográficas e mapeamento estético de quatro importantes territórios da Bahia que dialogam com a ancestralidade e a resistência cultural. Clique nos cartões para abrir cada galeria dedicada.</p>
+      </div>
+
+      <div class="exposicoes-grid">
+        <!-- Card 1 -->
+        <a href="/movimento-irun/expo1" class="expo-card card">
+          <div class="expo-img-wrapper">
+            <img src="/images/movimento_irun/galeria/movimento-irun-exposicao-design-caboclo-2.jpg" alt="Território Velho Chico" loading="lazy" />
+          </div>
+          <div class="expo-content">
+            <span class="expo-badge-detail">Território 1</span>
+            <h3>Velho Chico</h3>
+            <p class="expo-desc">Retratos e vivências da bacia do Rio São Francisco, capturando as cores, a pesca artesanal e as tradições ribeirinhas.</p>
+            <span class="expo-link">Ver Exposição →</span>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="/movimento-irun/expo2" class="expo-card card">
+          <div class="expo-img-wrapper">
+            <img src="/images/movimento_irun/galeria/movimento-irun-exposicao-design-caboclo-5.jpg" alt="Território Recôncavo" loading="lazy" />
+          </div>
+          <div class="expo-content">
+            <span class="expo-badge-detail">Território 2</span>
+            <h3>Recôncavo</h3>
+            <p class="expo-desc">A força e a mística das águas e matas do Recôncavo baiano, expressas nos rituais, na culinária e no cotidiano das comunidades.</p>
+            <span class="expo-link">Ver Exposição →</span>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="/movimento-irun/expo3" class="expo-card card">
+          <div class="expo-img-wrapper">
+            <img src="/images/movimento_irun/galeria/movimento-irun-exposicao-design-caboclo-8.jpg" alt="Território Chapada Diamantina" loading="lazy" />
+          </div>
+          <div class="expo-content">
+            <span class="expo-badge-detail">Território 3</span>
+            <h3>Chapada Diamantina</h3>
+            <p class="expo-desc">Registros marcantes das serras, vales e comunidades tradicionais que habitam e protegem as nascentes da Chapada.</p>
+            <span class="expo-link">Ver Exposição →</span>
+          </div>
+        </a>
+
+        <!-- Card 4 -->
+        <a href="/movimento-irun/expo4" class="expo-card card">
+          <div class="expo-img-wrapper">
+            <img src="/images/movimento_irun/galeria/movimento-irun-exposicao-design-caboclo-12.jpg" alt="Território Litoral Sul" loading="lazy" />
+          </div>
+          <div class="expo-content">
+            <span class="expo-badge-detail">Território 4</span>
+            <h3>Litoral Sul</h3>
+            <p class="expo-desc">A resistência e a beleza das comunidades quilombolas e aldeias tupinambás do sul da Bahia em harmonia com a Mata Atlântica.</p>
+            <span class="expo-link">Ver Exposição →</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
 
   <!-- Galeria de Vídeos Históricos -->
   <section class="videos-gallery-section">
@@ -1079,7 +1255,13 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         </div>
         <div class="lightbox-meta">
           <h4 id="lightbox-title" class="lightbox-title">Nome da Obra</h4>
-          <span id="lightbox-tech" class="lightbox-tech">Técnica</span>
+          <div class="lightbox-author-row">
+            <span id="lightbox-author" class="lightbox-author">Projeto — Artista</span>
+            <a id="lightbox-instagram" href="" target="_blank" rel="noopener noreferrer" class="lightbox-ig-link">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+              <span id="lightbox-instagram-handle">@instagram</span>
+            </a>
+          </div>
           <p id="lightbox-desc" class="lightbox-desc">Detalhes da obra</p>
         </div>
       </div>
@@ -1322,12 +1504,16 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     flex-direction: row;
     overflow-x: auto;
     flex-grow: 1;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
   }
 
   @media (min-width: 992px) {
     .selector-list {
       flex-direction: column;
       overflow-y: auto;
+      scroll-snap-type: none;
     }
   }
 
@@ -1342,7 +1528,8 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     cursor: pointer;
     text-align: left;
     transition: var(--transition-fast);
-    min-width: 220px;
+    min-width: 260px;
+    scroll-snap-align: start;
   }
 
   @media (min-width: 992px) {
@@ -2011,8 +2198,8 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(15, 15, 15, 0.94);
-    backdrop-filter: blur(12px);
+    background-color: rgba(0, 0, 0, 0.98);
+    backdrop-filter: blur(15px);
     z-index: 2000;
     display: flex;
     align-items: center;
@@ -2080,10 +2267,11 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
   }
 
   .lightbox-frame {
-    background-color: var(--color-branco);
+    background-color: #111111;
+    border: 1px solid #222222;
     padding: 24px;
     border-radius: 4px;
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: column;
     max-width: 680px;
@@ -2093,7 +2281,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
   .lightbox-image-container {
     width: 100%;
     height: 380px;
-    background-color: transparent;
+    background-color: #000000;
     border-radius: 2px;
     overflow: hidden;
     margin-bottom: var(--space-md);
@@ -2122,26 +2310,55 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
   .lightbox-title {
     font-family: var(--font-display);
     font-size: 1.5rem;
-    color: var(--color-preto-editorial);
+    color: #ffffff;
     margin: 0;
     line-height: 1.3;
     border: none;
     padding: 0;
   }
 
-  .lightbox-tech {
+  .lightbox-author-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+    margin-top: 4px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  .lightbox-author {
     font-family: var(--font-interface);
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: bold;
     color: var(--color-ouro);
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
 
+  .lightbox-ig-link {
+    font-family: var(--font-interface);
+    font-size: 0.8rem;
+    color: #aaaaaa;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: var(--transition-fast);
+  }
+
+  .lightbox-ig-link:hover {
+    color: #ffffff;
+  }
+
+  .lightbox-ig-link svg {
+    color: var(--color-ouro);
+  }
+
   .lightbox-desc {
     font-family: var(--font-body);
     font-size: 0.9rem;
-    color: var(--color-carvao);
+    color: #cccccc;
     line-height: 1.5;
     margin: 0;
   }
@@ -2153,6 +2370,183 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
 
   .clickable-lightbox:hover {
     filter: brightness(0.95);
+  }
+
+  /* Showroom Cover Rules */
+  .showroom-stage.cover-active .stage-thumbs {
+    display: none !important;
+  }
+  .showroom-stage.cover-active .designer-ig-link {
+    display: none !important;
+  }
+  .showroom-stage.cover-active .designer-badge {
+    background-color: var(--color-ouro);
+  }
+
+  /* Conceito Section Editorial Quote */
+  .editorial-quote {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    line-height: 1.6;
+    color: var(--color-preto-editorial);
+    font-style: italic;
+    margin: 0 auto;
+    max-width: 850px;
+    position: relative;
+    padding: var(--space-md) var(--space-lg);
+    border-left: none;
+  }
+  .editorial-quote::before, .editorial-quote::after {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 1px;
+    background-color: var(--color-ouro);
+    margin: var(--space-md) auto;
+  }
+
+  /* Cursos Preview Section */
+  .cursos-preview-section {
+    background-color: var(--color-creme);
+    padding: var(--space-xl) 0;
+  }
+  .cursos-preview-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    background-color: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  @media (min-width: 768px) {
+    .cursos-preview-card {
+      grid-template-columns: 1.2fr 0.8fr;
+    }
+  }
+  .cursos-preview-content {
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  .cursos-preview-image {
+    background-size: cover;
+    background-position: center;
+    min-height: 240px;
+    width: 100%;
+  }
+  .btn-outline-ouro {
+    border: 1px solid var(--color-ouro);
+    color: var(--color-ouro);
+    background-color: transparent;
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: var(--transition-fast);
+    display: inline-block;
+    margin-top: var(--space-md);
+  }
+  .btn-outline-ouro:hover {
+    background-color: var(--color-ouro);
+    color: var(--color-branco);
+  }
+
+  /* Exposições Section */
+  .exposicoes-section {
+    background-color: var(--color-branco);
+    padding: var(--space-2xl) 0;
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+    border-bottom: 1px solid rgba(26, 26, 26, 0.05);
+  }
+  .exposicoes-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    margin-top: var(--space-xl);
+  }
+  @media (min-width: 576px) {
+    .exposicoes-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 992px) {
+    .exposicoes-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .expo-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background-color: var(--color-creme);
+    border: 1px solid rgba(26, 26, 26, 0.06);
+  }
+  .expo-img-wrapper {
+    height: 200px;
+    overflow: hidden;
+    background-color: var(--color-cinza-claro);
+  }
+  .expo-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-smooth);
+  }
+  .expo-card:hover .expo-img-wrapper img {
+    transform: scale(1.05);
+  }
+  .expo-content {
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+  .expo-badge-detail {
+    font-family: var(--font-interface);
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: var(--color-ouro);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-xs);
+    display: block;
+  }
+  .expo-content h3 {
+    font-size: 1.2rem;
+    margin-top: 0;
+    margin-bottom: var(--space-xs);
+    border: none;
+    padding: 0;
+    line-height: 1.3;
+  }
+  .expo-desc {
+    font-size: 0.85rem;
+    color: var(--color-carvao);
+    line-height: 1.5;
+    flex-grow: 1;
+    margin-bottom: var(--space-md);
+  }
+  .expo-link {
+    font-family: var(--font-interface);
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--color-preto-editorial);
+    align-self: flex-start;
+    transition: var(--transition-fast);
+  }
+  .expo-card:hover .expo-link {
+    color: var(--color-ouro);
+    padding-left: 4px;
   }
 </style>
 
