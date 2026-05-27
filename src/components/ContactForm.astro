@@ -252,6 +252,15 @@
         // With 'no-cors', we get an opaque response, so we assume success if no network error occurred
         form.style.display = 'none';
         successBox.style.display = 'block';
+
+        // Track lead conversion in Google Analytics
+        if (typeof (window as any).gtag === 'function') {
+          (window as any).gtag('event', 'generate_lead', {
+            'event_category': 'Contact',
+            'event_label': 'Formulário de Contato'
+          });
+        }
+
         form.reset();
 
       } catch (err: any) {
