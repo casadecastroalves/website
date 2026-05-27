@@ -79,7 +79,7 @@ O formulário de contato envia as respostas diretamente para uma planilha do Goo
 
 ---
 
-## 🌐 Publicação no GitHub e Netlify
+## 🌐 Publicação no GitHub e Cloudflare Pages
 
 Para conectar este projeto local ao repositório do GitHub recém-criado, siga estas instruções:
 
@@ -102,4 +102,5 @@ Para conectar este projeto local ao repositório do GitHub recém-criado, siga e
    ```sh
    git push -u origin main
    ```
-6. **Deploy na Netlify:** Conecte sua conta da Netlify ao repositório `casadecastroalves/website` no GitHub. O deploy será realizado de forma 100% automática a cada push!
+6. **Deploy no Cloudflare Pages:** Conecte sua conta do Cloudflare Pages ao repositório `casadecastroalves/website` no GitHub. O deploy será realizado de forma 100% automática a cada push!
+
