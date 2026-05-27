@@ -261,4 +261,16 @@ import ContactForm from '../components/ContactForm.astro';
   .shadow-premium {
     box-shadow: 0 15px 35px rgba(26, 26, 26, 0.06);
   }
+
+  /* Responsive mobile styling */
+  @media (max-width: 768px) {
+    .info-card, 
+    .form-card-wrapper {
+      padding: var(--space-lg);
+    }
+    .highlight-val {
+      font-size: 1.25rem;
+      word-break: break-all;
+    }
+  }
 </style>
