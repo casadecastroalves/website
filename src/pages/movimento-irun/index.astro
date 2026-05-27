@@ -322,6 +322,16 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     <div class="container subpage-hero-content">
       <h1 class="subpage-hero-title">Movimento Irun</h1>
       <p class="subpage-hero-subtitle">Aliança Ancestral</p>
+      <div style="margin-top: 2rem;">
+        <a 
+          href="https://docs.google.com/forms/d/e/1FAIpQLSdYlaHZ_6jtI8SrXIyznc4ejZ9JRGsyC8JqBJ85dG9HoKNdhA/viewform" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="btn btn-primary"
+        >
+          INSCREVA-SE
+        </a>
+      </div>
     </div>
     <span class="header-credit">TAMANDUA TUPINAMBA por LUCIANO PAYAYÁ</span>
   </section>
@@ -341,44 +351,6 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         <p>
           Idealizada pela estilista Márcia Ganem em conjunto com lideranças da Teia dos Povos, a plataforma desenvolve ciclos de formação de longa duração, giras de saberes, mostras de Design Caboclo e apresentações artísticas que ocupam a Casa de Castro Alves de forma pulsante.
         </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Inscrição 11ª Edição (CTA Participe com Poster - Moved directly below Concept) -->
-  <section class="inscricao-section">
-    <div class="container">
-      <div class="inscricao-grid">
-        <div class="inscricao-poster-wrapper shadow-premium">
-          <img 
-            src="/images/shows/MOVIMENTO-IRUN-11-EDICAO-7-DE-JUNHO-SENTE-O-TEMPO-PASSAR-DUO-IRE-IRE.png" 
-            alt="Cartaz oficial da 11ª Edição do Movimento Irun - Sente o Tempo Passar" 
-            class="inscricao-poster-img" 
-          />
-        </div>
-        <div class="inscricao-content">
-          <span class="section-badge">Próxima Edição</span>
-          <h2>11ª Edição — 7 de Junho de 2026</h2>
-          <p class="lead-text">
-            O Movimento Irun convida você para o encontro de encerramento do ciclo deste projeto de convergência artística, design contemporâneo e saberes tradicionais.
-          </p>
-          <p>
-            Uma tarde repleta de atividades culturais, exposições de Design Caboclo, gira de saberes com lideranças de comunidades tradicionais e apresentações artísticas no Jardim da Casa de Castro Alves.
-          </p>
-          <p style="margin-bottom: var(--space-lg);">
-            A entrada é inteiramente gratuita mediante inscrição prévia.
-          </p>
-          <div class="link-box">
-            <a 
-              href="https://docs.google.com/forms/d/e/1FAIpQLSdYlaHZ_6jtI8SrXIyznc4ejZ9JRGsyC8JqBJ85dG9HoKNdhA/viewform" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              class="link-inscreva-se"
-            >
-              INSCREVA-SE
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -1199,7 +1171,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     padding-bottom: var(--space-xs);
   }
 
-  .stage-thumb-btn {
+  :global(.stage-thumb-btn) {
     width: 60px;
     height: 60px;
     border-radius: 4px;
@@ -1212,17 +1184,17 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
     transition: var(--transition-fast);
   }
 
-  .stage-thumb-btn img {
+  :global(.stage-thumb-btn img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  .stage-thumb-btn:hover {
+  :global(.stage-thumb-btn:hover) {
     opacity: 0.9;
   }
 
-  .stage-thumb-btn.active {
+  :global(.stage-thumb-btn.active) {
     border-color: var(--color-ouro);
     box-shadow: 0 0 8px rgba(201, 168, 0, 0.2);
   }
@@ -2109,7 +2081,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
   .lightbox-image-container {
     width: 100%;
     height: 380px;
-    background-color: var(--color-cinza-claro);
+    background-color: transparent;
     border-radius: 2px;
     overflow: hidden;
     margin-bottom: var(--space-md);
@@ -2124,7 +2096,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
   .lightbox-image-container img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
   }
 
