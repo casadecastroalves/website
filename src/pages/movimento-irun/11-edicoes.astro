@@ -106,7 +106,7 @@ const edicoes = [
     data: "JULHO 25 A JUNHO 26",
     artista: "Movimento Irun",
     show: "11 Edições Completas",
-    desc: "Todas as edições entre 2025 e 2026",
+    desc: "Todas as edições entre 2025 e 2026. “Irun”, de origem tupi-guarani, significa “companheiro” ou “irmão”, simbolizando colaboração e coletividade.",
     slug: "11-edicoes",
     img: "/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg"
   }
@@ -118,20 +118,6 @@ const edicoes = [
   <section class="subpage-hero">
     <div class="subpage-hero-bg" style="background-image: url('/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg');"></div>
     <div class="subpage-hero-overlay"></div>
-    <div class="container subpage-hero-content">
-      <h1 class="subpage-hero-title">Movimento Irun</h1>
-      <p class="subpage-hero-subtitle">11 Edições Completas</p>
-      <div style="margin-top: 2rem;">
-        <a 
-          href="https://docs.google.com/forms/d/e/1FAIpQLSdYlaHZ_6jtI8SrXIyznc4ejZ9JRGsyC8JqBJ85dG9HoKNdhA/viewform" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="btn btn-outline-amarelo"
-        >
-          INSCREVA-SE
-        </a>
-      </div>
-    </div>
     <span class="header-credit">TAMANDUA TUPINAMBA por LUCIANO PAYAYÁ</span>
   </section>
 
@@ -322,5 +308,26 @@ const edicoes = [
     width: 100%;
     height: auto;
     object-fit: contain;
+  }
+
+  /* Posicionamento do crédito da fotografia */
+  .header-credit {
+    position: absolute;
+    bottom: var(--space-md);
+    right: var(--space-lg);
+    font-family: var(--font-interface);
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.65);
+    z-index: 10;
+  }
+
+  @media (max-width: 768px) {
+    .header-credit {
+      right: var(--space-md);
+      font-size: 0.65rem;
+    }
   }
 </style>
