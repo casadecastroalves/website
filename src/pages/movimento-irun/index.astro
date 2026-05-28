@@ -473,7 +473,7 @@ const designers = [
   }
 ];
 
-const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun/galeria/movimento-irun-exposicao-design-caboclo-${i + 1}.jpg`);
+const fotosGerais = [1, 2, 3, 4, 5, 8, 11, 12, 13, 14, 17, 18, 19].map((num) => `/images/movimento_irun/galeria/movimento-irun-exposicao-design-caboclo-${num}.jpg`);
 ---
 
 <Layout title="Movimento Irun | Casa de Castro Alves" description="Saiba mais sobre o Movimento Irun. Uma aliança de design contemporâneo e saberes ancestrais indígenas e quilombolas na Casa de Castro Alves. Inscreva-se na próxima edição." ogImage="/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg">
@@ -502,8 +502,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
   <section class="conceito-section">
     <div class="container text-center-editorial">
       <blockquote class="editorial-quote">
-        <p style="margin-bottom: 1.5rem; font-style: italic;">O Movimento Irun é uma iniciativa ética, política e cultural voltada à dignidade humana e ao Bem Viver, unindo poesia, saberes ancestrais, arte popular, música e mulheres da Teia dos Povos. O nome “Irun”, de origem tupi-guarani, significa “companheiro” ou “irmão”, simbolizando colaboração e coletividade.</p>
-        <p style="font-style: italic;">Idealizado pela estilista Márcia Ganem em parceria com lideranças da Teia dos Povos, o projeto promove o encontro entre design contemporâneo e tradições de povos originários e comunidades quilombolas da Bahia. Entre suas ações estão ciclos de formação, exposições, mostras de Design Caboclo e apresentações artísticas realizadas na Casa de Castro Alves.</p>
+        <p style="font-style: italic;">Idealizado pela estilista Márcia Ganem, com apoio da Política Nacional Aldir Blanc Bahia, em parceria com lideranças da Teia dos Povos</p>
       </blockquote>
     </div>
   </section>
@@ -1131,10 +1130,23 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
       return 0;
     }
 
-    function updateCarousel() {
-      if (track) {
+    function getMaxIndex() {
+      if (track && trackWrapper) {
         const slideWidth = getSlideWidth();
-        const offset = currentIndex * slideWidth;
+        const maxOffset = Math.max(0, track.scrollWidth - trackWrapper.clientWidth);
+        return Math.ceil(maxOffset / slideWidth);
+      }
+      return totalSlides - 1;
+    }
+
+    function updateCarousel() {
+      if (track && trackWrapper) {
+        const slideWidth = getSlideWidth();
+        const maxOffset = Math.max(0, track.scrollWidth - trackWrapper.clientWidth);
+        let offset = currentIndex * slideWidth;
+        if (offset > maxOffset) {
+          offset = maxOffset;
+        }
         track.style.transform = `translate3d(-${offset}px, 0, 0)`;
       }
       if (paginationText) {
@@ -1144,7 +1156,8 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
 
     if (prevBtn && nextBtn && track && trackWrapper) {
       nextBtn.addEventListener('click', () => {
-        if (currentIndex < totalSlides - 1) {
+        const maxIndex = getMaxIndex();
+        if (currentIndex < maxIndex) {
           currentIndex++;
         } else {
           currentIndex = 0; // Loop back
@@ -1153,10 +1166,11 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
       });
 
       prevBtn.addEventListener('click', () => {
+        const maxIndex = getMaxIndex();
         if (currentIndex > 0) {
           currentIndex--;
         } else {
-          currentIndex = totalSlides - 1; // Loop end
+          currentIndex = maxIndex; // Loop end
         }
         updateCarousel();
       });
@@ -1175,16 +1189,17 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         const endX = e.changedTouches[0].clientX;
         const diffX = endX - carouselStartX;
         if (Math.abs(diffX) > 50) {
+          const maxIndex = getMaxIndex();
           if (diffX > 0) {
             // Swipe right -> previous
             if (currentIndex > 0) {
               currentIndex--;
             } else {
-              currentIndex = totalSlides - 1;
+              currentIndex = maxIndex;
             }
           } else {
             // Swipe left -> next
-            if (currentIndex < totalSlides - 1) {
+            if (currentIndex < maxIndex) {
               currentIndex++;
             } else {
               currentIndex = 0;
@@ -1203,9 +1218,10 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         const rect = trackWrapper.getBoundingClientRect();
         const inView = (rect.top < window.innerHeight && rect.bottom > 0);
         if (inView) {
+          const maxIndex = getMaxIndex();
           if (e.key === 'ArrowRight') {
             e.preventDefault();
-            if (currentIndex < totalSlides - 1) {
+            if (currentIndex < maxIndex) {
               currentIndex++;
             } else {
               currentIndex = 0;
@@ -1216,14 +1232,20 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
             if (currentIndex > 0) {
               currentIndex--;
             } else {
-              currentIndex = totalSlides - 1;
+              currentIndex = maxIndex;
             }
             updateCarousel();
           }
         }
       });
 
-      window.addEventListener('resize', updateCarousel);
+      window.addEventListener('resize', () => {
+        const maxIndex = getMaxIndex();
+        if (currentIndex > maxIndex) {
+          currentIndex = maxIndex;
+        }
+        updateCarousel();
+      });
     }
   </script>
 
@@ -1529,7 +1551,7 @@ const fotosGerais = Array.from({ length: 25 }, (_, i) => `/images/movimento_irun
         Este projeto foi contemplado nos Editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva.
       </p>
       <div class="apoio-banner-wrapper">
-        <img src="/MOVIMENTO-IRUN-RODAPE-2026-1024x154.jpg" alt="Logos de apoio do Movimento Irun - Secult-BA, PNAB, Governo da Bahia, Ministério da Cultura" class="apoio-banner-img" />
+        <img src="/REGUAS_PNAB_BA_CULTURA_VIVA.png" alt="Logos de apoio do Movimento Irun - Secult-BA, PNAB, Governo da Bahia, Ministério da Cultura, Cultura Viva" class="apoio-banner-img" />
       </div>
     </div>
   </section>
