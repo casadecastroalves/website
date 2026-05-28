@@ -127,7 +127,7 @@ const edicoes = [
       <div class="section-header text-center">
         <span class="section-badge">Registro Histórico</span>
         <h2>Linha do Tempo das Edições</h2>
-        <p class="section-subtitle">Abaixo estão listadas todas as edições realizadas do projeto cultural Movimento Irun entre 2025 e 2026.</p>
+        <p class="section-subtitle">Movimento Irun 2025 e 2026</p>
       </div>
 
       <div class="edicoes-grid">
@@ -139,7 +139,7 @@ const edicoes = [
             <div class="edicao-content">
               <span class="edicao-date">{ed.data}</span>
               <h3>{ed.num ? `Edição ${ed.num}: ` : ''}{ed.show}</h3>
-              <p class="edicao-artist">Convidado(a): {ed.artista}</p>
+              <p class="edicao-artist">{ed.num ? 'Convidado(a): ' : ''}{ed.artista}</p>
               <p class="edicao-desc">{ed.desc}</p>
               <span class="edicao-link">{ed.slug === '11-edicoes' ? 'Você está aqui' : 'Ver detalhes da edição →'}</span>
             </div>

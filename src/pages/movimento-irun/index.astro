@@ -517,7 +517,7 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
     <div class="container subpage-hero-content">
       <h1 class="subpage-hero-title">Movimento Irun</h1>
       <p class="subpage-hero-subtitle">Aliança Ancestral</p>
-      <div style="margin-top: 2rem;">
+      <div style="margin-top: 2rem; display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
         <a 
           href="https://docs.google.com/forms/d/e/1FAIpQLSdYlaHZ_6jtI8SrXIyznc4ejZ9JRGsyC8JqBJ85dG9HoKNdhA/viewform" 
           target="_blank" 
@@ -525,6 +525,12 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
           class="btn btn-outline-amarelo"
         >
           INSCREVA-SE
+        </a>
+        <a 
+          href="/movimento-irun/11-edicoes" 
+          class="btn btn-outline-amarelo"
+        >
+          11 EDIÇÕES
         </a>
       </div>
     </div>
@@ -1571,7 +1577,7 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
             <div class="edicao-content">
               <span class="edicao-date">{ed.data}</span>
               <h3>{ed.num ? `Edição ${ed.num}: ` : ''}{ed.show}</h3>
-              <p class="edicao-artist">Convidado(a): {ed.artista}</p>
+              <p class="edicao-artist">{ed.num ? 'Convidado(a): ' : ''}{ed.artista}</p>
               <p class="edicao-desc">{ed.desc}</p>
               <span class="edicao-link">Ver detalhes da edição →</span>
             </div>

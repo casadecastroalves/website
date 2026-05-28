@@ -236,6 +236,20 @@ export async function getStaticPaths() {
     ]
   },
   {
+    num: "",
+    slug: "11-edicoes",
+    titulo: "11 Edições Completas",
+    data: "JULHO 25 A JUNHO 26",
+    artista: "Movimento Irun",
+    show: "11 Edições Completas",
+    poster: "/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg",
+    thumb: "/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg",
+    banner: "/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg",
+    youtube: "",
+    descricao: "Todas as edições entre 2025 e 2026. “Irun”, de origem tupi-guarani, significa “companheiro” ou “irmão”, simbolizando colaboração e coletividade.",
+    detalhes: []
+  },
+  {
     num: 12,
     slug: "expo-1",
     titulo: "EXPO I",
@@ -306,7 +320,8 @@ export async function getStaticPaths() {
     detalhes: []
   }
 ];
-  return edicoesData.map((ed) => ({
+  const pathsToGenerate = edicoesData.filter(ed => ed.slug !== '11-edicoes');
+  return pathsToGenerate.map((ed) => ({
     params: { edicao: ed.slug },
     props: {
       edicaoInfo: ed,
@@ -591,7 +606,7 @@ const posters = Array.isArray((edicaoInfo as any).posters)
                   {isCurrent && <span class="active-badge">Você está aqui</span>}
                 </div>
                 <div class="card-info">
-                  <span class="card-num">{isExposition ? "Exposição" : `Edição ${ed.num}`}</span>
+                  <span class="card-num">{isExposition ? "Exposição" : (ed.num ? `Edição ${ed.num}` : "11 Edições")}</span>
                   <p class="card-title">{isExposition ? ed.titulo : ed.show}</p>
                   <p class="card-artist">{isExposition ? "" : ed.artista.split(" & ")[0].split(" (")[0]}</p>
                 </div>
