@@ -497,7 +497,7 @@ const designers = [
   }
 ];
 
-const fotosGerais = [1, 2, 3, 4, 5, 8, 11, 12, 13, 14, 17, 18, 19].map((num) => `/images/movimento_irun/galeria/movimento-irun-exposicao-design-caboclo-${num}.jpg`);
+const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/images/movimento_irun/galeria/movimento-irun-exposicao-design-caboclo-${num}.jpg`);
 ---
 
 <Layout title="Movimento Irun | Casa de Castro Alves" description="Saiba mais sobre o Movimento Irun. Uma aliança de design contemporâneo e saberes ancestrais indígenas e quilombolas na Casa de Castro Alves. Inscreva-se na próxima edição." ogImage="/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg">
@@ -720,7 +720,7 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 11, 12, 13, 14, 17, 18, 19].map((num) => 
         </button>
       </div>
       <div class="carousel-indicators-container">
-        <span class="carousel-pagination" id="carousel-pagination-text">1 / 25</span>
+        <span class="carousel-pagination" id="carousel-pagination-text">1 / {fotosGerais.length}</span>
       </div>
     </div>
   </section>
@@ -1272,6 +1272,9 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 11, 12, 13, 14, 17, 18, 19].map((num) => 
         }
         updateCarousel();
       });
+
+      // Inicializa o carrossel na carga da página
+      updateCarousel();
     }
   </script>
 
