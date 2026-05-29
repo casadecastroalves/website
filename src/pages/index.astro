@@ -1,68 +1,59 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Image, getImage } from 'astro:assets';
+import { heroConfig } from '../data/hero-config';
 
-// Import images for PageSpeed optimization
 import heroImage from '../assets/images/hero.jpg';
 import casaImg3 from '../assets/images/casa-de-castro-alves-3.png';
 import showsImg from '../assets/images/shows.jpg';
 import cursosImg from '../assets/images/cursos.png';
 
-// Home page for Casa de Castro Alves
 const optimizedCtaBg = await getImage({ src: casaImg3, format: 'webp', width: 1200 });
+const hero = heroConfig.mode === 'promo' ? heroConfig.promo : heroConfig.default;
+const isPromoHero = heroConfig.mode === 'promo';
 ---
 
 <Layout title="Casa de Castro Alves | Memória, Arte e Poesia no Centro Histórico">
-  <!-- 
-    ========================================================================
-    HERO PADRÃO (DESATIVADO TEMPORARIAMENTE)
-    Para restaurar no dia 8 de Junho:
-    1. Descomente a seção "<section class="hero-section"> ... </section>" abaixo.
-    2. Comente ou remova a seção "<section class="hero-section hero-promo-11"> ... </section>" da 11ª Edição.
-    ========================================================================
-  -->
-  <!--
-  <section class="hero-section">
-    <div class="hero-bg" style="background-image: linear-gradient(to bottom, rgba(26, 26, 26, 0.4), rgba(26, 26, 26, 0.85)), url('/images/a_casa/casa-de-castro-alves-1-1-1024x576.png');"></div>
+  <!-- Hero: altere mode e textos em src/data/hero-config.ts -->
+  <section class:list={['hero-section', { 'hero-promo-11': isPromoHero }]}>
+    {
+      isPromoHero ? (
+        <div class="hero-bg-wrapper">
+          <Image
+            src={heroImage}
+            alt={heroConfig.promo.imageAlt}
+            class="hero-bg-img"
+            loading="eager"
+            fetchpriority="high"
+          />
+          <div class="hero-overlay" />
+        </div>
+      ) : (
+        <div
+          class="hero-bg"
+          style="background-image: linear-gradient(to bottom, rgba(26, 26, 26, 0.4), rgba(26, 26, 26, 0.85)), url('/images/a_casa/casa-de-castro-alves-1-1-1024x576.png');"
+        />
+      )
+    }
     <div class="container hero-content">
       <h1 class="hero-title animate-fade-in">
-        Onde a poesia se faz<br />
-        <span class="highlight">Aliança e Resistência</span>
+        {hero.title}
+        <br />
+        <span class="highlight">{hero.highlight}</span>
       </h1>
-      <p class="hero-subtitle animate-fade-in-delayed">
-        A antiga residência do poeta Castro Alves hoje abriga um espaço vivo de cultura, memória, arte contemporânea e saberes ancestrais no coração de Salvador.
-      </p>
+      <p class="hero-subtitle animate-fade-in-delayed">{hero.subtitle}</p>
       <div class="hero-actions animate-fade-in-delayed">
-        <a href="/a-casa" class="btn btn-primary">Conheça a Casa</a>
-        <a href="/contato" class="btn btn-outline-white">Agendar Visita</a>
-      </div>
-    </div>
-  </section>
-  -->
-
-  <!-- HERO PROMOCIONAL — 11ª EDIÇÃO DO MOVIMENTO IRUN (Ativo até 7 de Junho) -->
-  <section class="hero-section hero-promo-11">
-    <div class="hero-bg-wrapper">
-      <Image 
-        src={heroImage} 
-        alt="Duo iRê iRê - 11ª Edição do Movimento Irun" 
-        class="hero-bg-img" 
-        loading="eager" 
-        fetchpriority="high"
-      />
-      <div class="hero-overlay"></div>
-    </div>
-    <div class="container hero-content">
-      <h1 class="hero-title animate-fade-in">
-        11ª Edição do Movimento Irun<br />
-        <span class="highlight">Sente O Tempo Passar</span>
-      </h1>
-      <p class="hero-subtitle animate-fade-in-delayed">
-        Show do duo iRê iRê: Maíra e Ícaro Santiago, exposição da Escola das Águas Nascentes, oficinas, Design Caboclo, feira agroecológica da Chapada Diamantina, gira de saberes e diálogos institucionais
-      </p>
-      <div class="hero-actions animate-fade-in-delayed">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdYlaHZ_6jtI8SrXIyznc4ejZ9JRGsyC8JqBJ85dG9HoKNdhA/viewform" target="_blank" rel="noopener noreferrer" class="btn btn-primary">INSCREVA-SE</a>
-        <a href="/movimento-irun/edicao-11" class="btn btn-outline-white">Ver Programação</a>
+        <a
+          href={hero.primaryCta.href}
+          class="btn btn-primary"
+          target={'external' in hero.primaryCta && hero.primaryCta.external ? '_blank' : undefined}
+          rel={'external' in hero.primaryCta && hero.primaryCta.external ? 'noopener noreferrer' : undefined}
+        >
+          {hero.primaryCta.label}
+        </a>
+        <a href={hero.secondaryCta.href} class="btn btn-outline-white">
+          {hero.secondaryCta.label}
+        </a>
       </div>
     </div>
   </section>

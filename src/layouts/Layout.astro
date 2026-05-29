@@ -2,6 +2,8 @@
 import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
+import Analytics from '../components/Analytics.astro';
+import StructuredData from '../components/StructuredData.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -11,17 +13,19 @@ interface Props {
   ogImage?: string;
 }
 
-const { 
-  title = "Casa de Castro Alves | Memória, Arte e Poesia", 
-  description = "A Casa de Castro Alves é um espaço de cultura e resistência em Salvador, Bahia. Dedicado ao diálogo entre a poesia e as artes, oferece galeria de arte contemporânea, eventos e o Movimento Irun.",
+const {
+  title = 'Casa de Castro Alves | Memória, Arte e Poesia',
+  description = 'A Casa de Castro Alves é um espaço de cultura e resistência em Salvador, Bahia. Dedicado ao diálogo entre a poesia e as artes, oferece galeria de arte contemporânea, eventos e o Movimento Irun.',
   showSponsors = false,
-  ogImage = "/01_logo_amarelo_ig.png"
+  ogImage = '/01_logo_amarelo_ig.png',
 } = Astro.props;
 
-// Ensure absolute URL for ogImage
-const absoluteOgImage = ogImage.startsWith('http') 
-  ? ogImage 
-  : `https://casadecastroalves.com.br${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`;
+const siteOrigin = 'https://casadecastroalves.com.br';
+const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
+
+const absoluteOgImage = ogImage.startsWith('http')
+  ? ogImage
+  : `${siteOrigin}${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`;
 ---
 
 <!doctype html>
@@ -30,55 +34,47 @@ const absoluteOgImage = ogImage.startsWith('http')
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" href="/05_icone_amarelo.png" />
+    <link rel="canonical" href={canonicalURL.href} />
     <meta name="generator" content={Astro.generator} />
-    
+
     <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
-    <meta name="keywords" content="Casa de Castro Alves, Castro Alves, Salvador, Santo Antonio Alem do Carmo, Centro Historico, Poesia, Movimento Irun, Aluguel de Espaco Salvador, Eventos Salvador" />
     <meta name="author" content="Casa de Castro Alves" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://casadecastroalves.com.br/" />
+    <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:locale" content="pt_BR" />
 
     <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://casadecastroalves.com.br/" />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={absoluteOgImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL.href} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
 
-    <!-- Google Analytics (gtag.js) -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-2J7VGG46JY"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){window.dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-2J7VGG46JY');
-    </script>
+    <StructuredData type="webpage" pageTitle={title} pageDescription={description} />
   </head>
   <body>
-    <!-- Top-level Navigation -->
+    <a href="#main-content" class="skip-link">Ir para o conteúdo</a>
+
     <Navigation />
 
-    <!-- Main Content Area -->
     <main id="main-content">
       <slot />
     </main>
 
-    <!-- Global Footer -->
     <Footer showSponsors={showSponsors} />
 
-    <!-- LGPD Cookie Consent Banner -->
     <CookieConsent />
+    <Analytics />
 
     <script>
-      // GPU-accelerated lightweight requestAnimationFrame scroll listener for parallax headers
       let ticking = false;
 
       function updateParallax() {
@@ -87,9 +83,7 @@ const absoluteOgImage = ogImage.startsWith('http')
           const parent = bg.parentElement;
           if (parent) {
             const rect = parent.getBoundingClientRect();
-            // Only transform if the element is visible in the viewport
             if (rect.bottom > 0 && rect.top < window.innerHeight) {
-              // Apply GPU-accelerated translate3d using a 0.35 parallax speed multiplier
               bg.style.transform = `translate3d(0, ${window.scrollY * 0.35}px, 0)`;
             }
           }
@@ -104,10 +98,7 @@ const absoluteOgImage = ogImage.startsWith('http')
         }
       }
 
-      // Listen for scroll events with passive performance options
       window.addEventListener('scroll', onScroll, { passive: true });
-      
-      // Initialize on load
       window.addEventListener('DOMContentLoaded', updateParallax);
       if (document.readyState === 'complete' || document.readyState === 'interactive') {
         updateParallax();
@@ -117,6 +108,24 @@ const absoluteOgImage = ogImage.startsWith('http')
 </html>
 
 <style>
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: var(--space-md);
+    z-index: 10000;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-amarelo-cca);
+    color: var(--color-preto-editorial);
+    font-family: var(--font-interface);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
+
+  .skip-link:focus {
+    top: var(--space-sm);
+  }
+
   body {
     min-height: 100vh;
     display: flex;

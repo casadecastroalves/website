@@ -1,5 +1,29 @@
 ---
-// Navigation component for Casa de Castro Alves
+const moreLinks = [
+  {
+    label: 'Biblioteca',
+    href: 'https://drive.google.com/drive/folders/1w_wR8ilBnW_IRcWLG2VxQFx-Myx7oJ_E?usp=sharing',
+    external: true,
+  },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/casadecastroalves/',
+    external: true,
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@casadecastroalves',
+    external: true,
+  },
+];
+
+const primaryLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'A Casa', href: '/a-casa' },
+  { label: 'Shows', href: '/shows' },
+  { label: 'Movimento Irun', href: '/movimento-irun' },
+  { label: 'Cursos', href: '/movimento-irun/cursos' },
+];
 ---
 
 <header class="main-header">
@@ -8,37 +32,65 @@
       <img src="/03_logo_horizontal_transparente.png" alt="Casa de Castro Alves" class="logo-image" />
     </a>
 
-    <!-- Desktop Navigation Links -->
-    <nav class="nav-desktop" aria-label="Desktop menu">
-      <a href="/" class="nav-link">Home</a>
-      <a href="/a-casa" class="nav-link">A Casa</a>
-      <a href="/shows" class="nav-link">Shows</a>
-      <a href="/movimento-irun" class="nav-link">Movimento Irun</a>
-      <a href="/movimento-irun/cursos" class="nav-link">Cursos</a>
-      <a href="https://drive.google.com/drive/folders/1w_wR8ilBnW_IRcWLG2VxQFx-Myx7oJ_E?usp=sharing" target="_blank" rel="noopener noreferrer" class="nav-link">Biblioteca</a>
-      <a href="https://www.instagram.com/casadecastroalves/" target="_blank" rel="noopener noreferrer" class="nav-link">IG</a>
-      <a href="https://www.youtube.com/@casadecastroalves" target="_blank" rel="noopener noreferrer" class="nav-link">YT</a>
+    <nav class="nav-desktop" aria-label="Menu principal">
+      {
+        primaryLinks.map((link) => (
+          <a href={link.href} class="nav-link">
+            {link.label}
+          </a>
+        ))
+      }
+
+      <details class="nav-more">
+        <summary class="nav-link nav-more-trigger">Mais</summary>
+        <div class="nav-more-panel" role="menu">
+          {
+            moreLinks.map((link) => (
+              <a
+                href={link.href}
+                class="nav-more-link"
+                role="menuitem"
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </div>
+      </details>
+
       <a href="/contato" class="btn btn-nav btn-sm">Contato</a>
     </nav>
 
-    <!-- Mobile Menu Button -->
-    <button class="mobile-menu-toggle" aria-label="Toggle Menu" aria-expanded="false" id="menuToggle">
+    <button class="mobile-menu-toggle" aria-label="Abrir menu" aria-expanded="false" id="menuToggle">
       <span class="bar"></span>
       <span class="bar"></span>
       <span class="bar"></span>
     </button>
   </div>
 
-  <!-- Mobile Dropdown Navigation -->
-  <nav class="nav-mobile" aria-label="Mobile menu" id="mobileMenu">
-    <a href="/" class="mobile-nav-link">Home</a>
-    <a href="/a-casa" class="mobile-nav-link">A Casa</a>
-    <a href="/shows" class="mobile-nav-link">Shows</a>
-    <a href="/movimento-irun" class="mobile-nav-link">Movimento Irun</a>
-    <a href="/movimento-irun/cursos" class="mobile-nav-link">Cursos</a>
-    <a href="https://drive.google.com/drive/folders/1w_wR8ilBnW_IRcWLG2VxQFx-Myx7oJ_E?usp=sharing" target="_blank" rel="noopener noreferrer" class="mobile-nav-link">Biblioteca</a>
-    <a href="https://www.instagram.com/casadecastroalves/" target="_blank" rel="noopener noreferrer" class="mobile-nav-link">Instagram</a>
-    <a href="https://www.youtube.com/@casadecastroalves" target="_blank" rel="noopener noreferrer" class="mobile-nav-link">YouTube</a>
+  <nav class="nav-mobile" aria-label="Menu mobile" id="mobileMenu" hidden>
+    {
+      primaryLinks.map((link) => (
+        <a href={link.href} class="mobile-nav-link">
+          {link.label}
+        </a>
+      ))
+    }
+    <span class="mobile-nav-divider" aria-hidden="true"></span>
+    {
+      moreLinks.map((link) => (
+        <a
+          href={link.href}
+          class="mobile-nav-link mobile-nav-link-secondary"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {link.label}
+        </a>
+      ))
+    }
     <a href="/contato" class="mobile-nav-link mobile-nav-link-btn">Contato</a>
   </nav>
 </header>
@@ -76,7 +128,6 @@
     transition: var(--transition-smooth);
   }
 
-  /* Desktop Menu */
   .nav-desktop {
     display: none;
     align-items: center;
@@ -111,8 +162,51 @@
     transition: var(--transition-smooth);
   }
 
-  .nav-link:hover::after {
+  .nav-link:hover::after,
+  .nav-more[open] .nav-more-trigger::after {
     width: 100%;
+  }
+
+  .nav-more {
+    position: relative;
+  }
+
+  .nav-more-trigger {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .nav-more-trigger::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-more-panel {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    min-width: 180px;
+    background: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    box-shadow: 0 8px 24px rgba(26, 26, 26, 0.08);
+    padding: var(--space-sm) 0;
+    z-index: 1010;
+  }
+
+  .nav-more-link {
+    display: block;
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-interface);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-preto-editorial);
+    transition: var(--transition-fast);
+  }
+
+  .nav-more-link:hover {
+    background: var(--color-creme);
+    color: var(--color-ouro);
   }
 
   .btn-nav {
@@ -121,7 +215,6 @@
     margin-left: var(--space-sm);
   }
 
-  /* Mobile Toggle */
   .mobile-menu-toggle {
     display: flex;
     flex-direction: column;
@@ -160,7 +253,6 @@
     transform: translateY(-8px) rotate(-45deg);
   }
 
-  /* Mobile Menu */
   .nav-mobile {
     position: fixed;
     top: 80px;
@@ -172,18 +264,23 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: var(--space-lg);
+    gap: var(--space-md);
     padding: var(--space-xl) var(--space-lg);
     z-index: 1005;
     transform: translateX(100%);
     visibility: hidden;
     transition: var(--transition-smooth);
     border-top: 1px solid rgba(26, 26, 26, 0.05);
+    overflow-y: auto;
   }
 
   .nav-mobile.active {
     transform: translateX(0);
     visibility: visible;
+  }
+
+  .nav-mobile[hidden] {
+    display: flex;
   }
 
   .mobile-nav-link {
@@ -198,6 +295,18 @@
 
   .mobile-nav-link:hover {
     color: var(--color-ouro);
+  }
+
+  .mobile-nav-link-secondary {
+    font-size: 1rem;
+    color: var(--color-carvao);
+  }
+
+  .mobile-nav-divider {
+    width: 48px;
+    height: 1px;
+    background: rgba(26, 26, 26, 0.15);
+    margin: var(--space-sm) 0;
   }
 
   .mobile-nav-link-btn {
@@ -217,19 +326,30 @@
     menuToggle.addEventListener('click', () => {
       const isActive = menuToggle.classList.toggle('active');
       mobileMenu.classList.toggle('active');
+      mobileMenu.hidden = !isActive;
       menuToggle.setAttribute('aria-expanded', isActive.toString());
+      menuToggle.setAttribute('aria-label', isActive ? 'Fechar menu' : 'Abrir menu');
       document.body.classList.toggle('menu-open', isActive);
     });
 
-    // Close mobile menu when a link is clicked
-    const links = mobileMenu.querySelectorAll('a');
-    links.forEach(link => {
+    mobileMenu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
         menuToggle.classList.remove('active');
         mobileMenu.classList.remove('active');
+        mobileMenu.hidden = true;
         menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Abrir menu');
         document.body.classList.remove('menu-open');
       });
     });
   }
+
+  document.querySelectorAll('.nav-more').forEach((details) => {
+    details.addEventListener('toggle', () => {
+      if (!details.open) return;
+      document.querySelectorAll('.nav-more').forEach((other) => {
+        if (other !== details) other.open = false;
+      });
+    });
+  });
 </script>

@@ -1,0 +1,7 @@
+# Cloudflare Pages — URLs legadas (WordPress / links antigos)
+/movimentoirun /movimento-irun 301
+/movimentoirun/ /movimento-irun/ 301
+/galeria /a-casa 301
+/galeria/ /a-casa/ 301
+/eventos /shows 301
+/eventos/ /shows/ 301

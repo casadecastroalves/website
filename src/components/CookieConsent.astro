@@ -159,10 +159,13 @@
     btnAccept.addEventListener('click', () => {
       localStorage.setItem('cca_cookie_consent', 'accepted');
       banner.classList.add('hidden');
-      
-      // Custom event to trigger analytics or script loading if configured
       window.dispatchEvent(new CustomEvent('cookie-consent-accepted'));
     });
+
+    // Já aceitou antes — garantir analytics sem reabrir o banner
+    if (consent === 'accepted') {
+      window.dispatchEvent(new CustomEvent('cookie-consent-accepted'));
+    }
 
     btnDecline.addEventListener('click', () => {
       localStorage.setItem('cca_cookie_consent', 'declined');

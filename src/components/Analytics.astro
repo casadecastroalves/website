@@ -1,0 +1,33 @@
+---
+const GA_ID = 'G-2J7VGG46JY';
+---
+
+<script is:inline define:vars={{ gaId: GA_ID }}>
+  function loadGoogleAnalytics() {
+    if (window.__cca_ga_loaded) return;
+    window.__cca_ga_loaded = true;
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+    document.head.appendChild(script);
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', gaId);
+  }
+
+  function maybeLoadAnalytics() {
+    if (localStorage.getItem('cca_cookie_consent') === 'accepted') {
+      loadGoogleAnalytics();
+    }
+  }
+
+  maybeLoadAnalytics();
+  window.addEventListener('cookie-consent-accepted', loadGoogleAnalytics);
+  document.addEventListener('astro:after-swap', maybeLoadAnalytics);
+</script>

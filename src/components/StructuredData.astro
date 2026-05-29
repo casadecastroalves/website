@@ -1,0 +1,61 @@
+---
+interface Props {
+  type?: 'organization' | 'webpage';
+  pageTitle?: string;
+  pageDescription?: string;
+}
+
+const { type = 'organization', pageTitle, pageDescription } = Astro.props;
+
+const siteUrl = 'https://casadecastroalves.com.br';
+const canonicalPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const pageUrl = new URL(canonicalPath, siteUrl).href;
+
+const organization = {
+  '@context': 'https://schema.org',
+  '@type': 'CulturalOrganization',
+  '@id': `${siteUrl}/#organization`,
+  name: 'Casa de Castro Alves',
+  url: siteUrl,
+  description:
+    'Espaço de cultura dedicado ao diálogo entre poesia e artes no Centro Histórico de Salvador, Bahia.',
+  image: `${siteUrl}/01_logo_amarelo_ig.png`,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Rua do Passo, 52',
+    addressLocality: 'Salvador',
+    addressRegion: 'BA',
+    postalCode: '40301-408',
+    addressCountry: 'BR',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: -12.9714,
+    longitude: -38.5014,
+  },
+  telephone: '+55-71-99129-6555',
+  email: 'casadecastroalves@gmail.com',
+  sameAs: [
+    'https://www.instagram.com/casadecastroalves/',
+    'https://www.youtube.com/@casadecastroalves',
+  ],
+};
+
+const webpage =
+  type === 'webpage'
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        '@id': `${pageUrl}#webpage`,
+        url: pageUrl,
+        name: pageTitle,
+        description: pageDescription,
+        isPartOf: { '@id': `${siteUrl}/#organization` },
+        about: { '@id': `${siteUrl}/#organization` },
+      }
+    : null;
+
+const jsonLd = type === 'webpage' ? [organization, webpage] : organization;
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
