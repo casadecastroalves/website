@@ -76,30 +76,43 @@ html, body {
 
 .header-location {
   display: flex;
-  align-items: baseline;
-  gap: 0.4rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.05rem;
   pointer-events: none;
   max-width: 100%;
+  min-width: 0;
 }
 
-.header-location strong {
-  display: inline-block;
-  font-size: 1.15rem;
+.header-location strong,
+.header-strip-region {
+  display: block;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--neon-cyan);
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  max-width: 100%;
+  line-height: 1.15;
 }
 
-.header-location span {
-  display: inline-block;
-  font-size: 0.8125rem;
+.header-location span,
+.header-strip-place {
+  display: block;
+  font-size: 0.75rem;
   font-weight: 400;
   color: var(--muted);
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  max-width: 100%;
+  line-height: 1.2;
+}
+
+.btn-menu {
+  display: none;
+  flex-shrink: 0;
 }
 
 .header-brand h1,
@@ -527,6 +540,10 @@ html, body {
   bottom: 1rem;
   left: 1rem;
   z-index: 800;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding: 0 1rem !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
 }
 
 /* Footer / timeline */
@@ -925,7 +942,21 @@ html, body {
 }
 
 #btn-menu {
-  display: inline-flex;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .btn-menu {
+    display: inline-flex !important;
+  }
+
+  #btn-conteudo-header {
+    display: none !important;
+  }
+
+  .header-brand.has-location .header-location {
+    max-width: calc(100vw - 11.5rem);
+  }
 }
 
 .main.sidebar-closed {

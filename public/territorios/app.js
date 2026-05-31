@@ -19,6 +19,7 @@
   var lagoaPolyLayers = [];
   var tiNavPolyLayers = [];
   var activeLagoaRegId = null;
+  var loadingFromShare = false;
 
   Object.keys(D.redeTiMap || {}).forEach(function (rede) {
     tiToRede[D.redeTiMap[rede]] = rede;
@@ -91,12 +92,89 @@
     u.searchParams.delete("territorio");
     u.searchParams.delete("vista");
     u.searchParams.delete("ti");
+    u.searchParams.delete("regiao");
     if (mode === "ti") {
       u.searchParams.set("vista", "ti");
       if (activeTiSlug) u.searchParams.set("ti", activeTiSlug);
     } else if (mode === "rede") u.searchParams.set("vista", "rede");
-    else if (mode === "territorio" && activeSlug) u.searchParams.set("territorio", activeSlug);
+    else if (mode === "territorio" && activeSlug) {
+      u.searchParams.set("territorio", activeSlug);
+      if (activeSlug === "lagoa-grande" && activeLagoaRegId) {
+        u.searchParams.set("regiao", activeLagoaRegId);
+      }
+    }
     history.replaceState(null, "", u);
+  }
+
+  function updateShareMeta(title, subtitle) {
+    if (!title) return;
+    var desc = subtitle || "Mapa interativo — Movimento Irun";
+    document.title = title + " — Identidade e Memória";
+    var setMeta = function (sel, val) {
+      var el = document.querySelector(sel);
+      if (el) el.setAttribute("content", val);
+    };
+    setMeta('meta[property="og:title"]', title + " — Identidade e Memória");
+    setMeta('meta[property="og:description"]', desc);
+    setMeta('meta[name="description"]', desc);
+    setMeta('meta[property="og:url"]', location.href.split("#")[0]);
+  }
+
+  var mapRefitTimer = null;
+
+  function scheduleMapRefit(callback) {
+    if (mapRefitTimer) clearTimeout(mapRefitTimer);
+    mapRefitTimer = setTimeout(function () {
+      mapRefitTimer = null;
+      if (!map) return;
+      map.invalidateSize();
+      if (callback) callback();
+      else refitCurrentView();
+    }, 320);
+  }
+
+  function refitCurrentView() {
+    if (!map) return;
+    if (mode === "territorio" && activeSlug) {
+      var t = getTerritorio(activeSlug);
+      if (!t) return;
+      if (activeLagoaRegId && t.slug === "lagoa-grande") {
+        var reg = (window.MI_LAGOAS_GEO || []).find(function (r) {
+          return r.id === activeLagoaRegId;
+        });
+        if (reg && reg.coords && reg.coords.length) {
+          map.fitBounds(reg.coords, { padding: [48, 48], maxZoom: 14 });
+          if (map.getZoom() < 12) map.setZoom(12);
+          return;
+        }
+      }
+      renderTerritorioMap(t, { fit: true });
+    } else if (mode === "ti") {
+      var geo = window.MI_TI_BAHIA || [];
+      if (activeTiSlug) {
+        var focused = geo.find(function (x) {
+          return x.slug === activeTiSlug;
+        });
+        if (focused) map.fitBounds(focused.coords, { padding: [32, 32], maxZoom: 11 });
+      } else {
+        var bounds = [];
+        geo.forEach(function (ti) {
+          ti.coords.forEach(function (c) {
+            bounds.push(c);
+          });
+        });
+        if (bounds.length) map.fitBounds(bounds, { padding: [24, 24] });
+      }
+    } else if (mode === "rede") {
+      map.fitBounds(
+        L.latLngBounds(
+          D.territorios.map(function (t) {
+            return t.pin;
+          })
+        ),
+        { padding: [48, 48] }
+      );
+    }
   }
 
   function setHeaderContext(titulo, subtitulo) {
@@ -115,10 +193,11 @@
     if (div) div.hidden = false;
     if (brand) brand.classList.add("has-location");
     el.innerHTML =
-      "<strong>" +
+      '<strong class="header-strip-region">' +
       esc(titulo) +
       "</strong>" +
-      (subtitulo ? "<span>" + esc(subtitulo) + "</span>" : "");
+      (subtitulo ? '<span class="header-strip-place">' + esc(subtitulo) + "</span>" : "");
+    updateShareMeta(titulo, subtitulo);
   }
 
   function initMap() {
@@ -234,9 +313,11 @@
     if (fit !== false && reg.coords && reg.coords.length) {
       map.fitBounds(reg.coords, {
         padding: [48, 48],
-        maxZoom: Math.max(map.getZoom(), 13),
+        maxZoom: 14,
       });
+      if (map.getZoom() < 12) map.setZoom(12);
     }
+    updateUrl();
     showToast(reg.nome);
   }
 
@@ -653,7 +734,7 @@
     updateUrl();
     updateFormNavLink();
 
-    if (highlightSlug && focusOne) {
+    if (highlightSlug && focusOne && !loadingFromShare) {
       if (window.innerWidth <= 768) {
         openSidebarMobile();
       } else {
@@ -664,6 +745,10 @@
           if (btnMenu) btnMenu.classList.remove("collapsed");
         }
       }
+    } else if (loadingFromShare) {
+      closeSidebarMobile();
+      var mainShare = document.querySelector(".main");
+      if (mainShare) mainShare.classList.add("sidebar-closed");
     }
     updateSidebarToggleState();
   }
@@ -1391,7 +1476,9 @@
           all.push(c);
         });
       });
-      map.fitBounds(all, { padding: [36, 36], maxZoom: 10 });
+      map.fitBounds(all, { padding: [48, 48], maxZoom: 13 });
+      var minZoom = territorio.zoom || 11;
+      if (map.getZoom() < minZoom) map.setZoom(minZoom);
       if (activeLagoaRegId) {
         var reg = (window.MI_LAGOAS_GEO || []).find(function (r) {
           return r.id === activeLagoaRegId;
@@ -1902,7 +1989,8 @@
       .join("");
   }
 
-  function selectTerritorio(slug) {
+  function selectTerritorio(slug, opts) {
+    opts = opts || {};
     var t = getTerritorio(slug);
     if (!t) return;
     if (slug !== "lagoa-grande") activeLagoaRegId = null;
@@ -1952,9 +2040,14 @@
     renderTerritorioMap(t);
     updateUrl();
     updateFormNavLink();
-    
-    // Auto-open sidebar for better UX so content is not hidden
-    if (window.innerWidth <= 768) {
+
+    if (opts.fromShare) {
+      closeSidebarMobile();
+      var mainShare = document.querySelector(".main");
+      if (mainShare) mainShare.classList.add("sidebar-closed");
+      scheduleMapRefit();
+      updateSidebarToggleState();
+    } else if (window.innerWidth <= 768) {
       openSidebarMobile();
     } else {
       var main = document.querySelector(".main");
@@ -1965,6 +2058,7 @@
       }
       updateSidebarToggleState();
     }
+    updatePanelMapBtn();
   }
 
   function getSharePayload() {
@@ -1973,8 +2067,21 @@
     if (mode === "territorio" && activeSlug) {
       var t = getTerritorio(activeSlug);
       if (t) {
-        title = t.nome;
-        subtitle = t.subtitulo || t.ti || "Rede Movimento Irun";
+        if (activeLagoaRegId && activeSlug === "lagoa-grande") {
+          var reg = (window.MI_LAGOAS_GEO || []).find(function (r) {
+            return r.id === activeLagoaRegId;
+          });
+          if (reg) {
+            title = reg.nome;
+            subtitle = t.subtitulo || t.nome;
+          } else {
+            title = t.nome;
+            subtitle = t.subtitulo || t.ti || "Rede Movimento Irun";
+          }
+        } else {
+          title = t.nome;
+          subtitle = t.subtitulo || t.ti || "Rede Movimento Irun";
+        }
       }
     } else if (mode === "ti" && activeTiSlug) {
       var ti = (window.MI_TI_BAHIA || []).find(function (x) {
@@ -2105,7 +2212,7 @@
 
   function updateSidebarToggleState() {
     var btn = $("btn-conteudo-header");
-    if (!btn) return;
+    var menuBtn = $("btn-menu");
     var isOpen = false;
     if (window.innerWidth <= 768) {
       isOpen = $("sidebar").classList.contains("open");
@@ -2113,7 +2220,20 @@
       var main = document.querySelector(".main");
       isOpen = main ? !main.classList.contains("sidebar-closed") : true;
     }
-    btn.classList.toggle("header-nav-active", isOpen);
+    if (btn) btn.classList.toggle("header-nav-active", isOpen);
+    if (menuBtn) menuBtn.classList.toggle("header-nav-active", isOpen);
+    updatePanelMapBtn();
+  }
+
+  function updatePanelMapBtn() {
+    var btn = $("btn-panel-map");
+    if (!btn) return;
+    if (window.innerWidth > 768) {
+      btn.hidden = true;
+      return;
+    }
+    var isOpen = $("sidebar").classList.contains("open");
+    btn.hidden = isOpen;
   }
 
   function openSidebarMobile() {
@@ -2152,7 +2272,10 @@
         }
         updateSidebarToggleState();
         setTimeout(function () {
-          if (map) map.invalidateSize();
+          if (map) {
+            map.invalidateSize();
+            scheduleMapRefit();
+          }
         }, 250);
       }
     }
@@ -2197,24 +2320,50 @@
       if (d) d.close();
     });
     listen("btn-conteudo-header", "click", toggleSidebar);
+    listen("btn-menu", "click", toggleSidebar);
+    listen("btn-panel-map", "click", toggleSidebar);
     listen("btn-sidebar", "click", toggleSidebar);
     listen("sidebar-backdrop", "click", closeSidebarMobile);
 
     var terr = qs("territorio");
     var vista = qs("vista");
     var tiParam = qs("ti");
-    if (terr && getTerritorio(terr)) selectTerritorio(terr);
-    else if (vista === "rede") renderRedeMap();
-    else if (tiParam) {
+    var regiaoParam = qs("regiao");
+    var fromShare = !!(terr || vista === "rede" || tiParam);
+    loadingFromShare = fromShare;
+
+    if (terr && getTerritorio(terr)) {
+      selectTerritorio(terr, { fromShare: fromShare });
+      if (regiaoParam && terr === "lagoa-grande") {
+        var regInit = (window.MI_LAGOAS_GEO || []).find(function (r) {
+          return r.id === regiaoParam;
+        });
+        if (regInit) {
+          activeLagoaRegId = regInit.id;
+          scheduleMapRefit(function () {
+            focusLagoaReg(regInit, true);
+          });
+        }
+      }
+    } else if (vista === "rede") {
+      renderRedeMap();
+      if (fromShare) scheduleMapRefit();
+    } else if (tiParam) {
       var tiInit = (window.MI_TI_BAHIA || []).find(function (x) {
         return x.slug === tiParam;
       });
       if (tiInit) renderTiMap(tiInit.slug, true);
       else renderTiMap(null, false);
+      if (fromShare) scheduleMapRefit();
     } else renderTiMap(null, false);
+
+    loadingFromShare = false;
+    updatePanelMapBtn();
 
     window.addEventListener("resize", function () {
       map.invalidateSize();
+      updatePanelMapBtn();
+      scheduleMapRefit();
     });
   }
 
