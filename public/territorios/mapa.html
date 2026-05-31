@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Mapa identitario - Movimento Irun">
+  <title>Movimento Irun - Mapa Identitario</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="app">
+    <header class="header">
+      <div class="header-brand">
+        <h1>Movimento Irun</h1>
+        <p id="header-sub">Mapa identitario territorial</p>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn" id="btn-rede" title="Ver os 6 territorios">Rede</button>
+        <button type="button" class="btn btn-icon" id="btn-rede-map" title="Mapa da rede" aria-label="Mapa da rede">&#127760;</button>
+        <a id="link-instagram" class="btn" href="#" target="_blank" rel="noopener" style="display:none">Instagram</a>
+        <button type="button" class="btn" id="btn-share">Compartilhar</button>
+      </div>
+    </header>
+
+    <div class="main">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <h2 id="sidebar-nome">Territorio</h2>
+          <div class="meta" id="sidebar-meta"></div>
+          <p class="resumo" id="sidebar-resumo"></p>
+        </div>
+        <div class="tabs" role="tablist">
+          <button type="button" class="tab active" data-tab="territorio" role="tab">Territorio</button>
+          <button type="button" class="tab" data-tab="produtos" role="tab">Produtos</button>
+          <button type="button" class="tab" data-tab="galeria" role="tab">Galeria</button>
+          <button type="button" class="tab" data-tab="roteiros" role="tab">Roteiros</button>
+          <button type="button" class="tab" data-tab="memoria" role="tab">Memoria</button>
+        </div>
+        <div id="panel-territorio" class="tab-panel active" role="tabpanel"></div>
+        <div id="panel-produtos" class="tab-panel" role="tabpanel"></div>
+        <div id="panel-galeria" class="tab-panel" role="tabpanel"></div>
+        <div id="panel-roteiros" class="tab-panel" role="tabpanel"></div>
+        <div id="panel-memoria" class="tab-panel" role="tabpanel"></div>
+      </aside>
+
+      <div class="map-wrap">
+        <div id="map" role="application" aria-label="Mapa interativo"></div>
+        <div class="map-chips" id="map-chips"></div>
+        <button type="button" class="btn map-toggle-sidebar" id="btn-sidebar">Conteudo</button>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <div class="footer-row">
+        <div class="contadores" id="contadores"></div>
+        <div class="timeline-wrap">
+          <div id="timeline"></div>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div class="modal-overlay" id="modal-rede">
+    <div class="modal">
+      <h2>Rede Movimento Irun</h2>
+      <ul class="territorio-list" id="rede-list"></ul>
+      <button type="button" class="btn modal-close" id="modal-close">Fechar</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="lagoa_grande_geo.js"></script>
+  <script src="dados.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

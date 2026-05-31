@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Formulário de pontos — Identidade e Memória, Movimento Irun">
+  <title>Formulário — Identidade e Memória</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="styles.css">
+  <script src="theme.js"></script>
+</head>
+<body class="page-formulario">
+  <div id="app">
+    <header class="header">
+      <div class="header-left">
+        <div class="header-brand" id="header-brand">
+          <span class="brand-title">Identidade e Memória</span>
+          <span class="brand-divider" id="brand-divider">|</span>
+          <div class="header-location" id="header-location" aria-live="polite">
+            <strong>Formulário</strong>
+            <span>Novos pontos no mapa</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn btn-theme" id="btn-theme" aria-label="Alternar tema claro/escuro" aria-pressed="true">☀</button>
+        <a class="btn" id="nav-bahia" href="index.html?vista=ti" title="Mapa dos 27 Territórios de Identidade">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+            <line x1="9" y1="3" x2="9" y2="18"></line>
+            <line x1="15" y1="6" x2="15" y2="21"></line>
+          </svg>
+          <span class="btn-text">Bahia</span>
+        </a>
+        <a class="btn" id="nav-rede" href="index.html?vista=rede" title="Rede Movimento Irun — 6 territórios">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="5" r="3"></circle>
+            <circle cx="5" cy="19" r="3"></circle>
+            <circle cx="19" cy="19" r="3"></circle>
+            <line x1="6.7" y1="16.5" x2="10.3" y2="7.5"></line>
+            <line x1="17.3" y1="16.5" x2="13.7" y2="7.5"></line>
+            <line x1="8" y1="19" x2="16" y2="19"></line>
+          </svg>
+          <span class="btn-text">Rede</span>
+        </a>
+        <a class="btn" id="nav-mapa" href="index.html">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span class="btn-text">Mapa</span>
+        </a>
+        <button type="button" class="btn btn-share-icon" id="btn-share" title="Compartilhar">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+        </button>
+        <span class="btn header-nav-active" aria-current="page">
+          <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+          </svg>
+          <span class="btn-text">Formulário</span>
+        </span>
+      </div>
+    </header>
+
+    <main class="form-main">
+      <div class="form-page">
+        <div class="form-page-intro">
+          <h2 class="form-page-title">Formulário de pontos</h2>
+          <p class="form-page-lead">Oficina Movimento Irun — registre um ponto e copie o JSON para integração no mapa.</p>
+        </div>
+
+        <form id="form-ponto" class="form-card">
+          <div class="field">
+            <label for="territorio">Território</label>
+            <select id="territorio" required>
+              <option value="itaparica-rm">RMS — Itaparica, Salvador, Vera Cruz</option>
+              <option value="baixo-sul">Baixo Sul — Caxute</option>
+              <option value="chapada-mucuge">Chapada Diamantina — Guiné, Mucugé</option>
+              <option value="reconcavo-saubara">Recôncavo — Saubara</option>
+              <option value="serra-grande">Litoral Sul — Serra Grande</option>
+              <option value="lagoa-grande">Portal do Sertão — Quilombo Lagoa Grande</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="camada">Camada no mapa</label>
+            <select id="camada" required>
+              <option value="ambiente">Ambiente</option>
+              <option value="historia">História</option>
+              <option value="instituicoes">Instituições</option>
+              <option value="turismo">Turismo</option>
+              <option value="produtos">Produtos</option>
+              <option value="projetos">Projetos</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="titulo">Título</label>
+            <input id="titulo" required placeholder="Nome do ponto" autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="endereco">Endereço (referência)</label>
+            <input id="endereco" placeholder="Rua, bairro, município" autocomplete="off">
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="lat">Latitude</label>
+              <input id="lat" type="number" step="any" required placeholder="-12.583">
+            </div>
+            <div class="field">
+              <label for="lng">Longitude</label>
+              <input id="lng" type="number" step="any" required placeholder="-38.443">
+            </div>
+          </div>
+          <p class="field-hint">Cole coordenadas do Google Maps / My Maps (botão direito no pin).</p>
+          <div class="field">
+            <label for="resumo">Descrição</label>
+            <textarea id="resumo" placeholder="Memória coletiva — sem nomes pessoais sensíveis"></textarea>
+          </div>
+          <div class="field">
+            <label for="link">Link (site, Instagram, etc.)</label>
+            <input id="link" type="url" placeholder="https://..." autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="foto-mapa">Foto no mapa (popup do pin)</label>
+            <input id="foto-mapa" type="url" placeholder="URL da foto — My Maps, Drive público ou imagens/..." autocomplete="off">
+            <p class="field-hint">Aparece na janela quando se clica no ponto no mapa.</p>
+          </div>
+          <div class="field">
+            <label for="fotos-galeria">Fotos para a galeria do território</label>
+            <textarea id="fotos-galeria" rows="3" placeholder="Uma URL por linha — vão para a aba Galeria do menu lateral"></textarea>
+            <p class="field-hint">Opcional. Use para registos que não são um pin no mapa.</p>
+          </div>
+          <button type="submit" class="btn btn-primary btn-submit">Gerar JSON</button>
+        </form>
+
+        <div class="form-output" id="output" hidden>
+          <h3 class="form-output-title">Copiar e enviar</h3>
+          <pre id="json-out"></pre>
+          <button type="button" class="btn" id="btn-copy">Copiar JSON</button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <span class="footer-credit">Built by IG + Comunidade</span>
+      <span class="footer-grimaux">GRIMAUX</span>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <dialog id="dialog-share" class="dialog dialog-share">
+    <div class="dialog-share-head">
+      <h2>Compartilhar</h2>
+      <p class="dialog-share-context" id="share-context"></p>
+    </div>
+    <div class="share-grid" id="share-grid">
+      <button type="button" class="share-app" data-share="whatsapp">
+        <span class="share-app-icon share-app-icon--wa" aria-hidden="true">W</span>
+        WhatsApp
+      </button>
+      <button type="button" class="share-app" data-share="telegram">
+        <span class="share-app-icon share-app-icon--tg" aria-hidden="true">T</span>
+        Telegram
+      </button>
+      <button type="button" class="share-app" data-share="email">
+        <span class="share-app-icon share-app-icon--mail" aria-hidden="true">@</span>
+        E-mail
+      </button>
+      <button type="button" class="share-app" data-share="copy">
+        <span class="share-app-icon" aria-hidden="true">⎘</span>
+        Copiar
+      </button>
+    </div>
+    <div class="share-actions">
+      <button type="button" class="btn btn-primary" id="btn-share-native">Mais opções</button>
+    </div>
+    <input type="hidden" id="share-url">
+    <button type="button" class="btn btn-ghost btn-close-share" id="btn-close-share">Fechar</button>
+  </dialog>
+
+  <script>
+    (function () {
+      var territorioEl = document.getElementById("territorio");
+      var navMapa = document.getElementById("nav-mapa");
+      var shareUrl = document.getElementById("share-url");
+      var toast = document.getElementById("toast");
+
+      function mapUrl() {
+        var slug = territorioEl.value;
+        var u = new URL("index.html", location.href);
+        u.searchParams.set("territorio", slug);
+        return u.href;
+      }
+
+      function syncNavLinks() {
+        navMapa.href = mapUrl();
+      }
+
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.hidden = false;
+        toast.classList.add("visible");
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(function () {
+          toast.hidden = true;
+          toast.classList.remove("visible");
+        }, 2800);
+      }
+
+      territorioEl.addEventListener("change", syncNavLinks);
+      syncNavLinks();
+
+      var qsSlug = new URLSearchParams(location.search).get("territorio");
+      if (qsSlug) {
+        territorioEl.value = qsSlug;
+        syncNavLinks();
+      }
+
+      function slugId(text) {
+        return text
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "")
+          .slice(0, 48);
+      }
+
+      function linesToUrls(text) {
+        return text
+          .split(/\r?\n/)
+          .map(function (s) {
+            return s.trim();
+          })
+          .filter(Boolean);
+      }
+
+      document.getElementById("form-ponto").addEventListener("submit", function (e) {
+        e.preventDefault();
+        var lat = parseFloat(document.getElementById("lat").value);
+        var lng = parseFloat(document.getElementById("lng").value);
+        if (!isFinite(lat) || lat < -90 || lat > 90) {
+          showToast("Latitude inválida (−90 a 90).");
+          return;
+        }
+        if (!isFinite(lng) || lng < -180 || lng > 180) {
+          showToast("Longitude inválida (−180 a 180). Use ponto decimal, ex.: −38.678");
+          return;
+        }
+        var titulo = document.getElementById("titulo").value.trim();
+        var endereco = document.getElementById("endereco").value.trim();
+        var resumo = document.getElementById("resumo").value.trim();
+        var link = document.getElementById("link").value.trim();
+        var fotoMapa = document.getElementById("foto-mapa").value.trim();
+        var galeriaUrls = linesToUrls(document.getElementById("fotos-galeria").value);
+
+        var ponto = {
+          id: slugId(titulo),
+          titulo: titulo,
+          camada: document.getElementById("camada").value,
+          coords: [lat, lng],
+          resumo: resumo || endereco || "",
+        };
+        if (fotoMapa) {
+          ponto.fotos = [{ titulo: titulo, src: fotoMapa }];
+        }
+        if (link) ponto.links = [link];
+
+        var out = {
+          territorio: territorioEl.value,
+          ponto: ponto,
+        };
+        if (galeriaUrls.length) {
+          out.galeriaFotos = galeriaUrls.map(function (url, i) {
+            return {
+              titulo: titulo + (galeriaUrls.length > 1 ? " — " + (i + 1) : ""),
+              src: url,
+            };
+          });
+        }
+
+        document.getElementById("json-out").textContent = JSON.stringify(out, null, 2);
+        document.getElementById("output").hidden = false;
+        document.getElementById("output").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      document.getElementById("btn-copy").addEventListener("click", function () {
+        var t = document.getElementById("json-out").textContent;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(t).then(function () {
+            showToast("JSON copiado!");
+          });
+        }
+      });
+
+      function sharePayload() {
+        var slug = territorioEl.value;
+        var names = {
+          "itaparica-rm": "RMS — Itaparica, Salvador, Vera Cruz",
+          "baixo-sul": "Baixo Sul — Caxute",
+          "chapada-mucuge": "Chapada Diamantina — Guiné, Mucugé",
+          "reconcavo-saubara": "Recôncavo — Saubara",
+          "serra-grande": "Litoral Sul — Serra Grande",
+          "lagoa-grande": "Portal do Sertão — Quilombo Lagoa Grande",
+        };
+        var title = names[slug] || "Identidade e Memória";
+        var url = mapUrl();
+        var text =
+          "Identidade e Memória — Movimento Irun\n" +
+          title +
+          "\n" +
+          url;
+        return { title: title, text: text, url: url };
+      }
+
+      function copyShareLink(url) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () {
+            showToast("Link copiado!");
+          });
+        }
+      }
+
+      function bindShareActions() {
+        var ctx = document.getElementById("share-context");
+        var grid = document.getElementById("share-grid");
+        document.getElementById("btn-share").addEventListener("click", function () {
+          var p = sharePayload();
+          shareUrl.value = p.url;
+          ctx.innerHTML =
+            "<strong>" +
+            p.title.replace(/</g, "&lt;") +
+            "</strong>Formulário e mapa do território selecionado.";
+          document.getElementById("dialog-share").showModal();
+        });
+        grid.addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-share]");
+          if (!btn) return;
+          var p = sharePayload();
+          var kind = btn.getAttribute("data-share");
+          if (kind === "copy") copyShareLink(p.url);
+          else if (kind === "whatsapp")
+            window.open(
+              "https://wa.me/?text=" + encodeURIComponent(p.text),
+              "_blank",
+              "noopener,noreferrer"
+            );
+          else if (kind === "telegram")
+            window.open(
+              "https://t.me/share/url?url=" +
+                encodeURIComponent(p.url) +
+                "&text=" +
+                encodeURIComponent(p.title),
+              "_blank",
+              "noopener,noreferrer"
+            );
+          else if (kind === "email")
+            (location.href =
+              "mailto:?subject=" +
+              encodeURIComponent("Identidade e Memória — " + p.title) +
+              "&body=" +
+              encodeURIComponent(p.text));
+        });
+        document.getElementById("btn-share-native").addEventListener("click", function () {
+          var p = sharePayload();
+          if (navigator.share) {
+            navigator.share({ title: p.title, text: p.text, url: p.url }).catch(function () {});
+          } else copyShareLink(p.url);
+        });
+      }
+
+      bindShareActions();
+      if (window.MITheme) window.MITheme.bindToggle(document.getElementById("btn-theme"));
+
+      document.getElementById("btn-close-share").addEventListener("click", function () {
+        document.getElementById("dialog-share").close();
+      });
+    })();
+  </script>
+</body>
+</html>

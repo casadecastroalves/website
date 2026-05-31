@@ -1,0 +1,4 @@
+Para desenhar o poligono da região 26, Salvador RMS, desenha Salvador e inclui a Ilha de Itaparica
+
+o mapa.html que esta na pasta quilombo lagoa grande deveria estar dentro da pasta Territorios
+

@@ -1,0 +1,71 @@
+/* Design tokens — Identidade e Memória (premium recto, dark/light) */
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --surface2: #141414;
+  --surface-elevated: #1a1a1a;
+  --text: #f5f5f5;
+  --muted: #a3a3a3;
+  --border: #2a2a2a;
+  --border-strong: #404040;
+  --accent: #6aad2a;
+  --accent-hover: #7bc832;
+  --accent-muted: rgba(106, 173, 42, 0.14);
+  --accent2: #b8e06a;
+  --danger: #f87171;
+  --overlay: rgba(0, 0, 0, 0.72);
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.55);
+  --map-tiles: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+  --map-border: rgba(255, 255, 255, 0.45);
+  --map-border-active: #6aad2a;
+  --map-text-shadow: 0 0 6px rgba(0, 0, 0, 0.95), 0 1px 3px rgba(0, 0, 0, 0.9);
+  --map-fill: rgba(255, 255, 255, 0.02);
+  --ti-boundary: #39ff14;
+  --ti-boundary-fill: rgba(57, 255, 20, 0.03);
+  --neon-cyan: #00f0ff;
+  --neon-green: #39ff14;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --surface: #fafafa;
+  --surface2: #f0f0f0;
+  --surface-elevated: #ffffff;
+  --text: #0a0a0a;
+  --muted: #525252;
+  --border: #e5e5e5;
+  --border-strong: #d4d4d4;
+  --accent: #4d8c1f;
+  --accent-hover: #3d7018;
+  --accent-muted: rgba(77, 140, 31, 0.1);
+  --accent2: #3d7018;
+  --danger: #dc2626;
+  --overlay: rgba(0, 0, 0, 0.45);
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  --map-tiles: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
+  --map-border: rgba(10, 10, 10, 0.35);
+  --map-border-active: #4d8c1f;
+  --map-text-shadow: 0 0 6px rgba(255, 255, 255, 0.95), 0 1px 3px rgba(255, 255, 255, 0.9);
+  --map-fill: rgba(10, 10, 10, 0.02);
+  --ti-boundary: #22c55e;
+  --ti-boundary-fill: rgba(22, 163, 74, 0.02);
+  --neon-cyan: #008899;
+  --neon-green: #15803d;
+}
+
+:root {
+  --font: "Jost", "Futura PT", "Century Gothic", system-ui, sans-serif;
+  --tap: 44px;
+  --sidebar-w: 380px;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --radius: 0;
+  --transition: 0.18s ease;
+}
