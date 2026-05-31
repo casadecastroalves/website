@@ -28,12 +28,7 @@
     <header class="header">
       <div class="header-left">
         <div class="header-brand" id="header-brand">
-          <span class="brand-title">Identidade e Memória</span>
-          <span class="brand-divider" id="brand-divider">|</span>
-          <div class="header-location" id="header-location" aria-live="polite">
-            <strong>Formulário</strong>
-            <span>Novos pontos no mapa</span>
-          </div>
+          <span class="brand-title"></span>
         </div>
       </div>
       <div class="header-actions">
@@ -88,8 +83,8 @@
     <main class="form-main">
       <div class="form-page">
         <div class="form-page-intro">
-          <h2 class="form-page-title">Formulário de pontos</h2>
-          <p class="form-page-lead">Oficina Movimento Irun — registre um ponto e copie o JSON para integração no mapa.</p>
+          <h2 class="form-page-title">Formulário de Pontos de Interesse</h2>
+          <p class="form-page-lead">Preencha o formulário e envie o JSON gerado para <strong>casadecastroalves@gmail.com</strong></p>
         </div>
 
         <form id="form-ponto" class="form-card">
@@ -107,7 +102,7 @@
           <div class="field">
             <label for="camada">Camada no mapa</label>
             <select id="camada" required>
-              <option value="ambiente">Ambiente</option>
+              <option value="natureza">Natureza</option>
               <option value="historia">História</option>
               <option value="instituicoes">Instituições</option>
               <option value="turismo">Turismo</option>
@@ -157,6 +152,9 @@
 
         <div class="form-output" id="output" hidden>
           <h3 class="form-output-title">Copiar e enviar</h3>
+          <p class="form-output-desc" style="margin-top: 0; margin-bottom: 1rem; font-size: 0.9rem; color: var(--muted);">
+            Copie o código JSON gerado abaixo e envie para o e-mail <strong>casadecastroalves@gmail.com</strong> para validação e inclusão no mapa oficial.
+          </p>
           <pre id="json-out"></pre>
           <button type="button" class="btn" id="btn-copy">Copiar JSON</button>
         </div>

@@ -47,8 +47,8 @@ window.MI_DADOS = {
   },
   "camadas": [
     {
-      "id": "ambiente",
-      "rotulo": "Ambiente",
+      "id": "natureza",
+      "rotulo": "Natureza",
       "cor": "#38bdf8"
     },
     {
@@ -899,12 +899,38 @@ window.MI_DADOS = {
         {
           "id": "lagoa-grande-lagoa",
           "titulo": "Lagoa Grande",
-          "camada": "ambiente",
+          "camada": "natureza",
           "coords": [
             -12.171057,
             -38.986898
           ],
           "resumo": "Lagoa principal do Quilombo Lagoa Grande, Maria Quitéria (Feira de Santana)."
+        },
+        {
+          "id": "casarao-olhos-d-agua",
+          "titulo": "Casarão Olhos D'Água",
+          "camada": "historia",
+          "coords": [
+            -12.2684,
+            -38.9662
+          ],
+          "resumo": "Imóvel histórico construído no início do século XVIII, considerado o marco inicial do surgimento de Feira de Santana. Hoje funciona como Casa da Cultura e Memorial Maria Quitéria.",
+          "fotos": [
+            {
+              "titulo": "Casarão Olhos D'Água",
+              "src": "imagens/lagoa-grande/casarao-olhos-d-agua.png"
+            }
+          ],
+          "videos": [
+            {
+              "titulo": "Casarão Olhos D'Água — Vídeo",
+              "url": "https://www.youtube.com/watch?v=oqyIZPDcuWw"
+            }
+          ],
+          "links": [
+            "https://www.feiradesantana.ba.gov.br/",
+            "https://www.youtube.com/watch?v=oqyIZPDcuWw"
+          ]
         }
       ]
     }

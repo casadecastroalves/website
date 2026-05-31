@@ -102,33 +102,20 @@
   function setHeaderContext(titulo, subtitulo) {
     var brandTitle = document.querySelector(".brand-title");
     if (brandTitle) {
-      if (!titulo) {
-        brandTitle.textContent = "27 Territórios de Identidade";
-      } else if (titulo === "27 Territórios de Identidade da Bahia") {
-        brandTitle.textContent = "27 Territórios de Identidade";
+      if (!titulo || titulo === "27 Territórios de Identidade da Bahia") {
+        brandTitle.textContent = "27 TERRITÓRIOS DE IDENTIDADE";
+      } else if (mode === "rede" || titulo === "Rede Movimento Irun") {
+        brandTitle.textContent = "REDE MOVIMENTO IRUN";
       } else {
-        brandTitle.textContent = titulo;
+        brandTitle.textContent = titulo.toUpperCase();
       }
     }
     var el = $("header-location");
     var div = $("brand-divider");
     var brand = $("header-brand");
-    if (!el) return;
-    if (!titulo) {
-      el.hidden = true;
-      el.innerHTML = "";
-      if (div) div.hidden = true;
-      if (brand) brand.classList.remove("has-location");
-      return;
-    }
-    el.hidden = false;
-    if (div) div.hidden = false;
-    if (brand) brand.classList.add("has-location");
-    el.innerHTML =
-      "<strong>" +
-      esc(titulo) +
-      "</strong>" +
-      (subtitulo ? "<span>" + esc(subtitulo) + "</span>" : "");
+    if (el) el.hidden = true;
+    if (div) div.hidden = true;
+    if (brand) brand.classList.remove("has-location");
   }
 
   function initMap() {
@@ -761,10 +748,10 @@
       
     masterList.innerHTML = 
       '<div class="accordion-section">' +
-      '  <button type="button" class="accordion-header" id="accordion-header-rede" aria-expanded="true">' +
+      '  <button type="button" class="accordion-header collapsed" id="accordion-header-rede" aria-expanded="false">' +
       '    <span>Territórios da Rede (6)</span>' +
       '  </button>' +
-      '  <div class="accordion-content" id="accordion-content-rede">' +
+      '  <div class="accordion-content" id="accordion-content-rede" style="display:none;">' +
       redeHtml +
       '  </div>' +
       '</div>' +
@@ -888,10 +875,17 @@
               '</div>';
     }
     
+    var igLink = t.instagram ? ' <a class="detail-ig-link" href="' + esc(t.instagram) + '" target="_blank" rel="noopener" aria-label="Instagram">' +
+      '<svg class="detail-ig-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>' +
+        '<path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>' +
+        '<line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>' +
+      '</svg>' +
+      '</a>' : '';
+
     html += '<div class="detail-presentation">' +
             '<h2 class="detail-title">' + esc(t.nome) + '</h2>' +
-            (t.subtitulo ? '<p class="detail-subtitle">' + esc(t.subtitulo) + '</p>' : '') +
-            (t.instagram ? '<p><a class="link-ig" href="' + esc(t.instagram) + '" target="_blank" rel="noopener">Instagram</a></p>' : '') +
+            (t.subtitulo ? '<p class="detail-subtitle">' + esc(t.subtitulo) + igLink + '</p>' : (igLink ? '<p class="detail-subtitle">' + igLink + '</p>' : '')) +
             '</div>';
             
     html += '<div class="detail-accordions">';
@@ -1209,16 +1203,6 @@
     if (!item) return "";
     if (item.tipo === "foto") {
       return '<button type="button" class="btn btn-slideshow-fs">Tela cheia</button>';
-    }
-    if (item.tipo === "video" && item.id) {
-      return (
-        '<button type="button" class="btn btn-video-fs" data-yt-id="' +
-        esc(item.id) +
-        '">Tela cheia</button>' +
-        '<a class="btn" href="' +
-        esc(item.url) +
-        '" target="_blank" rel="noopener noreferrer">YouTube</a>'
-      );
     }
     return "";
   }
@@ -1866,15 +1850,7 @@
             '/hqdefault.jpg" alt="" loading="lazy">' +
             '<button type="button" class="video-play-btn" aria-label="Reproduzir">' +
             '<span class="video-play-icon" aria-hidden="true">&#9654;</span>' +
-            "<span>Reproduzir</span></button></div></div>" +
-            '<div class="video-embed-actions">' +
-            '<button type="button" class="btn btn-video-fs" data-yt-id="' +
-            esc(id) +
-            '">Ecrã inteiro</button>' +
-            '<button type="button" class="btn btn-video-yt" data-yt-id="' +
-            esc(id) +
-            '">Ver no YouTube</button>' +
-            "</div>";
+            "<span>Reproduzir</span></button></div></div>";
         } else {
           html +=
             '<p><a class="btn" href="' +
@@ -2208,14 +2184,6 @@
     bindGaleria(combinedGaleria, detailContent);
     bindRoteiroPanel(t, detailContent);
     bindAccordionToggles(detailContent);
-
-    var firstAccordionHeader = detailContent.querySelector(".accordion-header");
-    if (firstAccordionHeader) {
-      firstAccordionHeader.classList.remove("collapsed");
-      firstAccordionHeader.setAttribute("aria-expanded", "true");
-      var firstContent = firstAccordionHeader.nextElementSibling;
-      if (firstContent) firstContent.style.display = "block";
-    }
 
     document.querySelectorAll(".btn-roteiro").forEach(function (btn) {
       btn.addEventListener("click", function () {

@@ -46,7 +46,7 @@ html, body {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  flex: 1;
+  flex: 0 1 auto;
   min-width: 0;
   line-height: 1.25;
 }
@@ -1164,6 +1164,18 @@ body:not(.page-formulario) .header-location {
   line-height: 1.45;
 }
 
+.brand-block-simple {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
 .ti-list {
   list-style: none;
   margin: 0;
@@ -1788,8 +1800,8 @@ body.galeria-lightbox-open {
     bottom: 0;
     top: auto !important;
     width: 100% !important;
-    height: 60vh;
-    max-height: 75vh;
+    height: 68vh;
+    max-height: 80vh;
     min-height: 280px;
     transform: translateY(100%);
     transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
@@ -2413,6 +2425,24 @@ body.page-formulario .header-location {
   font-weight: 700;
   margin: 0 0 0.35rem;
   line-height: 1.2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.detail-ig-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  transition: color var(--transition), transform var(--transition);
+  vertical-align: middle;
+}
+
+.detail-ig-link:hover {
+  color: var(--accent);
+  transform: scale(1.08);
 }
 
 .detail-subtitle {
@@ -2420,6 +2450,9 @@ body.page-formulario .header-location {
   color: var(--muted);
   margin: 0 0 1.25rem;
   line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .detail-about {
@@ -2438,6 +2471,7 @@ body.page-formulario .header-location {
 
 .detail-accordions {
   background: var(--surface);
+  padding-bottom: 3.5rem;
 }
 
 .detail-accordions .accordion-content {
