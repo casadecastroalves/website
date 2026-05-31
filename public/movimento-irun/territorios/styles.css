@@ -58,31 +58,15 @@ html, body {
   letter-spacing: 0.05em;
   color: var(--text);
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
   transition: all var(--transition);
 }
 
-.brand-divider {
+body:not(.page-formulario) .brand-divider,
+body:not(.page-formulario) .header-location {
   display: none !important;
-}
-
-.header-brand.has-location .brand-divider {
-  display: none !important;
-}
-
-.header-location {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  pointer-events: none;
-  max-width: 45%;
-  min-width: 0;
-  overflow: hidden;
-  z-index: 10;
 }
 
 .header-location strong {
@@ -2324,9 +2308,10 @@ body.page-formulario .header-location {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background: transparent;
+  padding: 1.1rem 1.25rem;
+  background: var(--surface2);
   border: none;
+  border-bottom: 1px solid var(--border);
   color: var(--text);
   font-family: var(--font);
   font-size: 1rem;
@@ -2338,7 +2323,11 @@ body.page-formulario .header-location {
 }
 
 .accordion-header:hover {
-  background: var(--surface2);
+  background: var(--border);
+}
+
+.accordion-header:not(.collapsed) {
+  background: var(--surface-elevated);
 }
 
 .accordion-header::after {
@@ -2624,5 +2613,9 @@ body.page-formulario .header-location {
 
   .detail-accordions .accordion-content {
     padding: 0.25rem 1rem 1.25rem;
+  }
+
+  #sidebar-detail .sidebar-panel {
+    padding-bottom: 120px;
   }
 }

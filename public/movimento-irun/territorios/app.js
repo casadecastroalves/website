@@ -100,6 +100,16 @@
   }
 
   function setHeaderContext(titulo, subtitulo) {
+    var brandTitle = document.querySelector(".brand-title");
+    if (brandTitle) {
+      if (!titulo) {
+        brandTitle.textContent = "27 Territórios de Identidade";
+      } else if (titulo === "27 Territórios de Identidade da Bahia") {
+        brandTitle.textContent = "27 Territórios de Identidade";
+      } else {
+        brandTitle.textContent = titulo;
+      }
+    }
     var el = $("header-location");
     var div = $("brand-divider");
     var brand = $("header-brand");
@@ -882,12 +892,21 @@
             '<h2 class="detail-title">' + esc(t.nome) + '</h2>' +
             (t.subtitulo ? '<p class="detail-subtitle">' + esc(t.subtitulo) + '</p>' : '') +
             (t.instagram ? '<p><a class="link-ig" href="' + esc(t.instagram) + '" target="_blank" rel="noopener">Instagram</a></p>' : '') +
-            '<div class="detail-about">' +
-            paragrafosHtml(t.territorioParagrafos || [t.resumo]) +
-            '</div>' +
             '</div>';
             
     html += '<div class="detail-accordions">';
+
+    // 1. Sobre o Território Accordion
+    html += '<div class="accordion-section">' +
+            '<button type="button" class="accordion-header collapsed" id="accordion-header-sobre" aria-expanded="false">' +
+            '<span>Sobre o Território</span>' +
+            '</button>' +
+            '<div class="accordion-content" id="accordion-content-sobre" style="display:none;">' +
+            '<div class="detail-about">' +
+            paragrafosHtml(t.territorioParagrafos || [t.resumo]) +
+            '</div>' +
+            '</div>' +
+            '</div>';
     
     var hasRoteiros = t.roteiros && t.roteiros.length > 0;
     if (hasRoteiros) {
