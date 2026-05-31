@@ -61,13 +61,6 @@ html, body {
   transition: all var(--transition);
 }
 
-.header-brand.has-location .brand-title {
-  font-size: 0.6875rem;
-  color: var(--muted);
-  font-weight: 500;
-  letter-spacing: 0.08em;
-}
-
 .brand-divider {
   display: none !important;
 }
@@ -77,13 +70,19 @@ html, body {
 }
 
 .header-location {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  justify-content: center;
   gap: 0.4rem;
   pointer-events: none;
-  max-width: 100%;
+  max-width: 45%;
   min-width: 0;
   overflow: hidden;
+  z-index: 10;
 }
 
 .header-location strong {
@@ -766,6 +765,10 @@ html, body {
     gap: 0.25rem;
   }
 
+  .header-location span {
+    display: none !important;
+  }
+
   .header-actions {
     gap: 4px;
   }
@@ -776,7 +779,6 @@ html, body {
 
   .btn-panel-map { display: block; }
 
-  .header-brand.has-location .brand-title,
   .header-brand.has-location .brand-divider {
     display: none;
   }
