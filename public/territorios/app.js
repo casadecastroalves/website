@@ -87,6 +87,32 @@
     }, 2800);
   }
 
+  function buildShareUrl() {
+    var u = new URL(location.origin + location.pathname);
+    if (mode === "territorio" && activeSlug) {
+      u.searchParams.set("territorio", activeSlug);
+      if (activeSlug === "lagoa-grande" && activeLagoaRegId) {
+        u.searchParams.set("regiao", activeLagoaRegId);
+      }
+    } else if (mode === "rede") {
+      u.searchParams.set("vista", "rede");
+    } else if (mode === "ti" && activeTiSlug) {
+      var redeSlug = tiToRede[activeTiSlug];
+      if (redeSlug) {
+        u.searchParams.set("territorio", redeSlug);
+        if (redeSlug === "lagoa-grande" && activeLagoaRegId) {
+          u.searchParams.set("regiao", activeLagoaRegId);
+        }
+      } else {
+        u.searchParams.set("vista", "ti");
+        u.searchParams.set("ti", activeTiSlug);
+      }
+    } else if (mode === "ti") {
+      u.searchParams.set("vista", "ti");
+    }
+    return u.toString();
+  }
+
   function updateUrl() {
     var u = new URL(location.href);
     u.searchParams.delete("territorio");
@@ -120,79 +146,216 @@
     setMeta('meta[property="og:url"]', location.href.split("#")[0]);
   }
 
-  var mapRefitTimer = null;
-  var mapRefitPass = 0;
+  var mapFrameKey = "";
+  var mapFrameRetryTimer = null;
+  var mapResizeTimer = null;
 
   function isMobile() {
     return window.innerWidth <= 768;
   }
 
-  function fitMapBounds(input, opts) {
+  function mapIsSized() {
+    var el = $("map");
+    return !!(map && el && el.offsetWidth >= 80 && el.offsetHeight >= 80);
+  }
+
+  function clearMapFrameLock() {
+    mapFrameKey = "";
+  }
+
+  function boundsFromInput(input) {
+    if (!input) return null;
+    if (input.getNorthEast && input.isValid) return input;
+    if (!input.length) return null;
+    if (input.length === 2 && typeof input[0] === "number") return L.latLngBounds([input, input]);
+    try {
+      return L.latLngBounds(input);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function centerOfPoints(points) {
+    var lat = 0;
+    var lng = 0;
+    var n = 0;
+    (points || []).forEach(function (p) {
+      if (p && p.length === 2) {
+        lat += p[0];
+        lng += p[1];
+        n += 1;
+      }
+    });
+    if (!n) return null;
+    return [lat / n, lng / n];
+  }
+
+  function applyMapFrame(input, opts) {
     opts = opts || {};
-    var padding = opts.padding || [40, 40];
+    if (!map) return;
+    var padding = opts.padding || [48, 48];
     var maxZoom = opts.maxZoom != null ? opts.maxZoom : 14;
     var minZoom = opts.minZoom != null ? opts.minZoom : 11;
-
-    function boundsObj() {
-      if (!input) return null;
-      if (input.getNorthEast) return input;
-      if (!input.length) return null;
-      return L.latLngBounds(input);
-    }
-
-    function apply() {
-      if (!map) return;
-      map.invalidateSize({ animate: false });
-      var b = boundsObj();
-      if (!b || !b.isValid()) return;
+    map.invalidateSize({ animate: false });
+    var b = boundsFromInput(input);
+    if (b && b.isValid()) {
       map.fitBounds(b, { padding: padding, maxZoom: maxZoom, animate: false });
       if (map.getZoom() < minZoom) map.setZoom(minZoom, { animate: false });
-      map.panTo(b.getCenter(), { animate: false, noMoveStart: true });
+      return;
+    }
+    var pts = input;
+    if (pts && pts.getNorthEast) return;
+    if (pts && pts.length === 2 && typeof pts[0] === "number") pts = [pts];
+    var c = centerOfPoints(pts);
+    if (c) map.setView(c, minZoom, { animate: false });
+  }
+
+  function scheduleMapFrame(key, fn, retryOnce) {
+    if (!map) return;
+    if (mapFrameKey === key) return;
+    if (mapFrameRetryTimer) {
+      clearTimeout(mapFrameRetryTimer);
+      mapFrameRetryTimer = null;
     }
 
-    apply();
-    map.whenReady(apply);
-    [100, 300, 600, 1000, 1500].forEach(function (ms) {
-      setTimeout(apply, ms);
+    function runFrame() {
+      if (!mapIsSized()) return false;
+      fn();
+      mapFrameKey = key;
+      return true;
+    }
+
+    function attempt(useRetry) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          if (runFrame()) return;
+          if (useRetry && retryOnce) {
+            mapFrameRetryTimer = setTimeout(function () {
+              mapFrameRetryTimer = null;
+              if (mapFrameKey === key) return;
+              runFrame();
+            }, 350);
+          }
+        });
+      });
+    }
+
+    if (map._loaded) attempt(retryOnce);
+    else map.whenReady(function () {
+      attempt(retryOnce);
     });
   }
 
-  function scheduleMapRefit(callback) {
-    mapRefitPass += 1;
-    var pass = mapRefitPass;
-    if (mapRefitTimer) clearTimeout(mapRefitTimer);
-    [0, 200, 500, 900, 1400].forEach(function (ms) {
-      setTimeout(function () {
-        if (pass !== mapRefitPass || !map) return;
-        map.invalidateSize({ animate: false });
-        if (callback) callback();
-        else refitCurrentView();
-      }, ms);
+  function debouncedMapResize() {
+    if (mapResizeTimer) clearTimeout(mapResizeTimer);
+    mapResizeTimer = setTimeout(function () {
+      mapResizeTimer = null;
+      if (!map) return;
+      clearMapFrameLock();
+      refitCurrentView();
+    }, 300);
+  }
+
+  function getTerritorioBoundsPoints(territorio, regiaoId) {
+    if (!territorio) return [];
+    if (regiaoId && territorio.slug === "lagoa-grande") {
+      var reg = (window.MI_LAGOAS_GEO || []).find(function (r) {
+        return r.id === regiaoId;
+      });
+      if (reg && reg.coords && reg.coords.length) return reg.coords.slice();
+    }
+    if (territorio.slug === "lagoa-grande" && window.MI_LAGOAS_GEO && window.MI_LAGOAS_GEO.length) {
+      var all = [];
+      window.MI_LAGOAS_GEO.forEach(function (r) {
+        (r.coords || []).forEach(function (c) {
+          all.push(c);
+        });
+      });
+      if (all.length) return all;
+    }
+    var pts = [];
+    if (territorio.pin && territorio.pin.length === 2) pts.push(territorio.pin);
+    (territorio.pontos || []).forEach(function (p) {
+      if (p.coords && p.coords.length === 2) pts.push(p.coords);
     });
+    (territorio.municipios || []).forEach(function (m) {
+      if (m.coords && m.coords.length === 2) pts.push(m.coords);
+    });
+    if (pts.length) return pts;
+    var tiSlug = D.redeTiMap[territorio.slug];
+    var ti = tiSlug
+      ? (window.MI_TI_BAHIA || []).find(function (x) {
+          return x.slug === tiSlug;
+        })
+      : null;
+    if (ti && ti.coords) return ti.coords.slice();
+    return [];
+  }
+
+  function frameTerritorioView(territorio, regiaoId, retryOnce) {
+    if (!territorio || !map) return;
+    var rid = regiaoId != null ? regiaoId : activeLagoaRegId || "";
+    var points = getTerritorioBoundsPoints(territorio, rid || null);
+    if (!points.length) return;
+    var minZoom = territorio.slug === "lagoa-grande" ? 12 : territorio.zoom || 11;
+    var key = "territorio:" + territorio.slug + ":" + rid;
+    scheduleMapFrame(
+      key,
+      function () {
+        applyMapFrame(points, { padding: [48, 48], maxZoom: 15, minZoom: minZoom });
+      },
+      retryOnce !== false
+    );
+  }
+
+  function frameTiView(focused, allBounds) {
+    if (!map) return;
+    if (focused) {
+      scheduleMapFrame(
+        "ti:" + focused.slug,
+        function () {
+          applyMapFrame(focused.coords, { padding: [32, 32], maxZoom: 11, minZoom: 8 });
+        },
+        true
+      );
+    } else if (allBounds && allBounds.length) {
+      scheduleMapFrame(
+        "ti:all",
+        function () {
+          applyMapFrame(allBounds, { padding: [24, 24], maxZoom: 8, minZoom: 7 });
+        },
+        true
+      );
+    }
+  }
+
+  function frameRedeView() {
+    scheduleMapFrame(
+      "rede",
+      function () {
+        applyMapFrame(
+          D.territorios.map(function (t) {
+            return t.pin;
+          }),
+          { padding: [48, 48], maxZoom: 10, minZoom: 7 }
+        );
+      },
+      true
+    );
   }
 
   function refitCurrentView() {
     if (!map) return;
     if (mode === "territorio" && activeSlug) {
       var t = getTerritorio(activeSlug);
-      if (!t) return;
-      if (activeLagoaRegId && t.slug === "lagoa-grande") {
-        var reg = (window.MI_LAGOAS_GEO || []).find(function (r) {
-          return r.id === activeLagoaRegId;
-        });
-        if (reg && reg.coords && reg.coords.length) {
-          fitMapBounds(reg.coords, { padding: [48, 48], maxZoom: 14, minZoom: 12 });
-          return;
-        }
-      }
-      renderTerritorioMap(t, { fit: true });
+      if (t) frameTerritorioView(t, activeLagoaRegId, false);
     } else if (mode === "ti") {
       var geo = window.MI_TI_BAHIA || [];
       if (activeTiSlug) {
         var focused = geo.find(function (x) {
           return x.slug === activeTiSlug;
         });
-        if (focused) fitMapBounds(focused.coords, { padding: [32, 32], maxZoom: 11, minZoom: 8 });
+        if (focused) frameTiView(focused);
       } else {
         var bounds = [];
         geo.forEach(function (ti) {
@@ -200,15 +363,10 @@
             bounds.push(c);
           });
         });
-        if (bounds.length) fitMapBounds(bounds, { padding: [24, 24], maxZoom: 8, minZoom: 7 });
+        frameTiView(null, bounds);
       }
     } else if (mode === "rede") {
-      fitMapBounds(
-        D.territorios.map(function (t) {
-          return t.pin;
-        }),
-        { padding: [48, 48], maxZoom: 10, minZoom: 7 }
-      );
+      frameRedeView();
     }
   }
 
@@ -357,7 +515,11 @@
       });
     });
     if (fit !== false && reg.coords && reg.coords.length) {
-      fitMapBounds(reg.coords, { padding: [48, 48], maxZoom: 14, minZoom: 12 });
+      var tFrame = getTerritorio("lagoa-grande");
+      if (tFrame) {
+        clearMapFrameLock();
+        frameTerritorioView(tFrame, reg.id, false);
+      }
     }
     updateUrl();
     showToast(reg.nome);
@@ -652,36 +814,7 @@
   }
 
   function fitTerritorioView(territorio) {
-    var bounds = [];
-    if (territorio.pin && territorio.pin.length === 2) bounds.push(territorio.pin);
-    (territorio.pontos || []).forEach(function (p) {
-      if (p.coords && p.coords.length === 2) bounds.push(p.coords);
-    });
-    (territorio.municipios || []).forEach(function (m) {
-      if (m.coords && m.coords.length === 2) bounds.push(m.coords);
-    });
-
-    var minZoom = territorio.zoom || 11;
-    if (bounds.length > 1) {
-      fitMapBounds(bounds, { padding: [40, 40], maxZoom: 13, minZoom: minZoom });
-      return;
-    }
-    if (bounds.length === 1) {
-      fitMapBounds(bounds, { padding: [40, 40], maxZoom: 15, minZoom: territorio.zoom || 12 });
-      return;
-    }
-
-    var tiSlug = D.redeTiMap[territorio.slug];
-    var ti = tiSlug
-      ? (window.MI_TI_BAHIA || []).find(function (x) {
-          return x.slug === tiSlug;
-        })
-      : null;
-    if (ti) {
-      fitMapBounds(ti.coords, { padding: [32, 32], maxZoom: 11, minZoom: territorio.zoom || 10 });
-    } else if (territorio.pin) {
-      fitMapBounds([territorio.pin], { padding: [40, 40], maxZoom: 15, minZoom: territorio.zoom || 11 });
-    }
+    frameTerritorioView(territorio);
   }
 
   function renderTiSidebar(highlightSlug, focusOnly) {
@@ -733,6 +866,7 @@
 
   function renderTiMap(highlightSlug, focusOne) {
     clearLayers();
+    clearMapFrameLock();
     mode = "ti";
     lastMainMode = "ti";
     activeSlug = null;
@@ -758,7 +892,7 @@
     renderTiNavPolygons(hl, { bahiaView: true });
 
     if (focusOne && focused) {
-      fitMapBounds(focused.coords, { padding: [32, 32], maxZoom: 11, minZoom: 8 });
+      frameTiView(focused);
     } else {
       var bounds = [];
       geo.forEach(function (ti) {
@@ -766,7 +900,7 @@
           bounds.push(c);
         });
       });
-      if (bounds.length) fitMapBounds(bounds, { padding: [24, 24], maxZoom: 8, minZoom: 7 });
+      frameTiView(null, bounds);
     }
     updateUrl();
     updateFormNavLink();
@@ -839,6 +973,7 @@
 
   function renderRedeMap() {
     clearLayers();
+    clearMapFrameLock();
     mode = "rede";
     lastMainMode = "rede";
     activeSlug = null;
@@ -897,12 +1032,7 @@
       markersLayer.addLayer(m);
     });
 
-    fitMapBounds(
-      D.territorios.map(function (t) {
-        return t.pin;
-      }),
-      { padding: [48, 48], maxZoom: 10, minZoom: 7 }
-    );
+    frameRedeView();
     bringMarkersToFront();
     updateUrl();
     updateFormNavLink();
@@ -1445,7 +1575,7 @@
           bounds.push([s.lat, s.lng]);
         }
       });
-      if (bounds.length) map.fitBounds(bounds, { padding: [48, 48] });
+      if (bounds.length) applyMapFrame(bounds, { padding: [48, 48], maxZoom: 14, minZoom: 11 });
       return;
     }
 
@@ -1457,13 +1587,12 @@
           all.push(c);
         });
       });
-      if (all.length) map.fitBounds(all, { padding: [32, 32] });
+      if (all.length) applyMapFrame(all, { padding: [32, 32], maxZoom: 13, minZoom: 12 });
     }
   }
 
   function renderTerritorioMap(territorio, options) {
     options = options || {};
-    var shouldFit = options.fit !== false;
     clearLayers();
 
     // Render boundary of the parent TI region
@@ -1497,35 +1626,6 @@
     if (activeRoteiroId) renderRoteiroOnMap(territorio, activeRoteiroId);
     renderPontos(territorio);
     bringMarkersToFront();
-
-    if (!shouldFit) return;
-
-    if (activeRoteiroId) return;
-
-    if (territorio.slug === "lagoa-grande" && window.MI_LAGOAS_GEO) {
-      var all = [];
-      window.MI_LAGOAS_GEO.forEach(function (r) {
-        r.coords.forEach(function (c) {
-          all.push(c);
-        });
-      });
-      fitMapBounds(all, { padding: [48, 48], maxZoom: 13, minZoom: territorio.zoom || 11 });
-      if (activeLagoaRegId) {
-        var reg = (window.MI_LAGOAS_GEO || []).find(function (r) {
-          return r.id === activeLagoaRegId;
-        });
-        if (reg) focusLagoaReg(reg, false);
-      }
-      return;
-    }
-
-    var tiSlug = D.redeTiMap[territorio.slug];
-    var ti = tiSlug
-      ? (window.MI_TI_BAHIA || []).find(function (x) {
-          return x.slug === tiSlug;
-        })
-      : null;
-    fitTerritorioView(territorio);
   }
 
   function ytId(url) {
@@ -2022,6 +2122,7 @@
 
   function selectTerritorio(slug, opts) {
     opts = opts || {};
+    clearMapFrameLock();
     var t = getTerritorio(slug);
     if (!t) return;
     if (slug !== "lagoa-grande") activeLagoaRegId = null;
@@ -2071,10 +2172,10 @@
     renderTerritorioMap(t);
     updateUrl();
     updateFormNavLink();
+    frameTerritorioView(t, activeLagoaRegId, opts.fromShare);
 
     if (opts.fromShare) {
       setSidebarClosed(true);
-      scheduleMapRefit();
       updateSidebarToggleState();
     } else if (isMobile()) {
       openSidebarMobile();
@@ -2127,7 +2228,7 @@
       subtitle = "Mapa interativo";
     }
     updateUrl();
-    var url = location.href.split("#")[0];
+    var url = buildShareUrl();
     var text = "Identidade e Memória — Movimento Irun\n" + title + "\n" + url;
     return { title: title, subtitle: subtitle, url: url, text: text };
   }
@@ -2281,10 +2382,7 @@
     setSidebarClosed(!isClosed);
     updateSidebarToggleState();
     setTimeout(function () {
-      if (map) {
-        map.invalidateSize();
-        scheduleMapRefit();
-      }
+      if (map) debouncedMapResize();
     }, 250);
   }
 
@@ -2339,36 +2437,21 @@
     loadingFromShare = fromShare;
 
     if (terr && getTerritorio(terr)) {
+      if (regiaoParam && terr === "lagoa-grande") activeLagoaRegId = regiaoParam;
       selectTerritorio(terr, { fromShare: fromShare });
-      if (regiaoParam && terr === "lagoa-grande") {
-        var regInit = (window.MI_LAGOAS_GEO || []).find(function (r) {
-          return r.id === regiaoParam;
-        });
-        if (regInit) {
-          activeLagoaRegId = regInit.id;
-          scheduleMapRefit(function () {
-            focusLagoaReg(regInit, true);
-          });
-        }
-      }
     } else if (vista === "rede") {
       renderRedeMap();
-      if (fromShare) scheduleMapRefit();
     } else if (tiParam) {
       var tiInit = (window.MI_TI_BAHIA || []).find(function (x) {
         return x.slug === tiParam;
       });
       if (tiInit) renderTiMap(tiInit.slug, true);
       else renderTiMap(null, false);
-      if (fromShare) scheduleMapRefit();
     } else renderTiMap(null, false);
 
     loadingFromShare = false;
 
-    window.addEventListener("resize", function () {
-      map.invalidateSize();
-      scheduleMapRefit();
-    });
+    window.addEventListener("resize", debouncedMapResize);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
