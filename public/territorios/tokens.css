@@ -1,19 +1,15 @@
-/* Design tokens — Identidade e Memória · system dark + gold */
+/* Design tokens — Identidade e Memória (premium recto, dark/light) */
 :root,
 [data-theme="dark"] {
   color-scheme: dark;
   --bg: #000000;
   --surface: #0a0a0a;
-  --surface2: #111111;
-  --surface-elevated: #161616;
+  --surface2: #141414;
+  --surface-elevated: #1a1a1a;
   --text: #f5f5f5;
-  --muted: #9ca3af;
-  --border: #262626;
+  --muted: #a3a3a3;
+  --border: #2a2a2a;
   --border-strong: #404040;
-  --gold: #f5c800;
-  --gold-hover: #ffd633;
-  --gold-muted: rgba(245, 200, 0, 0.1);
-  --gold-border: rgba(245, 200, 0, 0.42);
   --accent: #6aad2a;
   --accent-hover: #7bc832;
   --accent-muted: rgba(106, 173, 42, 0.14);
@@ -28,25 +24,20 @@
   --map-fill: rgba(255, 255, 255, 0.02);
   --ti-boundary: #39ff14;
   --ti-boundary-fill: rgba(57, 255, 20, 0.03);
-  --neon-cyan: #f5c800;
+  --neon-cyan: #00f0ff;
   --neon-green: #39ff14;
-  --ui-accent: var(--gold);
 }
 
 [data-theme="light"] {
   color-scheme: light;
-  --bg: #f0efe8;
-  --surface: #f8f8f4;
-  --surface2: #e8e8e2;
+  --bg: #ffffff;
+  --surface: #fafafa;
+  --surface2: #f0f0f0;
   --surface-elevated: #ffffff;
   --text: #0a0a0a;
-  --muted: #4b5563;
-  --border: #d1d1c7;
-  --border-strong: #9ca3af;
-  --gold: #c9a000;
-  --gold-hover: #a68500;
-  --gold-muted: rgba(201, 160, 0, 0.1);
-  --gold-border: rgba(201, 160, 0, 0.35);
+  --muted: #525252;
+  --border: #e5e5e5;
+  --border-strong: #d4d4d4;
   --accent: #4d8c1f;
   --accent-hover: #3d7018;
   --accent-muted: rgba(77, 140, 31, 0.1);
@@ -55,20 +46,18 @@
   --overlay: rgba(0, 0, 0, 0.45);
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
   --map-tiles: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-  --map-border: rgba(0, 0, 0, 0.58);
-  --map-border-active: #15803d;
-  --map-text-shadow: 0 0 5px rgba(255, 255, 255, 0.98), 0 1px 3px rgba(255, 255, 255, 0.95);
-  --map-fill: rgba(10, 10, 10, 0.04);
-  --ti-boundary: #15803d;
-  --ti-boundary-fill: rgba(21, 128, 61, 0.06);
-  --neon-cyan: #c9a000;
+  --map-border: rgba(10, 10, 10, 0.35);
+  --map-border-active: #4d8c1f;
+  --map-text-shadow: 0 0 6px rgba(255, 255, 255, 0.95), 0 1px 3px rgba(255, 255, 255, 0.9);
+  --map-fill: rgba(10, 10, 10, 0.02);
+  --ti-boundary: #22c55e;
+  --ti-boundary-fill: rgba(22, 163, 74, 0.02);
+  --neon-cyan: #008899;
   --neon-green: #15803d;
-  --ui-accent: var(--gold);
 }
 
 :root {
   --font: "Jost", "Futura PT", "Century Gothic", system-ui, sans-serif;
-  --font-mono: "Consolas", "Courier New", monospace;
   --tap: 44px;
   --sidebar-w: 380px;
   --space-1: 0.25rem;
