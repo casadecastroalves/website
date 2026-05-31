@@ -121,16 +121,54 @@
   }
 
   var mapRefitTimer = null;
+  var mapRefitPass = 0;
+
+  function isMobile() {
+    return window.innerWidth <= 768;
+  }
+
+  function fitMapBounds(input, opts) {
+    opts = opts || {};
+    var padding = opts.padding || [40, 40];
+    var maxZoom = opts.maxZoom != null ? opts.maxZoom : 14;
+    var minZoom = opts.minZoom != null ? opts.minZoom : 11;
+
+    function boundsObj() {
+      if (!input) return null;
+      if (input.getNorthEast) return input;
+      if (!input.length) return null;
+      return L.latLngBounds(input);
+    }
+
+    function apply() {
+      if (!map) return;
+      map.invalidateSize({ animate: false });
+      var b = boundsObj();
+      if (!b || !b.isValid()) return;
+      map.fitBounds(b, { padding: padding, maxZoom: maxZoom, animate: false });
+      if (map.getZoom() < minZoom) map.setZoom(minZoom, { animate: false });
+      map.panTo(b.getCenter(), { animate: false, noMoveStart: true });
+    }
+
+    apply();
+    map.whenReady(apply);
+    [100, 300, 600, 1000, 1500].forEach(function (ms) {
+      setTimeout(apply, ms);
+    });
+  }
 
   function scheduleMapRefit(callback) {
+    mapRefitPass += 1;
+    var pass = mapRefitPass;
     if (mapRefitTimer) clearTimeout(mapRefitTimer);
-    mapRefitTimer = setTimeout(function () {
-      mapRefitTimer = null;
-      if (!map) return;
-      map.invalidateSize();
-      if (callback) callback();
-      else refitCurrentView();
-    }, 320);
+    [0, 200, 500, 900, 1400].forEach(function (ms) {
+      setTimeout(function () {
+        if (pass !== mapRefitPass || !map) return;
+        map.invalidateSize({ animate: false });
+        if (callback) callback();
+        else refitCurrentView();
+      }, ms);
+    });
   }
 
   function refitCurrentView() {
@@ -143,8 +181,7 @@
           return r.id === activeLagoaRegId;
         });
         if (reg && reg.coords && reg.coords.length) {
-          map.fitBounds(reg.coords, { padding: [48, 48], maxZoom: 14 });
-          if (map.getZoom() < 12) map.setZoom(12);
+          fitMapBounds(reg.coords, { padding: [48, 48], maxZoom: 14, minZoom: 12 });
           return;
         }
       }
@@ -155,7 +192,7 @@
         var focused = geo.find(function (x) {
           return x.slug === activeTiSlug;
         });
-        if (focused) map.fitBounds(focused.coords, { padding: [32, 32], maxZoom: 11 });
+        if (focused) fitMapBounds(focused.coords, { padding: [32, 32], maxZoom: 11, minZoom: 8 });
       } else {
         var bounds = [];
         geo.forEach(function (ti) {
@@ -163,18 +200,27 @@
             bounds.push(c);
           });
         });
-        if (bounds.length) map.fitBounds(bounds, { padding: [24, 24] });
+        if (bounds.length) fitMapBounds(bounds, { padding: [24, 24], maxZoom: 8, minZoom: 7 });
       }
     } else if (mode === "rede") {
-      map.fitBounds(
-        L.latLngBounds(
-          D.territorios.map(function (t) {
-            return t.pin;
-          })
-        ),
-        { padding: [48, 48] }
+      fitMapBounds(
+        D.territorios.map(function (t) {
+          return t.pin;
+        }),
+        { padding: [48, 48], maxZoom: 10, minZoom: 7 }
       );
     }
+  }
+
+  function setSidebarClosed(closed) {
+    var main = document.querySelector(".main");
+    if (!main) return;
+    if (isMobile()) {
+      main.classList.remove("sidebar-closed");
+      if (closed) closeSidebarMobile();
+      return;
+    }
+    main.classList.toggle("sidebar-closed", !!closed);
   }
 
   function setHeaderContext(titulo, subtitulo) {
@@ -250,7 +296,7 @@
   function mapClickShouldIgnore(e) {
     var t = e.originalEvent && e.originalEvent.target;
     if (!t || !t.closest) return false;
-    if (t.closest(".leaflet-popup, .leaflet-control, .chip, .map-toggle-sidebar, .btn-panel-map")) {
+    if (t.closest(".leaflet-popup, .leaflet-control, .chip, .map-toggle-sidebar, .btn-menu")) {
       return true;
     }
     if (t.closest(".leaflet-marker-icon, .leaflet-marker-pane img")) return true;
@@ -311,11 +357,7 @@
       });
     });
     if (fit !== false && reg.coords && reg.coords.length) {
-      map.fitBounds(reg.coords, {
-        padding: [48, 48],
-        maxZoom: 14,
-      });
-      if (map.getZoom() < 12) map.setZoom(12);
+      fitMapBounds(reg.coords, { padding: [48, 48], maxZoom: 14, minZoom: 12 });
     }
     updateUrl();
     showToast(reg.nome);
@@ -619,15 +661,13 @@
       if (m.coords && m.coords.length === 2) bounds.push(m.coords);
     });
 
+    var minZoom = territorio.zoom || 11;
     if (bounds.length > 1) {
-      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 13 });
-      if (map.getZoom() < (territorio.zoom || 11)) {
-        map.setZoom(territorio.zoom || 11);
-      }
+      fitMapBounds(bounds, { padding: [40, 40], maxZoom: 13, minZoom: minZoom });
       return;
     }
     if (bounds.length === 1) {
-      map.setView(bounds[0], territorio.zoom || 12);
+      fitMapBounds(bounds, { padding: [40, 40], maxZoom: 15, minZoom: territorio.zoom || 12 });
       return;
     }
 
@@ -638,12 +678,9 @@
         })
       : null;
     if (ti) {
-      map.fitBounds(ti.coords, { padding: [32, 32], maxZoom: 11 });
-      if (map.getZoom() < (territorio.zoom || 10)) {
-        map.setZoom(territorio.zoom || 10);
-      }
+      fitMapBounds(ti.coords, { padding: [32, 32], maxZoom: 11, minZoom: territorio.zoom || 10 });
     } else if (territorio.pin) {
-      map.setView(territorio.pin, territorio.zoom || 11);
+      fitMapBounds([territorio.pin], { padding: [40, 40], maxZoom: 15, minZoom: territorio.zoom || 11 });
     }
   }
 
@@ -721,7 +758,7 @@
     renderTiNavPolygons(hl, { bahiaView: true });
 
     if (focusOne && focused) {
-      map.fitBounds(focused.coords, { padding: [32, 32], maxZoom: 11 });
+      fitMapBounds(focused.coords, { padding: [32, 32], maxZoom: 11, minZoom: 8 });
     } else {
       var bounds = [];
       geo.forEach(function (ti) {
@@ -729,7 +766,7 @@
           bounds.push(c);
         });
       });
-      if (bounds.length) map.fitBounds(bounds, { padding: [24, 24] });
+      if (bounds.length) fitMapBounds(bounds, { padding: [24, 24], maxZoom: 8, minZoom: 7 });
     }
     updateUrl();
     updateFormNavLink();
@@ -746,9 +783,7 @@
         }
       }
     } else if (loadingFromShare) {
-      closeSidebarMobile();
-      var mainShare = document.querySelector(".main");
-      if (mainShare) mainShare.classList.add("sidebar-closed");
+      setSidebarClosed(true);
     }
     updateSidebarToggleState();
   }
@@ -862,13 +897,11 @@
       markersLayer.addLayer(m);
     });
 
-    map.fitBounds(
-      L.latLngBounds(
-        D.territorios.map(function (t) {
-          return t.pin;
-        })
-      ),
-      { padding: [48, 48] }
+    fitMapBounds(
+      D.territorios.map(function (t) {
+        return t.pin;
+      }),
+      { padding: [48, 48], maxZoom: 10, minZoom: 7 }
     );
     bringMarkersToFront();
     updateUrl();
@@ -1476,9 +1509,7 @@
           all.push(c);
         });
       });
-      map.fitBounds(all, { padding: [48, 48], maxZoom: 13 });
-      var minZoom = territorio.zoom || 11;
-      if (map.getZoom() < minZoom) map.setZoom(minZoom);
+      fitMapBounds(all, { padding: [48, 48], maxZoom: 13, minZoom: territorio.zoom || 11 });
       if (activeLagoaRegId) {
         var reg = (window.MI_LAGOAS_GEO || []).find(function (r) {
           return r.id === activeLagoaRegId;
@@ -2042,12 +2073,10 @@
     updateFormNavLink();
 
     if (opts.fromShare) {
-      closeSidebarMobile();
-      var mainShare = document.querySelector(".main");
-      if (mainShare) mainShare.classList.add("sidebar-closed");
+      setSidebarClosed(true);
       scheduleMapRefit();
       updateSidebarToggleState();
-    } else if (window.innerWidth <= 768) {
+    } else if (isMobile()) {
       openSidebarMobile();
     } else {
       var main = document.querySelector(".main");
@@ -2058,7 +2087,6 @@
       }
       updateSidebarToggleState();
     }
-    updatePanelMapBtn();
   }
 
   function getSharePayload() {
@@ -2214,7 +2242,7 @@
     var btn = $("btn-conteudo-header");
     var menuBtn = $("btn-menu");
     var isOpen = false;
-    if (window.innerWidth <= 768) {
+    if (isMobile()) {
       isOpen = $("sidebar").classList.contains("open");
     } else {
       var main = document.querySelector(".main");
@@ -2222,21 +2250,11 @@
     }
     if (btn) btn.classList.toggle("header-nav-active", isOpen);
     if (menuBtn) menuBtn.classList.toggle("header-nav-active", isOpen);
-    updatePanelMapBtn();
-  }
-
-  function updatePanelMapBtn() {
-    var btn = $("btn-panel-map");
-    if (!btn) return;
-    if (window.innerWidth > 768) {
-      btn.hidden = true;
-      return;
-    }
-    var isOpen = $("sidebar").classList.contains("open");
-    btn.hidden = isOpen;
   }
 
   function openSidebarMobile() {
+    var main = document.querySelector(".main");
+    if (main) main.classList.remove("sidebar-closed");
     $("sidebar").classList.add("open");
     $("sidebar-backdrop").hidden = false;
     $("sidebar-backdrop").classList.add("visible");
@@ -2251,34 +2269,23 @@
   }
 
   function toggleSidebar() {
-    if (window.innerWidth <= 768) {
+    if (isMobile()) {
       var isOpen = $("sidebar").classList.contains("open");
-      if (isOpen) {
-        closeSidebarMobile();
-      } else {
-        openSidebarMobile();
-      }
-    } else {
-      var main = document.querySelector(".main");
-      if (main) {
-        var isClosed = main.classList.contains("sidebar-closed");
-        var btnMenu = $("btn-menu");
-        if (isClosed) {
-          main.classList.remove("sidebar-closed");
-          if (btnMenu) btnMenu.classList.remove("collapsed");
-        } else {
-          main.classList.add("sidebar-closed");
-          if (btnMenu) btnMenu.classList.add("collapsed");
-        }
-        updateSidebarToggleState();
-        setTimeout(function () {
-          if (map) {
-            map.invalidateSize();
-            scheduleMapRefit();
-          }
-        }, 250);
-      }
+      if (isOpen) closeSidebarMobile();
+      else openSidebarMobile();
+      return;
     }
+    var main = document.querySelector(".main");
+    if (!main) return;
+    var isClosed = main.classList.contains("sidebar-closed");
+    setSidebarClosed(!isClosed);
+    updateSidebarToggleState();
+    setTimeout(function () {
+      if (map) {
+        map.invalidateSize();
+        scheduleMapRefit();
+      }
+    }, 250);
   }
 
   function init() {
@@ -2321,7 +2328,6 @@
     });
     listen("btn-conteudo-header", "click", toggleSidebar);
     listen("btn-menu", "click", toggleSidebar);
-    listen("btn-panel-map", "click", toggleSidebar);
     listen("btn-sidebar", "click", toggleSidebar);
     listen("sidebar-backdrop", "click", closeSidebarMobile);
 
@@ -2358,11 +2364,9 @@
     } else renderTiMap(null, false);
 
     loadingFromShare = false;
-    updatePanelMapBtn();
 
     window.addEventListener("resize", function () {
       map.invalidateSize();
-      updatePanelMapBtn();
       scheduleMapRefit();
     });
   }

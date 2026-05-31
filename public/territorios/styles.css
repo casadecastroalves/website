@@ -535,15 +535,39 @@ html, body {
 }
 
 .btn-panel-map {
+  display: none !important;
+}
+
+#btn-menu {
   display: none;
-  position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 800;
-  gap: 0.4rem;
-  min-height: 44px;
-  padding: 0 1rem !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .btn-menu {
+    display: inline-flex !important;
+  }
+
+  #btn-conteudo-header,
+  #nav-formulario {
+    display: none !important;
+  }
+
+  .header-brand.has-location .header-location {
+    max-width: calc(100vw - 9rem);
+  }
+
+  .main.sidebar-closed .sidebar {
+    display: flex !important;
+  }
+
+  .sidebar {
+    z-index: 1100;
+  }
+
+  .sidebar-backdrop {
+    z-index: 1090;
+  }
 }
 
 /* Footer / timeline */
@@ -795,8 +819,6 @@ html, body {
 
   .sidebar.open { transform: translateX(0); }
 
-  .btn-panel-map { display: block; }
-
   .header-brand.has-location .brand-title,
   .header-brand.has-location .brand-divider {
     display: none;
@@ -946,16 +968,8 @@ html, body {
 }
 
 @media (max-width: 768px) {
-  .btn-menu {
-    display: inline-flex !important;
-  }
-
-  #btn-conteudo-header {
-    display: none !important;
-  }
-
   .header-brand.has-location .header-location {
-    max-width: calc(100vw - 11.5rem);
+    max-width: calc(100vw - 9rem);
   }
 }
 
@@ -1833,13 +1847,12 @@ body.galeria-lightbox-open {
     transform: translateX(-100%);
     transition: transform 0.25s ease;
     box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
-    z-index: 950;
+    z-index: 1100;
   }
-
-  .sidebar.open { transform: translateX(0); }
 
   .sidebar-backdrop {
     top: 56px;
+    z-index: 1090;
   }
 
   .header-brand.has-location .brand-title,
@@ -1847,7 +1860,7 @@ body.galeria-lightbox-open {
     display: none;
   }
 
-  .btn-panel-map { display: inline-flex; }
+  .btn-panel-map { display: none !important; }
 
   .header-brand h1 { font-size: 1rem; }
 
@@ -1855,7 +1868,7 @@ body.galeria-lightbox-open {
 }
 
 @media (min-width: 769px) {
-  .btn-panel-map { display: none; }
+  #btn-menu { display: none !important; }
 }
 
 .sidebar {
