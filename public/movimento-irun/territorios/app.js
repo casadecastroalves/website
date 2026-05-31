@@ -808,7 +808,7 @@
           content.style.height = "0px";
           content.style.opacity = "0";
           content.style.overflow = "hidden";
-          content.style.transition = "height 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1)";
+          content.style.transition = "height 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1)";
           
           content.offsetHeight; // force reflow
           
@@ -819,15 +819,16 @@
             if (!header.classList.contains("collapsed")) {
               content.style.height = "auto";
               content.style.overflow = "";
+              content.style.transition = "";
             }
-          }, 250);
+          }, 260);
         } else {
           header.classList.add("collapsed");
           header.setAttribute("aria-expanded", "false");
           
           content.style.height = content.scrollHeight + "px";
           content.style.overflow = "hidden";
-          content.style.transition = "height 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1)";
+          content.style.transition = "height 0.25s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1)";
           
           content.offsetHeight; // force reflow
           
@@ -839,8 +840,9 @@
               content.style.display = "none";
               content.style.height = "";
               content.style.overflow = "";
+              content.style.transition = "";
             }
-          }, 250);
+          }, 260);
         }
       });
     });
@@ -2390,13 +2392,23 @@
     $("sidebar-backdrop").hidden = false;
     $("sidebar-backdrop").classList.add("visible");
     updateSidebarToggleState();
+    // Re-render map after bottom sheet animation
+    setTimeout(function () {
+      if (map) map.invalidateSize();
+    }, 350);
   }
 
   function closeSidebarMobile() {
     $("sidebar").classList.remove("open");
-    $("sidebar-backdrop").hidden = true;
     $("sidebar-backdrop").classList.remove("visible");
     updateSidebarToggleState();
+    // Delay hiding backdrop until transition completes
+    setTimeout(function () {
+      if (!$("sidebar").classList.contains("open")) {
+        $("sidebar-backdrop").hidden = true;
+      }
+      if (map) map.invalidateSize();
+    }, 350);
   }
 
   function toggleSidebar() {

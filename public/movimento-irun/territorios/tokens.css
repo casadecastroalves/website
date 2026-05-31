@@ -46,12 +46,12 @@
   --overlay: rgba(0, 0, 0, 0.45);
   --shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
   --map-tiles: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-  --map-border: rgba(10, 10, 10, 0.35);
-  --map-border-active: #4d8c1f;
+  --map-border: rgba(0, 0, 0, 0.6);
+  --map-border-active: #15803d;
   --map-text-shadow: 0 0 6px rgba(255, 255, 255, 0.95), 0 1px 3px rgba(255, 255, 255, 0.9);
   --map-fill: rgba(10, 10, 10, 0.02);
-  --ti-boundary: #22c55e;
-  --ti-boundary-fill: rgba(22, 163, 74, 0.02);
+  --ti-boundary: #166534;
+  --ti-boundary-fill: rgba(22, 163, 74, 0.05);
   --neon-cyan: #008899;
   --neon-green: #15803d;
 }
