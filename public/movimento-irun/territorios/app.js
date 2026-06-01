@@ -19,6 +19,7 @@
   var lagoaPolyLayers = [];
   var tiNavPolyLayers = [];
   var activeLagoaRegId = null;
+  var isSatelliteMode = false;
 
   Object.keys(D.redeTiMap || {}).forEach(function (rede) {
     tiToRede[D.redeTiMap[rede]] = rede;
@@ -157,18 +158,42 @@
   }
 
   function applyMapTheme() {
-    var url =
-      window.MITheme && window.MITheme.mapTileUrl
-        ? window.MITheme.mapTileUrl()
-        : "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+    var url;
+    var options = {
+      maxZoom: 19
+    };
+    if (isSatelliteMode) {
+      url = "https://mt{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}";
+      options.attribution = "&copy; Google Maps";
+      options.subdomains = ["0", "1", "2", "3"];
+    } else {
+      url =
+        window.MITheme && window.MITheme.mapTileUrl
+          ? window.MITheme.mapTileUrl()
+          : "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png";
+      options.attribution = "&copy; OSM &copy; CARTO";
+      options.subdomains = "abcd";
+    }
+
     if (baseTileLayer) map.removeLayer(baseTileLayer);
-    baseTileLayer = L.tileLayer(url, {
-      attribution: "&copy; OSM &copy; CARTO",
-      subdomains: "abcd",
-      maxZoom: 19,
-    });
+    baseTileLayer = L.tileLayer(url, options);
     baseTileLayer.addTo(map);
     baseTileLayer.bringToBack();
+  }
+
+  function toggleSatelliteMode() {
+    isSatelliteMode = !isSatelliteMode;
+    var btn = $("btn-satelite");
+    if (btn) {
+      if (isSatelliteMode) {
+        btn.classList.add("active");
+        btn.textContent = "Mapa";
+      } else {
+        btn.classList.remove("active");
+        btn.textContent = "Satélite";
+      }
+    }
+    applyMapTheme();
   }
 
   function onMapBackgroundClick(e) {
@@ -2476,6 +2501,7 @@
     listen("btn-share", "click", openShareDialog);
     bindShareUi();
     if (window.MITheme) window.MITheme.bindToggle($("btn-theme"));
+    listen("btn-satelite", "click", toggleSatelliteMode);
     listen("btn-copy-embed", "click", function () {
       copyField("share-embed");
     });
