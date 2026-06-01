@@ -112,22 +112,35 @@
   }
 
   function setHeaderContext(titulo, subtitulo) {
-    var brandTitle = document.querySelector(".brand-title");
-    if (brandTitle) {
-      if (!titulo || titulo === "27 Territórios de Identidade da Bahia") {
-        brandTitle.textContent = "27 TERRITÓRIOS DE IDENTIDADE";
-      } else if (mode === "rede" || titulo === "Rede Movimento Irun") {
-        brandTitle.textContent = "REDE MOVIMENTO IRUN";
-      } else {
-        brandTitle.textContent = titulo.toUpperCase();
+    var wrap = $("header-context");
+    var titleEl = $("header-context-title");
+    var subEl = $("header-context-sub");
+    if (!wrap || !titleEl) return;
+
+    if (!titulo || titulo === "27 Territórios de Identidade da Bahia") {
+      titleEl.textContent = "Bahia — 27 Territórios de Identidade";
+      if (subEl) {
+        subEl.textContent = subtitulo || "Mapa oficial · Rede com 6 territórios";
+        subEl.hidden = !subtitulo;
+      }
+      wrap.hidden = false;
+      return;
+    }
+
+    if (mode === "rede" || titulo === "Rede Movimento Irun") {
+      titleEl.textContent = "Rede Movimento Irun";
+      if (subEl) {
+        subEl.textContent = subtitulo || "6 territórios com conteúdo";
+        subEl.hidden = false;
+      }
+    } else {
+      titleEl.textContent = titulo;
+      if (subEl) {
+        subEl.textContent = subtitulo || "";
+        subEl.hidden = !subtitulo;
       }
     }
-    var el = $("header-location");
-    var div = $("brand-divider");
-    var brand = $("header-brand");
-    if (el) el.hidden = true;
-    if (div) div.hidden = true;
-    if (brand) brand.classList.remove("has-location");
+    wrap.hidden = false;
   }
 
   function initMap() {
@@ -204,7 +217,7 @@
   function mapClickShouldIgnore(e) {
     var t = e.originalEvent && e.originalEvent.target;
     if (!t || !t.closest) return false;
-    if (t.closest(".leaflet-popup, .leaflet-control, .chip, .map-toggle-sidebar, .btn-panel-map")) {
+    if (t.closest(".leaflet-popup, .leaflet-control, .chip, .map-toggle-sidebar, .btn-painel, .header-more")) {
       return true;
     }
     if (t.closest(".leaflet-marker-icon, .leaflet-marker-pane img")) return true;
@@ -255,7 +268,7 @@
     if (!reg) return;
     activeLagoaRegId = reg.id;
     var t = getTerritorio("lagoa-grande");
-    if (t) setHeaderContext(t.ti || t.nome, reg.nome);
+    if (t) setHeaderContext(redeRegiaoNome(t), reg.nome);
     lagoaPolyLayers.forEach(function (poly) {
       var isActive = poly.regId === reg.id;
       poly.setStyle({
@@ -265,10 +278,7 @@
       });
     });
     if (fit !== false && reg.coords && reg.coords.length) {
-      map.fitBounds(reg.coords, {
-        padding: [48, 48],
-        maxZoom: Math.max(map.getZoom(), 13),
-      });
+      map.fitBounds(L.latLngBounds(reg.coords), mapFitOptions({ maxZoom: 15 }));
     }
     showToast(reg.nome);
   }
@@ -346,7 +356,7 @@
   }
 
   function renderMunicipioLabels(territorio) {
-    if (mode === "territorio") return;
+    if (mode !== "territorio") return;
     (territorio.municipios || []).forEach(function (m) {
       var icon = L.divIcon({
         className: "municipio-label-wrap",
@@ -366,66 +376,40 @@
   function updateHeaderNavActive() {
     var btnTi = $("btn-ti");
     var btnRede = $("btn-rede");
-    if (btnTi) btnTi.classList.toggle("header-nav-active", mode === "ti");
+    var btnMi = $("btn-movimento-irun");
+    if (btnTi) btnTi.classList.toggle("header-nav-active", mode === "ti" && !!activeTiSlug);
     if (btnRede) btnRede.classList.toggle("header-nav-active", mode === "rede");
+    if (btnMi) {
+      btnMi.classList.toggle(
+        "header-nav-active",
+        mode === "ti" && !activeTiSlug && !activeSlug
+      );
+    }
   }
 
   function toggleUiForMode() {
-    var tabs = $("tabs-territorio");
-    if (tabs) tabs.hidden = mode !== "territorio";
-
     var chips = $("layer-chips");
-    if (chips) chips.hidden = mode !== "territorio";
+    if (chips) chips.hidden = mode !== "territorio" || !!activeRoteiroId;
 
     updateHeaderNavActive();
   }
 
-  function renderDivisaoTiNav(highlightSlug) {
-    return (
-      "<h3>Divisão territorial</h3><p>" +
-      esc(D.conceitos.divisao) +
-      "</p>" +
-      renderTiListHtml(highlightSlug)
-    );
-  }
-
-  function renderTiListHtml(highlightSlug) {
-    var geo = window.MI_TI_BAHIA || [];
-    return (
-      '<div class="ti-nav-block">' +
-      "<h3>27 Territórios de Identidade Cultural</h3>" +
-      '<ul class="ti-list-plain">' +
-      geo
-        .map(function (ti) {
-          var cls = highlightSlug === ti.slug ? " active" : "";
-          var rede = tiToRede[ti.slug];
-          var tag = rede ? '<span class="tag-rede ti-tag">Rede</span> ' : "";
-          return (
-            "<li><button type='button' class='ti-link" +
-            cls +
-            "' data-ti='" +
-            esc(ti.slug) +
-            "'>" +
-            tag +
-            esc(ti.nome) +
-            "</button></li>"
-          );
-        })
-        .join("") +
-      "</ul></div>"
-    );
-  }
-
-  function bindTiLinks() {
-    var geo = window.MI_TI_BAHIA || [];
-    document.querySelectorAll(".ti-link").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var ti = geo.find(function (x) {
-          return x.slug === btn.dataset.ti;
-        });
-        if (ti) onTiClick(ti);
-      });
-    });
+  function getTerritorioCoverUrl(t) {
+    if (!t) return "";
+    if (t.coverFoto) {
+      return typeof t.coverFoto === "string"
+        ? convertGoogleDriveUrl(t.coverFoto)
+        : convertGoogleDriveUrl(t.coverFoto.src || "");
+    }
+    var fotos = (t.galeria && t.galeria.fotos) || [];
+    for (var i = 0; i < fotos.length; i++) {
+      var f = fotos[i];
+      var src = typeof f === "string" ? f : f && f.src;
+      if (src) {
+        return convertGoogleDriveUrl(src);
+      }
+    }
+    return "";
   }
 
   function getCombinedGaleria(t) {
@@ -474,38 +458,6 @@
     return { fotos: fotos, videos: videos };
   }
 
-  function tabHasContent(t, name) {
-    if (name === "territorio") return true;
-    if (name === "cultura") return (t.cultura || []).length > 0;
-    if (name === "memoria") return (t.memoria || []).length > 0;
-    if (name === "roteiros") return (t.roteiros || []).length > 0;
-    if (name === "galeria") {
-      var g = getCombinedGaleria(t);
-      return g.fotos.length > 0 || g.videos.length > 0;
-    }
-    return false;
-  }
-
-  function updateTabsVisibility(t) {
-    var activeTab = document.querySelector("#tabs-territorio .tab.active");
-    var activeName = activeTab ? activeTab.dataset.tab : "territorio";
-    var visibleCount = 0;
-    ["territorio", "cultura", "galeria", "memoria", "roteiros"].forEach(function (name) {
-      var tab = document.querySelector('#tabs-territorio .tab[data-tab="' + name + '"]');
-      if (tab) {
-        var hasContent = tabHasContent(t, name);
-        tab.hidden = !hasContent;
-        if (hasContent) visibleCount++;
-      }
-    });
-    var tabsEl = $("tabs-territorio");
-    if (tabsEl) {
-      tabsEl.hidden = (visibleCount <= 1);
-    }
-    if (!tabHasContent(t, activeName)) setActiveTab("territorio");
-    else setActiveTab(activeName);
-  }
-
   function camadasComPontos(territorio) {
     var set = {};
     if (!territorio) return set;
@@ -542,69 +494,157 @@
     wrap.hidden = wrap.childElementCount === 0;
   }
 
-  function setActiveTab(name) {
-    document.querySelectorAll("#tabs-territorio .tab").forEach(function (t) {
-      t.classList.toggle("active", t.dataset.tab === name);
+  function getTiNomeOficial(slug) {
+    var tiSlug = D.redeTiMap[slug];
+    if (!tiSlug) return "";
+    var ti = (window.MI_TI_BAHIA || []).find(function (x) {
+      return x.slug === tiSlug;
     });
-    ["territorio", "cultura", "galeria", "memoria", "roteiros"].forEach(function (k) {
-      var p = $("panel-" + k);
-      if (p) p.classList.toggle("active", k === name);
-    });
+    return ti ? ti.nome : "";
   }
 
-  function bindTabs() {
-    document.querySelectorAll("#tabs-territorio .tab").forEach(function (tab) {
-      tab.onclick = function () {
-        setActiveTab(tab.dataset.tab);
-      };
-    });
+  function redeRegiaoNome(t) {
+    return t.nome || getTiNomeOficial(t.slug) || t.slug;
+  }
+
+  function redeLugaresLabel(t) {
+    return t.subtitulo || "";
   }
 
   function territorioLabel(t) {
-    return t.nome + (t.subtitulo ? " · " + t.subtitulo : "");
+    return redeRegiaoNome(t) + (redeLugaresLabel(t) ? " · " + redeLugaresLabel(t) : "");
   }
 
   function getTiResumo(slug) {
     if (D.tiResumos && D.tiResumos[slug]) return D.tiResumos[slug];
-    return "Território de Identidade Cultural da Bahia — divisão oficial por critérios ambientais, econômicos e culturais.";
+    return "Território de Identidade da Bahia — divisão oficial por critérios ambientais, econômicos e culturais.";
+  }
+
+  function mapFitPaddingCorners() {
+    var w = window.innerWidth;
+    // No desktop o sidebar é coluna separada (CSS grid) — não adicionar padding extra.
+    // No mobile o sidebar sobrepõe o mapa pelo topo, daí padding maior.
+    var top    = w <= 480 ? 72 : w <= 768 ? 64 : 56;
+    var side   = w <= 480 ? 44 : w <= 768 ? 36 : 32;
+    var bottom = w <= 480 ? 56 : w <= 768 ? 48 : 36;
+    return {
+      paddingTopLeft:     L.point(side, top),
+      paddingBottomRight: L.point(side, bottom),
+    };
+  }
+
+  function mapFitOptions(opts) {
+    opts = opts || {};
+    var pad = mapFitPaddingCorners();
+    return {
+      paddingTopLeft: pad.paddingTopLeft,
+      paddingBottomRight: pad.paddingBottomRight,
+      maxZoom: opts.maxZoom != null ? opts.maxZoom : 14,
+      animate: opts.animate !== false,
+    };
+  }
+
+  function getTiForSlug(slug) {
+    var tiSlug = D.redeTiMap[slug];
+    if (!tiSlug) return null;
+    return (window.MI_TI_BAHIA || []).find(function (x) {
+      return x.slug === tiSlug;
+    });
+  }
+
+  function collectTerritorioContentCoords(territorio) {
+    var coords = [];
+    var isLagoa = territorio.slug === "lagoa-grande";
+    (territorio.pontos || []).forEach(function (p) {
+      if (!p.coords || p.coords.length !== 2) return;
+      if (p.fitMap === false) return;
+      // Casarão fica em Feira de Santana, ~12 km fora do quilombo — excluir do zoom
+      if (isLagoa && p.id === "casarao-dos-olhos-dagua") return;
+      coords.push(p.coords);
+    });
+    (territorio.municipios || []).forEach(function (m) {
+      if (!m.coords || m.coords.length !== 2) return;
+      if (isLagoa && /feira de santana/i.test(m.nome || "")) return;
+      coords.push(m.coords);
+    });
+    if (!coords.length && territorio.pin && territorio.pin.length === 2) {
+      coords.push(territorio.pin);
+    }
+    return coords;
+  }
+
+  function fitCoordsList(coords, opts) {
+    if (!map || !coords.length) return;
+    opts = opts || {};
+    if (coords.length === 1) {
+      map.setView(coords[0], opts.zoom || 13, { animate: opts.animate !== false });
+      return;
+    }
+    map.fitBounds(L.latLngBounds(coords), mapFitOptions(opts));
+  }
+
+  function fitTiPolygon(ti, opts) {
+    if (!ti || !ti.coords || !ti.coords.length || !map) return;
+    opts = opts || { maxZoom: 13 };
+    var pad = mapFitPaddingCorners();
+    var fitOpts = mapFitOptions(opts);
+    if (opts.focus) {
+      fitOpts.paddingBottomRight = L.point(
+        pad.paddingBottomRight.x,
+        pad.paddingBottomRight.y + (window.innerWidth <= 768 ? 56 : 40)
+      );
+    }
+    map.fitBounds(L.latLngBounds(ti.coords), fitOpts);
+  }
+
+  function fitLagoaSubregioesView(territorio, opts) {
+    if (!map) return false;
+    opts = opts || {};
+    if (lagoaPolyLayers.length) {
+      map.fitBounds(
+        L.featureGroup(lagoaPolyLayers).getBounds(),
+        mapFitOptions({ maxZoom: opts.maxZoom != null ? opts.maxZoom : 15 })
+      );
+      return true;
+    }
+    var content = collectTerritorioContentCoords(territorio);
+    if (content.length) {
+      fitCoordsList(content, {
+        maxZoom: 15,
+        zoom: territorio.zoom || 14,
+      });
+      return true;
+    }
+    return false;
   }
 
   function fitTerritorioView(territorio) {
-    var bounds = [];
-    if (territorio.pin && territorio.pin.length === 2) bounds.push(territorio.pin);
-    (territorio.pontos || []).forEach(function (p) {
-      if (p.coords && p.coords.length === 2) bounds.push(p.coords);
-    });
-    (territorio.municipios || []).forEach(function (m) {
-      if (m.coords && m.coords.length === 2) bounds.push(m.coords);
-    });
-
-    if (bounds.length > 1) {
-      map.fitBounds(bounds, { padding: [40, 40], maxZoom: 13 });
-      if (map.getZoom() < (territorio.zoom || 11)) {
-        map.setZoom(territorio.zoom || 11);
-      }
-      return;
+    if (territorio.slug === "lagoa-grande") {
+      if (fitLagoaSubregioesView(territorio)) return;
     }
-    if (bounds.length === 1) {
-      map.setView(bounds[0], territorio.zoom || 12);
+
+    var content = collectTerritorioContentCoords(territorio);
+    if (content.length) {
+      var isRede = !!(D.redeTiMap && D.redeTiMap[territorio.slug]);
+      fitCoordsList(content, {
+        maxZoom: content.length === 1 ? (isRede ? 15 : 14) : (isRede ? 16 : 15),
+        zoom: territorio.zoom || (isRede ? 14 : 13),
+      });
       return;
     }
 
-    var tiSlug = D.redeTiMap[territorio.slug];
-    var ti = tiSlug
-      ? (window.MI_TI_BAHIA || []).find(function (x) {
-          return x.slug === tiSlug;
-        })
-      : null;
+    var ti = getTiForSlug(territorio.slug);
     if (ti) {
-      map.fitBounds(ti.coords, { padding: [32, 32], maxZoom: 11 });
-      if (map.getZoom() < (territorio.zoom || 10)) {
-        map.setZoom(territorio.zoom || 10);
-      }
-    } else if (territorio.pin) {
-      map.setView(territorio.pin, territorio.zoom || 11);
+      fitTiPolygon(ti, { maxZoom: 12 });
     }
+  }
+
+  function scheduleMapRefit(fn) {
+    if (!map || typeof fn !== "function") return;
+    setTimeout(function () {
+      map.invalidateSize();
+      fn();
+    }, 320);
   }
 
   function renderTiSidebar(highlightSlug, focusOnly) {
@@ -666,7 +706,10 @@
     renderTiNavPolygons(hl, { bahiaView: true });
 
     if (focusOne && focused) {
-      map.fitBounds(focused.coords, { padding: [32, 32], maxZoom: 11 });
+      fitTiPolygon(focused, { maxZoom: 12, focus: true });
+      scheduleMapRefit(function () {
+        fitTiPolygon(focused, { maxZoom: 12, focus: true });
+      });
     } else {
       var bounds = [];
       geo.forEach(function (ti) {
@@ -674,21 +717,23 @@
           bounds.push(c);
         });
       });
-      if (bounds.length) map.fitBounds(bounds, { padding: [24, 24] });
+      if (bounds.length) map.fitBounds(L.latLngBounds(bounds), { padding: [5, 5] });
     }
     updateUrl();
     updateFormNavLink();
 
-    if (highlightSlug && focusOne) {
-      if (window.innerWidth <= 768) {
+    if (isMobileLayout()) {
+      if (focusOne && focused) {
         openSidebarMobile();
       } else {
-        var main = document.querySelector(".main");
-        if (main) {
-          main.classList.remove("sidebar-closed");
-          var btnMenu = $("btn-menu");
-          if (btnMenu) btnMenu.classList.remove("collapsed");
-        }
+        openMasterSidebarMobile();
+      }
+    } else if (highlightSlug && focusOne) {
+      var main = document.querySelector(".main");
+      if (main) {
+        main.classList.remove("sidebar-closed");
+        var btnMenu = $("btn-menu");
+        if (btnMenu) btnMenu.classList.remove("collapsed");
       }
     }
     updateSidebarToggleState();
@@ -754,8 +799,8 @@
       var tiSlug = D.redeTiMap[t.slug];
       return {
         slug: t.slug,
-        nome: t.nome,
-        subtitulo: t.subtitulo,
+        nome: redeRegiaoNome(t),
+        subtitulo: redeLugaresLabel(t),
         isRede: true,
         tiSlug: tiSlug
       };
@@ -790,18 +835,24 @@
       }).join('') +
       '</ul>';
       
-    masterList.innerHTML = 
+    var intro =
+      '<div class="master-intro">' +
+      '<p>' + esc(D.conceitos.divisao) + "</p>" +
+      "</div>";
+
+    masterList.innerHTML =
+      intro +
       '<div class="accordion-section">' +
-      '  <button type="button" class="accordion-header collapsed" id="accordion-header-rede" aria-expanded="false">' +
+      '  <button type="button" class="accordion-header" id="accordion-header-rede" aria-expanded="true" aria-controls="accordion-content-rede">' +
       '    <span>Territórios da Rede (6)</span>' +
       '  </button>' +
-      '  <div class="accordion-content" id="accordion-content-rede" style="display:none;">' +
+      '  <div class="accordion-content" id="accordion-content-rede">' +
       redeHtml +
       '  </div>' +
       '</div>' +
       '<div class="accordion-section">' +
       '  <button type="button" class="accordion-header collapsed" id="accordion-header-todos" aria-expanded="false">' +
-      '    <span>Outros Territórios da Bahia (21)</span>' +
+      '    <span>Territórios de Identidade (' + otherItems.length + ')</span>' +
       '  </button>' +
       '  <div class="accordion-content" id="accordion-content-todos" style="display:none;">' +
       todosHtml +
@@ -893,28 +944,46 @@
     activeSlug = null;
     activeTiSlug = null;
     activeRoteiroId = null;
-    
+
     $("sidebar-detail").hidden = true;
     $("sidebar-master").hidden = false;
-    
+
     var searchInput = $("search-input");
     if (searchInput) searchInput.value = "";
-    
+
     if (lastMainMode === "rede") {
       renderRedeMap();
     } else {
       renderTiMap(null, false);
     }
+    if (isMobileLayout()) {
+      openMasterSidebarMobile();
+    }
+  }
+
+  function getTiNomeForTerritorio(t) {
+    var tiSlug = D.redeTiMap[t.slug];
+    if (!tiSlug) return "";
+    var ti = (window.MI_TI_BAHIA || []).find(function (x) {
+      return x.slug === tiSlug;
+    });
+    return ti ? ti.nome : t.ti || "";
   }
 
   function renderDetailContent(t) {
     var html = '';
     var combined = getCombinedGaleria(t);
-    var firstPhoto = combined.fotos && combined.fotos[0];
-    var coverUrl = firstPhoto ? (typeof firstPhoto === "string" ? firstPhoto : firstPhoto.src) : "";
+    var coverUrl = getTerritorioCoverUrl(t);
     
     if (coverUrl) {
-      html += '<div class="detail-cover">' +
+      var coverClass = "detail-cover";
+      if (t.coverBg === "white") {
+        coverClass += " detail-cover--white";
+      }
+      if (t.coverFit === "contain") {
+        coverClass += " detail-cover--contain";
+      }
+      html += '<div class="' + coverClass + '">' +
               '<img src="' + esc(coverUrl) + '" alt="' + esc(t.nome) + '" loading="lazy">' +
               '</div>';
     }
@@ -927,9 +996,17 @@
       '</svg>' +
       '</a>' : '';
 
+    var tiNome = getTiNomeForTerritorio(t);
+    if (tiNome) {
+      html +=
+        '<p class="detail-ti-overline">Território de Identidade · ' + esc(tiNome) + "</p>";
+    }
+
     html += '<div class="detail-presentation">' +
-            '<h2 class="detail-title">' + esc(t.nome) + '</h2>' +
-            (t.subtitulo ? '<p class="detail-subtitle">' + esc(t.subtitulo) + igLink + '</p>' : (igLink ? '<p class="detail-subtitle">' + igLink + '</p>' : '')) +
+            '<h2 class="detail-title">' + esc(redeRegiaoNome(t)) + '</h2>' +
+            (redeLugaresLabel(t) || igLink
+              ? '<p class="detail-subtitle">' + esc(redeLugaresLabel(t)) + igLink + '</p>'
+              : (igLink ? '<p class="detail-subtitle">' + igLink + '</p>' : '')) +
             '</div>';
             
     html += '<div class="detail-accordions">';
@@ -937,7 +1014,7 @@
     // 1. Sobre o Território Accordion
     html += '<div class="accordion-section">' +
             '<button type="button" class="accordion-header collapsed" id="accordion-header-sobre" aria-expanded="false">' +
-            '<span>Sobre o Território</span>' +
+            '<span>' + (t.slug === "lagoa-grande" ? "Sobre o Quilombo" : "Sobre este lugar") + '</span>' +
             '</button>' +
             '<div class="accordion-content" id="accordion-content-sobre" style="display:none;">' +
             '<div class="detail-about">' +
@@ -946,6 +1023,59 @@
             '</div>' +
             '</div>';
     
+    // 2. Cultura
+    var hasCultura = t.cultura && t.cultura.length > 0;
+    if (hasCultura) {
+      html += '<div class="accordion-section">' +
+              '<button type="button" class="accordion-header collapsed" id="accordion-header-cultura" aria-expanded="false">' +
+              '<span>Cultura</span>' +
+              '</button>' +
+              '<div class="accordion-content" id="accordion-content-cultura" style="display:none;">' +
+              renderCultura(t.cultura) +
+              '</div>' +
+              '</div>';
+    }
+
+    // 3. Festas
+    var festas = (t.pontos || []).filter(function(p) { return p.camada === "festas"; });
+    var hasFestas = (t.festas && t.festas.length > 0) || festas.length > 0;
+    // Sempre mostrar o acordeão de Festas como placeholder (ou com os pontos da camada)
+    html += '<div class="accordion-section">' +
+            '<button type="button" class="accordion-header collapsed" id="accordion-header-festas" aria-expanded="false">' +
+            '<span>Festas</span>' +
+            '</button>' +
+            '<div class="accordion-content" id="accordion-content-festas" style="display:none;">' +
+            (hasFestas ? renderMemoria(t.festas || []) : '<p style="padding: 12px; color: var(--text-muted); font-size: 0.9rem;">Calendário anual de festas tradicionais em construção...</p>') +
+            '</div>' +
+            '</div>';
+    
+    // 4. Memória e Histórias
+    var hasMemoria = t.memoria && t.memoria.length > 0;
+    if (hasMemoria) {
+      html += '<div class="accordion-section">' +
+              '<button type="button" class="accordion-header collapsed" id="accordion-header-memoria" aria-expanded="false">' +
+              '<span>Memória e Histórias</span>' +
+              '</button>' +
+              '<div class="accordion-content" id="accordion-content-memoria" style="display:none;">' +
+              renderMemoria(t.memoria) +
+              '</div>' +
+              '</div>';
+    }
+
+    // 5. Pontos de Interesse
+    var hasPontos = (t.pontos || []).length > 0;
+    if (hasPontos) {
+      html += '<div class="accordion-section">' +
+              '<button type="button" class="accordion-header collapsed" id="accordion-header-pontos" aria-expanded="false">' +
+              '<span>Pontos de Interesse</span>' +
+              '</button>' +
+              '<div class="accordion-content" id="accordion-content-pontos" style="display:none;">' +
+              renderPontosLista(t) +
+              '</div>' +
+              '</div>';
+    }
+
+    // 6. Roteiros e Rotas
     var hasRoteiros = t.roteiros && t.roteiros.length > 0;
     if (hasRoteiros) {
       html += '<div class="accordion-section">' +
@@ -958,30 +1088,7 @@
               '</div>';
     }
     
-    var hasCultura = t.cultura && t.cultura.length > 0;
-    if (hasCultura) {
-      html += '<div class="accordion-section">' +
-              '<button type="button" class="accordion-header collapsed" id="accordion-header-cultura" aria-expanded="false">' +
-              '<span>Cultura e Pontos de Interesse</span>' +
-              '</button>' +
-              '<div class="accordion-content" id="accordion-content-cultura" style="display:none;">' +
-              renderCultura(t.cultura) +
-              '</div>' +
-              '</div>';
-    }
-    
-    var hasMemoria = t.memoria && t.memoria.length > 0;
-    if (hasMemoria) {
-      html += '<div class="accordion-section">' +
-              '<button type="button" class="accordion-header collapsed" id="accordion-header-memoria" aria-expanded="false">' +
-              '<span>Memória e Histórias</span>' +
-              '</button>' +
-              '<div class="accordion-content" id="accordion-content-memoria" style="display:none;">' +
-              renderMemoria(t.memoria) +
-              '</div>' +
-              '</div>';
-    }
-    
+    // 7. Galeria de Fotos e Vídeos
     var hasGaleria = combined.fotos.length > 0 || combined.videos.length > 0;
     if (hasGaleria) {
       html += '<div class="accordion-section">' +
@@ -1073,9 +1180,9 @@
       });
       m.bindPopup(
         "<h4>" +
-          esc(t.nome) +
+          esc(redeRegiaoNome(t)) +
           "</h4><p>" +
-          esc(t.subtitulo || "") +
+          esc(redeLugaresLabel(t)) +
           '</p><button type="button" class="btn btn-primary popup-go">Abrir</button>'
       );
       m.on("popupopen", function (ev) {
@@ -1105,11 +1212,12 @@
           return t.pin;
         })
       ),
-      { padding: [48, 48] }
+      { padding: [20, 20] }
     );
     bringMarkersToFront();
     updateUrl();
     updateFormNavLink();
+    openMasterSidebarMobile();
     updateSidebarToggleState();
   }
 
@@ -1247,7 +1355,7 @@
   function renderMidiaActionsHtml(item) {
     if (!item) return "";
     if (item.tipo === "foto") {
-      return '<button type="button" class="btn btn-slideshow-fs">Tela cheia</button>';
+      return '';
     }
     return "";
   }
@@ -1522,8 +1630,12 @@
       return url.replace(/^https?:\/\//, "").replace(/\/$/, "");
     }
   }
-  function popupHtml(p) {
-    var html = "<h4>" + esc(p.titulo) + "</h4>";
+  function popupHtml(p, ctxLine) {
+    var html = "";
+    if (ctxLine) {
+      html += '<p class="popup-context">' + esc(ctxLine) + "</p>";
+    }
+    html += "<h4>" + esc(p.titulo) + "</h4>";
     var r = (p.resumo || "").trim();
     if (r) html += "<p>" + esc(r) + "</p>";
     var webLinks = displayLinks(p.links);
@@ -1552,18 +1664,41 @@
     return html;
   }
 
+  function getPontoEmoji(p) {
+    if (p.emoji) return esc(p.emoji);
+    var map = {
+      natureza: "🌿",
+      ambiente: "🌿",
+      historico: "📖",
+      historia: "📖",
+      instituicoes: "🏫",
+      projetos: "✨",
+      turismo: "📍",
+      "turismo-comunitario": "⛵",
+      produtos: "🧺",
+      festas: "📅",
+    };
+    return map[p.camada] || "📍";
+  }
+
   function renderPontos(territorio) {
+    var popupCtx =
+      redeRegiaoNome(territorio) +
+      (redeLugaresLabel(territorio) ? " · " + redeLugaresLabel(territorio) : "");
+
     (territorio.pontos || []).forEach(function (p) {
       if (!activeCamadas[p.camada]) return;
-      var m = L.circleMarker(p.coords, {
-        radius: 10,
-        fillColor: camadaCor(p.camada),
-        color: "#fff",
-        weight: 2,
-        fillOpacity: 0.92,
+
+      var ic = L.divIcon({
+        className: 'custom-marker-icon',
+        html: '<div class="marker-emoji-container" style="background:' + camadaCor(p.camada) + '">' + getPontoEmoji(p) + '</div>',
+        iconSize: [34, 34],
+        iconAnchor: [17, 17]
       });
+
+      var m = L.marker(p.coords, { icon: ic });
       var pontoMidia = midiaItems(p);
-      m.bindPopup(popupHtml(p), { maxWidth: 300 });
+      m.bindPopup(popupHtml(p, popupCtx), { maxWidth: 300 });
       m.on("click", function (e) {
         L.DomEvent.stopPropagation(e);
       });
@@ -1640,19 +1775,20 @@
           bounds.push([s.lat, s.lng]);
         }
       });
-      if (bounds.length) map.fitBounds(bounds, { padding: [48, 48] });
+      if (bounds.length) {
+        map.fitBounds(L.latLngBounds(bounds), mapFitOptions({ maxZoom: 13 }));
+      }
       return;
     }
 
     if (roteiroId === "subregioes") {
       renderLagoaPolys();
-      var all = [];
-      (window.MI_LAGOAS_GEO || []).forEach(function (r) {
-        r.coords.forEach(function (c) {
-          all.push(c);
-        });
-      });
-      if (all.length) map.fitBounds(all, { padding: [32, 32] });
+      if (lagoaPolyLayers.length) {
+        map.fitBounds(
+          L.featureGroup(lagoaPolyLayers).getBounds(),
+          mapFitOptions({ maxZoom: 15 })
+        );
+      }
     }
   }
 
@@ -1661,13 +1797,14 @@
     var shouldFit = options.fit !== false;
     clearLayers();
 
-    // Render boundary of the parent TI region
+    // Contorno do TI pai (não no Lagoa Grande: lá as 7 subregiões são a referência visual)
     var tiSlug = D.redeTiMap[territorio.slug];
-    var ti = tiSlug
-      ? (window.MI_TI_BAHIA || []).find(function (x) {
-          return x.slug === tiSlug;
-        })
-      : null;
+    var ti =
+      territorio.slug !== "lagoa-grande" && tiSlug
+        ? (window.MI_TI_BAHIA || []).find(function (x) {
+            return x.slug === tiSlug;
+          })
+        : null;
     if (ti) {
       var theme = window.MITheme ? window.MITheme.get() : "dark";
       var tiBoundaryColor = theme === "dark" ? "#39ff14" : "#22c55e";
@@ -1675,8 +1812,8 @@
 
       var tiPoly = L.polygon(ti.coords, {
         color: tiBoundaryColor,
-        weight: 3.5,
-        opacity: 0.95,
+        weight: 2,
+        opacity: 0.85,
         fillColor: tiBoundaryFill,
         fillOpacity: 0.03,
         className: "ti-boundary-poly",
@@ -1689,38 +1826,29 @@
 
     renderMunicipioLabels(territorio);
 
-    if (activeRoteiroId) renderRoteiroOnMap(territorio, activeRoteiroId);
-    renderPontos(territorio);
+    if (activeRoteiroId) {
+      renderRoteiroOnMap(territorio, activeRoteiroId);
+    } else {
+      renderPontos(territorio);
+    }
     bringMarkersToFront();
 
     if (!shouldFit) return;
 
     if (activeRoteiroId) return;
 
-    if (territorio.slug === "lagoa-grande" && window.MI_LAGOAS_GEO) {
-      var all = [];
-      window.MI_LAGOAS_GEO.forEach(function (r) {
-        r.coords.forEach(function (c) {
-          all.push(c);
-        });
+    if (activeLagoaRegId && territorio.slug === "lagoa-grande") {
+      var reg = (window.MI_LAGOAS_GEO || []).find(function (r) {
+        return r.id === activeLagoaRegId;
       });
-      map.fitBounds(all, { padding: [36, 36], maxZoom: 10 });
-      if (activeLagoaRegId) {
-        var reg = (window.MI_LAGOAS_GEO || []).find(function (r) {
-          return r.id === activeLagoaRegId;
-        });
-        if (reg) focusLagoaReg(reg, false);
-      }
+      if (reg) focusLagoaReg(reg, false);
       return;
     }
 
-    var tiSlug = D.redeTiMap[territorio.slug];
-    var ti = tiSlug
-      ? (window.MI_TI_BAHIA || []).find(function (x) {
-          return x.slug === tiSlug;
-        })
-      : null;
     fitTerritorioView(territorio);
+    scheduleMapRefit(function () {
+      fitTerritorioView(territorio);
+    });
   }
 
   function ytId(url) {
@@ -1786,24 +1914,6 @@
     if (id) openYoutubeLarge(id);
   }
 
-  function renderTerritorioPanel(t) {
-    return (
-      '<div class="territorio-conteudo">' +
-      '<h2 class="territorio-heading">' +
-      esc(t.nome) +
-      "</h2>" +
-      (t.subtitulo ? '<p class="territorio-municipios">' + esc(t.subtitulo) + "</p>" : "") +
-      (t.instagram
-        ? '<p><a class="link-ig" href="' +
-          esc(t.instagram) +
-          '" target="_blank" rel="noopener">Instagram</a></p>'
-        : "") +
-      '<div class="texto-territorio">' +
-      paragrafosHtml(t.territorioParagrafos || [t.resumo]) +
-      "</div></div>"
-    );
-  }
-
   function paragrafosHtml(arr) {
     if (!arr || !arr.length) return "";
     return arr.map(function (p) {
@@ -1831,6 +1941,24 @@
         );
       })
       .join("");
+  }
+
+  function renderPontosLista(territorio) {
+    var pontos = territorio.pontos || [];
+    if (!pontos.length) return "";
+    return pontos.map(function(p) {
+      var corDot = camadaCor(p.camada);
+      var resumo = (p.resumo || "").trim();
+      return (
+        '<div class="ponto-item">' +
+          '<button type="button" class="ponto-item-btn btn-link-mapa" data-ponto="' + esc(p.id) + '">' +
+            '<span class="ponto-dot" style="background:' + corDot + '"></span>' +
+            '<span class="ponto-item-nome">' + esc(p.titulo) + '</span>' +
+          '</button>' +
+          (resumo ? '<p class="ponto-item-resumo">' + esc(resumo) + '</p>' : '') +
+        '</div>'
+      );
+    }).join("");
   }
 
   function renderGaleria(g) {
@@ -1870,7 +1998,6 @@
         fotos.length +
         "</p>" +
         '<div class="slideshow-actions">' +
-        '<button type="button" class="btn btn-slideshow-fs">Tela cheia</button>' +
         "</div></div></div>";
     }
 
@@ -2119,12 +2246,12 @@
                 allItems.push(it);
               });
             });
+            roteiroPanelData = {
+              items: allItems,
+              stopFirstIndex: stopFirstIndex,
+              roteiroId: r.id,
+            };
             if (allItems.length) {
-              roteiroPanelData = {
-                items: allItems,
-                stopFirstIndex: stopFirstIndex,
-                roteiroId: r.id,
-              };
               midiaHtml =
                 '<div class="roteiro-midia-wrap">' +
                 renderSidebarMidiaCarousel(allItems, "roteiro-midia-carousel") +
@@ -2167,23 +2294,36 @@
   function bindRoteiroPanel(territorio, container) {
     roteiroSidebarMidia = null;
     var panel = container || $("detail-content");
-    if (!panel || !roteiroPanelData) return;
+    if (!panel) return;
 
     var wrap = panel.querySelector(".roteiro-midia-wrap");
-    if (wrap && roteiroPanelData.items.length) {
+    if (wrap && roteiroPanelData && roteiroPanelData.items.length) {
       roteiroSidebarMidia = bindSidebarMidiaCarousel(wrap, roteiroPanelData.items);
     }
 
     panel.querySelectorAll(".roteiro-parada-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
         var si = parseInt(btn.dataset.stop, 10);
-        if (activeRoteiroId !== roteiroPanelData.roteiroId) {
-          activeRoteiroId = roteiroPanelData.roteiroId;
-          renderTerritorioMap(territorio, { fit: false });
+        if (isNaN(si)) return;
+        var rid =
+          roteiroPanelData && roteiroPanelData.roteiroId
+            ? roteiroPanelData.roteiroId
+            : btn.closest(".card-roteiro") &&
+              btn.closest(".card-roteiro").querySelector(".btn-roteiro") &&
+              btn.closest(".card-roteiro").querySelector(".btn-roteiro").dataset
+                .roteiro;
+        if (!rid) return;
+        if (activeRoteiroId !== rid) {
+          activeRoteiroId = rid;
+          renderTerritorioMap(territorio, { fit: true });
         }
         focusRoteiroStop(si);
+        if (window.innerWidth <= 768) {
+          closeSidebarMobile();
+        }
         if (
           roteiroSidebarMidia &&
+          roteiroPanelData &&
           roteiroPanelData.stopFirstIndex[si] != null
         ) {
           roteiroSidebarMidia.show(roteiroPanelData.stopFirstIndex[si]);
@@ -2217,7 +2357,7 @@
     activeTiSlug = null;
     toggleUiForMode();
     renderChips(t);
-    setHeaderContext(t.nome, t.subtitulo || "");
+    setHeaderContext(redeRegiaoNome(t), redeLugaresLabel(t));
 
     $("sidebar-master").hidden = true;
     $("sidebar-detail").hidden = false;
@@ -2232,9 +2372,21 @@
 
     document.querySelectorAll(".btn-roteiro").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        activeRoteiroId = btn.dataset.roteiro;
-        renderTerritorioMap(t);
-        showToast("Rota no mapa");
+        var rid = btn.dataset.roteiro;
+        if (activeRoteiroId === rid) {
+          activeRoteiroId = null;
+          renderChips(t);
+          renderTerritorioMap(t);
+          showToast("Todos os pontos no mapa");
+        } else {
+          activeRoteiroId = rid;
+          renderChips(t);
+          renderTerritorioMap(t);
+          showToast("Só a rota no mapa — clique de novo para ver todos os pontos");
+        }
+        if (window.innerWidth <= 768) {
+          closeSidebarMobile();
+        }
       });
     });
 
@@ -2245,11 +2397,28 @@
         });
         if (!ponto) return;
         activeRoteiroId = null;
-        renderTerritorioMap(t, { fit: false });
-        map.setView(ponto.coords, 15);
-        markersLayer.eachLayer(function (layer) {
-          if (layer.pontoId === ponto.id) layer.openPopup();
-        });
+
+        // Se a camada esta desativada, ativar e reconstruir o mapa
+        if (ponto.camada && !activeCamadas[ponto.camada]) {
+          activeCamadas[ponto.camada] = true;
+          renderChips(t);
+          renderTerritorioMap(t, { fit: false });
+        }
+
+        // Navegar diretamente ao ponto (como no prototipo quilombola_map)
+        map.setView(ponto.coords, 15, { animate: true });
+        
+        // Abrir popup do marcador correspondente
+        setTimeout(function () {
+          markersLayer.eachLayer(function (layer) {
+            if (layer.pontoId === ponto.id) layer.openPopup();
+          });
+        }, 300);
+
+        // No celular, fecha o painel lateral para revelar o ponto no mapa
+        if (window.innerWidth <= 768) {
+          closeSidebarMobile();
+        }
       });
     });
 
@@ -2276,8 +2445,8 @@
     if (mode === "territorio" && activeSlug) {
       var t = getTerritorio(activeSlug);
       if (t) {
-        title = t.nome;
-        subtitle = t.subtitulo || t.ti || "Rede Movimento Irun";
+        title = redeRegiaoNome(t);
+        subtitle = redeLugaresLabel(t) || t.ti || "Rede Movimento Irun";
       }
     } else if (mode === "ti" && activeTiSlug) {
       var ti = (window.MI_TI_BAHIA || []).find(function (x) {
@@ -2399,27 +2568,55 @@
   }
 
   function updateFormNavLink() {
-    var el = $("nav-formulario");
-    if (!el) return;
-    el.href = activeSlug
+    var href = activeSlug
       ? "formulario.html?territorio=" + encodeURIComponent(activeSlug)
       : "formulario.html";
+    var el = $("nav-formulario");
+    if (el) el.href = href;
+    var elMenu = $("nav-formulario-menu");
+    if (elMenu) elMenu.href = href;
+  }
+
+  function isMobileLayout() {
+    return window.innerWidth <= 768;
+  }
+
+  function ensureMobileSidebarReady() {
+    if (!isMobileLayout()) return;
+    var main = document.querySelector(".main");
+    if (main) main.classList.remove("sidebar-closed");
+  }
+
+  function openMasterSidebarMobile() {
+    if (!isMobileLayout()) return;
+    ensureMobileSidebarReady();
+    openSidebarMobile();
   }
 
   function updateSidebarToggleState() {
-    var btn = $("btn-conteudo-header");
+    var btn = $("btn-painel");
     if (!btn) return;
     var isOpen = false;
-    if (window.innerWidth <= 768) {
+    if (isMobileLayout()) {
       isOpen = $("sidebar").classList.contains("open");
     } else {
       var main = document.querySelector(".main");
       isOpen = main ? !main.classList.contains("sidebar-closed") : true;
     }
     btn.classList.toggle("header-nav-active", isOpen);
+    btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    btn.setAttribute(
+      "aria-label",
+      isOpen ? "Fechar lista e conteúdo" : "Abrir lista e conteúdo"
+    );
+    var sidebar = $("sidebar");
+    if (sidebar && isMobileLayout()) {
+      sidebar.setAttribute("aria-modal", isOpen ? "true" : "false");
+    }
   }
 
   function openSidebarMobile() {
+    ensureMobileSidebarReady();
     $("sidebar").classList.add("open");
     $("sidebar-backdrop").hidden = false;
     $("sidebar-backdrop").classList.add("visible");
@@ -2444,7 +2641,7 @@
   }
 
   function toggleSidebar() {
-    if (window.innerWidth <= 768) {
+    if (isMobileLayout()) {
       var isOpen = $("sidebar").classList.contains("open");
       if (isOpen) {
         closeSidebarMobile();
@@ -2492,9 +2689,13 @@
       if (el) el.addEventListener(event, fn);
     }
 
+    listen("btn-movimento-irun", "click", function () {
+      renderTiMap(null, false);
+    });
     listen("btn-ti", "click", function () {
       renderTiMap(null, false);
     });
+    listen("btn-painel", "click", toggleSidebar);
     listen("btn-rede", "click", function () {
       renderRedeMap();
     });
@@ -2509,8 +2710,16 @@
       var d = $("dialog-share");
       if (d) d.close();
     });
-    listen("btn-conteudo-header", "click", toggleSidebar);
-    listen("btn-sidebar", "click", toggleSidebar);
+    listen("btn-toggle-sidebar", "click", toggleSidebar);
+    listen("btn-theme-menu", "click", function () {
+      var t = $("btn-theme");
+      if (t) t.click();
+    });
+    listen("btn-share-menu", "click", openShareDialog);
+    listen("nav-formulario-menu", "click", function () {
+      var a = $("nav-formulario");
+      if (a && a.href) location.href = a.href;
+    });
     listen("sidebar-backdrop", "click", closeSidebarMobile);
     listen("sidebar-drag-handle", "click", function() {
       if (window.innerWidth <= 768) {
@@ -2538,10 +2747,17 @@
       });
       if (tiInit) renderTiMap(tiInit.slug, true);
       else renderTiMap(null, false);
-    } else renderTiMap(null, false);
+    }     else renderTiMap(null, false);
+
+    if (isMobileLayout()) {
+      openMasterSidebarMobile();
+    }
 
     window.addEventListener("resize", function () {
       map.invalidateSize();
+      if (isMobileLayout()) {
+        ensureMobileSidebarReady();
+      }
     });
   }
 

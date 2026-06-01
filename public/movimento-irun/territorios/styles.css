@@ -131,9 +131,24 @@ body:not(.page-formulario) .header-location {
   transition: background var(--transition), border-color var(--transition), color var(--transition), box-shadow var(--transition);
 }
 
+.btn-brand-nav .btn-text {
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.btn-painel {
+  display: none;
+}
+
+.btn-icon-only .btn-text {
+  display: none !important;
+}
+
 .btn-icon,
 .btn-theme,
-.btn-share-icon {
+.btn-share-icon,
+.btn-icon-only {
   width: 38px !important;
   height: 38px !important;
   min-width: 38px !important;
@@ -557,9 +572,16 @@ body:not(.page-formulario) .header-location {
 .btn-panel-map {
   display: none;
   position: absolute;
-  bottom: 1rem;
-  left: 1rem;
-  z-index: 800;
+  bottom: 4.5rem;
+  left: 0.75rem;
+  z-index: 900;
+  min-height: var(--tap);
+  padding: 0.55rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  touch-action: manipulation;
 }
 
 /* Footer / timeline */
@@ -818,6 +840,16 @@ body:not(.page-formulario) .header-location {
     display: none;
   }
 
+  .btn-brand-nav .btn-text {
+    display: inline;
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+  }
+
+  .btn-painel {
+    display: inline-flex !important;
+  }
+
   .header-actions .btn {
     width: 36px !important;
     height: 36px !important;
@@ -962,6 +994,12 @@ body:not(.page-formulario) .header-location {
 }
 .main.sidebar-closed .sidebar {
   display: none !important;
+}
+
+@media (max-width: 768px) {
+  .main.sidebar-closed .sidebar {
+    display: flex !important;
+  }
 }
 
 .sidebar-backdrop {
@@ -1897,7 +1935,7 @@ body.galeria-lightbox-open {
 }
 
 @media (min-width: 769px) {
-  .btn-panel-map { display: none; }
+  .btn-panel-map { display: none !important; }
 }
 
 .sidebar {
@@ -1953,6 +1991,13 @@ body.page-formulario .header-location {
   color: var(--muted);
   font-size: 0.9375rem;
   line-height: 1.5;
+}
+
+.form-page-hint {
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.45;
 }
 
 .form-card {
@@ -2249,7 +2294,7 @@ body.page-formulario .header-location {
 
 .ti-boundary-poly {
   stroke: var(--ti-boundary) !important;
-  stroke-width: 3.5px !important;
+  stroke-width: 2px !important;
   fill: var(--ti-boundary-fill) !important;
 }
 
@@ -2455,6 +2500,14 @@ body.page-formulario .header-location {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.detail-cover--white {
+  background: #ffffff !important;
+}
+
+.detail-cover--contain img {
+  object-fit: contain !important;
 }
 
 .detail-presentation {
@@ -2711,4 +2764,304 @@ body.page-formulario .header-location {
   #sidebar-detail .sidebar-panel {
     padding-bottom: 120px;
   }
+}
+
+/* Pontos de Interesse - Lista no sidebar */
+.ponto-item {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.ponto-item:last-child {
+  border-bottom: none;
+}
+.ponto-item-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.95rem;
+  text-align: left;
+  transition: background 0.2s;
+}
+.ponto-item-btn:hover {
+  background: rgba(255,255,255,0.08);
+}
+.ponto-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 4px rgba(0,0,0,0.3);
+}
+.ponto-item-nome {
+  flex: 1;
+}
+.ponto-item-arrow {
+  opacity: 0.4;
+  font-size: 0.85rem;
+  transition: opacity 0.2s;
+}
+.ponto-item-btn:hover .ponto-item-arrow {
+  opacity: 1;
+}
+.ponto-item-resumo {
+  margin: 2px 0 0 32px;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+/* Header contexto + menu ⋯ */
+.header-context {
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 220px;
+  margin-left: 0.25rem;
+}
+
+.header-context-title {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-context-sub {
+  margin: 0;
+  font-size: 0.65rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-util-inline {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.header-more {
+  display: none;
+  position: relative;
+}
+
+.header-more summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.header-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.btn-more {
+  min-width: 36px;
+  padding: 0 0.5rem;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.header-more-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 1100;
+  min-width: 160px;
+  padding: 0.35rem;
+  background: var(--surface-elevated);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.header-more-menu .btn {
+  width: 100%;
+  justify-content: flex-start;
+  text-transform: none;
+  font-size: 0.875rem;
+}
+
+.master-intro {
+  padding: 0 0 0.75rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.master-intro p {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.detail-toolbar {
+  margin-bottom: 0.75rem;
+}
+
+.btn-detail-back {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface2);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-detail-back:hover {
+  border-color: var(--accent);
+  color: var(--accent2);
+}
+
+.detail-ti-overline {
+  margin: 0 0 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.popup-context {
+  margin: 0 0 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent2);
+  line-height: 1.3;
+}
+
+#app {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.header {
+  padding-top: max(0px, env(safe-area-inset-top, 0px));
+}
+
+.footer {
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+}
+
+@media (max-width: 768px) {
+  .header-util-inline {
+    display: none;
+  }
+
+  .header-more {
+    display: block;
+  }
+
+  .header-context {
+    max-width: 120px;
+  }
+
+  .btn-toggle-sidebar {
+    display: none !important;
+  }
+
+  .btn-panel-map {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .header-more {
+    display: none !important;
+  }
+}
+
+/* Marcadores Customizados no Mapa */
+.marker-emoji-container {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+.marker-emoji-container:hover {
+  transform: scale(1.15);
+}
+
+/* Aba Lateral (Flap) de Conteúdo */
+.btn-toggle-sidebar {
+  position: absolute;
+  top: 50%;
+  left: var(--sidebar-w);
+  transform: translate(-50%, -50%);
+  width: 24px;
+  height: 48px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left var(--transition), background var(--transition), border-color var(--transition), color var(--transition);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  padding: 0;
+}
+
+.btn-toggle-sidebar:hover {
+  background: var(--surface2);
+  color: var(--neon-cyan);
+  border-color: var(--neon-cyan);
+}
+
+.main.sidebar-closed .btn-toggle-sidebar {
+  left: 12px;
+}
+
+.btn-toggle-sidebar .toggle-icon {
+  transition: transform var(--transition);
+}
+
+.main.sidebar-closed .btn-toggle-sidebar .toggle-icon {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+  .btn-toggle-sidebar {
+    display: flex !important;
+    left: 8px;
+    z-index: 900;
+    width: 28px;
+    height: 44px;
+  }
+
+  .main.sidebar-closed .btn-toggle-sidebar {
+    left: 8px;
+  }
+}
+
+.custom-marker-icon {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }

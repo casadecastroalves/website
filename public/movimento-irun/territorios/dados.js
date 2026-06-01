@@ -62,11 +62,6 @@ window.MI_DADOS = {
       "cor": "#6ee7b7"
     },
     {
-      "id": "turismo",
-      "rotulo": "Turismo",
-      "cor": "#f472b6"
-    },
-    {
       "id": "produtos",
       "rotulo": "Produtos",
       "cor": "#fb923c"
@@ -75,6 +70,16 @@ window.MI_DADOS = {
       "id": "projetos",
       "rotulo": "Projetos",
       "cor": "#c084fc"
+    },
+    {
+      "id": "festas",
+      "rotulo": "Festas",
+      "cor": "#ec4899"
+    },
+    {
+      "id": "turismo-comunitario",
+      "rotulo": "Turismo comunitário",
+      "cor": "#0ea5e9"
     }
   ],
   "territorios": [
@@ -122,8 +127,15 @@ window.MI_DADOS = {
           "mapaPontoId": "sede-caboclos"
         }
       ],
+      "coverFit": "contain",
+      "coverBg": "white",
       "galeria": {
-        "fotos": [],
+        "fotos": [
+          {
+            "titulo": "Região Metropolitana de Salvador (RMS)",
+            "src": "imagens/itaparica-rm/mapa-rms.png"
+          }
+        ],
         "videos": []
       },
       "memoria": [],
@@ -149,12 +161,17 @@ window.MI_DADOS = {
             -38.4820224
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Associação Beneficente 25 de Junho",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GxQnH_aB-Bk-MImrs11LP8mjAjjDDZGYr_qV5V8qW5del5JVH4roKDitvZHm2ZvdybJplzUbee-C6LMfwz_neknE3TjxcfIXs4Q1VVryZg8sA3eLhd7FYV92aMEIP0Zdt7R5iRhBBSDlGZ8G3lwFOFGj0u4pxgk_K-oVvUuKvC-f_wS4n0BBkORVRglXxeCo8IBHDGVGXyvVg?fife=s16383"
-            }
+          "links": []
+        },
+        {
+          "id": "itaparica",
+          "titulo": "Itaparica",
+          "camada": "instituicoes",
+          "coords": [
+            -12.9001699,
+            -38.6730631
           ],
+          "resumo": "",
           "links": []
         },
         {
@@ -166,12 +183,6 @@ window.MI_DADOS = {
             -38.6766525
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Maré de Março",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_Gy7NiBwrksODl-95S40jw6FqZMd8uzBjgut74BjyhTSDcfhA5tHGvczdYE-ZAncj-3UsRRl2yJbF0kS6nOk_aYdG3yZWQh-5IYIQ512vTisI3ucD7WyKLdh3MMCfXGBNxzGToXFuA3htXiMAII9ZU49BxfNl83K-AqJa0cNgGkCZcI_ddM0k7vQfD6PI9xLVG2d3chcpwEv3w?fife=s16383"
-            }
-          ],
           "links": []
         },
         {
@@ -193,28 +204,6 @@ window.MI_DADOS = {
             -38.6197858
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho — foto 1",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GziwPJIpU06Uzl-DBV8xDmQqQTfb57sQQEI1LDuJhyCUcqtatcuTzjNHZdWs_KbhWjZyhOtXcuh1bEfeEA4mROFiU2bv4Zd5P4GEjVxldIARNj4n3X92kG453NdDVB0fZobtu6E2Q2WNyIxXI9cVcvujzkjTmZ9EnT_MP1QXVkCEJgcgFkfnW-veMY3n5xnUXkpjyDi2TJN_Q?fife=s16383"
-            },
-            {
-              "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho — foto 2",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GxMS9hql62H5rj9rpWSmd38NNXU4K7gVu9CG1NudE7asLijHCszFqy4uIVewgRgzEQQgEfdxYDtdhYc5OOkpDJvcq9dYcsYXOTMyPh-7meMNn-u7m073tF9BmJjmch8MsnSp38Y0IWfU-WnAQd4cHXC3Dp9-KRlZjw0YYRSLtMoqECAjhofRv_IKYqhPnDfnrRKch8iq3xk5Q?fife=s16383"
-            },
-            {
-              "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho — foto 3",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GyiLqx4xE-tfA53K3j4UV0-zAh7tg3umnBYlvoq0bwvdm5248cUwBSRtMdn0ViaO5s0Gsj8DiUN5qtWlzrl-nhqezhbpX8PYm2ENihjmrCQUAB0_lrbtqP66iArGjbC0n6OFvVqJZzdPpNJ5cCgEc7sdNSGOM3wC3wVxNb1_Nw-bKlmY2GwRys9aXKM3iw88FPqGK4Xl8VRv8c?fife=s16383"
-            },
-            {
-              "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho — foto 4",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GzhlzKD2m0VZNOZrPpQO1YFSbafKXPOvAMIF8Vw17t9j3jwqNEjgGDR6tvG7rGa-7zdIxKcfmUHc3y9FIPKd8DEyMJv4T5OLZbPdBfFJNION7d03p4SWMF1KdrrtekIqZcI5LWr4-BHuOL58pCijVSvNHGDLboVkseu0ulWDVL9Pn4KlneAkuV8t6Ev9okjKcci72uvAnzJZ2w?fife=s16383"
-            },
-            {
-              "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho — foto 5",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GzSL0ihvlK1tPKEdOYR4_6Ls4J6lfw_UJpay-B1pyDS65jFyx65CDL1HElv3fnRiOokmkWyGRUL-MFOALnO4BQPy37lxTOj1E18NFt7hK3SzKxmi05QQthERnrN6GRh6ILMGIdeVtecooAm_kszU9vYLH0TS2k_NUyP-OrDhW4X8nDnTzfnY_9qWUgn0N3J2zSqIQO2eP6LEzw?fife=s16383"
-            }
-          ],
           "links": []
         },
         {
@@ -226,29 +215,18 @@ window.MI_DADOS = {
             -38.6195329
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Quilombo do Tereré",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_Gz_3puiiRQeBjah3QyvKOFj3uXMNjad7at4bfCz8nE6WdPZ_oAvVrmfjOTLYhY18XXw35GQ3I6H3wwXTouyZX3lfbJiEzzhzI2KnEx33IACw85cwbqA3MIunjwAYxyfVVMC2dj3OJQBbn1J_uFhUqPwbEG86pmMnz8RNr-YNnxj16cWJIXE_GD5wcsEwDyP7WoY1aOzkxgMrQ?fife=s16383"
-            }
-          ],
           "links": []
         },
         {
-          "id": "igreja-nosso-senhor-vera-cruz",
-          "titulo": "Igreja do Nosso Senhor da Vera Cruz",
-          "camada": "historia",
+          "id": "salvador",
+          "titulo": "Salvador",
+          "camada": "instituicoes",
           "coords": [
-            -12.9886398,
-            -38.6779792
+            -12.9777378,
+            -38.5016363
           ],
-          "resumo": "Baiacu.",
-          "fotos": [
-            {
-              "titulo": "Igreja do Nosso Senhor da Vera Cruz",
-              "src": "imagens/itaparica-rm/igreja-vera-cruz.jpg"
-            }
-          ]
+          "resumo": "",
+          "links": []
         },
         {
           "id": "sede-caboclos",
@@ -269,12 +247,17 @@ window.MI_DADOS = {
             -38.6148252
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Vamos Navegar",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GyrvcvdIHfGaRG2tR9ClFWiOwsdRY8x4mVpkTJf87TQ5sswfvHiuHtrAaJM7dY5CtJ12R3rwP2Ke6fk4OByenA1S2PfqOmubKdfGjeZhZ7kvVaFbMWcAqKNPBFhrC4r-vQxGOp4trQAJeGiXhYL5_M_U-KGDVmj6HQHQkgZ7PlDlm5T7t8LzfGRAI2fewANpynKkDozaS2jgA?fife=s16383"
-            }
+          "links": []
+        },
+        {
+          "id": "vera-cruz",
+          "titulo": "Vera Cruz",
+          "camada": "instituicoes",
+          "coords": [
+            -13.0229254,
+            -38.7158702
           ],
+          "resumo": "",
           "links": []
         }
       ]
@@ -303,7 +286,6 @@ window.MI_DADOS = {
       "territorioParagrafos": [],
       "cultura": [],
       "galeria": {
-        "fotos": [],
         "videos": []
       },
       "memoria": [],
@@ -320,12 +302,6 @@ window.MI_DADOS = {
             -39.0809139
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Comunidade Terreiro Caxuté",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GyFRaBHCMUdDMcIrpStidht8TeMyZHmJCH5f8wMaiGDnObuEzwuZAaZ7DQvUr5r41wyqs_EHJ6KCb0q1a_BFuW7UvVxi3tBPzcnJzKPzohi7_57DMAvEzaLwCO4-Z7f4883-V1-9JvLlgt8atUt92cIuXKLYHOOf51BiDVvns9AJUCCcdFbr1tRHp81JlUkeBAtusas_d_siA?fife=s16383"
-            }
-          ],
           "links": []
         },
         {
@@ -336,7 +312,7 @@ window.MI_DADOS = {
             -13.467506,
             -39.0899805
           ],
-          "resumo": "",
+          "resumo": "|",
           "links": [
             "http://www.museudacostadodende.com"
           ]
@@ -344,18 +320,12 @@ window.MI_DADOS = {
         {
           "id": "valenca",
           "titulo": "Valença",
-          "camada": "turismo",
+          "camada": "instituicoes",
           "coords": [
             -13.370017,
             -39.0720559
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Valença",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GwNe9cTvFipsp2_vpczCdmKzv1gl14z4gk6qK-5DXXPONQeJ3gjqzpGMSohaVWYZRhXHUvpsUz6ELWpcxxcdC9eDSZhve3pPt8G3sUSXo3ylaT_2klG65kLqzRLpV1twSuoYNg9H6DDkkZl2dHUHtqO4dH6LmyFIdKTJOnO-KuB2lJjClth5cOtx27rpCrQWE95fCGkE0QZOA?fife=s16383"
-            }
-          ],
           "links": []
         }
       ]
@@ -390,12 +360,7 @@ window.MI_DADOS = {
       "territorioParagrafos": [],
       "cultura": [],
       "galeria": {
-        "fotos": [
-          {
-            "titulo": "Paisagem da Chapada Diamantina",
-            "src": "imagens/chapada-mucuge/chapada-diamantina-paisagem.png"
-          }
-        ],
+        "fotos": [],
         "videos": []
       },
       "memoria": [],
@@ -412,12 +377,6 @@ window.MI_DADOS = {
             -41.3744764
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "COLÉGIO ESTADUAL HORÁCIO DE MATOS (C.E.H.M.)",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_Gx_uidctCT83yBPwMX35vV_E9rKkQHZYNOdA-NgDv6joZfCphHrnsIY56KmYcexr4E2Ta1--O8Vl8ePv0-R3AO7rI6mq9fhptXRdJv-_-XEyb7MB0Tqcn37xyCFG0W9x8PHn-iuF0hRmNTM2OTAcBQcdFWDvyj5SngXWOZZevpUt6tPuX3PSnSyYCSWauJW9hHvYa4clxa8Aww?fife=s16383"
-            }
-          ],
           "links": []
         },
         {
@@ -428,7 +387,8 @@ window.MI_DADOS = {
             -12.7704201,
             -41.538647
           ],
-          "resumo": ""
+          "resumo": "",
+          "links": []
         },
         {
           "id": "gremio-estudantil",
@@ -439,23 +399,51 @@ window.MI_DADOS = {
             -41.3704837
           ],
           "resumo": "Em torno de 300 alunos que lutam pelos direitos estudantis.",
-          "fotos": [
-            {
-              "titulo": "Grêmio Estudantil",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GxGDpMnwGA9JoNdHmIbHvGnALTIaOn51-ArfX5Vwezvn4KSJBTuay1pt6aon-fwOcNjH4HWEddSIrBqKrP2z7DRTGGOpJU-J5cNgUlSUwb3inrvCaVHTjl-R3N1kO9TI5g6i-ZUSWV-XMDbnOuMMVpL0MhHG2hVB6iEkUqNNWV5ivUbFIVl7O7DrF3-CqCcV0BuxdiCglp2RQ?fife=s16383"
-            }
+          "links": []
+        },
+        {
+          "id": "guine",
+          "titulo": "Guiné",
+          "camada": "instituicoes",
+          "coords": [
+            -12.77089,
+            -41.5395502
           ],
+          "resumo": "",
+          "links": []
+        },
+        {
+          "id": "guine-de-baixo",
+          "titulo": "Guiné de Baixo",
+          "camada": "instituicoes",
+          "coords": [
+            -12.733333,
+            -41.533333
+          ],
+          "resumo": "",
           "links": []
         },
         {
           "id": "hostel-recanto-da-vila",
           "titulo": "Hostel Recanto da Vila",
-          "camada": "turismo",
+          "camada": "produtos",
           "coords": [
             -12.7711227,
             -41.5391224
           ],
-          "resumo": ""
+          "resumo": "",
+          "links": []
+        },
+        {
+          "id": "mucuge",
+          "titulo": "Mucugê",
+          "camada": "instituicoes",
+          "coords": [
+            -13.0088285,
+            -41.3711799
+          ],
+          "resumo": "",
+          "links": []
         },
         {
           "id": "museu-do-arquivo",
@@ -465,7 +453,8 @@ window.MI_DADOS = {
             -13.0069219,
             -41.3701689
           ],
-          "resumo": "Exposição Fotográfica Mucugé"
+          "resumo": "Exposição Fotográfica Mucugé",
+          "links": []
         },
         {
           "id": "ponto-de-cultura-de-guine",
@@ -476,16 +465,6 @@ window.MI_DADOS = {
             -41.5383919
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Ponto de Cultura de Guiné — foto 1",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_Gz66DMGuQLwT9t9w2cVKcNBSKHDuD2nbSfmdqHgkDjWd6Fq4jp_3JhzV0mXRkT4BHft-J-jmluYqRwIte6i9-c337J_FOhjljcmPcVKFvePCZq86AdTjxC3_hKz81ZxzW6Nzir-JN65GwgkCOx55M0hF85gssxo01e_Mpm-6Z3OQYSRHZKYfHonPrcpLATY7pgBgj8AOsYKlA?fife=s16383"
-            },
-            {
-              "titulo": "Ponto de Cultura de Guiné — foto 2",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GyUWql7Zcqgv6z-neTaSzo-BxDbRsRr6MlAWhk93HWeOlsrCYHZkmWKKElOECLMmKB3RShOv1EFd1Jln7e7lKW5s853Xj2TLXL6LOx3lua9jZ3BGcqwjvKF8WwZGGEJe48SnAu6w_Q7jYrlxDLRBPWNQFf2S7JWAIiOJvWQ70xd3jbkUCMjpiVxdK2YqQ9HFk_qz4TMdxb9Pg?fife=s16383"
-            }
-          ],
           "links": []
         },
         {
@@ -507,10 +486,7 @@ window.MI_DADOS = {
               "url": "https://www.youtube.com/watch?v=bt1mTbBoJAE"
             }
           ],
-          "links": [
-            "https://www.youtube.com/watch?v=Dy_jp8KOMPc",
-            "https://www.youtube.com/watch?v=bt1mTbBoJAE"
-          ]
+          "links": []
         },
         {
           "id": "secretaria-de-educacao-mucuge",
@@ -520,7 +496,8 @@ window.MI_DADOS = {
             -13.0068644,
             -41.3700917
           ],
-          "resumo": "Aulas Audiovisual"
+          "resumo": "Aulas Audiovisual",
+          "links": []
         }
       ]
     },
@@ -558,7 +535,6 @@ window.MI_DADOS = {
         }
       ],
       "galeria": {
-        "fotos": [],
         "videos": []
       },
       "memoria": [],
@@ -575,29 +551,17 @@ window.MI_DADOS = {
             -38.7628271
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Casa das Rendeiras",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_Gzn9PFq2UEI1Pmzbo8-LPLumeEZdg9cRn3EhgPTvrmaKBpkeFpOjBl-y_e3HtAKpKucz5xgE1QGP7V3vGfLaPvhQoNXarnrZS9VfSB913xLAmoRx0YrPqkW6byNND7akoq8J_lcFQC5nj0pHn0-YmUXwiUP2MZmFeLTLkcGZgnFBsNsUKmMKM8Rl0P_5B7NysKysRDsG7gsAVk?fife=s16383"
-            }
-          ],
           "links": []
         },
         {
           "id": "festa-das-rendeiras",
           "titulo": "Festa das Rendeiras",
-          "camada": "historia",
+          "camada": "produtos",
           "coords": [
             -12.7732,
             -38.7891606
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Festa das Rendeiras",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_Gy1Ai3OBimvM3jh7OmofO__4x3GikYK_OXY_-FCLvJiznwAr8gH21B-oIjpeAenOnQPQ76Xjd92TGc9Klc64-XjLXGJBj9GhbhJ7-FmPDvKaCv3eVs1JjFdvVy6YOA7rLwIYb-3cWJgRJlH7tBnr8VQ6wuRj-XJDntIMNJ_q1eB1ab06rgkvgMGQbyXGj_mtecbfCFrpEjj8g?fife=s16383"
-            }
-          ],
           "links": []
         },
         {
@@ -618,10 +582,10 @@ window.MI_DADOS = {
       "subtitulo": "Serra Grande",
       "ti": "Litoral Sul",
       "pin": [
-        -14.851,
-        -39.029
+        -14.468,
+        -39.035
       ],
-      "zoom": 11,
+      "zoom": 13,
       "municipios": [
         {
           "nome": "Serra Grande",
@@ -631,11 +595,12 @@ window.MI_DADOS = {
           ]
         }
       ],
-      "resumo": "",
-      "territorioParagrafos": [],
+      "resumo": "Rede Movimento Irun em Serra Grande — instituições, projetos e memória no litoral sul da Bahia (TI Litoral Sul).",
+      "territorioParagrafos": [
+        "Serra Grande concentra hoje os pontos da rede neste território de identidade. Use o mapa e as camadas Instituições e Projetos para explorar."
+      ],
       "cultura": [],
       "galeria": {
-        "fotos": [],
         "videos": []
       },
       "memoria": [],
@@ -651,7 +616,8 @@ window.MI_DADOS = {
             -14.4683873,
             -39.0345647
           ],
-          "resumo": ""
+          "resumo": "",
+          "links": []
         },
         {
           "id": "museu-aberto-de-serra-grande",
@@ -662,12 +628,6 @@ window.MI_DADOS = {
             -39.0348695
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Museu Aberto de Serra Grande",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GzdoqD336n0Yj0vOYnuXQTZernCSmaiwjhcPMHkzkj7IYXT8fVgyOKnVloddtBCzEZnMUJGKBJaP0YPimUvsNL5DEiMn7AKr4kgyccCi7ePqL4HLp5nSCH6jTrbM0GOS_-PZWvaeZUYVaOpcE8rMt0UBhVHBYJeRR7g5YMtx0D505cz_AA8G0fwKQnjYkFAufvjgCJ-7ocnxg?fife=s16383"
-            }
-          ],
           "links": []
         },
         {
@@ -679,29 +639,17 @@ window.MI_DADOS = {
             -39.0346314
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Revista LiGente",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_Gzs6hlKtRzfJxJcSJjuaHCkLYkVwO4zMXaY9aMdz0dhMPe9UxTn9EeoZoKd3iCYQvYjb2UOENhllqAe8NLlmW-sOxWwweKrIgo1f59-V0fvU8Cqa-EYRB9C1GKUtpbv2fcuIpUXUPvpJ-1eXVnwwlasVZSWo4copSsw2gwswuo1O693wJOnP9D_O1iiz5hn9_UWSrbbseH3JJw?fife=s16383"
-            }
-          ],
           "links": []
         },
         {
           "id": "serra-grande",
           "titulo": "Serra Grande",
-          "camada": "turismo",
+          "camada": "instituicoes",
           "coords": [
             -14.4648636,
             -39.0402116
           ],
           "resumo": "",
-          "fotos": [
-            {
-              "titulo": "Serra Grande",
-              "src": "https://mymaps.usercontent.google.com/hostedimage/m/*/3AE5a_GyjMwp32uHVA3d0OOq6TOtSGuUCip7EZHffuyf_6qidj8IoxE3G41MndEB96RMsh_0OxxPfWuSFGoDw0BuYmT18PoLaua518Wh_lWTM5HdyJ3rCt946-mgm4HAv6XH9HPRf26RRDS12bWiYAy-3Ehau2yng_JnAHuHrs31KFU2QPoLOLcxBg4UjaakZCQiBK2XDucpH5fnPwQ?fife=s16383"
-            }
-          ],
           "links": []
         }
       ]
@@ -710,6 +658,7 @@ window.MI_DADOS = {
       "slug": "lagoa-grande",
       "nome": "Portal do Sertão",
       "subtitulo": "Quilombo Lagoa Grande",
+      "coverFoto": "imagens/lagoa-grande/Encontro-de-formacao-na-Teia-dos-Povos-2.jpg",
       "ti": "Portal do Sertão",
       "pin": [
         -12.162,
@@ -908,18 +857,8 @@ window.MI_DADOS = {
           "resumo": "Associação Quilombola do território."
         },
         {
-          "id": "lagoa-grande-lagoa",
-          "titulo": "Lagoa Grande",
-          "camada": "natureza",
-          "coords": [
-            -12.171057,
-            -38.986898
-          ],
-          "resumo": "Lagoa principal do Quilombo Lagoa Grande, Maria Quitéria (Feira de Santana)."
-        },
-        {
-          "id": "casarao-olhos-d-agua",
-          "titulo": "Casarão Olhos D'Água",
+          "id": "casarao-dos-olhos-dagua",
+          "titulo": "Casarão dos Olhos D'Água",
           "camada": "historia",
           "coords": [
             -12.2684,
@@ -929,7 +868,7 @@ window.MI_DADOS = {
           "fotos": [
             {
               "titulo": "Casarão Olhos D'Água",
-              "src": "imagens/lagoa-grande/casarao-olhos-d-agua.png"
+              "src": "imagens/lagoa-grande/casarao-dos-olhos-dagua.png"
             }
           ],
           "videos": [
@@ -942,6 +881,16 @@ window.MI_DADOS = {
             "https://www.feiradesantana.ba.gov.br/",
             "https://www.youtube.com/watch?v=oqyIZPDcuWw"
           ]
+        },
+        {
+          "id": "lagoa-grande-lagoa",
+          "titulo": "Lagoa Grande",
+          "camada": "natureza",
+          "coords": [
+            -12.171057,
+            -38.986898
+          ],
+          "resumo": "Lagoa principal do Quilombo Lagoa Grande, Maria Quitéria (Feira de Santana)."
         }
       ]
     }
