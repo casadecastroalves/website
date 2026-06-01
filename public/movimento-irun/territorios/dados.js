@@ -242,7 +242,13 @@ window.MI_DADOS = {
             -12.9886398,
             -38.6779792
           ],
-          "resumo": "Baiacu."
+          "resumo": "Baiacu.",
+          "fotos": [
+            {
+              "titulo": "Igreja do Nosso Senhor da Vera Cruz",
+              "src": "imagens/itaparica-rm/igreja-vera-cruz.jpg"
+            }
+          ]
         },
         {
           "id": "sede-caboclos",
