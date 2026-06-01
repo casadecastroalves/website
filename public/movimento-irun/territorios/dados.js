@@ -390,7 +390,12 @@ window.MI_DADOS = {
       "territorioParagrafos": [],
       "cultura": [],
       "galeria": {
-        "fotos": [],
+        "fotos": [
+          {
+            "titulo": "Paisagem da Chapada Diamantina",
+            "src": "imagens/chapada-mucuge/chapada-diamantina-paisagem.png"
+          }
+        ],
         "videos": []
       },
       "memoria": [],
