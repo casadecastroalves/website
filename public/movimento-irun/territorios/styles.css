@@ -15,6 +15,8 @@ html, body {
   grid-template-rows: auto 1fr auto;
   height: 100vh;
   height: 100dvh;
+  max-width: 100vw;
+  overflow-x: hidden;
 }
 
 /* Header */
@@ -103,7 +105,9 @@ body:not(.page-formulario) .header-location {
   display: flex;
   gap: 0.5rem;
   flex-wrap: nowrap;
-  flex-shrink: 0;
+  flex-shrink: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .btn {
@@ -2528,11 +2532,12 @@ body.page-formulario .header-location {
 @media (max-width: 576px) {
   .header {
     padding: 0 var(--space-2);
-    gap: 3px;
+    gap: 2px;
+    overflow: hidden;
   }
 
   .header-actions {
-    gap: 3px;
+    gap: 2px;
   }
 
   .header-brand {
@@ -2554,10 +2559,25 @@ body.page-formulario .header-location {
   }
 
   .header-actions .btn {
-    width: 34px !important;
-    height: 34px !important;
-    min-width: 34px !important;
-    min-height: 34px !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    min-height: 32px !important;
+    padding: 0 !important;
+  }
+
+  .header-actions .btn .btn-text {
+    display: none;
+  }
+
+  .footer {
+    padding: var(--space-2) var(--space-2);
+  }
+
+  .btn-satelite {
+    font-size: 0.6875rem;
+    padding: 0 0.5rem;
+    min-height: 34px;
   }
 }
 
