@@ -38,6 +38,16 @@
     return d.innerHTML;
   }
 
+  function convertGoogleDriveUrl(url) {
+    if (!url || typeof url !== "string") return url;
+    var driveRegex = /(?:https?:\/\/)?(?:drive\.google\.com)\/(?:file\/d\/|open\?id=|uc\?id=)([a-zA-Z0-9_-]+)/;
+    var match = url.match(driveRegex);
+    if (match && match[1]) {
+      return "https://lh3.googleusercontent.com/u/0/d/" + match[1];
+    }
+    return url;
+  }
+
   function renderPopupFotos(fotos) {
     if (!fotos || !fotos.length) return "";
     return (
@@ -45,6 +55,7 @@
       fotos
         .map(function (f) {
           var url = typeof f === "string" ? f : f && f.src;
+          url = convertGoogleDriveUrl(url);
           if (!url) return "";
           return (
             '<button type="button" class="popup-photo-btn" aria-label="Ampliar foto">' +
@@ -398,7 +409,14 @@
     if (t.galeria) {
       if (t.galeria.fotos) {
         t.galeria.fotos.forEach(function (f) {
-          fotos.push(f);
+          if (typeof f === "string") {
+            fotos.push(convertGoogleDriveUrl(f));
+          } else if (f && f.src) {
+            fotos.push({
+              src: convertGoogleDriveUrl(f.src),
+              titulo: f.titulo || ""
+            });
+          }
         });
       }
       if (t.galeria.videos) {
@@ -411,6 +429,7 @@
       if (p.fotos) {
         p.fotos.forEach(function (f) {
           var src = typeof f === "string" ? f : f && f.src;
+          src = convertGoogleDriveUrl(src);
           var tTitle = (typeof f === "object" && f.titulo) || p.titulo || "";
           if (src) {
             if (!fotos.some(function (x) { return (typeof x === "string" ? x : x.src) === src; })) {
@@ -1098,6 +1117,7 @@
     var items = [];
     (source.fotos || []).forEach(function (f) {
       var src = typeof f === "string" ? f : f && f.src;
+      src = convertGoogleDriveUrl(src);
       if (!src) return;
       items.push({
         tipo: "foto",
