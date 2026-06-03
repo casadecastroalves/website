@@ -98,17 +98,51 @@
     }, 2800);
   }
 
-  function updateUrl() {
+  function syncLegacyFromNav(nav) {
+    if (nav.view === "bahia") {
+      mode = "ti";
+      lastMainMode = "ti";
+      activeSlug = null;
+      activeTiSlug = nav.tiSlug;
+    } else if (nav.view === "rede") {
+      mode = "rede";
+      lastMainMode = "rede";
+      activeSlug = null;
+      activeTiSlug = null;
+    } else if (nav.view === "territorio") {
+      mode = "territorio";
+      lastMainMode = "rede";
+      activeSlug = nav.redeSlug;
+      activeTiSlug = null;
+    }
+  }
+
+  function updateUrlFromNav(nav) {
     var u = new URL(location.href);
     u.searchParams.delete("territorio");
     u.searchParams.delete("vista");
     u.searchParams.delete("ti");
-    if (mode === "ti") {
+    if (nav.view === "bahia") {
       u.searchParams.set("vista", "ti");
-      if (activeTiSlug) u.searchParams.set("ti", activeTiSlug);
-    } else if (mode === "rede") u.searchParams.set("vista", "rede");
-    else if (mode === "territorio" && activeSlug) u.searchParams.set("territorio", activeSlug);
+      if (nav.tiSlug) u.searchParams.set("ti", nav.tiSlug);
+    } else if (nav.view === "rede") {
+      u.searchParams.set("vista", "rede");
+    } else if (nav.view === "territorio" && nav.redeSlug) {
+      u.searchParams.set("territorio", nav.redeSlug);
+    }
     history.replaceState(null, "", u);
+  }
+
+  function updateUrl() {
+    if (window.MI_NAV) updateUrlFromNav(window.MI_NAV.getNav());
+  }
+
+  function sheetFechada() {
+    if (window.MI_NAV) window.MI_NAV.navigate({ sheet: "fechada" }, { sheetOnly: true });
+  }
+
+  function sheetToggle() {
+    if (window.MI_NAV) window.MI_NAV.navigate({ sheet: "toggle" }, { sheetOnly: true });
   }
 
   function setHeaderContext(titulo, subtitulo) {
@@ -673,19 +707,13 @@
     $("detail-content").innerHTML = focusBlock;
   }
 
-  function renderTiMap(highlightSlug, focusOne) {
+  function execTiMap(highlightSlug, focusOne) {
     clearLayers();
-    mode = "ti";
-    lastMainMode = "ti";
-    activeSlug = null;
     activeRoteiroId = null;
-    if (highlightSlug) activeTiSlug = highlightSlug;
-    else if (!focusOne) activeTiSlug = null;
 
-    toggleUiForMode();
     renderChips(null);
 
-    var hl = activeTiSlug;
+    var hl = highlightSlug || activeTiSlug;
     var geo = window.MI_TI_BAHIA || [];
     var focused = hl
        ? geo.find(function (x) {
@@ -719,24 +747,19 @@
       });
       if (bounds.length) map.fitBounds(L.latLngBounds(bounds), { padding: [5, 5] });
     }
-    updateUrl();
-    updateFormNavLink();
+  }
 
-    if (isMobileLayout()) {
-      if (focusOne && focused) {
-        openSidebarMobile();
-      } else {
-        closeSidebarMobile();
-      }
-    } else if (highlightSlug && focusOne) {
-      var main = document.querySelector(".main");
-      if (main) {
-        main.classList.remove("sidebar-closed");
-        var btnMenu = $("btn-menu");
-        if (btnMenu) btnMenu.classList.remove("collapsed");
-      }
-    }
-    updateSidebarToggleState();
+  function renderTiMap(highlightSlug, focusOne) {
+    if (!window.MI_NAV) return;
+    var tiSlug = highlightSlug || null;
+    if (!highlightSlug && !focusOne) tiSlug = null;
+    window.MI_NAV.navigate({
+      view: "bahia",
+      tiSlug: tiSlug,
+      panel: focusOne && tiSlug ? "ti-info" : "lista",
+      redeSlug: null,
+      territorioSlug: null,
+    });
   }
 
   function stripAccents(str) {
@@ -941,24 +964,20 @@
   }
 
   function goBackToMasterList() {
-    activeSlug = null;
-    activeTiSlug = null;
     activeRoteiroId = null;
-
-    $("sidebar-detail").hidden = true;
-    $("sidebar-master").hidden = false;
-
     var searchInput = $("search-input");
     if (searchInput) searchInput.value = "";
-
-    if (lastMainMode === "rede") {
-      renderRedeMap();
-    } else {
-      renderTiMap(null, false);
-    }
-    if (isMobileLayout()) {
-      openMasterSidebarMobile();
-    }
+    if (!window.MI_NAV) return;
+    var nav = window.MI_NAV.getNav();
+    var view = nav.lastListView === "rede" ? "rede" : "bahia";
+    window.MI_NAV.navigate({
+      view: view,
+      panel: "lista",
+      sheet: "aberta",
+      redeSlug: null,
+      territorioSlug: null,
+      tiSlug: null,
+    });
   }
 
   function getTiNomeForTerritorio(t) {
@@ -1154,13 +1173,9 @@
     });
   }
 
-  function renderRedeMap() {
+  function execRedeMap() {
     clearLayers();
-    mode = "rede";
-    lastMainMode = "rede";
-    activeSlug = null;
     activeRoteiroId = null;
-    toggleUiForMode();
     renderChips(null);
     setHeaderContext("Rede Movimento Irun", "6 territórios");
 
@@ -1215,13 +1230,17 @@
       { padding: [20, 20] }
     );
     bringMarkersToFront();
-    updateUrl();
-    updateFormNavLink();
-    if (isMobileLayout()) {
-      closeSidebarMobile();
-    } else {
-      updateSidebarToggleState();
-    }
+  }
+
+  function renderRedeMap() {
+    if (!window.MI_NAV) return;
+    window.MI_NAV.navigate({
+      view: "rede",
+      panel: "lista",
+      redeSlug: null,
+      territorioSlug: null,
+      tiSlug: null,
+    });
   }
 
   function renderLagoaPolys() {
@@ -2322,7 +2341,7 @@
         }
         focusRoteiroStop(si);
         if (window.innerWidth <= 768) {
-          closeSidebarMobile();
+          sheetFechada();
         }
         if (
           roteiroSidebarMidia &&
@@ -2350,15 +2369,11 @@
       .join("");
   }
 
-  function selectTerritorio(slug) {
+  function execSelectTerritorio(slug) {
     var t = getTerritorio(slug);
     if (!t) return;
     if (slug !== "lagoa-grande") activeLagoaRegId = null;
-    mode = "territorio";
-    activeSlug = slug;
     activeRoteiroId = null;
-    activeTiSlug = null;
-    toggleUiForMode();
     renderChips(t);
     setHeaderContext(redeRegiaoNome(t), redeLugaresLabel(t));
 
@@ -2388,7 +2403,7 @@
           showToast("Só a rota no mapa — clique de novo para ver todos os pontos");
         }
         if (window.innerWidth <= 768) {
-          closeSidebarMobile();
+          sheetFechada();
         }
       });
     });
@@ -2418,28 +2433,24 @@
           });
         }, 300);
 
-        // No celular, fecha o painel lateral para revelar o ponto no mapa
         if (window.innerWidth <= 768) {
-          closeSidebarMobile();
+          sheetFechada();
         }
       });
     });
 
     renderTerritorioMap(t);
-    updateUrl();
-    updateFormNavLink();
-    
-    if (window.innerWidth <= 768) {
-      openSidebarMobile();
-    } else {
-      var main = document.querySelector(".main");
-      if (main) {
-        main.classList.remove("sidebar-closed");
-        var btnMenu = $("btn-menu");
-        if (btnMenu) btnMenu.classList.remove("collapsed");
-      }
-      updateSidebarToggleState();
-    }
+  }
+
+  function selectTerritorio(slug) {
+    if (!getTerritorio(slug) || !window.MI_NAV) return;
+    window.MI_NAV.navigate({
+      view: "territorio",
+      redeSlug: slug,
+      territorioSlug: slug,
+      tiSlug: null,
+      panel: "detalhe",
+    });
   }
 
   function getSharePayload() {
@@ -2590,12 +2601,6 @@
     if (main) main.classList.remove("sidebar-closed");
   }
 
-  function openMasterSidebarMobile() {
-    if (!isMobileLayout()) return;
-    ensureMobileSidebarReady();
-    openSidebarMobile();
-  }
-
   function updateSidebarToggleState() {
     var btn = $("btn-painel");
     if (!btn) return;
@@ -2618,23 +2623,21 @@
     }
   }
 
-  function openSidebarMobile() {
+  function openMobileSheet() {
     ensureMobileSidebarReady();
     $("sidebar").classList.add("open");
     $("sidebar-backdrop").hidden = false;
     $("sidebar-backdrop").classList.add("visible");
     updateSidebarToggleState();
-    // Re-render map after bottom sheet animation
     setTimeout(function () {
       if (map) map.invalidateSize();
     }, 350);
   }
 
-  function closeSidebarMobile() {
+  function closeMobileSheet() {
     $("sidebar").classList.remove("open");
     $("sidebar-backdrop").classList.remove("visible");
     updateSidebarToggleState();
-    // Delay hiding backdrop until transition completes
     setTimeout(function () {
       if (!$("sidebar").classList.contains("open")) {
         $("sidebar-backdrop").hidden = true;
@@ -2644,36 +2647,39 @@
   }
 
   function toggleSidebar() {
-    if (isMobileLayout()) {
-      var isOpen = $("sidebar").classList.contains("open");
-      if (isOpen) {
-        closeSidebarMobile();
-      } else {
-        openSidebarMobile();
-      }
-    } else {
-      var main = document.querySelector(".main");
-      if (main) {
-        var isClosed = main.classList.contains("sidebar-closed");
-        var btnMenu = $("btn-menu");
-        if (isClosed) {
-          main.classList.remove("sidebar-closed");
-          if (btnMenu) btnMenu.classList.remove("collapsed");
-        } else {
-          main.classList.add("sidebar-closed");
-          if (btnMenu) btnMenu.classList.add("collapsed");
-        }
-        updateSidebarToggleState();
-        setTimeout(function () {
-          if (map) map.invalidateSize();
-        }, 250);
-      }
-    }
+    sheetToggle();
   }
 
   function init() {
     initMap();
     initGaleriaChrome();
+
+    if (window.MI_NAV) {
+      window.MI_NAV.registerHandlers({
+        $: $,
+        isMobileLayout: isMobileLayout,
+        map: function () {
+          return map;
+        },
+        openMobileSheet: openMobileSheet,
+        closeMobileSheet: closeMobileSheet,
+        updateSidebarToggleState: updateSidebarToggleState,
+        updateUrlFromNav: updateUrlFromNav,
+        onNavigate: function (nav) {
+          syncLegacyFromNav(nav);
+          if (nav.view === "bahia") {
+            execTiMap(nav.tiSlug, nav.panel === "ti-info" && !!nav.tiSlug);
+          } else if (nav.view === "rede") {
+            execRedeMap();
+          } else if (nav.view === "territorio" && nav.redeSlug) {
+            execSelectTerritorio(nav.redeSlug);
+          }
+          toggleUiForMode();
+          updateFormNavLink();
+        },
+      });
+    }
+
     toggleUiForMode();
     updateSidebarToggleState();
     var offEl = $("offline-note");
@@ -2723,11 +2729,9 @@
       var a = $("nav-formulario");
       if (a && a.href) location.href = a.href;
     });
-    listen("sidebar-backdrop", "click", closeSidebarMobile);
-    listen("sidebar-drag-handle", "click", function() {
-      if (window.innerWidth <= 768) {
-        closeSidebarMobile();
-      }
+    listen("sidebar-backdrop", "click", sheetFechada);
+    listen("sidebar-drag-handle", "click", function () {
+      if (window.innerWidth <= 768) sheetFechada();
     });
 
     var searchInput = $("search-input");
@@ -2742,18 +2746,18 @@
     var terr = qs("territorio");
     var vista = qs("vista");
     var tiParam = qs("ti");
-    if (terr && getTerritorio(terr)) selectTerritorio(terr);
-    else if (vista === "rede") renderRedeMap();
-    else if (tiParam) {
+    if (terr && getTerritorio(terr)) {
+      selectTerritorio(terr);
+    } else if (vista === "rede") {
+      renderRedeMap();
+    } else if (tiParam) {
       var tiInit = (window.MI_TI_BAHIA || []).find(function (x) {
         return x.slug === tiParam;
       });
       if (tiInit) renderTiMap(tiInit.slug, true);
       else renderTiMap(null, false);
-    }     else renderTiMap(null, false);
-
-    if (isMobileLayout()) {
-      closeSidebarMobile();
+    } else {
+      renderTiMap(null, false);
     }
 
     window.addEventListener("resize", function () {
