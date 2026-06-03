@@ -105,6 +105,26 @@
             </select>
           </div>
           <div class="field">
+            <label for="tags">Tags (opcional, Ctrl+clique para várias)</label>
+            <select id="tags" multiple size="5">
+              <option value="hospedagem">Hospedagem</option>
+              <option value="turismo">Turismo comunitário</option>
+              <option value="instituicao">Instituição</option>
+              <option value="projeto">Projeto</option>
+              <option value="produto">Produto / ofício</option>
+              <option value="historia">História / memória</option>
+              <option value="patrimonio">Património</option>
+              <option value="natureza">Natureza</option>
+              <option value="festividade">Festividade</option>
+              <option value="patronal">Festa patronal</option>
+              <option value="artesanato">Artesanato</option>
+              <option value="casa-farinha">Casa de farinha</option>
+              <option value="cacau-produtor">Produção de cacau</option>
+              <option value="instrumentos-fabricante">Fabricante de instrumentos</option>
+            </select>
+            <p class="field-hint">Lista controlada — ver DADOS-SPEC.md</p>
+          </div>
+          <div class="field">
             <label for="titulo">Título</label>
             <input id="titulo" required placeholder="Nome do ponto" autocomplete="off">
           </div>
@@ -269,6 +289,14 @@
         var fotoMapa = document.getElementById("foto-mapa").value.trim();
         var galeriaUrls = linesToUrls(document.getElementById("fotos-galeria").value);
 
+        var tagsEl = document.getElementById("tags");
+        var tags = [];
+        if (tagsEl) {
+          Array.prototype.forEach.call(tagsEl.selectedOptions, function (opt) {
+            tags.push(opt.value);
+          });
+        }
+
         var ponto = {
           id: slugId(titulo),
           titulo: titulo,
@@ -276,14 +304,35 @@
           coords: [lat, lng],
           resumo: resumo || endereco || "",
         };
+        if (tags.length) ponto.tags = tags;
         if (fotoMapa) {
           ponto.fotos = [{ titulo: titulo, src: fotoMapa }];
         }
         if (link) ponto.links = [link];
 
+        var tiMap = {
+          "itaparica-rm": "metropolitano-de-salvador",
+          "baixo-sul": "baixo-sul",
+          "chapada-mucuge": "chapada-diamantina",
+          "reconcavo-saubara": "reconcavo",
+          "serra-grande": "litoral-sul",
+          "lagoa-grande": "portal-do-sertao",
+        };
+        var redeSlug = territorioEl.value;
+
         var out = {
-          territorio: territorioEl.value,
+          territorio: redeSlug,
           ponto: ponto,
+          registo: {
+            id: ponto.id,
+            titulo: ponto.titulo,
+            camada: ponto.camada,
+            coords: ponto.coords,
+            resumo: ponto.resumo,
+            tags: tags.length ? tags : undefined,
+            tiSlug: tiMap[redeSlug] || redeSlug,
+            redeSlug: redeSlug,
+          },
         };
         if (galeriaUrls.length) {
           out.galeriaFotos = galeriaUrls.map(function (url, i) {

@@ -4,6 +4,8 @@
   var D = window.MI_DADOS;
   if (!D) return;
 
+  if (window.MI_CATALOGO) window.MI_CATALOGO.init(D);
+
   var map, markersLayer, polygonsLayer, linesLayer, labelsLayer, baseTileLayer;
   var mode = "ti";
   var lastMainMode = "ti";
@@ -79,6 +81,15 @@
     return D.territorios.find(function (t) {
       return t.slug === slug;
     });
+  }
+
+  /** Pontos do território — catálogo (registos) ou fallback legado */
+  function pontosDoTerritorio(t) {
+    if (!t) return [];
+    if (window.MI_CATALOGO) {
+      return window.MI_CATALOGO.getPontosForTerritorio(D, t.slug);
+    }
+    return t.pontos || [];
   }
 
   function camadaCor(id) {
@@ -501,7 +512,7 @@
         });
       }
     }
-    (t.pontos || []).forEach(function (p) {
+    pontosDoTerritorio(t).forEach(function (p) {
       if (p.fotos) {
         p.fotos.forEach(function (f) {
           var src = typeof f === "string" ? f : f && f.src;
@@ -528,7 +539,7 @@
   function camadasComPontos(territorio) {
     var set = {};
     if (!territorio) return set;
-    (territorio.pontos || []).forEach(function (p) {
+    pontosDoTerritorio(territorio).forEach(function (p) {
       if (p.camada) set[p.camada] = true;
     });
     return set;
@@ -622,7 +633,7 @@
   function collectTerritorioContentCoords(territorio) {
     var coords = [];
     var isLagoa = territorio.slug === "lagoa-grande";
-    (territorio.pontos || []).forEach(function (p) {
+    pontosDoTerritorio(territorio).forEach(function (p) {
       if (!p.coords || p.coords.length !== 2) return;
       if (p.fitMap === false) return;
       // Casarão fica em Feira de Santana, ~12 km fora do quilombo — excluir do zoom
@@ -1089,7 +1100,9 @@
     }
 
     // 3. Festas
-    var festas = (t.pontos || []).filter(function(p) { return p.camada === "festas"; });
+    var festas = pontosDoTerritorio(t).filter(function (p) {
+      return p.camada === "festas";
+    });
     var hasFestas = (t.festas && t.festas.length > 0) || festas.length > 0;
     // Sempre mostrar o acordeão de Festas como placeholder (ou com os pontos da camada)
     html += '<div class="accordion-section">' +
@@ -1115,7 +1128,7 @@
     }
 
     // 5. Pontos de Interesse
-    var hasPontos = (t.pontos || []).length > 0;
+    var hasPontos = pontosDoTerritorio(t).length > 0;
     if (hasPontos) {
       html += '<div class="accordion-section">' +
               '<button type="button" class="accordion-header collapsed" id="accordion-header-pontos" aria-expanded="false">' +
@@ -1741,7 +1754,7 @@
       redeRegiaoNome(territorio) +
       (redeLugaresLabel(territorio) ? " · " + redeLugaresLabel(territorio) : "");
 
-    (territorio.pontos || []).forEach(function (p) {
+    pontosDoTerritorio(territorio).forEach(function (p) {
       if (!activeCamadas[p.camada]) return;
 
       var ic = L.divIcon({
@@ -1999,7 +2012,7 @@
   }
 
   function renderPontosLista(territorio) {
-    var pontos = territorio.pontos || [];
+    var pontos = pontosDoTerritorio(territorio);
     if (!pontos.length) return "";
     return pontos.map(function(p) {
       var corDot = camadaCor(p.camada);
@@ -2443,7 +2456,7 @@
 
     document.querySelectorAll(".btn-link-mapa").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        var ponto = (t.pontos || []).find(function (p) {
+        var ponto = pontosDoTerritorio(t).find(function (p) {
           return p.id === btn.dataset.ponto;
         });
         if (!ponto) return;

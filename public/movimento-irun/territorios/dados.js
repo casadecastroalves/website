@@ -45,6 +45,24 @@ window.MI_DADOS = {
     "serra-grande": "litoral-sul",
     "lagoa-grande": "portal-do-sertao"
   },
+  "taxonomia": [
+    { "id": "hospedagem", "rotulo": "Hospedagem", "grupo": "turismo" },
+    { "id": "turismo", "rotulo": "Turismo comunitário", "grupo": "turismo" },
+    { "id": "instituicao", "rotulo": "Instituição", "grupo": "lugares" },
+    { "id": "projeto", "rotulo": "Projeto", "grupo": "rede" },
+    { "id": "produto", "rotulo": "Produto / ofício", "grupo": "economia" },
+    { "id": "historia", "rotulo": "História / memória", "grupo": "patrimonio" },
+    { "id": "patrimonio", "rotulo": "Património", "grupo": "patrimonio" },
+    { "id": "natureza", "rotulo": "Natureza", "grupo": "patrimonio" },
+    { "id": "festividade", "rotulo": "Festividade", "grupo": "festas" },
+    { "id": "patronal", "rotulo": "Festa patronal", "grupo": "festas" },
+    { "id": "artesanato", "rotulo": "Artesanato", "grupo": "economia" },
+    { "id": "casa-farinha", "rotulo": "Casa de farinha", "grupo": "economia" },
+    { "id": "cacau-produtor", "rotulo": "Produção de cacau", "grupo": "economia" },
+    { "id": "instrumentos-fabricante", "rotulo": "Fabricante de instrumentos", "grupo": "economia" }
+  ],
+  "registos": [],
+  "eventos": [],
   "camadas": [
     {
       "id": "natureza",
@@ -426,7 +444,7 @@ window.MI_DADOS = {
         {
           "id": "hostel-recanto-da-vila",
           "titulo": "Hostel Recanto da Vila",
-          "camada": "produtos",
+          "camada": "turismo-comunitario",
           "coords": [
             -12.7711227,
             -41.5391224
@@ -556,7 +574,7 @@ window.MI_DADOS = {
         {
           "id": "festa-das-rendeiras",
           "titulo": "Festa das Rendeiras",
-          "camada": "produtos",
+          "camada": "festas",
           "coords": [
             -12.7732,
             -38.7891606
