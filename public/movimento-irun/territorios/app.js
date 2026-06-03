@@ -152,29 +152,62 @@
     if (!wrap || !titleEl) return;
 
     if (!titulo || titulo === "27 Territórios de Identidade da Bahia") {
-      titleEl.textContent = "Bahia — 27 Territórios de Identidade";
-      if (subEl) {
-        subEl.textContent = subtitulo || "Mapa oficial · Rede com 6 territórios";
-        subEl.hidden = !subtitulo;
+      if (isMobileLayout()) {
+        titleEl.textContent = "Bahia · 27 territórios";
+        if (subEl) subEl.hidden = true;
+      } else {
+        titleEl.textContent = "Bahia — 27 Territórios de Identidade";
+        if (subEl) {
+          subEl.textContent = subtitulo || "Mapa oficial · Rede com 6 territórios";
+          subEl.hidden = !subtitulo;
+        }
       }
       wrap.hidden = false;
       return;
     }
 
     if (mode === "rede" || titulo === "Rede Movimento Irun") {
-      titleEl.textContent = "Rede Movimento Irun";
-      if (subEl) {
-        subEl.textContent = subtitulo || "6 territórios com conteúdo";
-        subEl.hidden = false;
+      if (isMobileLayout()) {
+        titleEl.textContent = "Rede · 6 territórios";
+        if (subEl) subEl.hidden = true;
+      } else {
+        titleEl.textContent = "Rede Movimento Irun";
+        if (subEl) {
+          subEl.textContent = subtitulo || "6 territórios com conteúdo";
+          subEl.hidden = false;
+        }
       }
     } else {
-      titleEl.textContent = titulo;
-      if (subEl) {
-        subEl.textContent = subtitulo || "";
-        subEl.hidden = !subtitulo;
+      if (isMobileLayout() && subtitulo && mode === "territorio") {
+        titleEl.textContent = titulo + " › " + subtitulo;
+        if (subEl) subEl.hidden = true;
+      } else {
+        titleEl.textContent = titulo;
+        if (subEl) {
+          subEl.textContent = subtitulo || "";
+          subEl.hidden = !subtitulo;
+        }
       }
     }
     wrap.hidden = false;
+  }
+
+  function openSearchPanel() {
+    $("sidebar-detail").hidden = true;
+    $("sidebar-master").hidden = false;
+    renderMasterList("");
+    if (window.MI_NAV) {
+      window.MI_NAV.navigate({ panel: "lista", sheet: "aberta" }, { sheetOnly: true });
+    }
+    var input = $("search-input");
+    if (input) {
+      window.setTimeout(function () {
+        input.focus();
+        try {
+          input.select();
+        } catch (e) {}
+      }, 380);
+    }
   }
 
   function initMap() {
@@ -2705,6 +2738,7 @@
       renderTiMap(null, false);
     });
     listen("btn-painel", "click", toggleSidebar);
+    listen("btn-search", "click", openSearchPanel);
     listen("btn-rede", "click", function () {
       renderRedeMap();
     });

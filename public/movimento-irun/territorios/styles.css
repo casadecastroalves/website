@@ -137,6 +137,14 @@ body:not(.page-formulario) .header-location {
   text-transform: uppercase;
 }
 
+.btn-text-mobile {
+  display: none;
+}
+
+#btn-search {
+  display: none;
+}
+
 .btn-painel {
   display: inline-flex;
   flex-shrink: 0;
@@ -848,10 +856,19 @@ body:not(.page-formulario) .header-location {
     display: none;
   }
 
-  .btn-brand-nav .btn-text {
-    display: inline;
-    font-size: 0.65rem;
-    letter-spacing: 0.06em;
+  .btn-brand-nav .btn-text-desktop {
+    display: none !important;
+  }
+
+  .btn-brand-nav .btn-text-mobile {
+    display: inline !important;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    font-weight: 700;
+  }
+
+  #btn-search {
+    display: inline-flex !important;
   }
 
   .header-left .btn-painel {
@@ -2996,7 +3013,23 @@ body.page-formulario .header-location {
   }
 
   .header-context {
-    max-width: 120px;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 28vw;
+    display: block !important;
+  }
+
+  .header-context[hidden] {
+    display: none !important;
+  }
+
+  .header-context-title {
+    font-size: 0.62rem;
+    line-height: 1.2;
+  }
+
+  .header-context-sub {
+    display: none !important;
   }
 
   .btn-toggle-sidebar {
