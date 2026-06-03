@@ -726,7 +726,7 @@
       if (focusOne && focused) {
         openSidebarMobile();
       } else {
-        openMasterSidebarMobile();
+        closeSidebarMobile();
       }
     } else if (highlightSlug && focusOne) {
       var main = document.querySelector(".main");
@@ -1217,8 +1217,11 @@
     bringMarkersToFront();
     updateUrl();
     updateFormNavLink();
-    openMasterSidebarMobile();
-    updateSidebarToggleState();
+    if (isMobileLayout()) {
+      closeSidebarMobile();
+    } else {
+      updateSidebarToggleState();
+    }
   }
 
   function renderLagoaPolys() {
@@ -2750,7 +2753,7 @@
     }     else renderTiMap(null, false);
 
     if (isMobileLayout()) {
-      openMasterSidebarMobile();
+      closeSidebarMobile();
     }
 
     window.addEventListener("resize", function () {
