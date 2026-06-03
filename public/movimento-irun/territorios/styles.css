@@ -105,9 +105,9 @@ body:not(.page-formulario) .header-location {
   display: flex;
   gap: 0.5rem;
   flex-wrap: nowrap;
-  flex-shrink: 1;
+  flex-shrink: 0;
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .btn {
@@ -138,7 +138,13 @@ body:not(.page-formulario) .header-location {
 }
 
 .btn-painel {
-  display: none;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.btn-text-painel {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .btn-icon-only .btn-text {
@@ -209,14 +215,16 @@ body:not(.page-formulario) .header-location {
   box-shadow: 0 0 8px rgba(21, 128, 61, 0.3);
 }
 
-.header-actions .btn.header-nav-active {
+.header-actions .btn.header-nav-active,
+.header-left .btn-painel.header-nav-active {
   background: rgba(57, 255, 20, 0.1);
   border-color: var(--neon-green);
   color: var(--neon-green);
   box-shadow: 0 0 8px rgba(57, 255, 20, 0.3);
 }
 
-[data-theme="light"] .header-actions .btn.header-nav-active {
+[data-theme="light"] .header-actions .btn.header-nav-active,
+[data-theme="light"] .header-left .btn-painel.header-nav-active {
   background: rgba(21, 128, 61, 0.08);
   border-color: var(--neon-green);
   color: var(--neon-green);
@@ -846,8 +854,16 @@ body:not(.page-formulario) .header-location {
     letter-spacing: 0.06em;
   }
 
-  .btn-painel {
-    display: inline-flex !important;
+  .header-left .btn-painel {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 0 !important;
+  }
+
+  .header-left .btn-painel .btn-text-painel {
+    display: none;
   }
 
   .header-actions .btn {
@@ -2859,6 +2875,8 @@ body.page-formulario .header-location {
 .header-more summary {
   list-style: none;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .header-more summary::-webkit-details-marker {
@@ -2961,12 +2979,20 @@ body.page-formulario .header-location {
 }
 
 @media (max-width: 768px) {
+  /* Formulário: ícone lápis visível (⋯ falha em iOS/Android) */
   .header-util-inline {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .header-util-inline .btn-theme,
+  .header-util-inline .btn-share-icon {
     display: none;
   }
 
   .header-more {
-    display: block;
+    display: none !important;
   }
 
   .header-context {
@@ -2985,6 +3011,10 @@ body.page-formulario .header-location {
 @media (min-width: 769px) {
   .header-more {
     display: none !important;
+  }
+
+  .header-left .btn-painel .btn-text-painel {
+    display: inline;
   }
 }
 
