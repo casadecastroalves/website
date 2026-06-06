@@ -553,7 +553,7 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
       <div class="section-header text-center">
         <span class="section-badge">Cursos</span>
         <h2>Estrutura Curricular do Bem Viver</h2>
-        <p class="section-subtitle">Conheça as três frentes teóricas e práticas que compõem o programa.</p>
+        <p class="section-subtitle">Conheça as quatro frentes teóricas e práticas que compõem o programa.</p>
       </div>
 
       <div class="eixos-grid">
@@ -590,6 +590,22 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
         <!-- Eixo 3 -->
         <div class="eixo-card card">
           <span class="eixo-number">03</span>
+          <div class="eixo-header">
+            <h3>Design de<br />Território</h3>
+          </div>
+          <p class="eixo-instructor">Facilitadora: Inés Grimaux</p>
+          <ul class="eixo-topics">
+            <li>Visão participativa do território.</li>
+            <li>Visualização da identidade territorial.</li>
+            <li>Matrizes de potencialidades e relações territoriais.</li>
+            <li>Narrativas do território.</li>
+            <li>Visão de futuro e definição de prioridades.</li>
+          </ul>
+        </div>
+
+        <!-- Eixo 4 -->
+        <div class="eixo-card card">
+          <span class="eixo-number">04</span>
           <div class="eixo-header">
             <h3>Formalização e<br />Sustentabilidade</h3>
           </div>
@@ -2812,7 +2828,13 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
 
   @media (min-width: 768px) {
     .eixos-grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .eixos-grid {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 
