@@ -85,6 +85,16 @@ html, body {
 .btn-menu:hover { background: var(--bg-muted); }
 .btn-menu:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 
+.brand, .topbar-brand {
+  text-decoration: none;
+  color: var(--text);
+  cursor: pointer;
+  transition: opacity var(--transition);
+}
+.brand:hover, .topbar-brand:hover {
+  opacity: 0.8;
+}
+
 .topbar-brand {
   display: flex;
   flex-direction: column;
