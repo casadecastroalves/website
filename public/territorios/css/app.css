@@ -771,29 +771,35 @@ html, body {
 }
 
 /* ── Map pins ── */
-.irun-pin, .irun-entity-pin { background: transparent !important; border: none !important; }
+.irun-pin, .irun-entity-pin {
+  background: transparent !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
 .irun-pin-dot {
   display: block;
-  width: 11px;
-  height: 11px;
+  width: 13px;
+  height: 13px;
   background: var(--yellow);
   border: none;
   border-radius: 50%;
   box-shadow: 0 1px 3px rgba(0,0,0,0.28);
 }
-.irun-pin-dot.active { width: 14px; height: 14px; }
+.irun-pin-dot.active { width: 16px; height: 16px; }
 .irun-entity-dot {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 20px;
   height: 20px;
-  font-size: 20px;
+  font-size: 22px;
   color: var(--yellow);
   text-shadow: 0 1px 2px rgba(0,0,0,0.35);
   line-height: 1;
 }
-.irun-entity-dot.active { color: #fff; font-size: 26px; }
+.irun-entity-dot.active { color: #fff; font-size: 28px; }
 
 /* ── Leaflet ── */
 .leaflet-popup-content-wrapper {

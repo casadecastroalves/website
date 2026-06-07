@@ -250,8 +250,8 @@ function pinIcon(active = false) {
   return L.divIcon({
     className: "irun-pin",
     html: `<span class="irun-pin-dot${active ? " active" : ""}"></span>`,
-    iconSize: [20, 20],
-    iconAnchor: [10, 10],
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
   });
 }
 
@@ -259,8 +259,8 @@ function entityIcon(active = false) {
   return L.divIcon({
     className: "irun-entity-pin",
     html: `<span class="irun-entity-dot${active ? " active" : ""}">●</span>`,
-    iconSize: [24, 24],
-    iconAnchor: [12, 12],
+    iconSize: [40, 40],
+    iconAnchor: [20, 20],
   });
 }
 
