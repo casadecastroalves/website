@@ -1082,6 +1082,8 @@ html, body {
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
+  html { font-size: 17px; }
+
   #app { flex-direction: column; }
 
   .topbar { display: flex; }
