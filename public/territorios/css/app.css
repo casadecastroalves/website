@@ -129,7 +129,7 @@ html, body {
 .sheet-handle {
   display: none;
   flex-shrink: 0;
-  padding: 10px 0 4px;
+  padding: 16px 0 16px;
   cursor: grab;
   touch-action: none;
 }
@@ -366,8 +366,8 @@ html, body {
   left: 0;
   right: 0;
   z-index: 820;
-  height: 28px;
-  padding-top: 8px;
+  height: 40px;
+  padding-top: 18px;
   background: linear-gradient(transparent, var(--surface) 40%);
   border: none;
   cursor: pointer;
@@ -1101,11 +1101,11 @@ html, body {
 
   .btn-search-map { display: none; }
 
-  .rede-badge { bottom: 36px; left: 12px; }
+  .rede-badge { bottom: 48px; left: 12px; }
 
   .btn-show-map {
     display: flex;
-    bottom: 36px;
+    bottom: 48px;
     right: 12px;
   }
 
