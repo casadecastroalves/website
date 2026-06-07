@@ -85,9 +85,18 @@ html, body {
 .btn-menu:hover { background: var(--bg-muted); }
 .btn-menu:focus-visible { outline: 2px solid var(--yellow); outline-offset: 2px; }
 
+.brand, .topbar-brand,
+a.brand, a.topbar-brand,
+a.brand *, a.topbar-brand * {
+  text-decoration: none !important;
+  color: var(--text) !important;
+  border-bottom: none !important;
+  outline: none;
+}
+a.brand .brand-sub, a.topbar-brand .brand-sub {
+  color: var(--text-muted) !important;
+}
 .brand, .topbar-brand {
-  text-decoration: none;
-  color: var(--text);
   cursor: pointer;
   transition: opacity var(--transition);
 }
