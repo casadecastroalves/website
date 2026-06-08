@@ -165,6 +165,33 @@
       "entidadeId": "vera-cruz"
     },
     {
+      "id": "casa-castro-alves",
+      "nome": "Casa de Castro Alves",
+      "coords": [
+        -12.969721,
+        -38.5082396
+      ],
+      "categorias": [
+        "instituicoes",
+        "projetos"
+      ],
+      "entidadeId": "casa-castro-alves",
+      "popup": {
+        "contexto": "Região Metropolitana de Salvador · Casa de Castro Alves",
+        "slides": [
+          {
+            "titulo": "Casa de Castro Alves",
+            "texto": "Projeto Movimento Irun · Programa Bem Viver",
+            "video": {
+              "tipo": "youtube",
+              "id": "GcVCVR7_7A4",
+              "legenda": "Casa de Castro Alves — Salvador"
+            }
+          }
+        ]
+      }
+    },
+    {
       "id": "salvador",
       "nome": "Salvador",
       "coords": [
