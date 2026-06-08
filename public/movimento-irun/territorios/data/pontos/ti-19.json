@@ -123,6 +123,22 @@
             }
           },
           {
+            "titulo": "Feira Quilombola",
+            "video": {
+              "tipo": "youtube",
+              "id": "JJJUScrmlFs",
+              "legenda": "Feira Quilombola da Lagoa movimenta comércio local"
+            }
+          },
+          {
+            "titulo": "Quilombo da Lagoa",
+            "video": {
+              "tipo": "youtube",
+              "id": "c_mW3zFYE10",
+              "legenda": "Quilombo da Lagoa — Feira de Santana"
+            }
+          },
+          {
             "titulo": "AQCOMAQ — sede comunitária",
             "texto": "A Associação Quilombola Comunitária de Maria Quitéria articula famílias do território de Lagoa Grande, em Feira de Santana. Novembro Negro desde 1973, Coletivo da Juventude, casas de farinha e formação quilombola.",
             "links": [
