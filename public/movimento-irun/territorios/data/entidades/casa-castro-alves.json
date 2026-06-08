@@ -86,7 +86,23 @@
         "titulo": "Movimento Irun — 9ª Edição: Show Mariella Santiago & Ícaro Santiago"
       }
     ],
+    "contato": {
+      "organizacao": "Casa de Castro Alves",
+      "gestores": [
+        "Projeto Movimento Irun",
+        "Programa Bem Viver"
+      ],
+      "maps": "https://maps.app.goo.gl/dA23jvKsXh72yWmUA"
+    },
     "links": [
+      {
+        "titulo": "Site oficial",
+        "href": "https://casadecastroalves.com.br/"
+      },
+      {
+        "titulo": "Página de contato",
+        "href": "https://casadecastroalves.com.br/contato/"
+      },
       {
         "titulo": "Google Maps — Localização",
         "href": "https://maps.app.goo.gl/dA23jvKsXh72yWmUA"
