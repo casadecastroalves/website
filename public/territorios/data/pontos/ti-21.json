@@ -9,21 +9,24 @@
       "entidadeId": "saubara"
     },
     {
-      "id": "festa-das-rendeiras",
-      "nome": "Festa das Rendeiras",
-      "coords": [-12.7732, -38.7891606],
-      "categorias": ["projetos", "instituicoes"],
-      "resumo": "Associação das Rendeiras de Saubara · @rendeirassaubara",
-      "entidadeId": "saubara"
-    },
-    {
       "id": "casa-das-rendeiras-e-trancadeiras",
       "nome": "Casa das Rendeiras e Trançadeiras",
       "coords": [-12.7391106, -38.7628271],
       "categorias": ["instituicoes", "producao"],
-      "resumo": "Associação dos Artesãos de Saubara · Ponto de Cultura · renda de bilro e palha de Ouricuri",
-      "links": ["https://casadasrendeiras.org.br/loja/"],
-      "entidadeId": "saubara"
+      "entidadeId": "saubara",
+      "popup": {
+        "contexto": "Recôncavo · Saubara",
+        "slides": [
+          {
+            "titulo": "Casa das Rendeiras e Trançadeiras",
+            "texto": "Ponto de Cultura (Associação dos Artesãos de Saubara). Referência nacional na preservação e comercialização da renda de bilro e do trançado de palha de Ouricuri.",
+            "links": [
+              { "titulo": "Loja virtual", "href": "https://casadasrendeiras.org.br/loja/" },
+              { "titulo": "Instagram @rendeirassaubara", "href": "https://www.instagram.com/rendeirassaubara/" }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "engenho-ponte-pin",
