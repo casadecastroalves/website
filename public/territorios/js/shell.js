@@ -159,17 +159,44 @@ function initSheetDrag() {
     sidebar?.classList.remove("dragging");
     if (!isMobile()) return;
 
-    const h = sidebar.offsetHeight;
     const vh = window.innerHeight;
-    const mid = vh * SNAP.mid;
-    const full = vh * SNAP.full;
+    const midVal = vh * SNAP.mid;
+    const fullVal = vh * SNAP.full;
+    const peekVal = SNAP.peek;
 
-    if (h < vh * 0.18) {
-      closeSheet();
-    } else if (h < (mid + full) / 2) {
-      openSheet("mid");
+    // Determina o nível de snap inicial baseado na altura aproximada do início do arraste
+    let startLevel = "closed";
+    if (dragStartH > (midVal + fullVal) / 2) {
+      startLevel = "full";
+    } else if (dragStartH > (peekVal + midVal) / 2) {
+      startLevel = "mid";
+    } else if (dragStartH > peekVal / 2) {
+      startLevel = "peek";
+    }
+
+    const dy = dragStartY - clientY;
+    const threshold = 60; // Deslocamento confortável de 60px para detecção de intenção
+
+    if (startLevel === "mid") {
+      if (dy > threshold) {
+        openSheet("full");
+      } else if (dy < -threshold) {
+        closeSheet();
+      } else {
+        openSheet("mid");
+      }
+    } else if (startLevel === "full") {
+      if (dy < -threshold) {
+        openSheet("mid");
+      } else {
+        openSheet("full");
+      }
     } else {
-      openSheet("full");
+      if (dy > threshold) {
+        openSheet("mid");
+      } else {
+        closeSheet();
+      }
     }
   };
 
