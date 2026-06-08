@@ -2,213 +2,153 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="referrer" content="no-referrer-when-downgrade">
-  <meta name="description" content="Identidade e Memória — Rede Movimento Irun nos Territórios de Identidade da Bahia">
-  
-  <!-- Open Graph / Social Sharing Meta Tags -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="MOVIMENTO IRUN — Mapa territorial da Bahia. 27 Territórios de Identidade e REDE de cartografia social participativa.">
+  <link rel="canonical" href="https://casadecastroalves.com.br/territorios/">
+  <meta property="og:site_name" content="MOVIMENTO IRUN">
+  <meta property="og:url" content="https://casadecastroalves.com.br/territorios/">
+  <meta property="og:title" content="MOVIMENTO IRUN — Identidade e Território">
+  <meta property="og:description" content="Mapa territorial interactivo da Bahia — 27 Territórios de Identidade e REDE Movimento Irun.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.casadecastroalves.com.br/movimento-irun/territorios/">
-  <meta property="og:title" content="Identidade e Memória — Movimento Irun">
-  <meta property="og:description" content="Mapa interativo dos 27 Territórios de Identidade da Bahia — Movimento Irun.">
-  <meta property="og:image" content="https://www.casadecastroalves.com.br/movimento-irun/territorios/og_image_bahia.png">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:image" content="https://casadecastroalves.com.br/territorios/assets/og-mapa-bahia.png">
+  <meta property="og:image:secure_url" content="https://casadecastroalves.com.br/territorios/assets/og-mapa-bahia.png">
+  <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  
-  <title>Identidade e Memória — Movimento Irun</title>
+  <meta property="og:image:alt" content="Mapa da Bahia com os 27 Territórios de Identidade — MOVIMENTO IRUN">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MOVIMENTO IRUN — Identidade e Território">
+  <meta name="twitter:description" content="Mapa territorial interactivo da Bahia — Design de Território">
+  <meta name="twitter:image" content="https://casadecastroalves.com.br/territorios/assets/og-mapa-bahia.png">
+  <meta name="twitter:image:alt" content="Mapa da Bahia com os 27 Territórios de Identidade — MOVIMENTO IRUN">
+  <title>MOVIMENTO IRUN — Identidade e Território</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-  <link rel="stylesheet" href="tokens.css">
-  <link rel="stylesheet" href="styles.css">
-  <script src="theme.js"></script>
+  <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
   <div id="app">
-    <header class="header">
-      <div class="header-left">
-        <button type="button" class="btn btn-brand-nav" id="btn-movimento-irun" title="Mapa — Territórios de Identidade da Bahia">
-          <span class="btn-text btn-text-desktop">Movimento Irun</span>
-          <span class="btn-text btn-text-mobile">IRUN</span>
-        </button>
-        <button type="button" class="btn btn-painel" id="btn-painel" title="Lista e conteúdo" aria-label="Abrir lista e conteúdo" aria-expanded="false" aria-controls="sidebar">
-          <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            <polyline points="14 2 14 8 20 8"></polyline>
-            <line x1="16" y1="13" x2="8" y2="13"></line>
-            <line x1="16" y1="17" x2="8" y2="17"></line>
-          </svg>
-          <span class="btn-text btn-text-painel">Conteúdo</span>
-        </button>
-        <button type="button" class="btn" id="btn-rede" title="Rede Movimento Irun — territórios com conteúdo">
-          <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="5" r="3"></circle>
-            <circle cx="5" cy="19" r="3"></circle>
-            <circle cx="19" cy="19" r="3"></circle>
-            <line x1="6.7" y1="16.5" x2="10.3" y2="7.5"></line>
-            <line x1="17.3" y1="16.5" x2="13.7" y2="7.5"></line>
-            <line x1="8" y1="19" x2="16" y2="19"></line>
-          </svg>
-          <span class="btn-text">Rede</span>
-        </button>
-        <button type="button" class="btn" id="btn-ti" title="27 Territórios de Identidade da Bahia — mapa completo">
-          <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
-            <line x1="9" y1="3" x2="9" y2="18"></line>
-            <line x1="15" y1="6" x2="15" y2="21"></line>
-          </svg>
-          <span class="btn-text">Bahia</span>
-        </button>
-        <div class="header-context" id="header-context" hidden>
-          <p class="header-context-title" id="header-context-title"></p>
-          <p class="header-context-sub" id="header-context-sub"></p>
-        </div>
+    <aside id="sidebar" class="sidebar" aria-label="Painel de conteúdo" aria-hidden="true">
+      <div class="sheet-handle" id="sheet-handle" aria-hidden="true">
+        <span class="handle-bar"></span>
       </div>
-      <div class="header-actions">
-        <button type="button" class="btn btn-icon-only btn-search" id="btn-search" title="Buscar território ou município" aria-label="Buscar território ou município">
-          <svg class="btn-svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="7"></circle>
-            <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+      <header class="sidebar-header">
+        <button type="button" id="btn-close-sidebar" class="btn-icon" aria-label="Fechar painel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <a href="#bahia" class="brand sidebar-brand" aria-label="Voltar para a apresentação do mapa">
+          <span class="brand-title">MOVIMENTO IRUN</span>
+          <span class="brand-sub">IDENTIDADE E TERRITÓRIO</span>
+        </a>
+        <button type="button" class="btn-icon" data-open-search aria-label="Pesquisar no mapa">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+        </button>
+      </header>
+      <div id="sidebar-content" class="sidebar-content" role="region" aria-label="Conteúdo territorial"></div>
+      <footer class="sidebar-footer">
+        <p id="footer-text">DESIGN DE TERRITÓRIO · GRIMAUX · MOVIMENTO IRUN</p>
+        <a href="admin/" class="admin-link">Atualizar conteúdo</a>
+      </footer>
+    </aside>
+
+    <main class="map-area">
+      <header id="topbar" class="topbar">
+        <button type="button" id="btn-menu" class="btn-menu" aria-label="Abrir menu" aria-expanded="false" aria-controls="sidebar">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
           </svg>
         </button>
-        <div class="header-util-inline">
-          <button type="button" class="btn btn-theme" id="btn-theme" aria-label="Alternar tema claro/escuro" aria-pressed="true">☀</button>
-          <button type="button" class="btn btn-share-icon" id="btn-share" title="Compartilhar">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="18" cy="5" r="3"></circle>
-              <circle cx="6" cy="12" r="3"></circle>
-              <circle cx="18" cy="19" r="3"></circle>
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-            </svg>
-          </button>
-          <a class="btn btn-icon-only" href="formulario.html" id="nav-formulario" title="Formulário de pontos" aria-label="Formulário de pontos">
-            <svg class="btn-svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-              <path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4z"></path>
-            </svg>
-          </a>
-        </div>
-        <details class="header-more" id="header-more">
-          <summary class="btn btn-more" aria-label="Mais opções">⋯</summary>
-          <div class="header-more-menu">
-            <button type="button" class="btn btn-theme" id="btn-theme-menu" aria-label="Alternar tema">☀ Tema</button>
-            <button type="button" class="btn" id="btn-share-menu">↗ Compartilhar</button>
-            <a class="btn" href="formulario.html" id="nav-formulario-menu">✎ Formulário</a>
-          </div>
-        </details>
-      </div>
-    </header>
+        <a href="#bahia" class="topbar-brand" aria-label="Voltar para a apresentação do mapa">
+          <span class="brand-title">MOVIMENTO IRUN</span>
+          <span class="brand-sub">IDENTIDADE E TERRITÓRIO</span>
+        </a>
+        <button type="button" class="btn-icon" data-open-search aria-label="Pesquisar no mapa">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+        </button>
+      </header>
 
-    <div class="offline-note" id="offline-note" hidden>
-      Textos e polígonos disponíveis offline. Para mapa base, fotos e vídeos, conecte à internet.
-    </div>
-
-    <div class="main">
-      <div class="sidebar-backdrop" id="sidebar-backdrop" hidden></div>
-      <aside class="sidebar" id="sidebar" role="dialog" aria-modal="false" aria-label="Painel de conteúdo">
-        <div class="sidebar-drag-handle" id="sidebar-drag-handle">
-          <div class="drag-bar"></div>
-        </div>
-        <!-- Mestre View: Lista e busca de territórios -->
-        <div class="sidebar-scroll" id="sidebar-master">
-          <div class="search-box">
-            <input type="text" id="search-input" placeholder="Buscar município ou território…" autocomplete="off" aria-label="Buscar município ou território">
-          </div>
-          <div class="sidebar-panel">
-            <div id="master-list"></div>
-          </div>
-        </div>
-
-        <!-- Detalhe View: Painel único vertical de conteúdo do território -->
-        <div class="sidebar-scroll" id="sidebar-detail" hidden>
-          <div class="sidebar-panel">
-            <div class="detail-toolbar">
-              <button type="button" class="btn-detail-back" id="btn-detail-back" aria-label="Voltar à lista">← Lista</button>
-            </div>
-            <div id="detail-content"></div>
-          </div>
-        </div>
-      </aside>
-
-      <!-- Flap lateral de conteúdo -->
-      <button type="button" class="btn-toggle-sidebar" id="btn-toggle-sidebar" aria-label="Recolher painel" title="Recolher painel">
-        <svg class="toggle-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"></polyline>
+      <button type="button" id="btn-reopen-desktop" class="btn-reopen-desktop" aria-label="Abrir painel">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
         </svg>
       </button>
 
-      <div class="map-wrap">
-        <div id="map" role="region" aria-label="Mapa interativo dos territórios da Bahia"></div>
-        <button type="button" class="btn-satelite" id="btn-satelite" title="Alternar Satélite/Mapa">Satélite</button>
-        <div class="layer-chips" id="layer-chips" hidden></div>
+      <div id="map" role="application" aria-label="Mapa territorial da Bahia"></div>
+
+      <div class="map-controls">
+        <button type="button" class="btn-control btn-search-map" data-open-search title="Pesquisar (Ctrl+K)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+          <span>Pesquisar</span>
+        </button>
+        <div class="map-mode-group" role="group" aria-label="Controles do mapa">
+          <button type="button" id="btn-theme" class="map-mode map-mode-icon" aria-label="Alternar modo claro ou escuro"></button>
+          <button type="button" class="map-mode active" data-mode="minimal">Mapa</button>
+          <button type="button" class="map-mode" data-mode="satellite">Satélite</button>
+        </div>
+        <button type="button" id="btn-share" class="btn-control btn-share" title="Compartilhar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          <span>Compartilhar</span>
+        </button>
+      </div>
+
+      <button type="button" id="btn-rede-badge" class="rede-badge" aria-label="Abrir REDE Movimento Irun">REDE 0/27</button>
+
+      <button type="button" id="btn-show-map" class="btn-show-map" aria-label="Ver mapa" hidden>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/>
+          <line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/>
+        </svg>
+      </button>
+
+      <button type="button" id="sheet-peek" class="sheet-peek" aria-label="Expandir painel de conteúdo">
+        <span class="handle-bar"></span>
+      </button>
+    </main>
+  </div>
+
+  <div id="search-overlay" class="search-overlay" aria-hidden="true" role="dialog" aria-label="Pesquisar no mapa">
+    <div class="search-panel">
+      <div class="search-input-wrap">
+        <svg class="search-input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+        <input type="search" id="search-input" class="search-input" placeholder="Território, quilombo, município, lugar…" autocomplete="off" enterkeyhint="search" aria-label="Termo de pesquisa">
+        <button type="button" id="search-close" class="search-close" aria-label="Fechar pesquisa">×</button>
+      </div>
+      <p class="search-hint">27 Territórios · fichas REDE · pins no mapa · <kbd>/</kbd> ou <kbd>Ctrl+K</kbd></p>
+      <div id="search-results" class="search-results"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="share-overlay" class="share-overlay" aria-hidden="true" role="dialog" aria-label="Compartilhar mapa">
+    <div class="share-panel">
+      <div class="share-panel-head">
+        <h2 class="share-panel-title">Compartilhar mapa</h2>
+        <button type="button" id="share-close" class="search-close" aria-label="Fechar">×</button>
+      </div>
+      <div class="share-body">
+        <div class="share-section">
+          <label class="share-label" for="share-url">Link desta vista</label>
+          <div class="share-copy-row">
+            <input type="text" id="share-url" class="share-input" readonly>
+            <button type="button" id="share-copy-url" class="share-copy-btn">Copiar</button>
+          </div>
+        </div>
+        <div class="share-section">
+          <label class="share-label" for="share-embed">Incorporar em site (iframe)</label>
+          <textarea id="share-embed" class="share-textarea" rows="4" readonly spellcheck="false"></textarea>
+          <button type="button" id="share-copy-embed" class="share-copy-btn share-copy-block">Copiar código</button>
+        </div>
+        <button type="button" id="share-native" class="share-native-btn" hidden>Partilhar no dispositivo…</button>
+        <p class="share-hint">Sites e blogs podem incorporar o mapa. Mantenha o crédito <strong>MOVIMENTO IRUN · Casa de Castro Alves</strong>. A vista partilhada inclui território, ficha ou filtros activos.</p>
       </div>
     </div>
-
-    <footer class="footer">
-      <span class="footer-credit">Feito por IG + Comunidade</span>
-      <span class="footer-grimaux">GRIMAUX</span>
-    </footer>
   </div>
-
-  <div id="toast" class="toast" hidden></div>
-
-  <div id="galeria-lightbox" class="galeria-lightbox" hidden>
-    <button type="button" class="galeria-lightbox-backdrop" id="galeria-lightbox-backdrop" aria-label="Fechar"></button>
-    <button type="button" class="galeria-lightbox-close" id="galeria-lightbox-close" aria-label="Fechar">&times;</button>
-    <button type="button" class="galeria-lightbox-nav galeria-lightbox-prev" id="galeria-lightbox-prev" aria-label="Foto anterior">&lsaquo;</button>
-    <button type="button" class="galeria-lightbox-nav galeria-lightbox-next" id="galeria-lightbox-next" aria-label="Próxima foto">&rsaquo;</button>
-    <div class="galeria-lightbox-stage">
-      <img id="galeria-lightbox-img" src="" alt="">
-      <p class="galeria-lightbox-caption" id="galeria-lightbox-caption"></p>
-      <p class="galeria-lightbox-meta"><span id="galeria-lightbox-index">1</span> / <span id="galeria-lightbox-total">1</span></p>
-    </div>
-  </div>
-
-  <dialog id="dialog-share" class="dialog dialog-share">
-    <div class="dialog-share-head">
-      <h2>Compartilhar</h2>
-      <p class="dialog-share-context" id="share-context"></p>
-    </div>
-    <div class="share-grid" id="share-grid">
-      <button type="button" class="share-app" data-share="whatsapp">
-        <span class="share-app-icon share-app-icon--wa" aria-hidden="true">W</span>
-        WhatsApp
-      </button>
-      <button type="button" class="share-app" data-share="telegram">
-        <span class="share-app-icon share-app-icon--tg" aria-hidden="true">T</span>
-        Telegram
-      </button>
-      <button type="button" class="share-app" data-share="email">
-        <span class="share-app-icon share-app-icon--mail" aria-hidden="true">@</span>
-        E-mail
-      </button>
-      <button type="button" class="share-app" data-share="copy">
-        <span class="share-app-icon" aria-hidden="true">⎘</span>
-        Copiar
-      </button>
-    </div>
-    <div class="share-actions">
-      <button type="button" class="btn btn-primary" id="btn-share-native">Mais opções</button>
-    </div>
-    <details class="share-embed-details">
-      <summary>Incorporar em site</summary>
-      <p class="dialog-hint">Iframe para embed:</p>
-      <textarea id="share-embed" class="share-embed" readonly rows="3"></textarea>
-      <button type="button" class="btn" id="btn-copy-embed">Copiar incorporação</button>
-    </details>
-    <input type="hidden" id="share-url">
-    <button type="button" class="btn btn-ghost btn-close-share" id="btn-close-share">Fechar</button>
-  </dialog>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script src="ti_bahia_geo.js"></script>
-  <script src="lagoa_grande_geo.js"></script>
-  <script src="roteiro_contra_costa_snippet.js"></script>
-  <script src="dados.js"></script>
-  <script src="catalogo.js"></script>
-  <script src="nav.js"></script>
-  <script src="app.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

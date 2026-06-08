@@ -5,3 +5,6 @@
 /galeria/ /a-casa/ 301
 /eventos /shows 301
 /eventos/ /shows/ 301
+/territorios/* /movimento-irun/territorios/:splat 301
+/territorios /movimento-irun/territorios 301
+
