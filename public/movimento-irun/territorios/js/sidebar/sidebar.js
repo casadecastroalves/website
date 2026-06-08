@@ -360,41 +360,153 @@ function renderTerritorio(ti) {
 function renderEntidade(e, ti) {
   const s = e.sidebar || {};
   const ext = s.externo || {};
-  const sections = [];
+  
+  const introHtml = s.apresentacao 
+    ? `<div class="entity-intro" style="margin-bottom: 1.25rem;"><p class="lead">${esc(s.apresentacao)}</p>${ext.about ? verMais(ext.about, "Ler mais no site →") : ""}</div>`
+    : "";
 
-  sections.push(accordion("apresentacao", "Apresentação", `<p class="lead">${esc(s.apresentacao || "")}</p>${ext.about ? verMais(ext.about, "Ler mais no site →") : ""}`, true));
-  sections.push(accordion("identidade-e", "Identidade", renderIdentidade(s.identidade), false));
+  const groups = {
+    ambiental: { text: "", items: [] },
+    sociocultural: { text: "", items: [] },
+    economica: { text: "", items: [] },
+    institucional: { text: "", items: [] },
+    infraestrutura: { text: "", items: [] },
+    educacional: { text: "", items: [] },
+    prospectiva: { text: "", items: [] }
+  };
 
+  if (Array.isArray(s.identidade)) {
+    for (const d of s.identidade) {
+      const id = d.id;
+      const content = `<p>${d.titulo ? `<strong>${d.titulo}:</strong> ` : ""}${d.conteudo}</p>`;
+      if (id === "meio-ambiente" || id === "ambiental" || id === "aguas") {
+        groups.ambiental.text += content;
+      } else if (id === "historia" || id === "cultura" || id === "patrimonio" || id === "sociocultural" || id === "simbolica") {
+        groups.sociocultural.text += content;
+      } else if (id === "economia" || id === "economica") {
+        groups.economica.text += content;
+      } else if (id === "comunidade" || id === "institucional" || id === "governanca" || id === "rede") {
+        if (id === "comunidade" || id === "rede") {
+          groups.sociocultural.text += content;
+        } else {
+          groups.institucional.text += content;
+        }
+      } else if (id === "mobilidade" || id === "infraestrutura") {
+        groups.infraestrutura.text += content;
+      } else if (id === "educacao" || id === "educacional" || id === "conhecimento") {
+        groups.educacional.text += content;
+      } else if (id === "potencialidades" || id === "futuro" || id === "prospectiva") {
+        groups.prospectiva.text += content;
+      } else {
+        groups.sociocultural.text += content;
+      }
+    }
+  }
+
+  const accordions = [];
+
+  // --- Matriz Ambiental e das Águas ---
+  let ambientalHtml = groups.ambiental.text;
+  if (ambientalHtml) {
+    accordions.push(accordion("matriz-ambiental", "Matriz Ambiental e das Águas", ambientalHtml, false));
+  }
+
+  // --- Matriz Sociocultural e Simbólica ---
+  let socioculturalHtml = groups.sociocultural.text;
+  if (s.festas?.length || ext.eventos) {
+    const hasText = socioculturalHtml.length > 0;
+    socioculturalHtml += `<p class="section-title" style="${hasText ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Festas e eventos</p>` + 
+                         renderList(s.festas || []) + 
+                         verMais(ext.eventos, "Ver eventos no site →");
+  }
+  if (s.fotos?.length) {
+    const hasContent = socioculturalHtml.length > 0;
+    socioculturalHtml += `<p class="section-title" style="${hasContent ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Fotos</p>` + 
+                         renderSlideshow(s.fotos);
+  }
+  if (socioculturalHtml) {
+    accordions.push(accordion("matriz-sociocultural", "Matriz Sociocultural e Simbólica", socioculturalHtml, false));
+  }
+
+  // --- Matriz Econômica e Produtiva ---
+  let economicaHtml = groups.economica.text;
   if (s.produtos?.length || ext.produtos) {
-    sections.push(accordion("produtos", "Produtos", `${renderList(s.produtos || [])}${verMais(ext.produtos, "Ver todos os produtos →")}`, false));
+    const hasText = economicaHtml.length > 0;
+    economicaHtml += `<p class="section-title" style="${hasText ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Produtos</p>` + 
+                      renderList(s.produtos || []) + 
+                      verMais(ext.produtos, "Ver todos os produtos →");
   }
   if (s.roteiros?.length || ext.reservas) {
-    sections.push(accordion("roteiros", "Turismo e vivências", `${renderList(s.roteiros || [], "titulo")}${verMais(ext.reservas, "Reservar estadia →")}`, false));
+    const hasContent = economicaHtml.length > 0;
+    economicaHtml += `<p class="section-title" style="${hasContent ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Turismo e vivências</p>` + 
+                      renderList(s.roteiros || [], "titulo") + 
+                      verMais(ext.reservas, "Reservar estadia →");
   }
-  if (s.fotos?.length) sections.push(accordion("fotos", `Fotos (${s.fotos.length})`, renderSlideshow(s.fotos), false));
-  if (s.videos?.length) sections.push(accordion("videos", `Vídeos (${s.videos.length})`, renderVideos(s.videos), false));
-  if (s.portfolio?.length) sections.push(accordion("portfolio", "Portfólio", renderPortfolio(s.portfolio), false));
-  if (s.festas?.length || ext.eventos) {
-    sections.push(accordion("festas", "Festas e eventos", `${renderList(s.festas || [])}${verMais(ext.eventos, "Ver eventos no site →")}`, false));
+  if (economicaHtml) {
+    accordions.push(accordion("matriz-economica", "Matriz Econômica e Produtiva", economicaHtml, false));
   }
-  if (s.noticias?.length) sections.push(accordion("noticias", "Notícias", renderLinks(s.noticias.map((n) => ({ href: n.href, titulo: n.titulo }))), false));
+
+  // --- Matriz Institucional e Governança ---
+  let institucionalHtml = groups.institucional.text;
+  const contatoHtml = renderContato(s.contato, ext);
+  if (contatoHtml) {
+    const hasText = institucionalHtml.length > 0;
+    institucionalHtml += `<p class="section-title" style="${hasText ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Contato</p>` + contatoHtml;
+  }
   if (s.redes?.length || s.links?.length || ext.site) {
     const links = [
       ...(ext.site ? [{ href: ext.site, titulo: "Site oficial" }] : []),
       ...(s.redes?.map((r) => ({ href: r.href, titulo: `${r.rede}: ${r.handle}` })) || []),
       ...(s.links || []),
     ];
-    sections.push(accordion("redes", "Redes e links", renderLinks(links), false));
+    const hasContent = institucionalHtml.length > 0;
+    institucionalHtml += `<p class="section-title" style="${hasContent ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Redes e links</p>` + renderLinks(links);
   }
-  sections.push(accordion("contato", "Contato", renderContato(s.contato, ext), false));
+  if (s.noticias?.length) {
+    const hasContent = institucionalHtml.length > 0;
+    institucionalHtml += `<p class="section-title" style="${hasContent ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Notícias</p>` + renderLinks(s.noticias.map((n) => ({ href: n.href, titulo: n.titulo })));
+  }
+  if (institucionalHtml) {
+    accordions.push(accordion("matriz-institucional", "Matriz Institucional e Governança", institucionalHtml, false));
+  }
+
+  // --- Matriz Infraestrutural e de Serviços ---
+  let infraestruturaHtml = groups.infraestrutura.text;
+  if (infraestruturaHtml) {
+    accordions.push(accordion("matriz-infraestrutura", "Matriz Infraestrutural e de Serviços", infraestruturaHtml, false));
+  }
+
+  // --- Matriz Educacional e Conhecimento ---
+  let educacionalHtml = groups.educacional.text;
+  if (s.portfolio?.length) {
+    const hasText = educacionalHtml.length > 0;
+    educacionalHtml += `<p class="section-title" style="${hasText ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Portfólio</p>` + renderPortfolio(s.portfolio);
+  }
+  if (educacionalHtml) {
+    accordions.push(accordion("matriz-educacional", "Matriz Educacional e Conhecimento", educacionalHtml, false));
+  }
+
+  // --- Matriz Prospectiva ---
+  let prospectivaHtml = groups.prospectiva.text;
+  if (prospectivaHtml) {
+    accordions.push(accordion("matriz-prospectiva", "Matriz Prospectiva (Visão de Futuro)", prospectivaHtml, false));
+  }
+
+  // --- Vídeos ---
+  if (s.videos?.length) {
+    accordions.push(accordion("videos", `Vídeos (${s.videos.length})`, renderVideos(s.videos), false));
+  }
 
   return `
     ${renderTiPager(ti.id, "ti", ti.nome)}
     ${renderRedePager(e.id)}
     <div class="ti-header-cod">${ti.cod} · REDE · ${e.tipo}</div>
     <h2 class="ti-header-title">${esc(e.meta?.nome || e.id)}</h2>
-    <p class="lead">${esc(e.meta?.municipio || "")}${e.meta?.uf ? ` — ${e.meta.uf}` : ""}</p>
-    ${sections.join("")}
+    <p class="lead" style="margin-bottom: 1.25rem;">${esc(e.meta?.municipio || "")}${e.meta?.uf ? ` — ${e.meta.uf}` : ""}</p>
+    ${introHtml}
+    <div class="entity-matrices-accordions" style="margin-top: 1.25rem;">
+      ${accordions.join("")}
+    </div>
   `;
 }
 
