@@ -25,7 +25,9 @@
       { "titulo": "Contra Costa", "descricao": "Ligação com Itaparica pelo roteiro de costa da ilha." }
     ],
     "fotos": [],
-    "videos": [],
+    "videos": [
+      { "tipo": "youtube", "id": "Hd4UjhzXJy4", "titulo": "Projeto Vamos Navegar" }
+    ],
     "links": []
   }
 }

@@ -24,7 +24,44 @@
         "quilombos",
         "turismo"
       ],
-      "entidadeId": "terere"
+      "entidadeId": "terere",
+      "popup": {
+        "contexto": "Região Metropolitana de Salvador · Quilombo do Tereré",
+        "slides": [
+          {
+            "titulo": "Quilombo do Tereré — Vídeo 1",
+            "video": {
+              "tipo": "youtube",
+              "id": "GucuBt3CxX8",
+              "legenda": "Vivência no Quilombo do Tereré"
+            }
+          },
+          {
+            "titulo": "Quilombo do Tereré — Vídeo 2",
+            "video": {
+              "tipo": "youtube",
+              "id": "4YoWZMHOurk",
+              "legenda": "Cultura e tradição do Tereré"
+            }
+          },
+          {
+            "titulo": "Quilombo do Tereré — Vídeo 3",
+            "video": {
+              "tipo": "youtube",
+              "id": "xDIs2lqDhWI",
+              "legenda": "História e resistência quilombola"
+            }
+          },
+          {
+            "titulo": "Quilombo do Tereré — Vídeo 4",
+            "video": {
+              "tipo": "youtube",
+              "id": "sKQqroXIp4I",
+              "legenda": "Saberes e comunidade no Tereré"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "museu-de-memoria-viva-dos-quilombos-do-terere-e-",
@@ -50,7 +87,20 @@
       "categorias": [
         "projetos"
       ],
-      "entidadeId": "vera-cruz"
+      "entidadeId": "vera-cruz",
+      "popup": {
+        "contexto": "Região Metropolitana de Salvador · Vera Cruz",
+        "slides": [
+          {
+            "titulo": "Vamos Navegar",
+            "video": {
+              "tipo": "youtube",
+              "id": "Hd4UjhzXJy4",
+              "legenda": "Projeto Vamos Navegar"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "mare-de-marco",
@@ -62,7 +112,20 @@
       "categorias": [
         "projetos"
       ],
-      "entidadeId": "itaparica"
+      "entidadeId": "itaparica",
+      "popup": {
+        "contexto": "Região Metropolitana de Salvador · Itaparica",
+        "slides": [
+          {
+            "titulo": "Maré de Março",
+            "video": {
+              "tipo": "youtube",
+              "id": "THUbZcbA4qg",
+              "legenda": "Projeto Maré de Março"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "itaparica",
@@ -74,7 +137,20 @@
       "categorias": [
         "municipios"
       ],
-      "entidadeId": "itaparica"
+      "entidadeId": "itaparica",
+      "popup": {
+        "contexto": "Região Metropolitana de Salvador · Itaparica",
+        "slides": [
+          {
+            "titulo": "Roteiro Contra Costa",
+            "video": {
+              "tipo": "youtube",
+              "id": "gviO8E3jJfo",
+              "legenda": "Turismo e Roteiros na Ilha de Itaparica"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "vera-cruz",

@@ -7,7 +7,20 @@
       "coords": [-13.4146908, -39.0809139],
       "categorias": ["quilombos", "instituicoes", "projetos"],
       "resumo": "Território bantu-ameríndia · Cajaíba, Maricoabo · ACULTEMA",
-      "entidadeId": "caxute"
+      "entidadeId": "caxute",
+      "popup": {
+        "contexto": "Costa do Dendê · Terreiro Caxuté",
+        "slides": [
+          {
+            "titulo": "Terreiro Caxuté",
+            "video": {
+              "tipo": "youtube",
+              "id": "A7WJNnO3gQE",
+              "legenda": "Comunidade Terreiro Caxuté"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "museu-da-costa-do-dende-de-cultura-afro-indigena",
@@ -15,7 +28,20 @@
       "coords": [-13.467506, -39.0899805],
       "categorias": ["instituicoes", "turismo"],
       "resumo": "Museu vivo · cosmovisões Bantu e Indígena · trilhas e oficinas · Valença e Cajaíba",
-      "entidadeId": "museu-dende"
+      "entidadeId": "museu-dende",
+      "popup": {
+        "contexto": "Costa do Dendê · Museu do Dendê",
+        "slides": [
+          {
+            "titulo": "Museu do Dendê",
+            "video": {
+              "tipo": "youtube",
+              "id": "__qN37AyAro",
+              "legenda": "Museu da Costa do Dendê de Cultura Afro-Indígena"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "kilombo-tenonde",

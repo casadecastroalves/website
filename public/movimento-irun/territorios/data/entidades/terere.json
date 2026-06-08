@@ -22,7 +22,12 @@
       { "id": "turismo", "titulo": "Turismo", "conteudo": "Visitação cultural e roteiros na RMS — património e identidade afro-brasileira." }
     ],
     "fotos": [],
-    "videos": [],
+    "videos": [
+      { "tipo": "youtube", "id": "GucuBt3CxX8", "titulo": "Quilombo do Tereré — Vídeo 1" },
+      { "tipo": "youtube", "id": "4YoWZMHOurk", "titulo": "Quilombo do Tereré — Vídeo 2" },
+      { "tipo": "youtube", "id": "xDIs2lqDhWI", "titulo": "Quilombo do Tereré — Vídeo 3" },
+      { "tipo": "youtube", "id": "sKQqroXIp4I", "titulo": "Quilombo do Tereré — Vídeo 4" }
+    ],
     "links": []
   }
 }

@@ -25,7 +25,10 @@
       { "titulo": "Contra Costa — Ilha de Itaparica", "descricao": "Marina de Itaparica · Fonte do Tororó · Ponte do Funil · Cacha Pregos · Pousada Norage. Roteiro intermunicipal com Vera Cruz." }
     ],
     "fotos": [],
-    "videos": [],
+    "videos": [
+      { "tipo": "youtube", "id": "gviO8E3jJfo", "titulo": "Roteiro Contra Costa — Ilha de Itaparica" },
+      { "tipo": "youtube", "id": "THUbZcbA4qg", "titulo": "Projeto Maré de Março" }
+    ],
     "links": []
   }
 }

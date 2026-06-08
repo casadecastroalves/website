@@ -18,6 +18,30 @@
         "contexto": "Recôncavo · Saubara",
         "slides": [
           {
+            "titulo": "Renda de Bilro",
+            "video": {
+              "tipo": "youtube",
+              "id": "QsCTyB8e21s",
+              "legenda": "Tradição das Rendeiras de Saubara"
+            }
+          },
+          {
+            "titulo": "Cantos de Trabalho",
+            "video": {
+              "tipo": "youtube",
+              "id": "Mb-IBAQtyuY",
+              "legenda": "Cantos das Rendeiras de Saubara"
+            }
+          },
+          {
+            "titulo": "Tradição e Memória",
+            "video": {
+              "tipo": "youtube",
+              "id": "U5Ngh6hGOr4",
+              "legenda": "Tradições e saberes em Saubara"
+            }
+          },
+          {
             "titulo": "Casa das Rendeiras e Trançadeiras",
             "texto": "Ponto de Cultura (Associação dos Artesãos de Saubara). Referência nacional na preservação e comercialização da renda de bilro e do trançado de palha de Ouricuri.",
             "links": [

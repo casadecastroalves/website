@@ -72,7 +72,9 @@
       }
     ],
     "fotos": [],
-    "videos": [],
+    "videos": [
+      { "tipo": "youtube", "id": "A7WJNnO3gQE", "titulo": "Comunidade Terreiro Caxuté" }
+    ],
     "redes": [
       {
         "rede": "Instagram",

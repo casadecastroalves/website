@@ -49,7 +49,9 @@
       }
     ],
     "fotos": [],
-    "videos": [],
+    "videos": [
+      { "tipo": "youtube", "id": "__qN37AyAro", "titulo": "Museu da Costa do Dendê de Cultura Afro-Indígena" }
+    ],
     "links": [],
     "contato": {
       "organizacao": "Museu da Costa do Dendê de Cultura Afro-Indígena",
