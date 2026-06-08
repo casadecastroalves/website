@@ -74,7 +74,6 @@ export function richPopupHtml(p, tiId) {
       </div>`
         : ""
     }
-    ${p.entidadeId ? `<span class="popup-link" data-entity="${esc(p.entidadeId)}" data-ti="${esc(tiId)}">Ver ficha completa →</span>` : ""}
   </div>`;
 }
 

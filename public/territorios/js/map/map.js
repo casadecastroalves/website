@@ -144,8 +144,7 @@ async function loadTerritorios(territorios, prefetchedGeo = null) {
 
       layer.bindPopup(
         `<div class="popup-title">${cod} — ${nome}</div>
-         <div class="popup-cod">Território de Identidade</div>
-         <span class="popup-link" data-ti="${id}">Ver ficha →</span>`,
+         <div class="popup-cod">Território de Identidade</div>`,
         { maxWidth: 260, className: "irun-popup" }
       );
 
@@ -156,7 +155,10 @@ async function loadTerritorios(territorios, prefetchedGeo = null) {
         mouseout: (e) => {
           if (state.selectedTiId !== id) e.target.setStyle(styleForLayer(id, redeMap[id]));
         },
-        click: () => onTiClick?.(id),
+        click: () => {
+          state.dontPanMap = true;
+          onTiClick?.(id);
+        },
       });
     },
   }).addTo(map);
@@ -215,7 +217,9 @@ export function highlightTerritorio(tiId) {
     if (id === tiId) {
       layer.setStyle(polygonStyles().active(rede));
       layer.bringToFront();
-      map.fitBounds(layer.getBounds(), { padding: [40, 40], maxZoom: 9 });
+      if (!state.dontPanMap) {
+        map.fitBounds(layer.getBounds(), { padding: [40, 40], maxZoom: 9 });
+      }
     } else {
       layer.setStyle(styleForLayer(id, rede));
     }
@@ -229,7 +233,9 @@ export function resetView() {
     const rede = state.territorios.find((t) => t.id === id)?.redeAtiva;
     layer.setStyle(styleForLayer(id, rede));
   });
-  map.fitBounds(BAHIA_BOUNDS, { padding: [20, 20] });
+  if (!state.dontPanMap) {
+    map.fitBounds(BAHIA_BOUNDS, { padding: [20, 20] });
+  }
 }
 
 export function getMap() {
@@ -331,8 +337,7 @@ function pinPopupHtml(p, tiId) {
   const link = bestLink(p.links);
   return `<div class="popup-title">${escHtml(p.nome)}</div>
     ${p.resumo ? `<div class="popup-cod">${escHtml(p.resumo)}</div>` : ""}
-    ${link ? `<a class="popup-link" href="${escHtml(link)}" target="_blank" rel="noopener">Saiba mais →</a>` : ""}
-    ${p.entidadeId ? `<span class="popup-link" data-entity="${p.entidadeId}" data-ti="${tiId}">Ver ficha →</span>` : ""}`;
+    ${link ? `<a class="popup-link" href="${escHtml(link)}" target="_blank" rel="noopener">Saiba mais →</a>` : ""}`;
 }
 
 function pinPopupOptions(p) {
@@ -408,6 +413,14 @@ export async function loadPontos(pontosFiles, prefetched = null) {
     marker._irunCats = pin.categorias || ["quilombos"];
     marker._irunId = pin.id;
     marker.bindPopup(pinPopupHtml(pin, pin.territorioId), pinPopupOptions(pin));
+    marker.on("click", () => {
+      state.dontPanMap = true;
+      if (pin.entidadeId) {
+        onEntityClick?.(pin.territorioId, pin.entidadeId);
+      } else {
+        onTiClick?.(pin.territorioId);
+      }
+    });
     marker.addTo(pinsLayerGroup);
     markerByPinId[pin.id] = marker;
   }
@@ -477,10 +490,12 @@ export function loadEntityMarkers(entidades) {
     marker._tiId = e.territorioId;
     marker.bindPopup(
       `<div class="popup-title">${e.meta.nome}</div>
-       <div class="popup-cod">${e.tipo === "quilombo" ? "Quilombo · REDE" : e.tipo === "municipio" ? "Município · REDE" : "REDE"}</div>
-       <span class="popup-link" data-entity="${e.id}" data-ti="${e.territorioId}">Abrir ficha →</span>`
+       <div class="popup-cod">${e.tipo === "quilombo" ? "Quilombo · REDE" : e.tipo === "municipio" ? "Município · REDE" : "REDE"}</div>`
     );
-    marker.on("click", () => onEntityClick?.(e.territorioId, e.id));
+    marker.on("click", () => {
+      state.dontPanMap = true;
+      onEntityClick?.(e.territorioId, e.id);
+    });
     marker.addTo(entityLayerGroup);
   }
 
@@ -522,14 +537,16 @@ export function openPinPopup(pinId) {
 export function focusEntity(entity) {
   if (!map || !entity?.meta?.coords) return;
   const [lat, lng] = entity.meta.coords;
-  map.setView([lat, lng], 14, { animate: true });
+  if (!state.dontPanMap) {
+    map.setView([lat, lng], 14, { animate: true });
 
-  const rede = redeLayerByEntity[entity.id];
-  if (rede) {
-    try {
-      map.fitBounds(rede.getBounds(), { padding: [60, 60], maxZoom: 15 });
-    } catch {
-      map.setView([lat, lng], 14);
+    const rede = redeLayerByEntity[entity.id];
+    if (rede) {
+      try {
+        map.fitBounds(rede.getBounds(), { padding: [60, 60], maxZoom: 15 });
+      } catch {
+        map.setView([lat, lng], 14);
+      }
     }
   }
 

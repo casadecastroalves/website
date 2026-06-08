@@ -76,6 +76,8 @@ function handleRoute(route) {
     resetView();
   }
 
+  state.dontPanMap = false;
+
   refreshStyles();
   updateEntityMarkerSelection();
   updateRedeBadge();

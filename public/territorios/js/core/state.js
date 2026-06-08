@@ -13,6 +13,7 @@ export const state = {
   mapBaseMode: "minimal",
   sidebarOpen: false,
   sidebarCollapsed: false,
+  dontPanMap: false,
 };
 
 export function subscribe(fn) {
