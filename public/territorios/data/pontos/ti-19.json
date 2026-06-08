@@ -114,6 +114,15 @@
         "contexto": "Portal do Sertão · Quilombo Lagoa Grande",
         "slides": [
           {
+            "titulo": "Os Guardiões da Lagoa",
+            "texto": "Documentário sobre a juventude quilombola na luta por identidade e soberania popular no território.",
+            "video": {
+              "tipo": "youtube",
+              "id": "Z_xr3JTQzyg",
+              "legenda": "Documentário — Os Guardiões da Lagoa"
+            }
+          },
+          {
             "titulo": "AQCOMAQ — sede comunitária",
             "texto": "A Associação Quilombola Comunitária de Maria Quitéria articula famílias do território de Lagoa Grande, em Feira de Santana. Novembro Negro desde 1973, Coletivo da Juventude, casas de farinha e formação quilombola.",
             "links": [
@@ -122,15 +131,6 @@
             ],
             "foto": "assets/lagoa-grande/fotos/page_4_img_16_Image41.jpg",
             "legenda": "Comunidade quilombola de Lagoa Grande"
-          },
-          {
-            "titulo": "Os Guardiões da Lagoa",
-            "texto": "Documentário sobre a juventude quilombola na luta por identidade e soberania popular no território.",
-            "video": {
-              "tipo": "youtube",
-              "id": "Z_xr3JTQzyg",
-              "legenda": "Documentário — Os Guardiões da Lagoa"
-            }
           }
         ]
       }

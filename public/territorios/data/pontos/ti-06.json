@@ -22,7 +22,44 @@
       "nome": "Kilombo Tenondé",
       "coords": [-13.3694, -39.0731],
       "categorias": ["quilombos", "instituicoes"],
-      "entidadeId": "tenonde"
+      "entidadeId": "tenonde",
+      "popup": {
+        "contexto": "Costa do Dendê · Kilombo Tenondé",
+        "slides": [
+          {
+            "titulo": "Kilombo Tenondé — Vídeo 1",
+            "video": {
+              "tipo": "youtube",
+              "id": "gUdY4gsP31U",
+              "legenda": "Vivência e capoeira angola no Kilombo"
+            }
+          },
+          {
+            "titulo": "Kilombo Tenondé — Vídeo 2",
+            "video": {
+              "tipo": "youtube",
+              "id": "oSvMHXPDZZQ",
+              "legenda": "Agroecologia e permacultura"
+            }
+          },
+          {
+            "titulo": "Kilombo Tenondé — Vídeo 3",
+            "video": {
+              "tipo": "youtube",
+              "id": "ki8kFywP6W4",
+              "legenda": "Construção ancestral e ecologia"
+            }
+          },
+          {
+            "titulo": "Kilombo Tenondé — Vídeo 4",
+            "video": {
+              "tipo": "youtube",
+              "id": "NzHk9tOp9V8",
+              "legenda": "CosmoAngola e encontros"
+            }
+          }
+        ]
+      }
     },
     {
       "id": "valenca",

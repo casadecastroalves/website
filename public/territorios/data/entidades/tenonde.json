@@ -87,7 +87,28 @@
       { "titulo": "Permangola / CosmoAngola", "descricao": "Eventos formativos e culturais de referência nacional." }
     ],
     "fotos": [],
-    "videos": [],
+    "videos": [
+      {
+        "tipo": "youtube",
+        "id": "gUdY4gsP31U",
+        "titulo": "Kilombo Tenondé — Vídeo 1"
+      },
+      {
+        "tipo": "youtube",
+        "id": "oSvMHXPDZZQ",
+        "titulo": "Kilombo Tenondé — Vídeo 2"
+      },
+      {
+        "tipo": "youtube",
+        "id": "ki8kFywP6W4",
+        "titulo": "Kilombo Tenondé — Vídeo 3"
+      },
+      {
+        "tipo": "youtube",
+        "id": "NzHk9tOp9V8",
+        "titulo": "Kilombo Tenondé — Vídeo 4"
+      }
+    ],
     "portfolio": [
       { "titulo": "Portfólio Kilombo Tenondé 2025", "href": "assets/tenonde/pdf/Portfólio Kilombo Tenondé 2025 ver01.pdf", "tipo": "pdf" },
       { "titulo": "Portfólio Kilombo Tenondé", "href": "assets/tenonde/pdf/Portfólio Kilombo Tenonde.pdf", "tipo": "pdf" },
