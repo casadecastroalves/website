@@ -82,7 +82,13 @@
       { "src": "assets/engenho-ponte/fotos/foto-04.jpg", "legenda": "Comunidade quilombola" },
       { "src": "assets/engenho-ponte/fotos/foto-05.jpg", "legenda": "Território do Recôncavo" }
     ],
-    "videos": [],
+    "videos": [
+      {
+        "tipo": "youtube",
+        "id": "yhEX3FQOBdA",
+        "titulo": "Encontro de Mulheres Quilombolas no Engenho da Ponte"
+      }
+    ],
     "portfolio": [
       { "titulo": "Articulação de mulheres negras e quilombolas", "href": "assets/engenho-ponte/pdf/Articulação de mulheres negras e quilombolas - Quilombo engenho da Ponte.pdf", "tipo": "pdf" },
       { "titulo": "Dissertação — Flávia Mara Henriques Gomes (2015)", "href": "assets/engenho-ponte/pdf/2015_FlaviaMaraHenriquesGomes.pdf", "tipo": "pdf" },
