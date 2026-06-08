@@ -1154,7 +1154,7 @@ a.brand .brand-sub, a.topbar-brand .brand-sub {
     transform: translateY(0);
   }
 
-  .sidebar.sheet-mid { height: 55dvh; }
+  .sidebar.sheet-mid { height: 40dvh; }
   .sidebar.sheet-full { height: 92dvh; }
 
   .sidebar.dragging { transition: none; }

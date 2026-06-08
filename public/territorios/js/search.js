@@ -284,24 +284,19 @@ function selectItem(btn) {
 
   if (kind === "entity" && tiId && entityId) {
     goEntity(tiId, entityId);
-    const ent = state.entidades.find((e) => e.id === entityId);
-    if (ent) focusEntity(ent);
-    openSheetForTerritory();
     return;
   }
 
   if (kind === "ti" && tiId) {
     goTerritorio(tiId);
-    openSheetForTerritory();
     return;
   }
 
   if (kind === "pin" && tiId) {
     const pin = state.pontos.find((p) => p.id === pinId);
+    state.dontPanMap = true;
     if (entityId) {
       goEntity(tiId, entityId);
-      const ent = state.entidades.find((e) => e.id === entityId);
-      if (ent) focusEntity(ent);
     } else {
       goTerritorio(tiId);
     }

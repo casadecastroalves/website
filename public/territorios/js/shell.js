@@ -1,7 +1,7 @@
 import { state, notify } from "./core/state.js";
 
 const MOBILE_BP = 768;
-const SNAP = { closed: 0, peek: 72, mid: 0.55, full: 0.92 };
+const SNAP = { closed: 0, peek: 72, mid: 0.40, full: 0.92 };
 
 let sheetLevel = "closed";
 let dragStartY = 0;

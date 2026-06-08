@@ -210,6 +210,9 @@ export function refreshMapTheme() {
 
 export function highlightTerritorio(tiId) {
   if (!tiLayer) return;
+  if (!state.dontPanMap && map) {
+    map.closePopup();
+  }
 
   tiLayer.eachLayer((layer) => {
     const id = layer.feature.properties.id;
@@ -228,6 +231,9 @@ export function highlightTerritorio(tiId) {
 
 export function resetView() {
   if (!map || !tiLayer) return;
+  if (!state.dontPanMap) {
+    map.closePopup();
+  }
   tiLayer.eachLayer((layer) => {
     const id = layer.feature.properties.id;
     const rede = state.territorios.find((t) => t.id === id)?.redeAtiva;
@@ -549,6 +555,21 @@ export function focusEntity(entity) {
   }
 
   updateEntityMarkerSelection();
+
+  // Abrir o pop-up correspondente no mapa
+  const pin = state.pontos.find((p) => p.entidadeId === entity.id);
+  if (pin) {
+    const marker = markerByPinId[pin.id];
+    if (marker) {
+      marker.openPopup();
+    }
+  } else if (entityLayerGroup) {
+    entityLayerGroup.eachLayer((layer) => {
+      if (layer._entityId === entity.id) {
+        layer.openPopup();
+      }
+    });
+  }
 }
 
 export { layerById, redeLayerByEntity };
