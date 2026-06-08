@@ -429,6 +429,11 @@ function renderEntidade(e, ti) {
                          renderList(s.festas || []) + 
                          verMais(ext.eventos, "Ver eventos no site →");
   }
+  if (s.fotos?.length) {
+    const hasContent = socioculturalHtml.length > 0;
+    socioculturalHtml += `<p class="section-title" style="${hasContent ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Fotos</p>` + 
+                         renderSlideshow(s.fotos);
+  }
   if (socioculturalHtml) {
     accordions.push(accordion("matriz-sociocultural", "Matriz Sociocultural e Simbólica", socioculturalHtml, false));
   }
