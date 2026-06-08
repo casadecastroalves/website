@@ -405,6 +405,16 @@ function renderEntidade(e, ti) {
 
   const accordions = [];
 
+  // --- Fotos ---
+  if (s.fotos?.length) {
+    accordions.push(accordion("fotos", `Fotos (${s.fotos.length})`, renderSlideshow(s.fotos), false));
+  }
+
+  // --- Vídeos ---
+  if (s.videos?.length) {
+    accordions.push(accordion("videos", `Vídeos (${s.videos.length})`, renderVideos(s.videos), false));
+  }
+
   // --- Matriz Ambiental e das Águas ---
   let ambientalHtml = groups.ambiental.text;
   if (ambientalHtml) {
@@ -418,11 +428,6 @@ function renderEntidade(e, ti) {
     socioculturalHtml += `<p class="section-title" style="${hasText ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Festas e eventos</p>` + 
                          renderList(s.festas || []) + 
                          verMais(ext.eventos, "Ver eventos no site →");
-  }
-  if (s.fotos?.length) {
-    const hasContent = socioculturalHtml.length > 0;
-    socioculturalHtml += `<p class="section-title" style="${hasContent ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Fotos</p>` + 
-                         renderSlideshow(s.fotos);
   }
   if (socioculturalHtml) {
     accordions.push(accordion("matriz-sociocultural", "Matriz Sociocultural e Simbólica", socioculturalHtml, false));
@@ -490,11 +495,6 @@ function renderEntidade(e, ti) {
   let prospectivaHtml = groups.prospectiva.text;
   if (prospectivaHtml) {
     accordions.push(accordion("matriz-prospectiva", "Matriz Prospectiva (Visão de Futuro)", prospectivaHtml, false));
-  }
-
-  // --- Vídeos ---
-  if (s.videos?.length) {
-    accordions.push(accordion("videos", `Vídeos (${s.videos.length})`, renderVideos(s.videos), false));
   }
 
   return `
