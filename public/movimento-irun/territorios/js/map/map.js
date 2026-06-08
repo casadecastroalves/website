@@ -111,6 +111,21 @@ export function initMap(containerId, territorios, clickHandler, entityClickHandl
   applyBaseLayer();
 
   map.on("keydown", (e) => {
+    // Se houver um pop-up rico aberto, as setas direcionais esquerda/direita passam os slides
+    const richPopup = document.querySelector(".irun-rich-popup");
+    if (richPopup) {
+      if (e.originalEvent?.key === "ArrowLeft") {
+        e.originalEvent.preventDefault();
+        richPopup.querySelector(".popup-rich-prev")?.click();
+        return;
+      }
+      if (e.originalEvent?.key === "ArrowRight") {
+        e.originalEvent.preventDefault();
+        richPopup.querySelector(".popup-rich-next")?.click();
+        return;
+      }
+    }
+
     const step = 0.08;
     const c = map.getCenter();
     switch (e.originalEvent?.key) {

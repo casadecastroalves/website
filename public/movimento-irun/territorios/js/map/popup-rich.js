@@ -73,6 +73,9 @@ export function initRichPopup(popupEl) {
   const root = popupEl?.querySelector(".irun-rich-popup");
   if (!root) return;
 
+  // Impede que os eventos de clique/mousedown propaguem para o mapa e interfiram na interação do Leaflet
+  L.DomEvent.disableClickPropagation(root);
+
   const slides = [...root.querySelectorAll(".popup-rich-slide")];
   if (!slides.length) return;
 
