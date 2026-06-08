@@ -406,6 +406,34 @@ function entityHasPin(entityId) {
   return state.pontos.some((p) => p.entidadeId === entityId);
 }
 
+const CATEGORY_MAP = {
+  turismo: ["economica"],
+  natureza: ["ambiental"],
+  instituicoes: ["institucional"],
+  producao: ["economica"],
+  projetos: ["economica", "institucional"]
+};
+
+function mapCategories(cats, pinId = "") {
+  const res = new Set();
+  for (const c of cats || []) {
+    if (CATEGORY_MAP[c]) {
+      CATEGORY_MAP[c].forEach(m => res.add(m));
+    } else {
+      res.add(c);
+    }
+  }
+  
+  if (pinId === "vamos-navegar" || pinId === "mare-de-marco") {
+    res.add("ambiental");
+  }
+  if (pinId === "casa-castro-alves" || pinId === "mare-de-marco" || pinId === "povoado-quilombo-da-barriguda") {
+    res.add("sociocultural");
+  }
+  
+  return [...res];
+}
+
 export async function loadPontos(pontosFiles, prefetched = null) {
   if (!map) return;
   if (pinsLayerGroup) map.removeLayer(pinsLayerGroup);
@@ -429,7 +457,7 @@ export async function loadPontos(pontosFiles, prefetched = null) {
   for (const pin of dedupePins(rawPins)) {
     state.pontos.push(pin);
     const marker = L.marker(pin.coords, { icon: pinIcon() });
-    marker._irunCats = pin.categorias || ["quilombos"];
+    marker._irunCats = mapCategories(pin.categorias || ["quilombos"], pin.id);
     marker._irunId = pin.id;
     marker.bindPopup(pinPopupHtml(pin, pin.territorioId), pinPopupOptions(pin));
     marker.on("click", () => {
@@ -465,7 +493,7 @@ export async function loadRoteiros(roteiros) {
       }),
       onEachFeature: (feature, layer) => {
         layer.bindPopup(`<div class="popup-title">${escHtml(r.titulo)}</div><div class="popup-cod">Roteiro · Turismo</div>`);
-        layer._irunCats = ["turismo", "projetos"];
+        layer._irunCats = mapCategories(["turismo", "projetos"]);
       },
     }).addTo(roteirosLayerGroup);
 
@@ -479,7 +507,7 @@ export async function loadRoteiros(roteiros) {
           `<div class="popup-title">${escHtml(nome)}</div>
            <div class="popup-cod">Parada ${ordem} · ${escHtml(r.titulo)}</div>`
         );
-        layer._irunCats = ["turismo", "projetos"];
+        layer._irunCats = mapCategories(["turismo", "projetos"]);
       },
     }).addTo(roteirosLayerGroup);
   }

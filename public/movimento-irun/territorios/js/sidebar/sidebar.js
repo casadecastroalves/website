@@ -12,20 +12,24 @@ const FILTER_GROUPS = [
     ],
   },
   {
-    label: "Temática",
+    label: "Matrizes Territoriais",
     items: [
-      { key: "turismo", label: "Turismo" },
-      { key: "natureza", label: "Natureza" },
-      { key: "instituicoes", label: "Instituições" },
-      { key: "producao", label: "Produção" },
-      { key: "projetos", label: "Projetos" },
+      { key: "ambiental", label: "Matriz Ambiental e das Águas" },
+      { key: "sociocultural", label: "Matriz Sociocultural e Simbólica" },
+      { key: "economica", label: "Matriz Econômica e Produtiva" },
+      { key: "institucional", label: "Matriz Institucional e Governança" },
+      { key: "infraestrutura", label: "Matriz Infraestrutural e de Serviços" },
+      { key: "educacional", label: "Matriz Educacional e Conhecimento" },
+      { key: "prospectiva", label: "Matriz Prospectiva (Visão de Futuro)" },
     ],
   },
 ];
 
-const DIM_LABELS = [
-  "História e memória", "Cultura", "Meio ambiente", "Património", "Economia",
-  "Comunidade", "Educação", "Mobilidade", "Potencialidades", "Visão de futuro",
+const MATRIX_LABELS = [
+  "Matriz Ambiental e das Águas", "Matriz Sociocultural e Simbólica", 
+  "Matriz Econômica e Produtiva", "Matriz Institucional e Governança", 
+  "Matriz Infraestrutural e de Serviços", "Matriz Educacional e Conhecimento", 
+  "Matriz Prospectiva (Visão de Futuro)"
 ];
 
 function esc(s) {
@@ -233,9 +237,55 @@ function renderPortfolio(items) {
 
 function renderIdentidade(dims) {
   if (!dims?.length) {
-    return `<p style="font-size:0.82rem">${DIM_LABELS.join(" · ")}</p>`;
+    return `<p style="font-size:0.82rem">${MATRIX_LABELS.join(" · ")}</p>`;
   }
-  return dims.map((d) => subAccordion(d.id, d.titulo, esc(d.conteudo))).join("");
+
+  const groups = {
+    ambiental: { titulo: "Matriz Ambiental e das Águas", conteudos: [] },
+    sociocultural: { titulo: "Matriz Sociocultural e Simbólica", conteudos: [] },
+    economica: { titulo: "Matriz Econômica e Produtiva", conteudos: [] },
+    institucional: { titulo: "Matriz Institucional e Governança", conteudos: [] },
+    infraestrutura: { titulo: "Matriz Infraestrutural e de Serviços", conteudos: [] },
+    educacional: { titulo: "Matriz Educacional e Conhecimento", conteudos: [] },
+    prospectiva: { titulo: "Matriz Prospectiva (Visão de Futuro)", conteudos: [] }
+  };
+
+  for (const d of dims) {
+    const id = d.id;
+    const content = `${d.titulo ? `<strong>${d.titulo}:</strong> ` : ""}${d.conteudo}`;
+    if (id === "meio-ambiente" || id === "ambiental" || id === "aguas") {
+      groups.ambiental.conteudos.push(d.conteudo);
+    } else if (id === "historia" || id === "cultura" || id === "patrimonio" || id === "sociocultural" || id === "simbolica") {
+      groups.sociocultural.conteudos.push(content);
+    } else if (id === "economia" || id === "economica") {
+      groups.economica.conteudos.push(d.conteudo);
+    } else if (id === "comunidade" || id === "institucional" || id === "governanca" || id === "rede") {
+      if (id === "comunidade" || id === "rede") {
+        groups.sociocultural.conteudos.push(content);
+      } else {
+        groups.institucional.conteudos.push(d.conteudo);
+      }
+    } else if (id === "mobilidade" || id === "infraestrutura") {
+      groups.infraestrutura.conteudos.push(d.conteudo);
+    } else if (id === "educacao" || id === "educacional" || id === "conhecimento") {
+      groups.educacional.conteudos.push(d.conteudo);
+    } else if (id === "potencialidades" || id === "futuro" || id === "prospectiva") {
+      groups.prospectiva.conteudos.push(content);
+    } else {
+      groups.sociocultural.conteudos.push(content);
+    }
+  }
+
+  const htmlParts = [];
+  for (const key in groups) {
+    const group = groups[key];
+    if (group.conteudos.length > 0) {
+      const bodyHtml = group.conteudos.join("<br><br>");
+      htmlParts.push(subAccordion(key, group.titulo, bodyHtml));
+    }
+  }
+  
+  return htmlParts.join("");
 }
 
 function renderContato(c, externo) {
@@ -301,7 +351,7 @@ function renderTerritorio(ti) {
     <p class="lead">Território oficial de planejamento do Estado da Bahia (SEI/SEPLAN · SecultBA).</p>
     ${accordion("identidade", "Identidade do Território", `
        <p class="section-title">Dimensões</p>
-       <p style="font-size:0.82rem">${DIM_LABELS.join(" · ")}</p>`, true)}
+       <p style="font-size:0.82rem">${MATRIX_LABELS.join(" · ")}</p>`, true)}
     ${accordion("rede-ti", `REDE neste território (${entidades.length})`, renderEntityCards(entidades, ti.id), entidades.length > 0)}
     ${accordion("territorios-nav", "Ir para outro território", renderTiList(ti.id), false)}
   `;
