@@ -22,14 +22,6 @@ function videoIframe(slide) {
 function slideBody(slide, eagerVideo = false) {
   let html = `<h3 class="popup-rich-title">${esc(slide.titulo)}</h3>`;
   if (slide.texto) html += `<p class="popup-rich-text">${esc(slide.texto)}</p>`;
-  if (slide.links?.length) {
-    html += `<div class="popup-rich-links">${slide.links
-      .map(
-        (l) =>
-          `<a class="popup-ext-link" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.titulo || l.href)}</a>`
-      )
-      .join("")}</div>`;
-  }
   if (slide.foto) {
     html += `<figure class="popup-rich-media"><img src="${esc(slide.foto)}" alt="${esc(slide.legenda || slide.titulo)}" loading="lazy" decoding="async"><figcaption>${esc(slide.legenda || "")}</figcaption></figure>`;
   }

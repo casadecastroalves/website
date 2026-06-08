@@ -334,10 +334,8 @@ function pinPopupHtml(p, tiId) {
   if (hasRichPopup(p)) {
     return richPopupHtml(p, tiId);
   }
-  const link = bestLink(p.links);
   return `<div class="popup-title">${escHtml(p.nome)}</div>
-    ${p.resumo ? `<div class="popup-cod">${escHtml(p.resumo)}</div>` : ""}
-    ${link ? `<a class="popup-link" href="${escHtml(link)}" target="_blank" rel="noopener">Saiba mais →</a>` : ""}`;
+    ${p.resumo ? `<div class="popup-cod">${escHtml(p.resumo)}</div>` : ""}`;
 }
 
 function pinPopupOptions(p) {
