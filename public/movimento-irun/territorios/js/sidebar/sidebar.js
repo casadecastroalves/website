@@ -366,13 +366,13 @@ function renderEntidade(e, ti) {
     : "";
 
   const groups = {
-    ambiental: { text: "", items: [] },
-    sociocultural: { text: "", items: [] },
-    economica: { text: "", items: [] },
-    institucional: { text: "", items: [] },
-    infraestrutura: { text: "", items: [] },
-    educacional: { text: "", items: [] },
-    prospectiva: { text: "", items: [] }
+    ambiental: { text: "" },
+    sociocultural: { text: "" },
+    economica: { text: "" },
+    institucional: { text: "" },
+    infraestrutura: { text: "" },
+    educacional: { text: "" },
+    prospectiva: { text: "" }
   };
 
   if (Array.isArray(s.identidade)) {
@@ -403,22 +403,58 @@ function renderEntidade(e, ti) {
     }
   }
 
-  const accordions = [];
+  const utilityAccordions = [];
 
   // --- Fotos ---
   if (s.fotos?.length) {
-    accordions.push(accordion("fotos", `Fotos (${s.fotos.length})`, renderSlideshow(s.fotos), false));
+    utilityAccordions.push(accordion("fotos", `Fotos (${s.fotos.length})`, renderSlideshow(s.fotos), false));
   }
 
   // --- Vídeos ---
   if (s.videos?.length) {
-    accordions.push(accordion("videos", `Vídeos (${s.videos.length})`, renderVideos(s.videos), false));
+    utilityAccordions.push(accordion("videos", `Vídeos (${s.videos.length})`, renderVideos(s.videos), false));
   }
+
+  // --- Portfólio ---
+  if (s.portfolio?.length) {
+    utilityAccordions.push(accordion("portfolio", "Portfólio", renderPortfolio(s.portfolio), false));
+  }
+
+  // --- Produtos ---
+  if (s.produtos?.length || ext.produtos) {
+    utilityAccordions.push(accordion("produtos", "Produtos", renderList(s.produtos || []) + verMais(ext.produtos, "Ver todos os produtos →"), false));
+  }
+
+  // --- Turismo e vivências ---
+  if (s.roteiros?.length || ext.reservas) {
+    utilityAccordions.push(accordion("roteiros", "Turismo e vivências", renderList(s.roteiros || [], "titulo") + verMais(ext.reservas, "Reservar estadia →"), false));
+  }
+
+  // --- Contato ---
+  let contatoHtml = renderContato(s.contato, ext);
+  if (s.redes?.length || s.links?.length || ext.site) {
+    const links = [
+      ...(ext.site ? [{ href: ext.site, titulo: "Site oficial" }] : []),
+      ...(s.redes?.map((r) => ({ href: r.href, titulo: `${r.rede}: ${r.handle}` })) || []),
+      ...(s.links || []),
+    ];
+    const hasContent = contatoHtml.length > 0;
+    contatoHtml += `<p class="section-title" style="${hasContent ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Redes e links</p>` + renderLinks(links);
+  }
+  if (s.noticias?.length) {
+    const hasContent = contatoHtml.length > 0;
+    contatoHtml += `<p class="section-title" style="${hasContent ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Notícias</p>` + renderLinks(s.noticias.map((n) => ({ href: n.href, titulo: n.titulo })));
+  }
+  if (contatoHtml) {
+    utilityAccordions.push(accordion("contato", "Contato", contatoHtml, false));
+  }
+
+  const matrixAccordions = [];
 
   // --- Matriz Ambiental e das Águas ---
   let ambientalHtml = groups.ambiental.text;
   if (ambientalHtml) {
-    accordions.push(accordion("matriz-ambiental", "Matriz Ambiental e das Águas", ambientalHtml, false));
+    matrixAccordions.push(accordion("matriz-ambiental", "Ambiental e das Águas", ambientalHtml, false));
   }
 
   // --- Matriz Sociocultural e Simbólica ---
@@ -435,71 +471,46 @@ function renderEntidade(e, ti) {
                          renderSlideshow(s.fotos);
   }
   if (socioculturalHtml) {
-    accordions.push(accordion("matriz-sociocultural", "Matriz Sociocultural e Simbólica", socioculturalHtml, false));
+    matrixAccordions.push(accordion("matriz-sociocultural", "Sociocultural e Simbólica", socioculturalHtml, false));
   }
 
   // --- Matriz Econômica e Produtiva ---
   let economicaHtml = groups.economica.text;
-  if (s.produtos?.length || ext.produtos) {
-    const hasText = economicaHtml.length > 0;
-    economicaHtml += `<p class="section-title" style="${hasText ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Produtos</p>` + 
-                      renderList(s.produtos || []) + 
-                      verMais(ext.produtos, "Ver todos os produtos →");
-  }
-  if (s.roteiros?.length || ext.reservas) {
-    const hasContent = economicaHtml.length > 0;
-    economicaHtml += `<p class="section-title" style="${hasContent ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Turismo e vivências</p>` + 
-                      renderList(s.roteiros || [], "titulo") + 
-                      verMais(ext.reservas, "Reservar estadia →");
-  }
   if (economicaHtml) {
-    accordions.push(accordion("matriz-economica", "Matriz Econômica e Produtiva", economicaHtml, false));
+    matrixAccordions.push(accordion("matriz-economica", "Econômica e Produtiva", economicaHtml, false));
   }
 
   // --- Matriz Institucional e Governança ---
   let institucionalHtml = groups.institucional.text;
-  const contatoHtml = renderContato(s.contato, ext);
-  if (contatoHtml) {
-    const hasText = institucionalHtml.length > 0;
-    institucionalHtml += `<p class="section-title" style="${hasText ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Contato</p>` + contatoHtml;
-  }
-  if (s.redes?.length || s.links?.length || ext.site) {
-    const links = [
-      ...(ext.site ? [{ href: ext.site, titulo: "Site oficial" }] : []),
-      ...(s.redes?.map((r) => ({ href: r.href, titulo: `${r.rede}: ${r.handle}` })) || []),
-      ...(s.links || []),
-    ];
-    const hasContent = institucionalHtml.length > 0;
-    institucionalHtml += `<p class="section-title" style="${hasContent ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Redes e links</p>` + renderLinks(links);
-  }
-  if (s.noticias?.length) {
-    const hasContent = institucionalHtml.length > 0;
-    institucionalHtml += `<p class="section-title" style="${hasContent ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Notícias</p>` + renderLinks(s.noticias.map((n) => ({ href: n.href, titulo: n.titulo })));
-  }
   if (institucionalHtml) {
-    accordions.push(accordion("matriz-institucional", "Matriz Institucional e Governança", institucionalHtml, false));
+    matrixAccordions.push(accordion("matriz-institucional", "Institucional e Governança", institucionalHtml, false));
   }
 
   // --- Matriz Infraestrutural e de Serviços ---
   let infraestruturaHtml = groups.infraestrutura.text;
   if (infraestruturaHtml) {
-    accordions.push(accordion("matriz-infraestrutura", "Matriz Infraestrutural e de Serviços", infraestruturaHtml, false));
+    matrixAccordions.push(accordion("matriz-infraestrutura", "Infraestrutural e de Serviços", infraestruturaHtml, false));
   }
 
   // --- Matriz Educacional e Conhecimento ---
   let educacionalHtml = groups.educacional.text;
-  if (s.portfolio?.length) {
-    const hasText = educacionalHtml.length > 0;
-    educacionalHtml += `<p class="section-title" style="${hasText ? 'margin-top: 1.25rem;' : ''} margin-bottom: 0.5rem;">Portfólio</p>` + renderPortfolio(s.portfolio);
-  }
   if (educacionalHtml) {
-    accordions.push(accordion("matriz-educacional", "Matriz Educacional e Conhecimento", educacionalHtml, false));
+    matrixAccordions.push(accordion("matriz-educacional", "Educacional e Conhecimento", educacionalHtml, false));
   }
 
   // --- Matriz Prospectiva ---
   let prospectivaHtml = groups.prospectiva.text;
   if (prospectivaHtml) {
-    accordions.push(accordion("matriz-prospectiva", "Matriz Prospectiva (Visão de Futuro)", prospectivaHtml, false));
+    matrixAccordions.push(accordion("matriz-prospectiva", "Prospectiva (Visão de Futuro)", prospectivaHtml, false));
+  }
+
+  let matricesHtml = "";
+  if (matrixAccordions.length > 0) {
+    matricesHtml = `
+      <div class="matrices-section" style="margin-top: 1.75rem; border-top: 1px solid var(--border); padding-top: 1.25rem;">
+        <p class="section-title" style="margin-bottom: 0.75rem; font-weight: 700; color: var(--text); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;">Matrizes</p>
+        ${matrixAccordions.join("")}
+      </div>`;
   }
 
   return `
@@ -509,9 +520,10 @@ function renderEntidade(e, ti) {
     <h2 class="ti-header-title">${esc(e.meta?.nome || e.id)}</h2>
     <p class="lead" style="margin-bottom: 1.25rem;">${esc(e.meta?.municipio || "")}${e.meta?.uf ? ` — ${e.meta.uf}` : ""}</p>
     ${introHtml}
-    <div class="entity-matrices-accordions" style="margin-top: 1.25rem;">
-      ${accordions.join("")}
+    <div class="entity-utilities-accordions" style="margin-top: 1.25rem;">
+      ${utilityAccordions.join("")}
     </div>
+    ${matricesHtml}
   `;
 }
 
