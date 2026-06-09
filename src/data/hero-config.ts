@@ -5,7 +5,7 @@
 export type HeroMode = 'default' | 'promo';
 
 export const heroConfig = {
-  mode: 'promo' as HeroMode,
+  mode: 'default' as HeroMode,
 
   default: {
     title: 'Onde a poesia se faz',
