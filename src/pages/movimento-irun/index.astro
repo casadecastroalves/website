@@ -49,6 +49,15 @@ const edicoes = [
     img: "/images/edicoes/edicao-5/header/dao-black-sambadelic-movimento-irun-edicao-5-header.jpg"
   },
   {
+    num: "Oyás",
+    data: "02 de Dezembro de 2025 · 9h às 13h",
+    artista: "Confraria de Oyá",
+    show: "Oyá, Mãe do Vento e do Poder de Transformação",
+    desc: "Xirê Cultural sobre o poder da fala, do pertencimento e do empoderamento feminino — em homenagem a Oyá, Mãe do Vento e do Poder de Transformação.",
+    slug: "confraria-de-oya",
+    img: "/images/edicoes/confraria-de-oya/confraria-de-oya.jpg"
+  },
+  {
     num: 6,
     data: "21 de Dezembro de 2025",
     artista: "Cabuloso Trio",
@@ -101,15 +110,6 @@ const edicoes = [
     desc: "Reflexão sobre as águas, territórios e saberes tradicionais, com exposição, oficinas, gira de saberes e show de Maíra e Ícaro Santiago.",
     slug: "edicao-11",
     img: "/images/edicoes/edicao-11/header/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-header.jpg"
-  },
-  {
-    num: "",
-    data: "JULHO 25 A JUNHO 26",
-    artista: "Movimento Irun",
-    show: "11 Edições Completas",
-    desc: "Todas as edições entre 2025 e 2026. “Irun”, de origem tupi-guarani, significa “companheiro” ou “irmão”, simbolizando colaboração e coletividade.",
-    slug: "11-edicoes",
-    img: "/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg"
   }
 ];
 
@@ -519,18 +519,16 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
       <p class="subpage-hero-subtitle">Aliança Ancestral</p>
       <div style="margin-top: 2rem; display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
         <a 
-          href="https://docs.google.com/forms/d/e/1FAIpQLSdYlaHZ_6jtI8SrXIyznc4ejZ9JRGsyC8JqBJ85dG9HoKNdhA/viewform" 
-          target="_blank" 
-          rel="noopener noreferrer" 
+          href="/movimento-irun/edicoes" 
           class="btn btn-outline-amarelo"
         >
-          INSCREVA-SE
+          EDIÇÕES
         </a>
         <a 
-          href="/movimento-irun/11-edicoes" 
+          href="/movimento-irun/cursos" 
           class="btn btn-outline-amarelo"
         >
-          11 EDIÇÕES
+          CURSOS
         </a>
       </div>
     </div>
@@ -619,16 +617,6 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
         </div>
       </div>
 
-      <div class="eixos-footer">
-        <a 
-          href="https://forms.gle/oBxBMZ4YBeDeugB57" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="btn btn-primary"
-        >
-          INSCREVA-SE
-        </a>
-      </div>
     </div>
   </section>
 
@@ -1598,7 +1586,7 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
     <div class="container">
       <div class="section-header text-center">
         <span class="section-badge">Registro Histórico</span>
-        <h2>11 Edições</h2>
+        <h2>Edições</h2>
         <p class="section-subtitle">Todos os encontros do Movimento Irun na Casa</p>
       </div>
 
@@ -1606,7 +1594,7 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
         {edicoes.map((ed) => (
           <a href={`/movimento-irun/${ed.slug}`} class="edicao-card card">
             <div class="edicao-img-wrapper">
-              <img src={ed.img} alt={ed.num ? `Poster oficial da ${ed.num}ª edição do Movimento Irun` : `Poster oficial do Movimento Irun - 11 Edições`} />
+              <img src={ed.img} alt={ed.num ? `Poster oficial da ${ed.num}ª edição do Movimento Irun` : `Poster oficial do Movimento Irun - Edições`} class={ed.slug === "confraria-de-oya" ? "img-contain" : ""} />
             </div>
             <div class="edicao-content">
               <span class="edicao-date">{ed.data}</span>
@@ -2278,6 +2266,12 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
     height: 100%;
     object-fit: cover;
     transition: var(--transition-smooth);
+  }
+
+  .edicao-img-wrapper img.img-contain {
+    object-fit: contain;
+    background-color: var(--color-branco);
+    padding: var(--space-md);
   }
 
   .edicao-card:hover .edicao-img-wrapper img {

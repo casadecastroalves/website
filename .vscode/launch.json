@@ -2,8 +2,14 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "./node_modules/.bin/astro dev",
-      "name": "Development server",
+      "command": "npm run view",
+      "name": "Visualizar site (rápido)",
+      "request": "launch",
+      "type": "node-terminal"
+    },
+    {
+      "command": "npm run view:build",
+      "name": "Visualizar site (rebuild)",
       "request": "launch",
       "type": "node-terminal"
     }

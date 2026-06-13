@@ -8,7 +8,10 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "astro preview --host 127.0.0.1 --port 4321",
+    "view": "node scripts/preview.mjs",
+    "view:build": "node scripts/preview.mjs --build",
+    "sync:oya-card": "node scripts/sync-oya-card.mjs",
     "astro": "astro"
   },
   "dependencies": {
