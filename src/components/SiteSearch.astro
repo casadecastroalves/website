@@ -236,6 +236,7 @@
 
   const MAX_RESULTS = 30;
   const CATEGORY_ORDER = ['Edição', 'Curso', 'Design Caboclo', 'Exposição', 'Movimento Irun', 'Contato', 'Página'];
+  const RELATED_TERMS = [['gira', 'giras', 'grias']];
 
   let index: SearchEntry[] = [];
   let indexLoaded = false;
@@ -286,6 +287,12 @@
 
     if (term.length >= 4 && !term.endsWith('s')) {
       variants.add(`${term}s`);
+    }
+
+    for (const group of RELATED_TERMS) {
+      if (group.includes(term)) {
+        for (const related of group) variants.add(related);
+      }
     }
 
     return [...variants].sort((a, b) => b.length - a.length);
