@@ -1,9 +1,21 @@
-import { escAttr, esc } from "../core/util.js";
+import { escAttr, esc, slugify } from "../core/util.js";
+import { state } from "../core/state.js";
 
 const YT = "rel=0&modestbranding=1&iv_load_policy=3";
 
 export function hasRich(entry) {
   return Array.isArray(entry.popup?.slides) && entry.popup.slides.length > 0;
+}
+
+/* Só liga "Ver ficha" quando faz sentido: nunca aponta um lugar distinto
+   para a ficha de um município com outro nome (ex.: Casa das Rendeiras → Saubara). */
+function fichaLinkId(entry) {
+  const id = entry.fichaId || entry.entidadeId;
+  if (!id) return null;
+  const f = state.fichaById?.[id];
+  if (!f) return null;
+  if (f.tipo === "municipio" && slugify(f.meta?.nome || "") !== slugify(entry.nome || "")) return null;
+  return id;
 }
 
 function bestLink(links = []) {
@@ -14,10 +26,11 @@ function bestLink(links = []) {
 export function popupHtml(entry) {
   if (hasRich(entry)) return richPopupHtml(entry);
   const link = bestLink(entry.links || []);
+  const fichaId = fichaLinkId(entry);
   return `<div class="popup-title">${esc(entry.nome)}</div>
     ${entry.resumo ? `<div class="popup-cod">${esc(entry.resumo)}</div>` : ""}
     ${link ? `<a class="popup-link" href="${escAttr(link)}" target="_blank" rel="noopener">Saiba mais →</a>` : ""}
-    ${(entry.fichaId || entry.entidadeId) ? `<span class="popup-link" data-ficha="${escAttr(entry.fichaId || entry.entidadeId)}">Ver ficha →</span>` : ""}`;
+    ${fichaId ? `<span class="popup-link" data-ficha="${escAttr(fichaId)}">Ver ficha →</span>` : ""}`;
 }
 
 export function popupOptions(entry) {
@@ -43,12 +56,13 @@ export function richPopupHtml(entry) {
   const slides = entry.popup.slides;
   const ctx = entry.popup.contexto || entry.nome;
   const n = slides.length;
+  const fichaId = fichaLinkId(entry);
   return `<div class="irun-rich-popup" data-slides="${n}">
     <div class="popup-rich-ctx">${esc(ctx)}</div>
     <div class="popup-rich-viewport">
       ${slides.map((s, i) => `<div class="popup-rich-slide${i === 0 ? " active" : ""}" data-idx="${i}">${slideBody(s, i === 0)}</div>`).join("")}
     </div>
-    ${(entry.fichaId || entry.entidadeId) ? `<span class="popup-link" data-ficha="${escAttr(entry.fichaId || entry.entidadeId)}">Ver ficha completa →</span>` : ""}
+    ${fichaId ? `<span class="popup-link" data-ficha="${escAttr(fichaId)}">Ver ficha completa →</span>` : ""}
     ${n > 1 ? `<div class="popup-rich-nav">
       <button type="button" class="popup-rich-btn popup-rich-prev" aria-label="Anterior">←</button>
       <span class="popup-rich-pos">1 de ${n}</span>

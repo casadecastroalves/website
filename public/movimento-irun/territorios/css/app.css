@@ -266,6 +266,13 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 .entity-sub { display: block; font-size: 0.7rem; color: var(--text-faint); font-weight: 400; }
 .entity-arrow { color: var(--text-faint); }
 
+.place-static {
+  list-style: none; display: flex; align-items: center; gap: 9px; padding: 10px 11px;
+  border: 1px solid var(--border); border-radius: 10px;
+}
+.place-static .entity-badge { background: var(--bg-muted); color: var(--text-muted); }
+.place-static .entity-name { flex: 1; font-size: 0.86rem; font-weight: 500; color: var(--text-muted); }
+
 .content-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
 .content-list li { font-size: 0.84rem; line-height: 1.5; color: var(--text-muted); padding-left: 14px; position: relative; }
 .content-list li::before { content: "·"; position: absolute; left: 2px; color: var(--yellow); font-weight: 700; }

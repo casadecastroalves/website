@@ -65,6 +65,23 @@ function fichaBadge(f) {
   return tipoLabel(f.tipo);
 }
 
+/* Card de um ponto do mapa: mostra SEMPRE o nome do pin.
+   Liga à ficha quando faz sentido (sublocal de quilombo ou o próprio município),
+   mas nunca aponta um lugar distinto para a ficha de um município com outro nome. */
+function pinCard(p) {
+  const f = fichaById(p.fichaId || p.entidadeId);
+  const nomesIguais = f && slugify(f.meta?.nome || "") === slugify(p.nome);
+  const ligar = f && (f.tipo !== "municipio" || nomesIguais);
+  if (ligar) {
+    return `<li class="entity-card" data-ficha="${f.id}" tabindex="0" role="button">
+      <span class="entity-badge">Lugar</span>
+      <span class="entity-name">${esc(p.nome)}</span>
+      <span class="entity-arrow">→</span>
+    </li>`;
+  }
+  return `<li class="place-static"><span class="entity-badge">Lugar</span><span class="entity-name">${esc(p.nome)}</span></li>`;
+}
+
 function renderRedeList() {
   const list = redeOrdenada();
   if (!list.length) return `<p class="empty-rede">Nenhum território mapeado ainda.</p>`;
@@ -213,11 +230,7 @@ function renderTerritorio(ti) {
   const fichas = fichasDoTerritorio(ti.id);
   const pontos = state.pontos.filter((p) => p.territorioId === ti.id);
   const lugares = pontos.length
-    ? `<ul class="entity-list">${pontos.map((p) => {
-      const f = fichaById(p.fichaId || p.entidadeId);
-      if (f) return fichaCard(f, "Lugar");
-      return `<li class="content-list-item">${esc(p.nome)}</li>`;
-    }).join("")}</ul>`
+    ? `<ul class="entity-list">${pontos.map(pinCard).join("")}</ul>`
     : `<p class="empty-rede">Sem lugares mapeados ainda.</p>`;
   return `
     ${tiPager(ti.id, "home", "Início")}
@@ -284,7 +297,7 @@ function renderMunicipio(slug) {
     <div class="ti-header-cod">Município</div>
     <h2 class="ti-header-title">${esc(nome)}</h2>
     ${accordion("mun-fichas", `Fichas REDE (${fichas.length})`, fichas.length ? `<ul class="entity-list">${fichas.map((f) => fichaCard(f, fichaBadge(f))).join("")}</ul>` : `<p class="empty-rede">Nenhuma ficha neste município.</p>`, true)}
-    ${pontos.length ? accordion("mun-lugares", `Lugares (${pontos.length})`, `<ul class="content-list">${pontos.map((p) => `<li>${esc(p.nome)}</li>`).join("")}</ul>`, false) : ""}
+    ${pontos.length ? accordion("mun-lugares", `Lugares (${pontos.length})`, `<ul class="entity-list">${pontos.map(pinCard).join("")}</ul>`, false) : ""}
   `;
 }
 
@@ -335,7 +348,7 @@ function bindEvents(el, route) {
     item.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
   });
 
-  el.querySelectorAll(".entity-card").forEach((card) => {
+  el.querySelectorAll(".entity-card[data-ficha]").forEach((card) => {
     const go = () => { goFicha(card.dataset.ficha); openForContext(); };
     card.addEventListener("click", go);
     card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
