@@ -43,6 +43,7 @@ async function main() {
   if (forceBuild || !distIsReady()) {
     console.log('\nA construir o site para visualização...\n');
     await run('node', ['scripts/sync-oya-card.mjs']);
+    await run('node', ['scripts/build-search-index.mjs']);
     await run('npm', ['run', 'build']);
   } else {
     console.log('\nA usar build existente em dist/. Para reconstruir: npm run view:build\n');

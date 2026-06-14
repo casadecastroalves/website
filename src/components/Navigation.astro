@@ -1,4 +1,6 @@
 ---
+import SiteSearch from './SiteSearch.astro';
+
 const moreLinks = [
   {
     label: 'Biblioteca',
@@ -22,8 +24,6 @@ const primaryLinks = [
   { label: 'A Casa', href: '/a-casa' },
   { label: 'Shows', href: '/shows' },
   { label: 'Movimento Irun', href: '/movimento-irun' },
-  { label: 'Edições', href: '/movimento-irun/edicoes' },
-  { label: 'Cursos', href: '/movimento-irun/cursos' },
 ];
 
 ---
@@ -62,17 +62,41 @@ const primaryLinks = [
         </div>
       </details>
 
+      <button type="button" class="search-toggle search-toggle--desktop" aria-label="Buscar no site" data-open-search>
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"></circle>
+          <path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </button>
+
       <a href="/contato" class="btn btn-nav btn-sm">Contato</a>
     </nav>
 
-    <button class="mobile-menu-toggle" aria-label="Abrir menu" aria-expanded="false" id="menuToggle">
+    <div class="header-actions-mobile">
+      <button type="button" class="search-toggle search-toggle--mobile" aria-label="Buscar no site" data-open-search>
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"></circle>
+          <path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </button>
+
+      <button class="mobile-menu-toggle" aria-label="Abrir menu" aria-expanded="false" id="menuToggle">
       <span class="bar"></span>
       <span class="bar"></span>
       <span class="bar"></span>
     </button>
+    </div>
   </div>
 
   <nav class="nav-mobile" aria-label="Menu mobile" id="mobileMenu" hidden>
+    <button type="button" class="mobile-nav-search" data-open-search>
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"></circle>
+        <path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+      </svg>
+      <span>Buscar no site</span>
+    </button>
+    <span class="mobile-nav-divider" aria-hidden="true"></span>
     {
       primaryLinks.map((link) => (
         <a href={link.href} class="mobile-nav-link">
@@ -95,6 +119,8 @@ const primaryLinks = [
     }
     <a href="/contato" class="mobile-nav-link mobile-nav-link-btn">Contato</a>
   </nav>
+
+  <SiteSearch />
 </header>
 
 <style>
@@ -217,6 +243,78 @@ const primaryLinks = [
     margin-left: var(--space-sm);
   }
 
+  .search-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid rgba(26, 26, 26, 0.2);
+    background: transparent;
+    color: var(--color-preto-editorial);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .search-toggle:hover {
+    border-color: var(--color-preto-editorial);
+    background: rgba(26, 26, 26, 0.04);
+  }
+
+  .search-toggle--desktop {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .search-toggle--desktop {
+      display: inline-flex;
+    }
+  }
+
+  .header-actions-mobile {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  @media (min-width: 768px) {
+    .header-actions-mobile {
+      display: none;
+    }
+  }
+
+  .search-toggle--mobile {
+    display: inline-flex;
+  }
+
+  @media (min-width: 768px) {
+    .search-toggle--mobile {
+      display: none;
+    }
+  }
+
+  .mobile-nav-search {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 10px 16px;
+    border: 1px solid rgba(26, 26, 26, 0.15);
+    background: transparent;
+    font-family: var(--font-interface);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-preto-editorial);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .mobile-nav-search:hover {
+    border-color: var(--color-preto-editorial);
+  }
+
   .mobile-menu-toggle {
     display: flex;
     flex-direction: column;
@@ -336,6 +434,17 @@ const primaryLinks = [
 
     mobileMenu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        mobileMenu.hidden = true;
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Abrir menu');
+        document.body.classList.remove('menu-open');
+      });
+    });
+
+    mobileMenu.querySelectorAll('[data-open-search]').forEach((button) => {
+      button.addEventListener('click', () => {
         menuToggle.classList.remove('active');
         mobileMenu.classList.remove('active');
         mobileMenu.hidden = true;

@@ -47,6 +47,7 @@ async function main() {
   console.log('\n=== Preview com reload automatico ===\n');
   console.log('Build inicial...');
   await runOnce('node', ['scripts/sync-oya-card.mjs']);
+  await runOnce('node', ['scripts/build-search-index.mjs']);
   await runOnce('npm', ['run', 'build']);
 
   console.log(`\nAbre no browser: http://${host}:${port}/movimento-irun/cursos/`);

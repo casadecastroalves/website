@@ -3,8 +3,8 @@ cd /d "%~dp0"
 title Casa de Castro Alves — Live Preview
 
 echo.
-echo  LIVE PREVIEW — reload automatico ao editar src/
-echo  Usa este ficheiro enquanto trabalhas no site.
+echo  LIVE PREVIEW — alteracoes em src/ aparecem ao guardar
+echo  Usa Ctrl+C para parar.
 echo.
 
 where node >nul 2>&1
@@ -14,4 +14,4 @@ if errorlevel 1 (
   exit /b 1
 )
 
-call npm.cmd run watch
+call npm.cmd run dev -- --host 127.0.0.1 --port 4321

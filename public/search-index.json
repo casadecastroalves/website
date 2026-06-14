@@ -1,0 +1,146 @@
+[
+  {
+    "title": "Home",
+    "url": "/",
+    "excerpt": "Casa de Castro Alves — memória, arte, poesia e Movimento Irun em Salvador.",
+    "category": "Página"
+  },
+  {
+    "title": "A Casa",
+    "url": "/a-casa",
+    "excerpt": "História, espaços, galeria, eventos e jardim com vista para a Baía de Todos os Santos.",
+    "category": "Página"
+  },
+  {
+    "title": "Shows & Eventos",
+    "url": "/shows",
+    "excerpt": "Programação de shows, pocket shows e eventos na Casa de Castro Alves.",
+    "category": "Página"
+  },
+  {
+    "title": "Movimento Irun",
+    "url": "/movimento-irun",
+    "excerpt": "Iniciativa cultural de aliança ancestral, design caboclo, formação e exposições.",
+    "category": "Movimento Irun"
+  },
+  {
+    "title": "Edições",
+    "url": "/movimento-irun/edicoes",
+    "excerpt": "Todas as edições e pocket shows do Movimento Irun na Casa de Castro Alves.",
+    "category": "Movimento Irun"
+  },
+  {
+    "title": "Cursos",
+    "url": "/movimento-irun/cursos",
+    "excerpt": "Programa Bem Viver, Cidade Cidadã, Permacultura Urbana e formações do Movimento Irun.",
+    "category": "Movimento Irun"
+  },
+  {
+    "title": "Contato",
+    "url": "/contato",
+    "excerpt": "Agende visitas, eventos e entre em contacto com a Casa de Castro Alves.",
+    "category": "Página"
+  },
+  {
+    "title": "1ª Edição — Pocket Show 'Cantos de Òrìṣà'",
+    "url": "/movimento-irun/edicao-1",
+    "excerpt": "O lançamento oficial do Movimento IRUN ocorreu no Instituto Casa de Castro Alves. Com forte presença de representantes de comunidades tradicionais, artistas e ativistas culturais, o evento marcou o início de uma plataforma de ações voltada à transformação social por meio da arte,",
+    "category": "Edição"
+  },
+  {
+    "title": "2ª Edição — Show 'EletroSamba'",
+    "url": "/movimento-irun/edicao-2",
+    "excerpt": "A segunda potente ação do Movimento IRUN articulou escuta, exposição e show — reunindo feminismo, ancestralidade e transformação social. A proposta reafirma o papel do casarão histórico de pulsar com a força de vozes coletivas, saberes ancestrais e arte insurgente. Ayrá Soares & ",
+    "category": "Edição"
+  },
+  {
+    "title": "3ª Edição — Show 'Encontros Híbridos'",
+    "url": "/movimento-irun/edicao-3",
+    "excerpt": "Com o tema 'Viva os Santos Meninos', esta edição valorizou a infância e os aprendizados que ela inspira. O encerramento da programação foi marcado pelo espetáculo 'Encontros Híbridos', que uniu música e performance em uma experiência de diálogo intergeracional. Enio & Vírus Encon",
+    "category": "Edição"
+  },
+  {
+    "title": "4ª Edição — Show 'Ijexá'",
+    "url": "/movimento-irun/edicao-4",
+    "excerpt": "A quarta edição propôs uma imersão profunda na estética, bases históricas e espiritualidade do Ijexá — ritmo ancestral dos terreiros de candomblé e dos tradicionais afoxés baianos, articulando música, moda e debate cultural. Tito Bahiense Ijexá 26 de Outubro de 2025",
+    "category": "Edição"
+  },
+  {
+    "title": "5ª Edição — Show 'Sambadelic'",
+    "url": "/movimento-irun/edicao-5",
+    "excerpt": "Dão Black ocupou a Casa de Castro Alves com samba, design e vinil. O evento integrot o espírito do Movimento Irun reafirmando a coletividade como essência artística e celebrando o samba como força de conexão de corpos e territórios. Dão Black Sambadelic 16 de Novembro de 2025",
+    "category": "Edição"
+  },
+  {
+    "title": "Confraria de Oyá — Oyá, Mãe do Vento e do Poder de Transformação",
+    "url": "/movimento-irun/confraria-de-oya",
+    "excerpt": "Atividade da Confraria de Oyá em homenagem a Oyá, Mãe do Vento e do Poder de Transformação. Encontro de celebração, fortalecimento e partilha centrado na força e no poder feminino, com roda de Xirê Cultural sobre o poder da fala, do pertencimento e do empoderamento — integrando f",
+    "category": "Edição"
+  },
+  {
+    "title": "6ª Edição — Ocupação Manifesto Teia dos Povos",
+    "url": "/movimento-irun/edicao-6",
+    "excerpt": "Edição histórica de Ocupação Manifesto reunindo povos e comunidades tradicionais para estruturar estratégias organizativas em defesa da terra, território e soberania alimentar. Idealizada pela Casa de Castro Alves, Teia dos Povos e Universidade dos Povos. Cabuloso Trio Ocupação M",
+    "category": "Edição"
+  },
+  {
+    "title": "7ª Edição — Show 'Jangada'",
+    "url": "/movimento-irun/edicao-7",
+    "excerpt": "A sétima edição aprofundou o Manifesto da Teia dos Povos com abordagens ecológicas e pedagógicas. A Casa de Castro Alves consolida-se como território simbólico de resistência, criação, agroecologia e partilha de saberes. Ícaro Santiago & Eric Mazzone Jangada 25 de Janeiro de 2026",
+    "category": "Edição"
+  },
+  {
+    "title": "8ª Edição — Show 'Tambor de Mulher'",
+    "url": "/movimento-irun/edicao-8",
+    "excerpt": "Com o lema 'Quando a poesia se faz aliança: 179 anos de Castro Alves', a oitava edição prestou homenagem ao nascimento do poeta republicano, abolicionista e patrono do casarão com uma programação inteiramente dedicada ao tambor feminino. Yayá Muxima & Banda Tambor de Mulher 15 de",
+    "category": "Edição"
+  },
+  {
+    "title": "9ª Edição — Show de Mariella Santiago",
+    "url": "/movimento-irun/edicao-9",
+    "excerpt": "Dedicada inteiramente aos povos originários e à cura ancestral da terra. O Jardim da Casa serviu de palco para o Toré da Aliança, ritual coletivo reunindo etnias em torno do bem viver e da soberania alimentar. Mariella Santiago Aqualtunes 26 de Abril de 2026",
+    "category": "Edição"
+  },
+  {
+    "title": "10ª Edição — Show de Denise Correia",
+    "url": "/movimento-irun/edicao-10",
+    "excerpt": "A décima edição marcou o encerramento del primeiro grande ciclo de encontros do Movimento Irun na Casa de Castro Alves. Reuniu ativistas, lideranças e artistas para celebrar a continuidade da aliança preta, indígena e popular e os portfólios sistematizados das comunidades. Denise",
+    "category": "Edição"
+  },
+  {
+    "title": "11ª Edição — Águas Nascentes: Tempo de Recomeços",
+    "url": "/movimento-irun/edicao-11",
+    "excerpt": "A 11ª edição do Movimento IRUN, intitulada “Águas Nascentes: Tempo de Recomeços”, propõe uma reflexão sobre as águas, os territórios e os saberes tradicionais como fontes de regeneração da vida. Inspirada na experiência da Escola das Águas Nascentes, na Chapada Diamantina, a ediç",
+    "category": "Edição"
+  },
+  {
+    "title": "EXPO I",
+    "url": "/movimento-irun/expo-1",
+    "excerpt": "Exposição do Bem Viver mapeando as identidades culturais e os ativos locais da Bahia. EXPO I Junho de 2026",
+    "category": "Exposição"
+  },
+  {
+    "title": "EXPO II",
+    "url": "/movimento-irun/expo-2",
+    "excerpt": "Exposição do Bem Viver mapeando as identidades culturais e os ativos locais da Bahia. EXPO II Junho de 2026",
+    "category": "Exposição"
+  },
+  {
+    "title": "EXPO III",
+    "url": "/movimento-irun/expo-3",
+    "excerpt": "Exposição do Bem Viver mapeando as identidades culturais e os ativos locais da Bahia. EXPO III Junho de 2026",
+    "category": "Exposição"
+  },
+  {
+    "title": "EXPO IV",
+    "url": "/movimento-irun/expo-4",
+    "excerpt": "Exposição do Bem Viver mapeando as identidades culturais e os ativos locais da Bahia. EXPO IV Junho de 2026",
+    "category": "Exposição"
+  },
+  {
+    "title": "EXPO V",
+    "url": "/movimento-irun/expo-5",
+    "excerpt": "Exposição do Bem Viver mapeando as identidades culturais e os ativos locais da Bahia. EXPO V Junho de 2026",
+    "category": "Exposição"
+  }
+]
