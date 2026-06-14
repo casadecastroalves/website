@@ -266,6 +266,9 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 .entity-sub { display: block; font-size: 0.7rem; color: var(--text-faint); font-weight: 400; }
 .entity-arrow { color: var(--text-faint); }
 
+.rede-ti-card { align-items: flex-start; }
+.rede-ti-lugares { display: block; font-size: 0.7rem; line-height: 1.45; color: var(--text-faint); font-weight: 400; margin-top: 3px; }
+
 .place-static {
   list-style: none; display: flex; align-items: center; gap: 9px; padding: 10px 11px;
   border: 1px solid var(--border); border-radius: 10px;

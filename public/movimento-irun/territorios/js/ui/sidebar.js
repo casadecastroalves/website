@@ -82,10 +82,46 @@ function pinCard(p) {
   return `<li class="place-static"><span class="entity-badge">Lugar</span><span class="entity-name">${esc(p.nome)}</span></li>`;
 }
 
+/* Territórios da REDE: lista explícita do config (ordem por código),
+   com fallback para os territórios marcados como activos. */
+function redeTerritorios() {
+  const ids = state.config.rede?.territorios || [];
+  const fromCfg = ids.map((id) => tiById(id)).filter(Boolean);
+  const list = fromCfg.length ? fromCfg : state.territorios.filter((t) => t.redeAtiva);
+  return [...list].sort((a, b) => Number(a.cod) - Number(b.cod));
+}
+
+/* Lugares mapeados de um território, sem repetir: fichas primeiro,
+   depois pins (quilombos e municípios em destaque). */
+function lugaresDoTerritorio(tiId) {
+  const rank = (p) => (p.categorias?.includes("quilombos") ? 0 : p.categorias?.includes("municipios") ? 1 : 2);
+  const pins = state.pontos.filter((p) => p.territorioId === tiId).sort((a, b) => rank(a) - rank(b));
+  const nomes = [];
+  const seen = new Set();
+  const add = (n) => { const k = slugify(n || ""); if (!n || seen.has(k)) return; seen.add(k); nomes.push(n); };
+  fichasDoTerritorio(tiId).forEach((f) => add(f.meta?.nome));
+  pins.forEach((p) => add(p.nome));
+  return nomes;
+}
+
+function redeTerritorioCard(t) {
+  const lugares = lugaresDoTerritorio(t.id);
+  const shown = lugares.slice(0, 6).join(" · ");
+  const extra = lugares.length > 6 ? ` +${lugares.length - 6}` : "";
+  const sub = lugares.length
+    ? `<span class="rede-ti-lugares">${esc(shown)}${esc(extra)}</span>`
+    : `<span class="rede-ti-lugares muted">Mapeamento em curso</span>`;
+  return `<li class="entity-card rede-ti-card" data-ti="${t.id}" tabindex="0" role="button">
+    <span class="entity-badge">TI ${esc(t.cod)}</span>
+    <span class="entity-name">${esc(t.nome)}${sub}</span>
+    <span class="entity-arrow">→</span>
+  </li>`;
+}
+
 function renderRedeList() {
-  const list = redeOrdenada();
+  const list = redeTerritorios();
   if (!list.length) return `<p class="empty-rede">Nenhum território mapeado ainda.</p>`;
-  return `<ul class="entity-list">${list.map((f) => fichaCard(f, fichaBadge(f))).join("")}</ul>`;
+  return `<ul class="entity-list">${list.map(redeTerritorioCard).join("")}</ul>`;
 }
 
 function renderFilters() {
@@ -217,11 +253,11 @@ function renderSobre() {
 function renderHome() {
   const meta = state.config.rede?.meta || tiList().length;
   const redeLabel = state.config.rede?.label || "REDE";
-  const rede = redeOrdenada();
+  const rede = redeTerritorios();
   return `
     ${accordion("sobre", state.config.sobre?.titulo || "Sobre o Mapa", renderSobre(), true)}
     ${accordion("territorios", `${tiList().length} Territórios de Identidade`, renderTiList(), false)}
-    ${accordion("rede", `${redeLabel} (${countRede()}/${meta})`, `<p class="lead">Territórios com mapeamento participativo activo.</p>${renderRedeList()}`, rede.length > 0)}
+    ${accordion("rede", `${redeLabel} (${countRede()}/${meta})`, `<p class="lead">Territórios da rede com mapeamento participativo. Toque para abrir cada território e ver os lugares no mapa.</p>${renderRedeList()}`, rede.length > 0)}
     ${accordion("filtros", "Filtros", renderFilters(), false)}
   `;
 }
@@ -348,8 +384,13 @@ function bindEvents(el, route) {
     item.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
   });
 
-  el.querySelectorAll(".entity-card[data-ficha]").forEach((card) => {
-    const go = () => { goFicha(card.dataset.ficha); openForContext(); };
+  el.querySelectorAll(".entity-card[data-ficha], .entity-card[data-ti]").forEach((card) => {
+    const go = () => {
+      if (card.dataset.ficha) goFicha(card.dataset.ficha);
+      else if (card.dataset.ti) goTerritorio(card.dataset.ti);
+      else return;
+      openForContext();
+    };
     card.addEventListener("click", go);
     card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
   });
