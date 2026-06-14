@@ -10,6 +10,7 @@ const host = process.env.PREVIEW_HOST || '127.0.0.1';
 
 const previewPages = [
   { label: 'Home', path: '/' },
+  { label: 'Shows', path: '/shows/' },
   { label: 'Edições', path: '/movimento-irun/edicoes/' },
   { label: '1ª Edição', path: '/movimento-irun/edicao-1/' },
   { label: 'Confraria de Oyá', path: '/movimento-irun/confraria-de-oya/' },
