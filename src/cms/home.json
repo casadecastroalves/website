@@ -1,0 +1,61 @@
+{
+  "heroMode": "default",
+  "heroDefault": {
+    "title": "Onde a poesia se faz",
+    "highlight": "Aliança e Resistência",
+    "subtitle": "A antiga residência do poeta Castro Alves hoje abriga um espaço vivo de cultura, memória, arte contemporânea e saberes ancestrais no coração de Salvador.",
+    "primaryCtaLabel": "Conheça a Casa",
+    "primaryCtaHref": "/a-casa",
+    "secondaryCtaLabel": "Agendar Visita",
+    "secondaryCtaHref": "/contato"
+  },
+  "heroPromo": {
+    "title": "11ª Edição do Movimento Irun",
+    "highlight": "Sente O Tempo Passar",
+    "subtitle": "Show do duo iRê iRê: Maíra e Ícaro Santiago, exposição da Escola das Águas Nascentes, oficinas, Design Caboclo, feira agroecológica da Chapada Diamantina, gira de saberes e diálogos institucionais",
+    "primaryCtaLabel": "INSCREVA-SE",
+    "primaryCtaHref": "https://docs.google.com/forms/d/e/1FAIpQLSdYlaHZ_6jtI8SrXIyznc4ejZ9JRGsyC8JqBJ85dG9HoKNdhA/viewform",
+    "secondaryCtaLabel": "Ver Programação",
+    "secondaryCtaHref": "/movimento-irun/edicao-11",
+    "imageAlt": "Duo iRê iRê - 11ª Edição do Movimento Irun"
+  },
+  "citacao": {
+    "texto": "O livro caindo n'alma é germe — que faz a palma,\né chuva — que faz o grão.",
+    "autor": "Castro Alves",
+    "obra": "O Livro e a América"
+  },
+  "eixosTitulo": "Nossos Eixos de Atuação",
+  "eixosSubtitulo": "Descubra as diferentes frentes que mantêm a Casa pulsando cultura e ativismo.",
+  "cards": [
+    {
+      "categoria": "Espaço Cultural",
+      "titulo": "A Casa & Galeria",
+      "texto": "Explore um casarão do século XVIII que abriga galeria de arte contemporânea, exposições fotográficas, memorial do poeta e um jardim deslumbrante voltado para a Baía de Todos os Santos.",
+      "linkLabel": "Saber mais →",
+      "linkHref": "/a-casa"
+    },
+    {
+      "categoria": "Programação",
+      "titulo": "Shows & Eventos",
+      "texto": "Acompanhe a nossa vibrante programação cultural, incluindo shows ao vivo, apresentações musicais e eventos literários no nosso palco histórico.",
+      "linkLabel": "Ver programação →",
+      "linkHref": "/shows"
+    },
+    {
+      "categoria": "Formação",
+      "titulo": "Projetos & Cursos",
+      "texto": "Iniciativas de capacitação comunitária, Cidade Cidadã, Permacultura Urbana, Design Dialógico e formalização cultural para o fortalecimento de territórios.",
+      "linkLabel": "Conhecer grade →",
+      "linkHref": "/movimento-irun/cursos"
+    }
+  ],
+  "eventoCta": {
+    "badge": "Eventos e Casamentos",
+    "titulo": "Realize seu evento em um cenário histórico inesquecível",
+    "texto": "Nosso espaço de 510m² integra espaço de memória, galeria de arte e um magnífico jardim com vista para a Baía de Todos os Santos. Ideal para casamentos, festas e comemorações corporativas exclusivas no Santo Antônio Além do Carmo.",
+    "convidados": "450",
+    "area": "510m²",
+    "destaque": "Pôr do Sol",
+    "destaqueLabel": "Vista para a Baía de Todos os Santos"
+  }
+}

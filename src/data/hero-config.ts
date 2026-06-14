@@ -1,32 +1,39 @@
-/**
- * Hero da homepage — altere `mode` para trocar entre campanha e hero institucional
- * sem editar o markup em index.astro.
- */
+import cms from '../cms/home.json' with { type: 'json' };
+
 export type HeroMode = 'default' | 'promo';
 
 export const heroConfig = {
-  mode: 'default' as HeroMode,
+  mode: (cms.heroMode === 'promo' ? 'promo' : 'default') as HeroMode,
 
   default: {
-    title: 'Onde a poesia se faz',
-    highlight: 'Aliança e Resistência',
-    subtitle:
-      'A antiga residência do poeta Castro Alves hoje abriga um espaço vivo de cultura, memória, arte contemporânea e saberes ancestrais no coração de Salvador.',
-    primaryCta: { label: 'Conheça a Casa', href: '/a-casa' },
-    secondaryCta: { label: 'Agendar Visita', href: '/contato' },
+    title: cms.heroDefault.title,
+    highlight: cms.heroDefault.highlight,
+    subtitle: cms.heroDefault.subtitle,
+    primaryCta: {
+      label: cms.heroDefault.primaryCtaLabel,
+      href: cms.heroDefault.primaryCtaHref,
+    },
+    secondaryCta: {
+      label: cms.heroDefault.secondaryCtaLabel,
+      href: cms.heroDefault.secondaryCtaHref,
+    },
   },
 
   promo: {
-    title: '11ª Edição do Movimento Irun',
-    highlight: 'Sente O Tempo Passar',
-    subtitle:
-      'Show do duo iRê iRê: Maíra e Ícaro Santiago, exposição da Escola das Águas Nascentes, oficinas, Design Caboclo, feira agroecológica da Chapada Diamantina, gira de saberes e diálogos institucionais',
+    title: cms.heroPromo.title,
+    highlight: cms.heroPromo.highlight,
+    subtitle: cms.heroPromo.subtitle,
     primaryCta: {
-      label: 'INSCREVA-SE',
-      href: 'https://docs.google.com/forms/d/e/1FAIpQLSdYlaHZ_6jtI8SrXIyznc4ejZ9JRGsyC8JqBJ85dG9HoKNdhA/viewform',
+      label: cms.heroPromo.primaryCtaLabel,
+      href: cms.heroPromo.primaryCtaHref,
       external: true,
     },
-    secondaryCta: { label: 'Ver Programação', href: '/movimento-irun/edicao-11' },
-    imageAlt: 'Duo iRê iRê - 11ª Edição do Movimento Irun',
+    secondaryCta: {
+      label: cms.heroPromo.secondaryCtaLabel,
+      href: cms.heroPromo.secondaryCtaHref,
+    },
+    imageAlt: cms.heroPromo.imageAlt,
   },
 } as const;
+
+export const homePage = cms;

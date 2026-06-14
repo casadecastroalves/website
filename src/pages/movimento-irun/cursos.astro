@@ -1,328 +1,173 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { cursosPage, statusClass } from '../../data/cursosData.js';
 
-// Cursos page for Movimento Irun / Casa de Castro Alves
+const {
+  hero,
+  programaBemViver,
+  eixosTitulo,
+  eixosSubtitulo,
+  eixos,
+  oficinasTitulo,
+  oficinasSubtitulo,
+  oficinas,
+  cronograma,
+  apoio,
+} = cursosPage;
 ---
 
-<Layout title="Cursos e Formações | Movimento Irun" description="Ciclo Formativo do Movimento Irun na Casa de Castro Alves. Formações em Permacultura Urbana, Cidade Cidadã e o Programa Bem Viver. Inscrições e calendário." ogImage="/images/cursos/PROGRAMA%20BOM%20VIVER%20-%20MOVIMENTO%20IRUN%20-%20CURSOS%20-%20HEADER.jpg">
-  <!-- Hero Section -->
+<Layout title="Cursos e Formações | Movimento Irun" description="Ciclo Formativo do Movimento Irun na Casa de Castro Alves. Formações em Permacultura Urbana, Cidade Cidadã e o Programa Bem Viver. Inscrições e calendário." ogImage={hero.imagem}>
   <section class="subpage-hero">
-    <div class="subpage-hero-bg" style="background-image: url('/images/cursos/PROGRAMA%20BOM%20VIVER%20-%20MOVIMENTO%20IRUN%20-%20CURSOS%20-%20HEADER.jpg');"></div>
+    <div class="subpage-hero-bg" style={`background-image: url('${hero.imagem}');`}></div>
     <div class="subpage-hero-overlay"></div>
     <div class="container subpage-hero-content">
-      <h1 class="subpage-hero-title">Cursos</h1>
-      <p class="subpage-hero-subtitle">Ciclo Formativo</p>
+      <h1 class="subpage-hero-title">{hero.titulo}</h1>
+      <p class="subpage-hero-subtitle">{hero.subtitulo}</p>
       <div style="margin-top: 2rem;">
-        <a 
-          href="https://forms.gle/oBxBMZ4YBeDeugB57" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="btn btn-outline-amarelo"
-        >
+        <a href={hero.inscricaoUrl} target="_blank" rel="noopener noreferrer" class="btn btn-outline-amarelo">
           INSCREVA-SE
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Programa Bem Viver -->
   <section class="bem-viver-section">
     <div class="container">
-      <span class="section-badge">Fortalecimento de Territórios</span>
-      <h2>Programa Bem Viver</h2>
-      <p class="lead-text">
-        O <strong>Programa Bem Viver</strong> é uma ação de formação pensada para fortalecer territórios indígenas, quilombolas e comunidades do campo e da cidade, articulando cultura, organização comunitária e acesso a direitos e políticas públicas.
-      </p>
-      <p>
-        Organizado em quatro eixos integrados, o programa ajuda a mapear saberes, práticas culturais e potencialidades de cada localidade, apoiando na realização de diagnósticos territoriais e na sistematização dessas informações em portfólios que facilitem a captação de recursos e a autogestão.
-      </p>
-      <p>
-        O programa estimula a articulação direta com órgãos governamentais e instituições do terceiro setor, ensinando caminhos práticos para captação e sustentabilidade de projetos, complementado por atividades presenciais como <strong>Giras de Saberes</strong> e <strong>Diálogos Institucionais</strong>.
-      </p>
+      <span class="section-badge">{programaBemViver.badge}</span>
+      <h2>{programaBemViver.titulo}</h2>
+      {programaBemViver.paragrafos.map((p, i) => (
+        <p class:list={[{ 'lead-text': i === 0 }]}>{p}</p>
+      ))}
     </div>
   </section>
 
-  <!-- Eixos do Programa -->
   <section class="eixos-section">
     <div class="container">
       <div class="section-header text-center">
         <span class="section-badge">Cursos</span>
-        <h2>Estrutura Curricular do Bem Viver</h2>
-        <p class="section-subtitle">Conheça as quatro frentes teóricas e práticas que compõem o programa.</p>
+        <h2>{eixosTitulo}</h2>
+        <p class="section-subtitle">{eixosSubtitulo}</p>
       </div>
 
       <div class="eixos-grid">
-        <!-- Eixo 1 -->
-        <div class="eixo-card card">
-          <span class="eixo-number">01</span>
-          <div class="eixo-header">
-            <h3>Espaços Comuns<br />do Bem Viver</h3>
+        {eixos.map((eixo) => (
+          <div class="eixo-card card">
+            <span class="eixo-number">{eixo.numero}</span>
+            <div class="eixo-header">
+              <h3 set:html={eixo.titulo.replace(/\n/g, '<br />')} />
+            </div>
+            <p class="eixo-instructor">Facilitadora: {eixo.facilitador}</p>
+            {eixo.metodologia && <p class="eixo-subtitle-detail">{eixo.metodologia}</p>}
+            <ul class="eixo-topics">
+              {eixo.topicos.map((item) => <li>{item}</li>)}
+            </ul>
           </div>
-          <p class="eixo-instructor">Facilitadora: Aline Bento</p>
-          <ul class="eixo-topics">
-            <li>Mapeamento de pontos de cultura e rede territorial.</li>
-            <li>Mapeamento de potenciais e recursos locais.</li>
-            <li>Mapeamento de redes culturais e artísticas.</li>
-            <li>Elaboração de propostas de articulação (pré-diálogo institucional).</li>
-          </ul>
-        </div>
-
-        <!-- Eixo 2 -->
-        <div class="eixo-card card">
-          <span class="eixo-number">02</span>
-          <div class="eixo-header">
-            <h3>Gestão Criativa<br />de Território</h3>
-          </div>
-          <p class="eixo-instructor">Facilitadora: Márcia Ganem</p>
-          <p class="eixo-subtitle-detail">Metodologia: Design Dialógico</p>
-          <ul class="eixo-topics">
-            <li>Diagnósticos aplicados de entidades culturais e coletivos.</li>
-            <li>Identificação e valorização de ativos culturais locais.</li>
-            <li>Sistematização de portfólios territoriais identitários.</li>
-          </ul>
-        </div>
-
-        <!-- Eixo 03 -->
-        <div class="eixo-card card">
-          <span class="eixo-number">03</span>
-          <div class="eixo-header">
-            <h3>Design de<br />Território</h3>
-          </div>
-          <p class="eixo-instructor">Facilitadora: Inés Grimaux</p>
-          <ul class="eixo-topics">
-            <li>Visão participativa do território.</li>
-            <li>Visualização da identidade territorial.</li>
-            <li>Matrizes de potencialidades e relações territoriais.</li>
-            <li>Narrativas do território.</li>
-            <li>Visão de futuro e definição de prioridades.</li>
-          </ul>
-        </div>
-
-        <!-- Eixo 04 -->
-        <div class="eixo-card card">
-          <span class="eixo-number">04</span>
-          <div class="eixo-header">
-            <h3>Formalização e<br />Sustentabilidade</h3>
-          </div>
-          <p class="eixo-instructor">Facilitadora: Lucyvanda Moura</p>
-          <ul class="eixo-topics">
-            <li>Estruturação jurídica e administrativa de entidades culturais.</li>
-            <li>Caminhos e editais de captação de recursos.</li>
-            <li>Atividades práticas e simulações de Diálogo Institucional.</li>
-            <li>Giras de Saberes voltadas à sustentabilidade comunitária.</li>
-          </ul>
-        </div>
-
+        ))}
       </div>
 
       <div class="eixos-footer">
-        <a 
-          href="https://forms.gle/oBxBMZ4YBeDeugB57" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          class="btn btn-primary"
-        >
+        <a href={hero.inscricaoUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
           INSCREVA-SE
         </a>
       </div>
     </div>
   </section>
 
-  <!-- Formações Gerais e Oficinas Práticas -->
   <section class="formacoes-historicas">
     <div class="container">
       <div class="section-header text-center">
         <span class="section-badge">Oficinas e Extensões</span>
-        <h2>Ciclos do Movimento IRUN</h2>
-        <p class="section-subtitle">Cursos integrados, oficinas práticas, giras e diálogos desenvolvidos ao longo das edições.</p>
+        <h2>{oficinasTitulo}</h2>
+        <p class="section-subtitle">{oficinasSubtitulo}</p>
       </div>
 
       <div class="courses-box-grid">
-        <!-- 1. Cidade Cidadã -->
-        <div class="course-box card">
-          <div>
-            <div class="course-header">
-              <h3>Cidade Cidadã — Uma Cultura da Cidadania</h3>
-              <span class="time-badge">Ciclo Formativo</span>
-            </div>
-            <p class="course-instructor">Facilitadora: Maura Cristina da Silva (MSTB)</p>
-            <p>
-              Formação voltada à reflexão e prática de cidadania cultural ativa, instrumentando cidadãos e coletivos na formulação, fiscalização e acompanhamento de políticas públicas, direitos humanos e defesa do patrimônio imaterial. Utilizando a Pedagogia do Chão e a Rotatividade de Saberes, a formação aborda a moradia como direito fundamental, a preservação dos quilombos urbanos e a luta contra a gentrificação no Centro Antigo de Salvador.
-            </p>
-          </div>
-          <div class="course-footer">
-            <span class="status-badge finished">Concluído</span>
-          </div>
-        </div>
-
-        <!-- 2. Permacultura Urbana -->
-        <div class="course-box card">
-          <div>
-            <div class="course-header">
-              <h3>Permacultura Urbana — Cultura da Permanência</h3>
-              <span class="time-badge">Ciclo Formativo</span>
-            </div>
-            <p class="course-instructor">Teoria e Prática Comunitária</p>
-            <p>
-              Curso teórico-prático que ensina conceitos de permacultura aplicada ao meio urbano com foco nas lutas decoloniais, feministas e periféricas no coração do Centro Histórico. Tópicos abordados incluem compostagem urbana, captação de água de chuva, eficiência energética residencial, hortas comunitárias e a valorização das pessoas e da terra como patrimônio vivo do território.
-            </p>
-          </div>
-          <div class="course-footer">
-            <span class="status-badge finished">Concluído</span>
-          </div>
-        </div>
-
-        <!-- 3. Giras de Saber -->
-        <div class="course-box card">
-          <div>
-            <div class="course-header">
-              <h3>Giras de Saber — Ecologias do Bem Viver</h3>
-              <span class="time-badge">Giras</span>
-            </div>
-            <p class="course-instructor">Saberes e Ecologias</p>
-            <p>
-              Espaço de intercâmbio, compartilhamento e transmissão de conhecimentos tradicionais e saberes ecológicos. As Giras promovem o debate sobre sustentabilidade comunitária, preservação de sementes crioulas e o fortalecimento de redes territoriais voltadas ao bem viver coletivo.
-            </p>
-          </div>
-          <div class="course-footer">
-            <span class="status-badge finished">Concluído</span>
-          </div>
-        </div>
-
-        <!-- 4. Bordado pela Cidadania -->
-        <div class="course-box card">
-          <div>
-            <div class="course-header">
-              <h3>Bordado pela Cidadania — Linhas Bahia Axé</h3>
-              <span class="time-badge">Oficina</span>
-            </div>
-            <p class="course-instructor">Manufatura e Engajamento</p>
-            <p>
-              Prática formativa e político-cultural que articula manufatura, engajamento social e construção de narrativas coletivas sobre direitos humanos, memória e território através do ensino do bordado manual e da cartografia afetiva.
-            </p>
-          </div>
-          <div class="course-footer">
-            <span class="status-badge finished">Concluído</span>
-          </div>
-        </div>
-
-        <!-- 5. Tear e Fabricação de Cordão Manual -->
-        <div class="course-box card">
-          <div>
-            <div class="course-header">
-              <h3>Tear e Fiação de Algodão Manual</h3>
-              <span class="time-badge">Oficina</span>
-            </div>
-            <p class="course-instructor">Brígida Salgado, Mestre Gervásio e Mestra Lili</p>
-            <p>
-              Oficina prática que resgata e valoriza as artes manuais tradicionais da fiação e tecelagem de algodão. Trazendo mestres e mestras artesãs da cidade de Piatã, na Chapada Diamantina, a formação ensina as técnicas ancestrais da tecelagem em tear de pedal e fiação manual, fortalecendo a autonomia produtiva e a preservação de ofícios tradicionais da Bahia.
-            </p>
-          </div>
-          <div class="course-footer">
-            <span class="status-badge finished">Concluído</span>
-          </div>
-        </div>
-
-        <!-- 6. Diálogos Institucionais -->
-        <div class="course-box card">
-          <div>
-            <div class="course-header">
-              <h3>Diálogos Institucionais e Parcerias</h3>
-              <span class="time-badge">Diálogos</span>
-            </div>
-            <p class="course-instructor">Sustentabilidade e Gestão</p>
-            <p>
-              Atividade voltada à instrumentação de coletivos na interlocução com órgãos governamentais e poder público. Aborda caminhos práticos para estruturação de parcerias e estratégias de fortalecimento institucional.
-            </p>
-          </div>
-          <div class="course-footer">
-            <span class="status-badge finished">Concluído</span>
-          </div>
-        </div>
-
-        <!-- 7. CSU Eliane (Violência Contra a Mulher) -->
-        <div class="course-box card" style="grid-column: 1 / -1;">
-          <div class="csu-course-container">
-            <div class="csu-text-content">
-              <div class="course-header">
-                <h3>CSU Enfrentamento à Violência contra a Mulher</h3>
-                <span class="time-badge">Ação Social</span>
-              </div>
-              <p class="course-instructor">Facilitadora: Assistente Social Eliane Rodrigues</p>
-              <p>
-                Formação fundamental voltada ao debate, acolhimento e desenvolvimento de estratégias de combate à violência doméstica nas comunidades. Ação realizada no CSU de Valéria e no CSU do Nordeste de Amaralina com distribuição de informativos sobre a rede de apoio.
-              </p>
-              <div class="course-footer">
-                <span class="status-badge finished">Concluído</span>
-              </div>
-            </div>
-            <div class="csu-gallery-content">
-              <p class="gallery-title">Informativos distribuídos nas localidades:</p>
-              <div class="csu-gallery-grid" style="grid-template-columns: repeat(2, 1fr);">
-                <div class="csu-gallery-item shadow-premium">
-                  <img src="/images/cursos/csu/violencia-card-1.png" alt="Informativo Localidade Valéria" />
+        {oficinas.map((curso) => (
+          <div
+            class="course-box card"
+            style={curso.larguraCompleta ? 'grid-column: 1 / -1;' : undefined}
+          >
+            {curso.larguraCompleta && curso.imagens?.length ? (
+              <div class="csu-course-container">
+                <div class="csu-text-content">
+                  <div class="course-header">
+                    <h3>{curso.titulo}</h3>
+                    <span class="time-badge">{curso.badge}</span>
+                  </div>
+                  <p class="course-instructor">{curso.facilitador}</p>
+                  <p>{curso.descricao}</p>
+                  <div class="course-footer">
+                    <span class={`status-badge ${statusClass(curso.status)}`}>{curso.status}</span>
+                  </div>
                 </div>
-                <div class="csu-gallery-item shadow-premium">
-                  <img src="/images/cursos/csu/violencia-card-2.png" alt="Informativo Localidade Nordeste de Amaralina" />
+                <div class="csu-gallery-content">
+                  {curso.galeriaTitulo && <p class="gallery-title">{curso.galeriaTitulo}</p>}
+                  <div class="csu-gallery-grid" style="grid-template-columns: repeat(2, 1fr);">
+                    {curso.imagens.map((img) => (
+                      <div class="csu-gallery-item shadow-premium">
+                        <img src={img.src} alt={img.alt} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <>
+                <div>
+                  <div class="course-header">
+                    <h3>{curso.titulo}</h3>
+                    <span class="time-badge">{curso.badge}</span>
+                  </div>
+                  <p class="course-instructor">{curso.facilitador}</p>
+                  <p>{curso.descricao}</p>
+                </div>
+                <div class="course-footer">
+                  <span class={`status-badge ${statusClass(curso.status)}`}>{curso.status}</span>
+                </div>
+              </>
+            )}
           </div>
-        </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- Cronograma e Status -->
   <section class="calendario-section">
     <div class="container">
       <div class="calendario-card">
         <div class="calendario-info">
-          <h2>Cronograma Geral do Ciclo</h2>
-          <p>
-            As formações tiveram início em <strong>19 de julho de 2025</strong>, com aulas semanais realizadas sempre aos sábados na sede do Movimento IRUN, localizada no Instituto Casa de Castro Alves.
-          </p>
+          <h2>{cronograma.titulo}</h2>
+          <p set:html={cronograma.intro.replace(/(19 de julho de 2025)/, '<strong>$1</strong>')} />
           <div class="ciclos-list">
-            <div class="ciclo-item">
-              <strong>1º Ciclo:</strong> Julho a Outubro de 2025
-            </div>
-            <div class="ciclo-item">
-              <strong>2º Ciclo:</strong> Outubro de 2025 a Janeiro de 2026
-            </div>
-            <div class="ciclo-item">
-              <strong>3º Ciclo:</strong> Janeiro a Abril de 2026
-            </div>
-            <div class="ciclo-item">
-              <strong>4º Ciclo:</strong> Maio a Junho de 2026
-            </div>
+            {cronograma.ciclos.map((ciclo) => (
+              <div class="ciclo-item">
+                <strong>{ciclo.label}</strong> {ciclo.periodo}
+              </div>
+            ))}
           </div>
         </div>
         <div class="calendario-status text-center">
           <div class="lock-icon" style="color: var(--color-ouro); margin-bottom: var(--space-sm);">
-            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock" style="display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
           </div>
-          <h3>Inscrições para o Ciclo Atual Encerradas</h3>
-          <p>Entre em contato para ser notificado sobre a abertura de novas turmas e chamadas públicas.</p>
+          <h3>{cronograma.statusTitulo}</h3>
+          <p>{cronograma.statusTexto}</p>
           <a href="/contato" class="btn btn-dark">Fale Conosco</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Apoios e Logos Rodapé -->
   <section class="apoio-section">
     <div class="container text-center">
-      <h3>Apoio e Fomento</h3>
-      <p class="apoio-text">
-        Este projeto foi contemplado nos Editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva.
-      </p>
+      <h3>{apoio.titulo}</h3>
+      <p class="apoio-text">{apoio.texto}</p>
       <div class="apoio-banner-wrapper">
-        <img src="/REGUAS_PNAB_BA_CULTURA_VIVA.png" alt="Logos de apoio do Movimento Irun - Secult-BA, PNAB, Governo da Bahia, Ministério da Cultura, Cultura Viva" class="apoio-banner-img" />
+        <img src={apoio.banner} alt={apoio.bannerAlt} class="apoio-banner-img" />
       </div>
     </div>
   </section>
 </Layout>
-
 <style>
   /* Grid layout for intro */
   .bem-viver-section {
@@ -361,7 +206,7 @@ import Layout from '../../layouts/Layout.astro';
   .eixo-card {
     position: relative;
     padding: var(--space-lg);
-    padding-top: 56px; /* Aumentado para dar mais respiração em relação ao número */
+    padding-top: 56px; /* Aumentado para dar mais respira├º├úo em rela├º├úo ao n├║mero */
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -379,7 +224,7 @@ import Layout from '../../layouts/Layout.astro';
   }
 
   .eixo-header {
-    height: 64px; /* Altura fixa para alinhar os nomes dos facilitadores abaixo dos títulos */
+    height: 64px; /* Altura fixa para alinhar os nomes dos facilitadores abaixo dos t├¡tulos */
     display: flex;
     align-items: flex-start;
     margin-bottom: 12px;
@@ -413,7 +258,7 @@ import Layout from '../../layouts/Layout.astro';
 
   .eixo-topics {
     list-style-type: none;
-    margin-top: 0; /* Remove o margin-top auto para manter o espaço em branco na base do card */
+    margin-top: 0; /* Remove o margin-top auto para manter o espa├ºo em branco na base do card */
     display: flex;
     flex-direction: column;
     gap: var(--space-xs);
@@ -428,7 +273,7 @@ import Layout from '../../layouts/Layout.astro';
   }
 
   .eixo-topics li::before {
-    content: "•";
+    content: "ÔÇó";
     color: var(--color-ouro);
     font-weight: bold;
     position: absolute;
@@ -436,7 +281,7 @@ import Layout from '../../layouts/Layout.astro';
     top: 0;
   }
 
-  /* Formações 2025 */
+  /* Forma├º├Áes 2025 */
   .formacoes-historicas {
     background-color: var(--color-creme);
   }
@@ -614,7 +459,7 @@ import Layout from '../../layouts/Layout.astro';
     object-fit: contain;
   }
 
-  /* Calendário card */
+  /* Calend├írio card */
   .calendario-card {
     background-color: var(--color-branco);
     border: 1px solid rgba(26, 26, 26, 0.08);
@@ -856,3 +701,4 @@ import Layout from '../../layouts/Layout.astro';
     }
   });
 </script>
+

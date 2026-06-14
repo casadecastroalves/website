@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { Image, getImage } from 'astro:assets';
-import { heroConfig } from '../data/hero-config';
+import { heroConfig, homePage } from '../data/hero-config.ts';
+import { contactInfo } from '../data/contact.ts';
 
 import heroImage from '../assets/images/hero.jpg';
 import casaImg3 from '../assets/images/casa-de-castro-alves-3.png';
@@ -11,6 +12,8 @@ import cursosImg from '../assets/images/cursos.png';
 const optimizedCtaBg = await getImage({ src: casaImg3, format: 'webp', width: 1200 });
 const hero = heroConfig.mode === 'promo' ? heroConfig.promo : heroConfig.default;
 const isPromoHero = heroConfig.mode === 'promo';
+const waText = encodeURIComponent('Olá! Vim através do site da Casa de Castro Alves e gostaria de informações.');
+const { citacao, eixosTitulo, eixosSubtitulo, cards, eventoCta } = homePage;
 ---
 
 <Layout title="Casa de Castro Alves | Memória, Arte e Poesia no Centro Histórico">
@@ -63,11 +66,8 @@ const isPromoHero = heroConfig.mode === 'promo';
     <div class="container text-center">
       <div class="quote-container">
         <span class="quote-mark">“</span>
-        <blockquote class="poetic-quote">
-          O livro caindo n'alma é germe — que faz a palma,<br />
-          é chuva — que faz o grão.
-        </blockquote>
-        <cite class="quote-author">— Castro Alves, <em>O Livro e a América</em></cite>
+        <blockquote class="poetic-quote" set:html={citacao.texto.replace(/\n/g, '<br />')} />
+        <cite class="quote-author">— {citacao.autor}, <em>{citacao.obra}</em></cite>
       </div>
     </div>
   </section>
@@ -76,55 +76,26 @@ const isPromoHero = heroConfig.mode === 'promo';
   <section class="features-section">
     <div class="container">
       <div class="section-header text-center">
-        <h2 class="section-title">Nossos Eixos de Atuação</h2>
-        <p class="section-subtitle">Descubra as diferentes frentes que mantêm a Casa pulsando cultura e ativismo.</p>
+        <h2 class="section-title">{eixosTitulo}</h2>
+        <p class="section-subtitle">{eixosSubtitulo}</p>
       </div>
 
       <div class="grid-3">
-        <!-- Feature 1: A Casa -->
-        <div class="card feature-card">
-          <div class="card-image-wrapper">
-            <Image src={casaImg3} alt="Galeria de Arte Contemporânea da Casa" class="card-img" width={400} height={250} format="webp" loading="lazy" />
-            <div class="card-category">Espaço Cultural</div>
+        {cards.map((card, i) => (
+          <div class="card feature-card">
+            <div class="card-image-wrapper">
+              {i === 0 && <Image src={casaImg3} alt="Galeria de Arte Contemporânea da Casa" class="card-img" width={400} height={250} format="webp" loading="lazy" />}
+              {i === 1 && <Image src={showsImg} alt="Shows e Eventos Culturais na Casa" class="card-img" width={400} height={250} format="webp" loading="lazy" />}
+              {i === 2 && <Image src={cursosImg} alt="Programa Bem Viver" class="card-img cursos-card-img" width={400} height={250} format="webp" loading="lazy" />}
+              <div class="card-category">{card.categoria}</div>
+            </div>
+            <div class="card-body">
+              <h3>{card.titulo}</h3>
+              <p>{card.texto}</p>
+              <a href={card.linkHref} class="card-link">{card.linkLabel}</a>
+            </div>
           </div>
-          <div class="card-body">
-            <h3>A Casa & Galeria</h3>
-            <p>
-              Explore um casarão do século XVIII que abriga galeria de arte contemporânea, exposições fotográficas, memorial do poeta e um jardim deslumbrante voltado para a Baía de Todos os Santos.
-            </p>
-            <a href="/a-casa" class="card-link">Saber mais →</a>
-          </div>
-        </div>
-
-        <!-- Feature 2: Shows & Eventos -->
-        <div class="card feature-card">
-          <div class="card-image-wrapper">
-            <Image src={showsImg} alt="Shows e Eventos Culturais na Casa" class="card-img" width={400} height={250} format="webp" loading="lazy" />
-            <div class="card-category">Programação</div>
-          </div>
-          <div class="card-body">
-            <h3>Shows & Eventos</h3>
-            <p>
-              Acompanhe a nossa vibrante programação cultural, incluindo shows ao vivo, apresentações musicais e eventos literários no nosso palco histórico.
-            </p>
-            <a href="/shows" class="card-link">Ver programação →</a>
-          </div>
-        </div>
-
-        <!-- Feature 3: Cursos e Formação -->
-        <div class="card feature-card">
-          <div class="card-image-wrapper">
-            <Image src={cursosImg} alt="Programa Bem Viver" class="card-img cursos-card-img" width={400} height={250} format="webp" loading="lazy" />
-            <div class="card-category">Formação</div>
-          </div>
-          <div class="card-body">
-            <h3>Projetos & Cursos</h3>
-            <p>
-              Iniciativas de capacitação comunitária, Cidade Cidadã, Permacultura Urbana, Design Dialógico e formalização cultural para o fortalecimento de territórios.
-            </p>
-            <a href="/movimento-irun/cursos" class="card-link">Conhecer grade →</a>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   </section>
@@ -134,23 +105,21 @@ const isPromoHero = heroConfig.mode === 'promo';
     <div class="cta-bg" style={`background-image: linear-gradient(to right, rgba(26, 26, 26, 0.95), rgba(26, 26, 26, 0.7)), url(${optimizedCtaBg.src});`}></div>
     <div class="container cta-content-wrapper">
       <div class="cta-text-col">
-        <span class="badge">Eventos e Casamentos</span>
-        <h2>Realize seu evento em um cenário histórico inesquecível</h2>
-        <p>
-          Nosso espaço de 510m² integra espaço de memória, galeria de arte e um magnífico jardim com vista para a Baía de Todos os Santos. Ideal para casamentos, festas e comemorações corporativas exclusivas no Santo Antônio Além do Carmo.
-        </p>
+        <span class="badge">{eventoCta.badge}</span>
+        <h2>{eventoCta.titulo}</h2>
+        <p>{eventoCta.texto}</p>
         <div class="cta-specs">
           <div class="spec-item">
-            <span class="spec-val">450</span>
+            <span class="spec-val">{eventoCta.convidados}</span>
             <span class="spec-lbl">Convidados</span>
           </div>
           <div class="spec-item">
-            <span class="spec-val">510m²</span>
+            <span class="spec-val">{eventoCta.area}</span>
             <span class="spec-lbl">Área Útil</span>
           </div>
           <div class="spec-item">
-            <span class="spec-val">Pôr do Sol</span>
-            <span class="spec-lbl">Vista para a Baía de Todos os Santos</span>
+            <span class="spec-val">{eventoCta.destaque}</span>
+            <span class="spec-lbl">{eventoCta.destaqueLabel}</span>
           </div>
         </div>
       </div>
@@ -158,7 +127,7 @@ const isPromoHero = heroConfig.mode === 'promo';
         <div class="glass-card cta-card">
           <h3>Agendamentos</h3>
           <p>Entre em contato conosco para verificar datas disponíveis e agendar uma visita técnica ao local.</p>
-          <a href="https://wa.me/5571991296555?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20da%20Casa%20de%20Castro%20Alves%20e%20gostaria%20de%20informa%C3%A7%C3%B5es." class="btn btn-primary btn-cta-phone" target="_blank" rel="noopener noreferrer">71 9 9129 6555</a>
+          <a href={`https://wa.me/${contactInfo.whatsapp}?text=${waText}`} class="btn btn-primary btn-cta-phone" target="_blank" rel="noopener noreferrer">{contactInfo.telefone}</a>
           <a href="/contato" class="btn btn-outline-dark btn-cta-form">Enviar Mensagem</a>
         </div>
       </div>

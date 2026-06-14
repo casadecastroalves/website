@@ -1,92 +1,63 @@
 ---
-// Secções 2–7, slideshow e estilos partilhados da página A Casa
+import { aCasaPage } from '../../data/aCasaData.js';
+
+const { secoes, galeriaArte } = aCasaPage;
+
+function sectionParagraphs(texto) {
+  return texto.split('\n').filter(Boolean);
+}
 ---
 
-<!-- 2. História (Image 65% / Text 35%) -->
-<section class="acasa-section" style="background-color: #ffffff;">
-  <div class="col-65 img-col">
-    <img src="/images/a_casa/casa-de-castro-alves-santo-antonio-alem-do-carmo-1-1024x576.jpg" alt="História - Casa de Castro Alves" />
-  </div>
-  <div class="col-35 text-col">
-    <h2>História</h2>
-    <p>Sua história tem início em 1855, quando a família de Castro Alves vem residir nela e o Dr. Antonio José Alves, pai do poeta, abre um consultório médico e a primeira escola de doenças tropicais da Bahia.</p>
-  </div>
-</section>
+{secoes.map((sec) => (
+  <section class="acasa-section" style={`background-color: ${sec.bg};`}>
+    {sec.layout === 'img-left' ? (
+      <>
+        <div class="col-65 img-col">
+          <img src={sec.imagem} alt={sec.alt} />
+        </div>
+        <div class="col-35 text-col">
+          <h2>{sec.titulo}</h2>
+          {sectionParagraphs(sec.texto).map((p) => <p>{p}</p>)}
+        </div>
+      </>
+    ) : (
+      <>
+        <div class="col-35 text-col">
+          <h2>{sec.titulo}</h2>
+          {sectionParagraphs(sec.texto).map((p) => <p>{p}</p>)}
+        </div>
+        <div class="col-65 img-col">
+          <img src={sec.imagem} alt={sec.alt} />
+        </div>
+      </>
+    )}
+  </section>
+))}
 
-<!-- 3. Localização (Text 35% / Image 65%) -->
-<section class="acasa-section" style="background-color: #f5f5f5;">
-  <div class="col-35 text-col">
-    <h2>Localização</h2>
-    <p>A casa está localizada ao lado da Igreja do Passo – Cenário do filme “O Pagador de Promessas” Um sobrado do século XVIII, no bairro do Santo Antonio, Rua do Passo – Centro Histórico de Salvador</p>
-  </div>
-  <div class="col-65 img-col">
-    <img src="/images/a_casa/casa-de-castro-alves-santo-antonio-alem-do-carmo-2-1024x576.jpg" alt="Localização - Rua do Passo" />
-  </div>
-</section>
-
-<!-- 4. Espaços (Image 35% / Text 65%) -->
-<section class="acasa-section" style="background-color: #cad4db;">
-  <div class="col-35 img-col">
-    <img src="/images/a_casa/3-003-1024x464.jpg" alt="Espaços da Casa" />
-  </div>
-  <div class="col-65 text-col">
-    <h2>Espaços</h2>
-    <p>A Casa integra espaço de memória, galeria de arte, galeria de design, espaço de apresentações artísticas, eventos, espaço de cursos e jardim, em seus três andares e um jardim com vista para a Baía de Todos os Santos, com 510m2</p>
-  </div>
-</section>
-
-<!-- 5. Galeria de Arte (Text 35% / Slideshow 65%) -->
 <section class="acasa-section" style="background-color: #e8e4db;">
   <div class="col-35 text-col">
-    <h2>Galeria de Arte Contemporânea</h2>
-    <p>Exposições de fotografia, pintura, instalações e novas linguagens.</p>
+    <h2>{galeriaArte.titulo}</h2>
+    <p>{galeriaArte.texto}</p>
   </div>
   <div class="col-65 img-col">
     <div class="slideshow-container">
       <div class="slideshow-track">
-        <div class="slide">
-          <img src="/images/a_casa/casa-de-castro-alves-3.png" alt="Galeria de Arte 1" />
-        </div>
-        <div class="slide">
-          <img src="/images/a_casa/casa-de-castro-alves-2.png" alt="Galeria de Arte 2" />
-        </div>
-        <div class="slide">
-          <img src="/images/a_casa/casa-de-castro-alves-galeria-arte.jpg" alt="Galeria de Arte 3" />
-        </div>
+        {galeriaArte.fotos.map((foto) => (
+          <div class="slide">
+            <img src={foto.src} alt={foto.alt} />
+          </div>
+        ))}
       </div>
 
       <button class="nav-btn prev-btn" aria-label="Anterior">&lsaquo;</button>
       <button class="nav-btn next-btn" aria-label="Próximo">&rsaquo;</button>
 
       <div class="dots-container">
-        <div class="dot active" data-index="0"></div>
-        <div class="dot" data-index="1"></div>
-        <div class="dot" data-index="2"></div>
+        {galeriaArte.fotos.map((_, index) => (
+          <div class:list={['dot', { active: index === 0 }]} data-index={index} />
+        ))}
       </div>
     </div>
-  </div>
-</section>
-
-<!-- 6. Eventos (Image 35% / Text 65%) -->
-<section class="acasa-section" style="background-color: #ffffff;">
-  <div class="col-35 img-col">
-    <img src="/images/a_casa/PhotoGrid_1450089579483-e1777131544256.png" alt="Eventos na Casa de Castro Alves" />
-  </div>
-  <div class="col-65 text-col">
-    <h2>Eventos</h2>
-    <p>Casamentos, festas, comemorações</p>
-    <p>Capacidade: 450 convidados</p>
-  </div>
-</section>
-
-<!-- 7. Jardim (Text 35% / Image 65%) -->
-<section class="acasa-section" style="background-color: #f5f5f5;">
-  <div class="col-35 text-col">
-    <h2>Jardim</h2>
-    <p>Vista pra Baía de Todos os Santos, com um pôr do sol inesquecível</p>
-  </div>
-  <div class="col-65 img-col">
-    <img src="/images/a_casa/casa-de-castro-alves-1-1-1024x576.png" alt="Jardim com vista para a baía" />
   </div>
 </section>
 
@@ -120,103 +91,27 @@
       updateSlider();
     };
 
-    const startAutoplay = () => {
-      autoplayTimer = setInterval(nextSlide, 5000);
-    };
+    prevBtn?.addEventListener('click', prevSlide);
+    nextBtn?.addEventListener('click', nextSlide);
 
-    const resetAutoplay = () => {
-      if (autoplayTimer) clearInterval(autoplayTimer);
-      startAutoplay();
-    };
-
-    prevBtn?.addEventListener('click', () => {
-      prevSlide();
-      resetAutoplay();
-    });
-
-    nextBtn?.addEventListener('click', () => {
-      nextSlide();
-      resetAutoplay();
-    });
-
-    dots.forEach((dot, idx) => {
+    dots.forEach((dot) => {
       dot.addEventListener('click', () => {
-        currentIndex = idx;
+        currentIndex = Number((dot as HTMLElement).dataset.index);
         updateSlider();
-        resetAutoplay();
       });
     });
 
-    document.addEventListener('keydown', (e) => {
-      const rect = track.getBoundingClientRect();
-      const inView = rect.top < window.innerHeight && rect.bottom > 0;
-      if (inView) {
-        if (e.key === 'ArrowRight') {
-          nextSlide();
-          resetAutoplay();
-        } else if (e.key === 'ArrowLeft') {
-          prevSlide();
-          resetAutoplay();
-        }
-      }
-    });
+    autoplayTimer = setInterval(nextSlide, 5000);
 
-    let startX = 0;
-    let isDragging = false;
-
-    track.addEventListener(
-      'touchstart',
-      (e: TouchEvent) => {
-        startX = e.touches[0].clientX;
-        isDragging = true;
-        if (autoplayTimer) clearInterval(autoplayTimer);
-      },
-      { passive: true }
-    );
-
-    track.addEventListener(
-      'touchend',
-      (e: TouchEvent) => {
-        if (!isDragging) return;
-        const diffX = startX - e.changedTouches[0].clientX;
-        if (Math.abs(diffX) > 50) {
-          if (diffX > 0) nextSlide();
-          else prevSlide();
-        }
-        isDragging = false;
-        startAutoplay();
-      },
-      { passive: true }
-    );
-
-    track.addEventListener('mousedown', (e: MouseEvent) => {
-      startX = e.clientX;
-      isDragging = true;
+    const container = document.querySelector('.slideshow-container');
+    container?.addEventListener('mouseenter', () => {
       if (autoplayTimer) clearInterval(autoplayTimer);
     });
-
-    track.addEventListener('mouseup', (e: MouseEvent) => {
-      if (!isDragging) return;
-      const diffX = startX - e.clientX;
-      if (Math.abs(diffX) > 50) {
-        if (diffX > 0) nextSlide();
-        else prevSlide();
-      }
-      isDragging = false;
-      startAutoplay();
+    container?.addEventListener('mouseleave', () => {
+      autoplayTimer = setInterval(nextSlide, 5000);
     });
-
-    track.addEventListener('mouseleave', () => {
-      if (isDragging) {
-        isDragging = false;
-        startAutoplay();
-      }
-    });
-
-    startAutoplay();
   });
 </script>
-
 <style is:global>
   /* Hero Section styles */
   .hero-section {

@@ -2,48 +2,43 @@
 import Layout from '../layouts/Layout.astro';
 import EdicaoTimelineGrid from '../components/EdicaoTimelineGrid.astro';
 import { edicoesTimeline } from '../data/edicoesTimeline.js';
+import { showsPage } from '../data/showsData.js';
+
+const { hero, destaque, historicoTitulo, historicoSubtitulo } = showsPage;
 ---
 
-<Layout title="Programação Cultural e Shows | Casa de Castro Alves" description="Confira os shows, espetáculos e apresentações musicais na Casa de Castro Alves. Destaque para Curumin e o registro histórico dos concertos do Movimento Irun." ogImage="/images/shows/movimento-irun-edicao-9-aqualtunes-mariella-santiago.jpg">
-  <!-- Hero Section -->
+<Layout title="Programação Cultural e Shows | Casa de Castro Alves" description="Confira os shows, espetáculos e apresentações musicais na Casa de Castro Alves. Destaque para Curumin e o registro histórico dos concertos do Movimento Irun." ogImage={hero.imagem}>
   <section class="subpage-hero">
-    <div class="subpage-hero-bg" style="background-image: url('/images/shows/movimento-irun-edicao-9-aqualtunes-mariella-santiago.jpg');"></div>
+    <div class="subpage-hero-bg" style={`background-image: url('${hero.imagem}');`}></div>
     <div class="subpage-hero-overlay"></div>
     <div class="container subpage-hero-content">
-      <h1 class="subpage-hero-title">Programação de Shows</h1>
-      <p class="subpage-hero-subtitle">Música e Performance</p>
+      <h1 class="subpage-hero-title">{hero.titulo}</h1>
+      <p class="subpage-hero-subtitle">{hero.subtitulo}</p>
     </div>
   </section>
 
-  <!-- Featured Show (Curumin) -->
   <section class="featured-show-section">
     <div class="container">
       <div class="featured-card">
         <div class="featured-image-wrapper">
-          <img src="/images/shows/CURUMIN-MAIO-2026-819x1024.jpg" alt="Cartaz Oficial do Show de Curumin na Casa de Castro Alves" class="featured-show-img" />
+          <img src={destaque.imagem} alt={destaque.imagemAlt} class="featured-show-img" />
         </div>
         <div class="featured-details">
-          <h2>Curumin na Casa</h2>
-          <p class="show-date">Maio de 2026 — Sessão Especial</p>
-
-          <p class="show-description">
-            O aclamado multi-instrumentista, cantor e produtor paulistano <strong>Curumin</strong> desembarca no Centro Histórico de Salvador para um show intimista e inesquecível no Jardim da Casa de Castro Alves. Unindo suas influências de samba, soul, funk clássico e hip-hop, o artista traz uma performance calorosa que sintoniza perfeitamente com a brisa da Baía de Todos os Santos.
-          </p>
-          <p class="show-info-text">
-            Um encontro singular entre a rítmica paulista e a pulsação baiana em um dos espaços mais poéticos da cidade. Ingressos limitados para garantir o clima intimista e afetivo do evento.
-          </p>
+          <h2>{destaque.titulo}</h2>
+          <p class="show-date">{destaque.data}</p>
+          <p class="show-description">{destaque.descricao}</p>
+          <p class="show-info-text">{destaque.info}</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Concertos anteriores — mesmo componente que Linha do Tempo das Edições -->
   <section id="galeria-historica" class="past-shows-section">
     <div class="container">
       <div class="section-header text-center">
         <span class="section-badge">Registro Histórico</span>
-        <h2>Concertos e Apresentações Anteriores</h2>
-        <p class="section-subtitle">Relembre as performances e artistas que já passaram pelo palco da Casa de Castro Alves ao longo do Movimento Irun.</p>
+        <h2>{historicoTitulo}</h2>
+        <p class="section-subtitle">{historicoSubtitulo}</p>
       </div>
 
       <EdicaoTimelineGrid edicoes={edicoesTimeline} />

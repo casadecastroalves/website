@@ -1,522 +1,24 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { designers } from '../../data/designCaboclo.js';
+import { edicoesTimeline } from '../../data/edicoesTimeline.js';
+import { movimentoIrunPage } from '../../data/movimentoIrunData.js';
+import { galeriaMovimentoIrun } from '../../data/galeriaData.js';
+import { cursosPage } from '../../data/cursosData.js';
 
-// Movimento Irun index page
-const edicoes = [
-  {
-    num: 1,
-    data: "13 de Julho de 2025",
-    artista: "Irma Ferreira",
-    show: "Cantos de Òrìṣà",
-    desc: "Lançamento oficial com ritual Bantu Indígena Caxuté e abertura da Exposição.",
-    slug: "edicao-1",
-    img: "/images/edicoes/edicao-1/header/irma-ferreira-cantos-de-orisa-movimento-irun-edicao-1-header.jpg"
-  },
-  {
-    num: 2,
-    data: "17 de Agosto de 2025",
-    artista: "Ayrá Soares & Ângelo Canja",
-    show: "EletroSamba",
-    desc: "Parceria com o coletivo feminista Tamo Juntas e diálogo sobre resistência cotidiana.",
-    slug: "edicao-2",
-    img: "/images/edicoes/edicao-2/header/ayra-soares-angelo-canja-eletrosamba-movimento-irun-edicao-2-header.jpg"
-  },
-  {
-    num: 3,
-    data: "28 de Setembro de 2025",
-    artista: "Enio & Vírus",
-    show: "Encontros Híbridos",
-    desc: "Edição voltada ao tema 'Viva os Santos Meninos', resgatando a potência da infância.",
-    slug: "edicao-3",
-    img: "/images/edicoes/edicao-3/header/enio-virus-encontros-hibridos-movimento-irun-edicao-3-header.jpg"
-  },
-  {
-    num: 4,
-    data: "26 de Outubro de 2025",
-    artista: "Tito Bahiense",
-    show: "Ijexá",
-    desc: "Imersão na clave e na espiritualidade do ritmo Ijexá, com atabaques e Roda de Conversa.",
-    slug: "edicao-4",
-    img: "/images/edicoes/edicao-4/header/tito-bahiense-tiago-nunes-ijexa-movimento-irun-edicao-4-header.jpg"
-  },
-  {
-    num: 5,
-    data: "16 de Novembro de 2025",
-    artista: "Dão Black",
-    show: "Sambadelic",
-    desc: "Discotecagem de André Oliveira e o show Sambadelic resgatando as matrizes do samba.",
-    slug: "edicao-5",
-    img: "/images/edicoes/edicao-5/header/dao-black-sambadelic-movimento-irun-edicao-5-header.jpg"
-  },
-  {
-    num: "Oyás",
-    data: "02 de Dezembro de 2025 · 9h às 13h",
-    artista: "Confraria de Oyá",
-    show: "Oyá, Mãe do Vento e do Poder de Transformação",
-    desc: "Xirê Cultural sobre o poder da fala, do pertencimento e do empoderamento feminino — em homenagem a Oyá, Mãe do Vento e do Poder de Transformação.",
-    slug: "confraria-de-oya",
-    img: "/images/edicoes/confraria-de-oya/confraria-de-oya.jpg"
-  },
-  {
-    num: 6,
-    data: "21 de Dezembro de 2025",
-    artista: "Cabuloso Trio",
-    show: "Ocupação Manifesto",
-    desc: "Toré dos Tupinambás, Feira de Saberes e Sabores e a Universidade dos Povos.",
-    slug: "edicao-6",
-    img: "/images/edicoes/edicao-6/header/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-header.jpg"
-  },
-  {
-    num: 7,
-    data: "25 de Janeiro de 2026",
-    artista: "Ícaro Santiago & Eric Mazzone",
-    show: "Jangada",
-    desc: "Ocupação Manifesto Teia dos Povos com Mestre Joelson Ferreira e concerto experimental.",
-    slug: "edicao-7",
-    img: "/images/edicoes/edicao-7/header/icaro-santiago-eric-mazzone-jangada-movimento-irun-edicao-7-header.jpg"
-  },
-  {
-    num: 8,
-    data: "15 de Março de 2026",
-    artista: "Yayá Muxima & Banda",
-    show: "Tambor de Mulher",
-    desc: "Comemoração dos 179 anos de nascimento de Castro Alves com banda de mulheres negras.",
-    slug: "edicao-8",
-    img: "/images/edicoes/edicao-8/header/yaya-muxima-tambor-de-mulher-movimento-irun-edicao-8-header.jpg"
-  },
-  {
-    num: 9,
-    data: "26 de Abril de 2026",
-    artista: "Mariella Santiago",
-    show: "Aqualtunes",
-    desc: "Show solo percussivo e loops dedicados aos povos originários e ao Toré da Aliança.",
-    slug: "edicao-9",
-    img: "/images/edicoes/edicao-9/header/mariella-santiago-aqualtunes-movimento-irun-edicao-9-header.jpg"
-  },
-  {
-    num: 10,
-    data: "17 de Maio de 2026",
-    artista: "Denise Correia & Banda Naveiadanêga",
-    show: "Black Tudo",
-    desc: "Show “BLACK TUDO”, com Denise Correia e Banda Naveiadanêga, uma explosão de Afro Pop, samba rock e MPB.",
-    slug: "edicao-10",
-    img: "/images/edicoes/edicao-10/header/denise-correia-black-tudo-movimento-irun-edicao-10-header.jpg"
-  },
-  {
-    num: 11,
-    data: "07 de Junho de 2026",
-    artista: "Maíra e Ícaro Santiago",
-    show: "Águas Nascentes: Tempo de Recomeços",
-    desc: "Reflexão sobre as águas, territórios e saberes tradicionais, com exposição, oficinas, gira de saberes e show de Maíra e Ícaro Santiago.",
-    slug: "edicao-11",
-    img: "/images/edicoes/edicao-11/header/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-header.jpg"
-  }
-];
-
-const designers = [
-  {
-    id: "artes-daura",
-    nome: "Artes D'Aura",
-    artista: "Kelly Santos Marques",
-    projeto: "Artes D'Aura",
-    instagram: "@artesd.aura",
-    especialidade: "Acessórios de Identidade",
-    citacao: "Aura é mais que uma marca de acessórios: é expressão de ancestralidade, beleza e encanto. Cada peça carrega significado, magia e exclusividade, sempre no inconfundível Padrão Aura.",
-    thumb: "/images/design_caboclo/aura-logo.jpg",
-    obras: [
-      {
-        src: "/images/design_caboclo/artes-daura-1.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/artes-daura-2.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/artes-daura-4.webp",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/artes-daura-5.svg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      }
-    ]
-  },
-  {
-    id: "itu-croma",
-    nome: "CROMA",
-    artista: "Itú",
-    projeto: "CROMA",
-    instagram: "@so.itu",
-    especialidade: "Crochê e Moda Sustentável",
-    citacao: "CROMA é uma marca artesanal de crochê voltada para moda e sustentabilidade, com foco em bolsas, bucket hats e acessórios. Inspira-se em cores, formas e padrões da natureza e da cultura soteropolitana.",
-    thumb: "/images/design_caboclo/croma-logo.png",
-    obras: [
-      {
-        src: "/images/design_caboclo/itu-croma-1.png",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/itu-croma-2.png",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/itu-croma-3.png",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/itu-croma-4.png",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      }
-    ]
-  },
-  {
-    id: "djanira-breu",
-    nome: "Djanira Breu",
-    artista: "Djanira Breu",
-    projeto: null,
-    instagram: "@djanira_arte",
-    especialidade: "Arte Têxtil e Bordado",
-    citacao: "Mapas de meu Múndi é a cartografia bordada da trajetória de meu corpo-espaço no espaço-mundo. É o corpo individual que se constrói e se recria dinamicamente com os espaços geográficos, afectivos, políticos e socioculturais do mundo.",
-    thumb: "/images/design_caboclo/djanira-breu-perfil.jpg",
-    obras: [
-      {
-        src: "/images/design_caboclo/djanira-breu-1.png",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/djanira-breu-2.png",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/djanira-breu-3.png",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/djanira-breu-4.png",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/djanira-breu-5.png",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      }
-    ]
-  },
-  {
-    id: "joao-serafim",
-    nome: "João Serafim",
-    artista: "João Serafim",
-    projeto: null,
-    instagram: "@joaoserafimpereira",
-    especialidade: "Moda Ética em Fios Naturais",
-    citacao: "Ateliê sustentável com compromisso com o cliente e o meio ambiente. Peças em fios naturais como linho, algodão e cânhamo, estampas que refletem identidade e desperdício zero no corte. Retalhos são doados para artesãos locais.",
-    thumb: "/images/design_caboclo/joao-serafim-perfil.jpg",
-    obras: [
-      {
-        src: "/images/design_caboclo/joao-serafim-1.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/joao-serafim-2.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/joao-serafim-3.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/joao-serafim-4.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/joao-serafim-5.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      }
-    ]
-  },
-  {
-    id: "jurema",
-    nome: "Jurema",
-    artista: "Tai Oliver",
-    projeto: "Jurema",
-    instagram: "@jurematelie",
-    especialidade: "Biojoias e Acessórios Ancestrais",
-    citacao: "A Jurema é uma marca que desenvolve art joias inspiradas na estética Afrodiaspórica e Tupinambá, conectadas com elementos das religiões de matriz africana. Suas peças realçam a alma e fortalecem o Ser Feminino.",
-    thumb: "/images/design_caboclo/jurema-perfil.webp",
-    obras: [
-      {
-        src: "/images/design_caboclo/jurema-1.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/jurema-2.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/jurema-3.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/jurema-4.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/jurema-5.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      }
-    ]
-  },
-  {
-    id: "lu-moura",
-    nome: "Lu Moura",
-    artista: "Lu Moura",
-    projeto: null,
-    instagram: "@luamorimoura",
-    especialidade: "Moda e Expressão Social",
-    citacao: "Camisetas como espaço de expressão. Símbolos de paz, espiritualidade e música transformaram-se em mensagens sociais, políticas e culturais. Criações que dialogam com a força dos Orixás, associando nomes e cores.",
-    thumb: "/images/design_caboclo/lu-moura-perfil.jpg",
-    obras: [
-      {
-        src: "/images/design_caboclo/lu-moura-1.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/lu-moura-2.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/lu-moura-3.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/lu-moura-4.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/lu-moura-5.webp",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/lu-moura-6.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      }
-    ]
-  },
-  {
-    id: "morena-do-mar",
-    nome: "Morena do Mar",
-    artista: "Deborah Nunez",
-    projeto: "Morena do Mar",
-    instagram: "@morena.domar",
-    especialidade: "Crochê Contemporâneo e Memória",
-    citacao: "Morena do Mar é crochê contemporâneo inspirado em ancestralidade e andanças. Peças que traduzem memória e movimento.",
-    thumb: "/images/design_caboclo/deborah-morena-do-mar-perfil.jpg",
-    obras: [
-      {
-        src: "/images/design_caboclo/deborah-morena-do-mar-1.jpeg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/deborah-morena-do-mar-2.jpeg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/deborah-morena-do-mar-3.jpeg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/deborah-morena-do-mar-4.jpeg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/deborah-morena-do-mar-5.png",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/deborah-morena-do-mar-6.png",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      }
-    ]
-  },
-  {
-    id: "quarto-amarelo",
-    nome: "Quarto Amarelo",
-    artista: "Tai Oliver",
-    projeto: "Quarto Amarelo Ateliê",
-    instagram: "@quartoamareloatelie",
-    especialidade: "Design Étnico e Ancestral",
-    citacao: "Design e artesanato com referências africanas e indígenas. Peças em couro, madeira e otros materiais, criadas por Tai Oliver em diálogo com a ancestralidade, inovação e identidade cultural.",
-    thumb: "/images/design_caboclo/quarto-amarelo-1.webp",
-    obras: [
-      {
-        src: "/images/design_caboclo/quarto-amarelo-1.webp",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/quarto-amarelo-2.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/quarto-amarelo-3.jpg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/quarto-amarelo-4.webp",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/quarto-amarelo-5.webp",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      }
-    ]
-  },
-  {
-    id: "sa-criacoes",
-    nome: "Sá Criações",
-    artista: "Sara Alves",
-    projeto: "Sá Criações",
-    instagram: "@sa.criacoes",
-    especialidade: "Brinquedos Afetivos em Feltro",
-    citacao: "Brinquedos e livros criativos em feltro e tecido, feitos à mão. Cada peça busca estimular o desenvolvimento infantil com afeto, inclusão e imaginação. Uma infância mais humana, distante das telas e próxima do brincar.",
-    thumb: "/images/design_caboclo/sara-alves-perfil.jpg",
-    obras: [
-      {
-        src: "/images/design_caboclo/sa-criacoes-1.svg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/sa-criacoes-2.svg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/sa-criacoes-3.svg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/sa-criacoes-4.svg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/sa-criacoes-5.svg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/sa-criacoes-6.svg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      },
-      {
-        src: "/images/design_caboclo/sa-criacoes-7.svg",
-        titulo: "",
-        tecnica: "",
-        detalhes: ""
-      }
-    ]
-  }
-];
-
-const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/images/movimento_irun/galeria/movimento-irun-exposicao-design-caboclo-${num}.jpg`);
+const edicoes = edicoesTimeline;
+const { hero, conceito } = movimentoIrunPage;
+const fotosGerais = galeriaMovimentoIrun;
+const { eixosTitulo, eixosSubtitulo, eixos } = cursosPage;
 ---
-
-<Layout title="Movimento Irun | Casa de Castro Alves" description="Saiba mais sobre o Movimento Irun. Uma aliança de design contemporâneo e saberes ancestrais indígenas e quilombolas na Casa de Castro Alves. Inscreva-se na próxima edição." ogImage="/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg">
+<Layout title="Movimento Irun | Casa de Castro Alves" description="Saiba mais sobre o Movimento Irun. Uma aliança de design contemporâneo e saberes ancestrais indígenas e quilombolas na Casa de Castro Alves. Inscreva-se na próxima edição." ogImage={hero.imagem}>
   <!-- Hero Section -->
   <section class="subpage-hero">
-    <div class="subpage-hero-bg" style="background-image: url('/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg');"></div>
+    <div class="subpage-hero-bg" style={`background-image: url('${hero.imagem}');`}></div>
     <div class="subpage-hero-overlay"></div>
     <div class="container subpage-hero-content">
-      <h1 class="subpage-hero-title">Movimento Irun</h1>
-      <p class="subpage-hero-subtitle">Aliança Ancestral</p>
+      <h1 class="subpage-hero-title">{hero.titulo}</h1>
+      <p class="subpage-hero-subtitle">{hero.subtitulo}</p>
       <div style="margin-top: 2rem; display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap;">
         <a 
           href="/movimento-irun/edicoes" 
@@ -532,15 +34,16 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
         </a>
       </div>
     </div>
-    <span class="header-credit">TAMANDUA TUPINAMBA por LUCIANO PAYAYÁ</span>
+    <span class="header-credit">{hero.credito}</span>
   </section>
 
   <!-- Conceito (Editorial Block) -->
   <section class="conceito-section">
     <div class="container text-center-editorial">
       <blockquote class="editorial-quote">
-        <p style="margin-bottom: 1.5rem; font-style: italic;">O Movimento Irun é uma iniciativa ética, política e cultural voltada à dignidade humana e ao Bem Viver, unindo poesia, saberes ancestrais, arte popular, música e mulheres da Teia dos Povos. O nome “Irun”, de origem tupi-guarani, significa “companheiro” ou “irmão”, simbolizando colaboração e coletividade.</p>
-        <p style="font-style: italic;">Idealizado pela estilista Márcia Ganem, com apoio da Política Nacional Aldir Blanc Bahia, em parceria com lideranças da Teia dos Povos, o projeto promove o encontro entre design contemporâneo e tradições de povos originários e comunidades quilombolas da Bahia. Entre suas ações estão ciclos de formação, exposições, mostras de Design Caboclo e apresentações artísticas realizadas na Casa de Castro Alves.</p>
+        {conceito.map((p, i) => (
+          <p style={i < conceito.length - 1 ? 'margin-bottom: 1.5rem; font-style: italic;' : 'font-style: italic;'}>{p}</p>
+        ))}
       </blockquote>
     </div>
   </section>
@@ -550,71 +53,24 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
     <div class="container">
       <div class="section-header text-center">
         <span class="section-badge">Cursos</span>
-        <h2>Estrutura Curricular do Bem Viver</h2>
-        <p class="section-subtitle">Conheça as quatro frentes teóricas e práticas que compõem o programa.</p>
+        <h2>{eixosTitulo}</h2>
+        <p class="section-subtitle">{eixosSubtitulo}</p>
       </div>
 
       <div class="eixos-grid">
-        <!-- Eixo 1 -->
-        <div class="eixo-card card">
-          <span class="eixo-number">01</span>
-          <div class="eixo-header">
-            <h3>Espaços Comuns<br />do Bem Viver</h3>
+        {eixos.map((eixo) => (
+          <div class="eixo-card card">
+            <span class="eixo-number">{eixo.numero}</span>
+            <div class="eixo-header">
+              <h3 set:html={eixo.titulo.replace(/\n/g, '<br />')} />
+            </div>
+            <p class="eixo-instructor">Facilitadora:<br />{eixo.facilitador}</p>
+            {eixo.metodologia && <p class="eixo-subtitle-detail">{eixo.metodologia}</p>}
+            <ul class="eixo-topics">
+              {eixo.topicos.map((item) => <li>{item}</li>)}
+            </ul>
           </div>
-          <p class="eixo-instructor">Facilitadora:<br />Aline Bento</p>
-          <ul class="eixo-topics">
-            <li>Mapeamento de pontos de cultura e rede territorial.</li>
-            <li>Mapeamento de potenciais e recursos locais.</li>
-            <li>Mapeamento de redes culturais e artísticas.</li>
-            <li>Elaboração de propostas de articulação (pré-diálogo institucional).</li>
-          </ul>
-        </div>
-
-        <!-- Eixo 2 -->
-        <div class="eixo-card card">
-          <span class="eixo-number">02</span>
-          <div class="eixo-header">
-            <h3>Gestão Criativa<br />de Território</h3>
-          </div>
-          <p class="eixo-instructor">Facilitadora:<br />Márcia Ganem</p>
-          <p class="eixo-subtitle-detail">Metodologia: Design Dialógico</p>
-          <ul class="eixo-topics">
-            <li>Diagnósticos aplicados de entidades culturais e coletivos.</li>
-            <li>Identificação e valorização de ativos culturais locais.</li>
-            <li>Sistematização de portfólios territoriais identitários.</li>
-          </ul>
-        </div>
-
-        <!-- Eixo 3 -->
-        <div class="eixo-card card">
-          <span class="eixo-number">03</span>
-          <div class="eixo-header">
-            <h3>Design de<br />Território</h3>
-          </div>
-          <p class="eixo-instructor">Facilitadora:<br />Inés Grimaux</p>
-          <ul class="eixo-topics">
-            <li>Visão participativa do território.</li>
-            <li>Visualização da identidade territorial.</li>
-            <li>Matrizes de potencialidades e relações territoriais.</li>
-            <li>Narrativas do território.</li>
-            <li>Visão de futuro e definição de prioridades.</li>
-          </ul>
-        </div>
-
-        <!-- Eixo 4 -->
-        <div class="eixo-card card">
-          <span class="eixo-number">04</span>
-          <div class="eixo-header">
-            <h3>Formalização e<br />Sustentabilidade</h3>
-          </div>
-          <p class="eixo-instructor">Facilitadora:<br />Lucyvanda Moura</p>
-          <ul class="eixo-topics">
-            <li>Estruturação jurídica e administrativa de entidades culturais.</li>
-            <li>Caminhos e editais de captação de recursos.</li>
-            <li>Atividades práticas e simulações de Diálogo Institucional.</li>
-            <li>Giras de Saberes voltadas à sustentabilidade comunitária.</li>
-          </ul>
-        </div>
+        ))}
       </div>
 
     </div>
@@ -722,8 +178,8 @@ const fotosGerais = [1, 2, 3, 4, 5, 8, 12, 13, 14, 17, 18, 19].map((num) => `/im
             {fotosGerais.map((foto, idx) => (
               <div class="carousel-slide">
                 <img 
-                  src={foto} 
-                  alt={`Registro da exposição Design Caboclo - Foto ${idx + 1}`} 
+                  src={foto.src} 
+                  alt={foto.alt || `Registro da exposição Design Caboclo - Foto ${idx + 1}`} 
                   class="clickable-lightbox"
                   data-index={idx}
                   data-type="general"
