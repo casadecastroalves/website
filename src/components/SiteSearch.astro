@@ -25,6 +25,7 @@
     </label>
 
     <div class="site-search-results" id="siteSearchResults" aria-live="polite"></div>
+    <p class="site-search-count" id="siteSearchCount" hidden></p>
     <p class="site-search-hint">Esc para fechar</p>
   </div>
 </dialog>
@@ -210,6 +211,13 @@
     color: rgba(26, 26, 26, 0.45);
     text-align: right;
   }
+
+  .site-search-count {
+    margin: var(--space-sm) 0 0;
+    font-family: var(--font-interface);
+    font-size: 0.72rem;
+    color: rgba(26, 26, 26, 0.55);
+  }
 </style>
 
 <script>
@@ -224,6 +232,10 @@
   const dialog = document.getElementById('siteSearchDialog') as HTMLDialogElement | null;
   const input = document.getElementById('siteSearchInput') as HTMLInputElement | null;
   const resultsEl = document.getElementById('siteSearchResults') as HTMLElement | null;
+  const countEl = document.getElementById('siteSearchCount') as HTMLElement | null;
+
+  const MAX_RESULTS = 30;
+  const CATEGORY_ORDER = ['Edição', 'Curso', 'Design Caboclo', 'Exposição', 'Movimento Irun', 'Contato', 'Página'];
 
   let index: SearchEntry[] = [];
   let indexLoaded = false;
@@ -265,15 +277,54 @@
     return haystack.indexOf(term);
   }
 
+  function termVariants(term: string) {
+    const variants = new Set([term]);
+
+    if (term.length > 4 && term.endsWith('s') && !term.endsWith('ss')) {
+      variants.add(term.slice(0, -1));
+    }
+
+    if (term.length >= 4 && !term.endsWith('s')) {
+      variants.add(`${term}s`);
+    }
+
+    return [...variants].sort((a, b) => b.length - a.length);
+  }
+
+  function expandedTerms(terms: string[]) {
+    const all = new Set<string>();
+    for (const term of terms) {
+      for (const variant of termVariants(term)) {
+        all.add(variant);
+      }
+    }
+    return [...all].sort((a, b) => b.length - a.length);
+  }
+
+  function findFirstMatch(source: string, terms: string[]) {
+    const normSource = normalize(source);
+
+    for (const term of expandedTerms(terms)) {
+      const idx = findTermIndex(normSource, term);
+      if (idx !== -1) {
+        return { start: idx, length: term.length, term };
+      }
+    }
+
+    return null;
+  }
+
   function entryMatches(entry: SearchEntry, terms: string[]) {
     const haystack = normalize(`${entry.title} ${entry.excerpt} ${entry.searchText ?? ''} ${entry.category}`);
-    return terms.every((term) => findTermIndex(haystack, term) !== -1);
+    return terms.every((term) =>
+      termVariants(term).some((variant) => findTermIndex(haystack, variant) !== -1)
+    );
   }
 
   function highlightParts(text: string, terms: string[]) {
     let parts: Array<{ text: string; mark: boolean }> = [{ text, mark: false }];
 
-    for (const term of terms) {
+    for (const term of expandedTerms(terms)) {
       const nextParts: Array<{ text: string; mark: boolean }> = [];
 
       for (const part of parts) {
@@ -320,26 +371,14 @@
 
   function buildSnippet(entry: SearchEntry, terms: string[]) {
     const source = entry.searchText || entry.excerpt || entry.title;
-    const normSource = normalize(source);
+    const match = findFirstMatch(source, terms);
 
-    let matchStart = -1;
-    let matchTerm = '';
-
-    for (const term of terms) {
-      const idx = findTermIndex(normSource, term);
-      if (idx !== -1) {
-        matchStart = idx;
-        matchTerm = term;
-        break;
-      }
-    }
-
-    if (matchStart === -1) {
+    if (!match) {
       return highlightParts(entry.excerpt, terms);
     }
 
-    const snippetStart = Math.max(0, matchStart - 70);
-    const snippetEnd = Math.min(source.length, matchStart + Math.max(matchTerm.length, 8) + 110);
+    const snippetStart = Math.max(0, match.start - 70);
+    const snippetEnd = Math.min(source.length, match.start + Math.max(match.length, 8) + 110);
     let snippet = source.slice(snippetStart, snippetEnd);
 
     if (snippetStart > 0) snippet = `…${snippet}`;
@@ -352,13 +391,25 @@
     if (!resultsEl) return;
 
     const trimmed = query.trim();
+    if (countEl) {
+      countEl.hidden = true;
+      countEl.textContent = '';
+    }
+
     if (!trimmed) {
       resultsEl.innerHTML = '<p class="site-search-empty">Digite para pesquisar páginas, edições e cursos.</p>';
       return;
     }
 
     const terms = normalize(trimmed).split(/\s+/).filter(Boolean);
-    const matches = index.filter((entry) => entryMatches(entry, terms)).slice(0, 12);
+    const allMatches = index
+      .filter((entry) => entryMatches(entry, terms))
+      .sort(
+        (a, b) =>
+          CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category) ||
+          a.title.localeCompare(b.title, 'pt-BR')
+      );
+    const matches = allMatches.slice(0, MAX_RESULTS);
 
     if (matches.length === 0) {
       resultsEl.innerHTML = '<p class="site-search-empty">Nenhum resultado encontrado.</p>';
@@ -376,6 +427,14 @@
         `
       )
       .join('');
+
+    if (countEl && allMatches.length > 0) {
+      countEl.hidden = false;
+      countEl.textContent =
+        allMatches.length > MAX_RESULTS
+          ? `${allMatches.length} resultados — a mostrar ${MAX_RESULTS}. Refine a busca para ver menos.`
+          : `${allMatches.length} resultado${allMatches.length === 1 ? '' : 's'}`;
+    }
   }
 
   async function openSearch() {
