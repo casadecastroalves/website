@@ -1,0 +1,492 @@
+---
+// Secções 2–7, slideshow e estilos partilhados da página A Casa
+---
+
+<!-- 2. História (Image 65% / Text 35%) -->
+<section class="acasa-section" style="background-color: #ffffff;">
+  <div class="col-65 img-col">
+    <img src="/images/a_casa/casa-de-castro-alves-santo-antonio-alem-do-carmo-1-1024x576.jpg" alt="História - Casa de Castro Alves" />
+  </div>
+  <div class="col-35 text-col">
+    <h2>História</h2>
+    <p>Sua história tem início em 1855, quando a família de Castro Alves vem residir nela e o Dr. Antonio José Alves, pai do poeta, abre um consultório médico e a primeira escola de doenças tropicais da Bahia.</p>
+  </div>
+</section>
+
+<!-- 3. Localização (Text 35% / Image 65%) -->
+<section class="acasa-section" style="background-color: #f5f5f5;">
+  <div class="col-35 text-col">
+    <h2>Localização</h2>
+    <p>A casa está localizada ao lado da Igreja do Passo – Cenário do filme “O Pagador de Promessas” Um sobrado do século XVIII, no bairro do Santo Antonio, Rua do Passo – Centro Histórico de Salvador</p>
+  </div>
+  <div class="col-65 img-col">
+    <img src="/images/a_casa/casa-de-castro-alves-santo-antonio-alem-do-carmo-2-1024x576.jpg" alt="Localização - Rua do Passo" />
+  </div>
+</section>
+
+<!-- 4. Espaços (Image 35% / Text 65%) -->
+<section class="acasa-section" style="background-color: #cad4db;">
+  <div class="col-35 img-col">
+    <img src="/images/a_casa/3-003-1024x464.jpg" alt="Espaços da Casa" />
+  </div>
+  <div class="col-65 text-col">
+    <h2>Espaços</h2>
+    <p>A Casa integra espaço de memória, galeria de arte, galeria de design, espaço de apresentações artísticas, eventos, espaço de cursos e jardim, em seus três andares e um jardim com vista para a Baía de Todos os Santos, com 510m2</p>
+  </div>
+</section>
+
+<!-- 5. Galeria de Arte (Text 35% / Slideshow 65%) -->
+<section class="acasa-section" style="background-color: #e8e4db;">
+  <div class="col-35 text-col">
+    <h2>Galeria de Arte Contemporânea</h2>
+    <p>Exposições de fotografia, pintura, instalações e novas linguagens.</p>
+  </div>
+  <div class="col-65 img-col">
+    <div class="slideshow-container">
+      <div class="slideshow-track">
+        <div class="slide">
+          <img src="/images/a_casa/casa-de-castro-alves-3.png" alt="Galeria de Arte 1" />
+        </div>
+        <div class="slide">
+          <img src="/images/a_casa/casa-de-castro-alves-2.png" alt="Galeria de Arte 2" />
+        </div>
+        <div class="slide">
+          <img src="/images/a_casa/casa-de-castro-alves-galeria-arte.jpg" alt="Galeria de Arte 3" />
+        </div>
+      </div>
+
+      <button class="nav-btn prev-btn" aria-label="Anterior">&lsaquo;</button>
+      <button class="nav-btn next-btn" aria-label="Próximo">&rsaquo;</button>
+
+      <div class="dots-container">
+        <div class="dot active" data-index="0"></div>
+        <div class="dot" data-index="1"></div>
+        <div class="dot" data-index="2"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. Eventos (Image 35% / Text 65%) -->
+<section class="acasa-section" style="background-color: #ffffff;">
+  <div class="col-35 img-col">
+    <img src="/images/a_casa/PhotoGrid_1450089579483-e1777131544256.png" alt="Eventos na Casa de Castro Alves" />
+  </div>
+  <div class="col-65 text-col">
+    <h2>Eventos</h2>
+    <p>Casamentos, festas, comemorações</p>
+    <p>Capacidade: 450 convidados</p>
+  </div>
+</section>
+
+<!-- 7. Jardim (Text 35% / Image 65%) -->
+<section class="acasa-section" style="background-color: #f5f5f5;">
+  <div class="col-35 text-col">
+    <h2>Jardim</h2>
+    <p>Vista pra Baía de Todos os Santos, com um pôr do sol inesquecível</p>
+  </div>
+  <div class="col-65 img-col">
+    <img src="/images/a_casa/casa-de-castro-alves-1-1-1024x576.png" alt="Jardim com vista para a baía" />
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.querySelector('.slideshow-track') as HTMLElement;
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const dots = Array.from(document.querySelectorAll('.dot'));
+
+    if (!track || slides.length === 0) return;
+
+    let currentIndex = 0;
+    let autoplayTimer: ReturnType<typeof setInterval> | null = null;
+
+    const updateSlider = () => {
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    };
+
+    const nextSlide = () => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      updateSlider();
+    };
+
+    const prevSlide = () => {
+      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+      updateSlider();
+    };
+
+    const startAutoplay = () => {
+      autoplayTimer = setInterval(nextSlide, 5000);
+    };
+
+    const resetAutoplay = () => {
+      if (autoplayTimer) clearInterval(autoplayTimer);
+      startAutoplay();
+    };
+
+    prevBtn?.addEventListener('click', () => {
+      prevSlide();
+      resetAutoplay();
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      nextSlide();
+      resetAutoplay();
+    });
+
+    dots.forEach((dot, idx) => {
+      dot.addEventListener('click', () => {
+        currentIndex = idx;
+        updateSlider();
+        resetAutoplay();
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      const rect = track.getBoundingClientRect();
+      const inView = rect.top < window.innerHeight && rect.bottom > 0;
+      if (inView) {
+        if (e.key === 'ArrowRight') {
+          nextSlide();
+          resetAutoplay();
+        } else if (e.key === 'ArrowLeft') {
+          prevSlide();
+          resetAutoplay();
+        }
+      }
+    });
+
+    let startX = 0;
+    let isDragging = false;
+
+    track.addEventListener(
+      'touchstart',
+      (e: TouchEvent) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+        if (autoplayTimer) clearInterval(autoplayTimer);
+      },
+      { passive: true }
+    );
+
+    track.addEventListener(
+      'touchend',
+      (e: TouchEvent) => {
+        if (!isDragging) return;
+        const diffX = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diffX) > 50) {
+          if (diffX > 0) nextSlide();
+          else prevSlide();
+        }
+        isDragging = false;
+        startAutoplay();
+      },
+      { passive: true }
+    );
+
+    track.addEventListener('mousedown', (e: MouseEvent) => {
+      startX = e.clientX;
+      isDragging = true;
+      if (autoplayTimer) clearInterval(autoplayTimer);
+    });
+
+    track.addEventListener('mouseup', (e: MouseEvent) => {
+      if (!isDragging) return;
+      const diffX = startX - e.clientX;
+      if (Math.abs(diffX) > 50) {
+        if (diffX > 0) nextSlide();
+        else prevSlide();
+      }
+      isDragging = false;
+      startAutoplay();
+    });
+
+    track.addEventListener('mouseleave', () => {
+      if (isDragging) {
+        isDragging = false;
+        startAutoplay();
+      }
+    });
+
+    startAutoplay();
+  });
+</script>
+
+<style is:global>
+  /* Hero Section styles */
+  .hero-section {
+    position: relative;
+    height: calc(100vh - 80px);
+    min-height: 550px;
+    display: flex;
+    align-items: center;
+    color: var(--color-branco);
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    transform: scale(1.05);
+    animation: acasaZoomOut 20s forwards;
+  }
+
+  @keyframes acasaZoomOut {
+    to {
+      transform: scale(1);
+    }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 5;
+    max-width: 800px;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    line-height: 1.15;
+    margin-bottom: var(--space-md);
+    color: var(--color-branco);
+  }
+
+  @media (min-width: 768px) {
+    .hero-title {
+      font-size: 4rem;
+    }
+  }
+
+  .hero-title .highlight {
+    color: var(--color-amarelo-cca);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: normal;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin: 0 auto var(--space-lg);
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .animate-fade-in {
+    animation: acasaFadeInUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  }
+
+  .animate-fade-in-delayed {
+    opacity: 0;
+    animation: acasaFadeInUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.3s forwards;
+  }
+
+  @keyframes acasaFadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .acasa-section {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    align-items: stretch;
+    overflow: hidden;
+    border: none;
+  }
+
+  .col-35 {
+    width: 35%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .col-65 {
+    width: 65%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .text-col {
+    padding: 6% 8%;
+  }
+
+  .text-col h2 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: normal;
+    color: #162e58;
+    margin: 0 0 1.25rem 0;
+    padding: 0;
+    border-bottom: none;
+    line-height: 1.2;
+  }
+
+  .text-col p {
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: #2c3e50;
+    margin: 0;
+    padding: 0;
+  }
+
+  .text-col p + p {
+    margin-top: 1rem;
+  }
+
+  .img-col {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .img-col img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .slideshow-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .slideshow-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: grab;
+  }
+
+  .slideshow-track:active {
+    cursor: grabbing;
+  }
+
+  .slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+  }
+
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 3.5rem;
+    font-weight: 300;
+    cursor: pointer;
+    padding: 1.5rem;
+    z-index: 10;
+    transition: color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .nav-btn:hover {
+    color: rgba(255, 255, 255, 1);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .prev-btn {
+    left: 10px;
+  }
+
+  .next-btn {
+    right: 10px;
+  }
+
+  .dots-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .dot.active {
+    background-color: rgba(255, 255, 255, 1);
+    transform: scale(1.2);
+  }
+
+  @media (max-width: 991px) {
+    .acasa-section {
+      flex-direction: column;
+    }
+
+    .col-35,
+    .col-65 {
+      width: 100%;
+    }
+
+    .slideshow-container {
+      aspect-ratio: 16 / 10;
+      height: auto;
+    }
+
+    .acasa-section:nth-of-type(even) {
+      flex-direction: column-reverse;
+    }
+  }
+</style>
