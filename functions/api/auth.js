@@ -13,15 +13,16 @@ function configErrorHtml() {
 </head>
 <body>
   <h1>Login ainda não activo</h1>
-  <p>Falta configurar o OAuth GitHub no <strong>Cloudflare Pages</strong> (passo único do técnico).</p>
+  <p>As variáveis <code>GITHUB_CLIENT_ID</code> e <code>GITHUB_CLIENT_SECRET</code> ainda não chegaram às funções do site.</p>
   <div class="box">
+    <p><strong>Se já guardou as variáveis no Cloudflare:</strong></p>
     <ol>
-      <li>Criar OAuth App: <a href="https://github.com/settings/applications/new">github.com/settings/applications/new</a><br>
-        Callback: <code>https://casadecastroalves.com.br/api/callback</code></li>
-      <li>Cloudflare → Pages → projecto <strong>website</strong> → Settings → Environment variables<br>
-        <code>GITHUB_CLIENT_ID</code> e <code>GITHUB_CLIENT_SECRET</code> (Production + Preview)</li>
-      <li>Deployments → <strong>Retry deployment</strong></li>
+      <li>Cloudflare → <strong>Deployments</strong> (separador em cima)</li>
+      <li>No deploy da branch <strong>main</strong> → <strong>⋯</strong> → <strong>Retry deployment</strong></li>
+      <li>Aguardar estado <strong>Success</strong> (~2 min)</li>
+      <li>Fechar esta janela e tentar login outra vez</li>
     </ol>
+    <p>Confirme em Settings → Variables que <code>GITHUB_CLIENT_ID</code> e <code>GITHUB_CLIENT_SECRET</code> existem para <strong>Production</strong>.</p>
   </div>
   <p>Guia completo: <a href="/admin/ajuda.html">/admin/ajuda.html</a></p>
   <p><a href="/admin/">← Voltar ao painel</a></p>
