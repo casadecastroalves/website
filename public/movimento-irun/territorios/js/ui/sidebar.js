@@ -57,10 +57,18 @@ function fichaCard(f, badge) {
   </li>`;
 }
 
+function tipoLabel(tipo) {
+  return ({ municipio: "Município", quilombo: "Quilombo", instituicao: "Instituição", projeto: "Projeto" })[tipo] || tipo;
+}
+
+function fichaBadge(f) {
+  return tipoLabel(f.tipo);
+}
+
 function renderRedeList() {
   const list = redeOrdenada();
   if (!list.length) return `<p class="empty-rede">Nenhum território mapeado ainda.</p>`;
-  return `<ul class="entity-list">${list.map((f) => fichaCard(f, `TI ${tiById(f.territorioId)?.cod || "—"}`)).join("")}</ul>`;
+  return `<ul class="entity-list">${list.map((f) => fichaCard(f, fichaBadge(f))).join("")}</ul>`;
 }
 
 function renderFilters() {
@@ -205,7 +213,11 @@ function renderTerritorio(ti) {
   const fichas = fichasDoTerritorio(ti.id);
   const pontos = state.pontos.filter((p) => p.territorioId === ti.id);
   const lugares = pontos.length
-    ? `<ul class="content-list">${pontos.map((p) => `<li>${esc(p.nome)}</li>`).join("")}</ul>`
+    ? `<ul class="entity-list">${pontos.map((p) => {
+      const f = fichaById(p.fichaId || p.entidadeId);
+      if (f) return fichaCard(f, "Lugar");
+      return `<li class="content-list-item">${esc(p.nome)}</li>`;
+    }).join("")}</ul>`
     : `<p class="empty-rede">Sem lugares mapeados ainda.</p>`;
   return `
     ${tiPager(ti.id, "home", "Início")}
@@ -213,7 +225,7 @@ function renderTerritorio(ti) {
     <h2 class="ti-header-title">${esc(ti.nome)}</h2>
     <p class="lead">Território oficial de planejamento do Estado da Bahia (SEI/SEPLAN · SecultBA).</p>
     ${accordion("identidade", "Identidade do Território", `<p class="section-title">Dimensões</p><p class="lead">${(state.config.dimensoes || []).join(" · ")}</p>`, true)}
-    ${accordion("rede-ti", `REDE neste território (${fichas.length})`, fichas.length ? `<ul class="entity-list">${fichas.map((f) => fichaCard(f, "REDE")).join("")}</ul>` : `<p class="empty-rede">Nenhuma ficha mapeada aqui ainda.</p>`, fichas.length > 0)}
+    ${accordion("rede-ti", `REDE neste território (${fichas.length})`, fichas.length ? `<ul class="entity-list">${fichas.map((f) => fichaCard(f, fichaBadge(f))).join("")}</ul>` : `<p class="empty-rede">Nenhuma ficha mapeada aqui ainda.</p>`, fichas.length > 0)}
     ${accordion("lugares", `Lugares no mapa (${pontos.length})`, lugares, false)}
     ${accordion("territorios-nav", "Ir para outro território", renderTiList(ti.id), false)}
   `;
@@ -253,11 +265,12 @@ function renderFicha(f, ti) {
     : "";
 
   return `
-    ${tiPager(ti.id, "ti", ti.nome)}
+    ${tiPager(ti.id, "ti", "Território")}
     ${redePager(f.id)}
-    <div class="ti-header-cod">${esc(ti.cod)} · REDE · ${esc(f.tipo)}</div>
+    <div class="ti-header-cod">REDE · ${esc(tipoLabel(f.tipo))}</div>
     <h2 class="ti-header-title">${esc(f.meta?.nome || f.id)}</h2>
     <p class="lead">${leadHtml}</p>
+    <p class="ti-header-sub muted">${esc(ti.cod)} · ${esc(ti.nome)}</p>
     ${out.join("")}
   `;
 }
@@ -270,7 +283,7 @@ function renderMunicipio(slug) {
     <nav class="nav-pager"><button type="button" class="nav-pager-btn nav-pager-back" data-nav="home">← Início</button></nav>
     <div class="ti-header-cod">Município</div>
     <h2 class="ti-header-title">${esc(nome)}</h2>
-    ${accordion("mun-fichas", `Fichas REDE (${fichas.length})`, fichas.length ? `<ul class="entity-list">${fichas.map((f) => fichaCard(f, `TI ${tiById(f.territorioId)?.cod || "—"}`)).join("")}</ul>` : `<p class="empty-rede">Nenhuma ficha neste município.</p>`, true)}
+    ${accordion("mun-fichas", `Fichas REDE (${fichas.length})`, fichas.length ? `<ul class="entity-list">${fichas.map((f) => fichaCard(f, fichaBadge(f))).join("")}</ul>` : `<p class="empty-rede">Nenhuma ficha neste município.</p>`, true)}
     ${pontos.length ? accordion("mun-lugares", `Lugares (${pontos.length})`, `<ul class="content-list">${pontos.map((p) => `<li>${esc(p.nome)}</li>`).join("")}</ul>`, false) : ""}
   `;
 }

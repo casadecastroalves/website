@@ -59,17 +59,8 @@
       "categorias": ["quilombos", "instituicoes"],
       "entidadeId": "engenho-ponte",
       "popup": {
-        "contexto": "Recôncavo · Quilombo Engenho da Ponte",
+        "contexto": "Santiago do Iguape · Quilombo Engenho da Ponte",
         "slides": [
-          {
-            "titulo": "Encontro de Mulheres Quilombolas",
-            "texto": "Vídeo documental sobre a força e articulação das Mulheres Negras, Quilombolas e Pescadoras no Engenho da Ponte.",
-            "video": {
-              "tipo": "youtube",
-              "id": "yhEX3FQOBdA",
-              "legenda": "Associação de Mulheres do Quilombo Engenho da Ponte"
-            }
-          },
           {
             "titulo": "Quilombo Engenho da Ponte",
             "texto": "Antigo engenho de cana reconhecido pela Fundação Cultural Palmares em 2004. O território reúne comunidades do Vale do Iguape sob liderança da AMNQPEP, preservando saberes ancestrais, mariscagem e agricultura familiar.",
@@ -78,6 +69,15 @@
             ],
             "foto": "assets/engenho-ponte/fotos/foto-01.jpg",
             "legenda": "Sede do Quilombo Engenho da Ponte"
+          },
+          {
+            "titulo": "Encontro de Mulheres Quilombolas",
+            "texto": "Vídeo documental sobre a força e articulação das Mulheres Negras, Quilombolas e Pescadoras no Engenho da Ponte.",
+            "video": {
+              "tipo": "youtube",
+              "id": "yhEX3FQOBdA",
+              "legenda": "Associação de Mulheres do Quilombo Engenho da Ponte"
+            }
           }
         ]
       }

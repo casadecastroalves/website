@@ -296,6 +296,7 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 
 .ti-header-cod { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; color: var(--text-faint); text-transform: uppercase; }
 .ti-header-title { font-size: 1.18rem; font-weight: 700; margin: 2px 0 6px; }
+.ti-header-sub { font-size: 0.78rem; margin: -4px 0 10px; }
 
 /* ── Filters ── */
 .filter-group { margin-bottom: 14px; }
