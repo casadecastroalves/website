@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Como usar o painel — Casa de Castro Alves</title>
+    <style>
+      body { font-family: Georgia, serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; line-height: 1.6; color: #1a1a1a; }
+      h1 { font-size: 1.6rem; }
+      h2 { font-size: 1.1rem; margin-top: 2rem; }
+      code { background: #f4f4f4; padding: 0.1rem 0.35rem; }
+      a { color: #876700; }
+      .note { background: #fff8e6; border-left: 3px solid #d4af37; padding: 1rem; margin: 1.5rem 0; }
+    </style>
+  </head>
+  <body>
+    <h1>Painel de conteúdo do site</h1>
+    <p>O cliente edita textos aqui. Ao publicar, o GitHub actualiza o site automaticamente (Cloudflare) em 1–3 minutos.</p>
+
+    <p><strong>Entrar:</strong> <a href="/admin/">casadecastroalves.com.br/admin/</a></p>
+
+    <div class="note">
+      <strong>Primeiro acesso:</strong> é preciso configurar login GitHub (uma vez). Peça ao técnico para activar o OAuth — instruções abaixo.
+    </div>
+
+    <h2>O que pode editar</h2>
+    <ul>
+      <li><strong>Contato</strong> — telefone, WhatsApp, e-mail, endereço</li>
+      <li><strong>Edições</strong> — programação, artistas, textos, links YouTube</li>
+      <li><strong>Linha do tempo</strong> — cards em Shows e Edições</li>
+      <li><strong>Design Caboclo</strong> — designers e textos do showroom</li>
+      <li><strong>Textos longos das edições</strong> — descrições e programação detalhada</li>
+    </ul>
+
+    <h2>Fluxo de trabalho</h2>
+    <ol>
+      <li>Entrar em <code>/admin/</code> com conta GitHub autorizada</li>
+      <li>Editar o conteúdo desejado</li>
+      <li>Clicar em <strong>Publicar</strong> (grava no GitHub)</li>
+      <li>Aguardar 1–3 min — o site online actualiza sozinho</li>
+    </ol>
+
+    <h2>Configuração técnica (OAuth GitHub — uma vez)</h2>
+    <ol>
+      <li>GitHub → Settings → Developer settings → OAuth Apps → New OAuth App</li>
+      <li>Homepage URL: <code>https://casadecastroalves.com.br</code></li>
+      <li>Authorization callback URL: <code>https://casadecastroalves.com.br/api/callback</code></li>
+      <li>Cloudflare Pages → Settings → Environment variables:
+        <code>GITHUB_CLIENT_ID</code> e <code>GITHUB_CLIENT_SECRET</code> (valores da OAuth App)</li>
+      <li>Convidar o cliente como colaborador do repositório <code>casadecastroalves/website</code> no GitHub</li>
+      <li>Após o próximo deploy, entrar em <a href="/admin/">/admin/</a> e fazer login com GitHub</li>
+    </ol>
+
+    <p><a href="/admin/">← Voltar ao painel</a></p>
+  </body>
+</html>

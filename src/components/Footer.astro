@@ -1,11 +1,12 @@
 ---
 // Footer component for Casa de Castro Alves
-import { GOOGLE_MAPS_URL } from '../data/contact.ts';
+import { GOOGLE_MAPS_URL, contactInfo } from '../data/contact.ts';
 
 interface Props {
   showSponsors?: boolean;
 }
 const { showSponsors = false } = Astro.props;
+const waText = encodeURIComponent('Olá! Vim através do site da Casa de Castro Alves e gostaria de informações.');
 ---
 
 <footer class="site-footer">
@@ -49,11 +50,11 @@ const { showSponsors = false } = Astro.props;
       <h4 class="footer-heading">Contatos & Visitas</h4>
       <p class="contact-item">
         <strong>Agende seu Evento:</strong><br />
-        <a href="https://wa.me/5571991296555?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20da%20Casa%20de%20Castro%20Alves%20e%20gostaria%20de%20informa%C3%A7%C3%B5es." class="contact-link" target="_blank" rel="noopener noreferrer">71 9 9129 6555</a>
+        <a href={`https://wa.me/${contactInfo.whatsapp}?text=${waText}`} class="contact-link" target="_blank" rel="noopener noreferrer">{contactInfo.telefone}</a>
       </p>
       <p class="contact-item">
         <strong>E-mail:</strong><br />
-        <a href="mailto:casadecastroalves@gmail.com" class="contact-link">casadecastroalves@gmail.com</a>
+        <a href={`mailto:${contactInfo.email}`} class="contact-link">{contactInfo.email}</a>
       </p>
       <p class="contact-item">
         <strong>Endereço:</strong><br />

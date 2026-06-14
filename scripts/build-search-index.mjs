@@ -2,7 +2,7 @@ import { writeFileSync } from 'node:fs';
 import { edicoesData } from '../src/data/edicoesData.js';
 import { designers } from '../src/data/designCaboclo.js';
 import { cursosSearchEntries } from '../src/data/cursosSearch.js';
-import parsedEditions from '../src/data/parsed_editions.json' with { type: 'json' };
+import parsedEditions from '../src/cms/parsed-editions.json' with { type: 'json' };
 
 const romanNumerals = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI'];
 

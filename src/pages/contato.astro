@@ -1,9 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ContactForm from '../components/ContactForm.astro';
-import { GOOGLE_MAPS_URL } from '../data/contact.ts';
+import { GOOGLE_MAPS_URL, contactInfo } from '../data/contact.ts';
 
-// Contato page for Casa de Castro Alves
+const waText = encodeURIComponent('Olá! Vim através do site da Casa de Castro Alves e gostaria de informações.');
 ---
 
 <Layout title="Contato | Agendamentos e Localização" description="Entre em contato com a Casa de Castro Alves para agendar seu evento ou fazer uma visita guiada. Telefone 71 9 9129 6555. Localizada na Rua do Passo, 52, Santo Antônio Além do Carmo, Salvador.">
@@ -33,7 +33,7 @@ import { GOOGLE_MAPS_URL } from '../data/contact.ts';
                 </div>
                 <div class="method-details">
                   <h3>Telefone & WhatsApp</h3>
-                  <p class="highlight-val"><a href="https://wa.me/5571991296555?text=Ol%C3%A1!%20Vim%20atrav%C3%A9s%20do%20site%20da%20Casa%20de%20Castro%20Alves%20e%20gostaria%20de%20informa%C3%A7%C3%B5es." target="_blank" rel="noopener noreferrer">71 9 9129 6555</a></p>
+                  <p class="highlight-val"><a href={`https://wa.me/${contactInfo.whatsapp}?text=${waText}`} target="_blank" rel="noopener noreferrer">{contactInfo.telefone}</a></p>
                   <p class="helper-text">Disponível para agendamento de casamentos e visitas técnicas.</p>
                 </div>
               </div>
@@ -44,7 +44,7 @@ import { GOOGLE_MAPS_URL } from '../data/contact.ts';
                 </div>
                 <div class="method-details">
                   <h3>E-mail</h3>
-                  <p class="highlight-val"><a href="mailto:casadecastroalves@gmail.com">casadecastroalves@gmail.com</a></p>
+                  <p class="highlight-val"><a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a></p>
                   <p class="helper-text">Para propostas artísticas, comerciais ou parcerias institucionais.</p>
                 </div>
               </div>

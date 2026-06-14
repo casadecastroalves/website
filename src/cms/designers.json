@@ -1,0 +1,394 @@
+{
+  "designers": [
+    {
+      "id": "artes-daura",
+      "nome": "Artes D'Aura",
+      "artista": "Kelly Santos Marques",
+      "projeto": "Artes D'Aura",
+      "instagram": "@artesd.aura",
+      "especialidade": "Acessórios de Identidade",
+      "citacao": "Aura é mais que uma marca de acessórios: é expressão de ancestralidade, beleza e encanto. Cada peça carrega significado, magia e exclusividade, sempre no inconfundível Padrão Aura.",
+      "thumb": "/images/design_caboclo/aura-logo.jpg",
+      "obras": [
+        {
+          "src": "/images/design_caboclo/artes-daura-1.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/artes-daura-2.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/artes-daura-4.webp",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/artes-daura-5.svg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        }
+      ]
+    },
+    {
+      "id": "itu-croma",
+      "nome": "CROMA",
+      "artista": "Itú",
+      "projeto": "CROMA",
+      "instagram": "@so.itu",
+      "especialidade": "Crochê e Moda Sustentável",
+      "citacao": "CROMA é uma marca artesanal de crochê voltada para moda e sustentabilidade, com foco em bolsas, bucket hats e acessórios. Inspira-se em cores, formas e padrões da natureza e da cultura soteropolitana.",
+      "thumb": "/images/design_caboclo/croma-logo.png",
+      "obras": [
+        {
+          "src": "/images/design_caboclo/itu-croma-1.png",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/itu-croma-2.png",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/itu-croma-3.png",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/itu-croma-4.png",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        }
+      ]
+    },
+    {
+      "id": "djanira-breu",
+      "nome": "Djanira Breu",
+      "artista": "Djanira Breu",
+      "projeto": null,
+      "instagram": "@djanira_arte",
+      "especialidade": "Arte Têxtil e Bordado",
+      "citacao": "Mapas de meu Múndi é a cartografia bordada da trajetória de meu corpo-espaço no espaço-mundo. É o corpo individual que se constrói e se recria dinamicamente com os espaços geográficos, afectivos, políticos e socioculturais do mundo.",
+      "thumb": "/images/design_caboclo/djanira-breu-perfil.jpg",
+      "obras": [
+        {
+          "src": "/images/design_caboclo/djanira-breu-1.png",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/djanira-breu-2.png",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/djanira-breu-3.png",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/djanira-breu-4.png",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/djanira-breu-5.png",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        }
+      ]
+    },
+    {
+      "id": "joao-serafim",
+      "nome": "João Serafim",
+      "artista": "João Serafim",
+      "projeto": null,
+      "instagram": "@joaoserafimpereira",
+      "especialidade": "Moda Ética em Fios Naturais",
+      "citacao": "Ateliê sustentável com compromisso com o cliente e o meio ambiente. Peças em fios naturais como linho, algodão e cânhamo, estampas que refletem identidade e desperdício zero no corte. Retalhos são doados para artesãos locais.",
+      "thumb": "/images/design_caboclo/joao-serafim-perfil.jpg",
+      "obras": [
+        {
+          "src": "/images/design_caboclo/joao-serafim-1.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/joao-serafim-2.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/joao-serafim-3.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/joao-serafim-4.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/joao-serafim-5.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        }
+      ]
+    },
+    {
+      "id": "jurema",
+      "nome": "Jurema",
+      "artista": "Tai Oliver",
+      "projeto": "Jurema",
+      "instagram": "@jurematelie",
+      "especialidade": "Biojoias e Acessórios Ancestrais",
+      "citacao": "A Jurema é uma marca que desenvolve art joias inspiradas na estética Afrodiaspórica e Tupinambá, conectadas com elementos das religiões de matriz africana. Suas peças realçam a alma e fortalecem o Ser Feminino.",
+      "thumb": "/images/design_caboclo/jurema-perfil.webp",
+      "obras": [
+        {
+          "src": "/images/design_caboclo/jurema-1.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/jurema-2.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/jurema-3.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/jurema-4.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/jurema-5.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        }
+      ]
+    },
+    {
+      "id": "lu-moura",
+      "nome": "Lu Moura",
+      "artista": "Lu Moura",
+      "projeto": null,
+      "instagram": "@luamorimoura",
+      "especialidade": "Moda e Expressão Social",
+      "citacao": "Camisetas como espaço de expressão. Símbolos de paz, espiritualidade e música transformaram-se em mensagens sociais, políticas e culturais. Criações que dialogam com a força dos Orixás, associando nomes e cores.",
+      "thumb": "/images/design_caboclo/lu-moura-perfil.jpg",
+      "obras": [
+        {
+          "src": "/images/design_caboclo/lu-moura-1.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/lu-moura-2.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/lu-moura-3.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/lu-moura-4.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/lu-moura-5.webp",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/lu-moura-6.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        }
+      ]
+    },
+    {
+      "id": "morena-do-mar",
+      "nome": "Morena do Mar",
+      "artista": "Deborah Nunez",
+      "projeto": "Morena do Mar",
+      "instagram": "@morena.domar",
+      "especialidade": "Crochê Contemporâneo e Memória",
+      "citacao": "Morena do Mar é crochê contemporâneo inspirado em ancestralidade e andanças. Peças que traduzem memória e movimento.",
+      "thumb": "/images/design_caboclo/deborah-morena-do-mar-perfil.jpg",
+      "obras": [
+        {
+          "src": "/images/design_caboclo/deborah-morena-do-mar-1.jpeg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/deborah-morena-do-mar-2.jpeg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/deborah-morena-do-mar-3.jpeg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/deborah-morena-do-mar-4.jpeg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/deborah-morena-do-mar-5.png",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/deborah-morena-do-mar-6.png",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        }
+      ]
+    },
+    {
+      "id": "quarto-amarelo",
+      "nome": "Quarto Amarelo",
+      "artista": "Tai Oliver",
+      "projeto": "Quarto Amarelo Ateliê",
+      "instagram": "@quartoamareloatelie",
+      "especialidade": "Design Étnico e Ancestral",
+      "citacao": "Design e artesanato com referências africanas e indígenas. Peças em couro, madeira e otros materiais, criadas por Tai Oliver em diálogo com a ancestralidade, inovação e identidade cultural.",
+      "thumb": "/images/design_caboclo/quarto-amarelo-1.webp",
+      "obras": [
+        {
+          "src": "/images/design_caboclo/quarto-amarelo-1.webp",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/quarto-amarelo-2.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/quarto-amarelo-3.jpg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/quarto-amarelo-4.webp",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/quarto-amarelo-5.webp",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        }
+      ]
+    },
+    {
+      "id": "sa-criacoes",
+      "nome": "Sá Criações",
+      "artista": "Sara Alves",
+      "projeto": "Sá Criações",
+      "instagram": "@sa.criacoes",
+      "especialidade": "Brinquedos Afetivos em Feltro",
+      "citacao": "Brinquedos e livros criativos em feltro e tecido, feitos à mão. Cada peça busca estimular o desenvolvimento infantil com afeto, inclusão e imaginação. Uma infância mais humana, distante das telas e próxima do brincar.",
+      "thumb": "/images/design_caboclo/sara-alves-perfil.jpg",
+      "obras": [
+        {
+          "src": "/images/design_caboclo/sa-criacoes-1.svg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/sa-criacoes-2.svg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/sa-criacoes-3.svg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/sa-criacoes-4.svg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/sa-criacoes-5.svg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/sa-criacoes-6.svg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        },
+        {
+          "src": "/images/design_caboclo/sa-criacoes-7.svg",
+          "titulo": "",
+          "tecnica": "",
+          "detalhes": ""
+        }
+      ]
+    }
+  ]
+}

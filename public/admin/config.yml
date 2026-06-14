@@ -1,0 +1,183 @@
+# Painel de conteúdo — Casa de Castro Alves
+# URL: https://casadecastroalves.com.br/admin/
+# Ajuda: https://casadecastroalves.com.br/admin/ajuda.html
+
+backend:
+  name: github
+  repo: casadecastroalves/website
+  branch: main
+  base_url: https://casadecastroalves.com.br
+  auth_endpoint: /api/auth
+
+locale: pt
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+publish_mode: simple
+
+collections:
+  - name: contato
+    label: Contato
+    files:
+      - name: contact
+        label: Informações de Contato
+        file: src/cms/contact.json
+        fields:
+          - { label: Telefone, name: telefone, widget: string }
+          - { label: WhatsApp (apenas números, ex. 5571991296555), name: whatsapp, widget: string }
+          - { label: E-mail, name: email, widget: string }
+          - { label: Endereço, name: endereco, widget: text }
+          - { label: Link Google Maps, name: googleMapsUrl, widget: string, required: false }
+
+  - name: edicoes
+    label: Edições
+    files:
+      - name: all
+        label: Todas as Edições
+        file: src/cms/edicoes.json
+        fields:
+          - label: Edições
+            name: edicoes
+            widget: list
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: Número (ou Oyás), name: num, widget: string, required: false }
+              - { label: Slug (URL, ex. edicao-11), name: slug, widget: string }
+              - { label: Título, name: titulo, widget: string }
+              - { label: Data, name: data, widget: string }
+              - { label: Artista, name: artista, widget: string }
+              - { label: Show, name: show, widget: string, required: false }
+              - { label: Descrição, name: descricao, widget: text }
+              - label: Programação (itens)
+                name: detalhes
+                widget: list
+                field: { label: Item, name: item, widget: text }
+                required: false
+              - { label: Poster (imagem), name: poster, widget: image, required: false }
+              - { label: Miniatura, name: thumb, widget: image, required: false }
+              - { label: Banner, name: banner, widget: image, required: false }
+              - { label: YouTube (embed URL), name: youtube, widget: string, required: false }
+              - { label: Título vídeo secundário, name: videoSecTitle, widget: string, required: false }
+              - { label: Link inscrição, name: inscricaoLink, widget: string, required: false }
+
+  - name: timeline
+    label: Linha do tempo (Shows / Edições)
+    files:
+      - name: timeline
+        label: Cards da linha do tempo
+        file: src/cms/timeline.json
+        fields:
+          - label: Edições
+            name: timeline
+            widget: list
+            summary: "{{fields.show}} — {{fields.artista}}"
+            fields:
+              - { label: Número, name: num, widget: string }
+              - { label: Data, name: data, widget: string }
+              - { label: Artista, name: artista, widget: string }
+              - { label: Show, name: show, widget: string }
+              - { label: Resumo curto, name: desc, widget: text }
+              - { label: Slug, name: slug, widget: string }
+              - { label: Imagem, name: img, widget: image }
+
+  - name: designers
+    label: Design Caboclo
+    files:
+      - name: all
+        label: Designers
+        file: src/cms/designers.json
+        fields:
+          - label: Designers
+            name: designers
+            widget: list
+            summary: "{{fields.nome}} — {{fields.artista}}"
+            fields:
+              - { label: ID (único, ex. itu-croma), name: id, widget: string }
+              - { label: Nome da marca, name: nome, widget: string }
+              - { label: Artista, name: artista, widget: string }
+              - { label: Projeto, name: projeto, widget: string, required: false }
+              - { label: Instagram, name: instagram, widget: string, required: false }
+              - { label: Especialidade, name: especialidade, widget: string }
+              - { label: Citação, name: citacao, widget: text }
+              - { label: Logo / foto perfil, name: thumb, widget: image, required: false }
+
+  - name: parsed_editions
+    label: Textos longos das edições
+    files:
+      - name: parsed
+        label: Descrições e programação (por edição romana)
+        file: src/cms/parsed-editions.json
+        fields:
+          - label: Edição I
+            name: I
+            widget: object
+            fields:
+              - label: Descrição (parágrafos)
+                name: desc
+                widget: list
+                field: { label: Parágrafo, name: p, widget: text }
+              - label: Programação
+                name: program
+                widget: list
+                field: { label: Item, name: p, widget: text }
+          - label: Edição II
+            name: II
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição III
+            name: III
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição IV
+            name: IV
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição V
+            name: V
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição VI
+            name: VI
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição VII
+            name: VII
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição VIII
+            name: VIII
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição IX
+            name: IX
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição X
+            name: X
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição XI
+            name: XI
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
