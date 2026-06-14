@@ -6,13 +6,13 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "node scripts/build-search-index.mjs && astro dev",
+    "dev": "node scripts/ver-site-live.mjs",
     "build": "node scripts/build-search-index.mjs && astro build",
     "live": "node scripts/ver-site-live.mjs",
-    "preview": "astro preview --host 127.0.0.1 --port 4321",
-    "view": "node scripts/preview.mjs",
-    "view:build": "node scripts/preview.mjs --build",
-    "watch": "node scripts/watch-preview.mjs",
+    "preview": "node scripts/ver-site-live.mjs",
+    "view": "node scripts/ver-site-live.mjs",
+    "view:build": "node scripts/ver-site-live.mjs",
+    "watch": "node scripts/ver-site-live.mjs",
     "sync:oya-card": "node scripts/sync-oya-card.mjs",
     "astro": "astro"
   },

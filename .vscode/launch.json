@@ -2,14 +2,8 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "command": "npm run view",
-      "name": "Visualizar site (rápido)",
-      "request": "launch",
-      "type": "node-terminal"
-    },
-    {
-      "command": "npm run view:build",
-      "name": "Visualizar site (rebuild)",
+      "command": "npm run live",
+      "name": "Visualizar site",
       "request": "launch",
       "type": "node-terminal"
     }
