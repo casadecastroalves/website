@@ -21,7 +21,6 @@ export function initShell() {
 
   document.getElementById("btn-reopen-desktop")?.addEventListener("click", () => setDesktopCollapsed(false));
   document.getElementById("sheet-peek")?.addEventListener("click", () => openSheet());
-  document.getElementById("btn-show-map")?.addEventListener("click", () => closeSheet());
 
   initDrag();
 
@@ -30,11 +29,8 @@ export function initShell() {
       document.getElementById("sidebar")?.classList.remove("open");
       sheetOpen = false;
     }
-    updateShowMap();
     invalidate();
   });
-
-  updateShowMap();
 }
 
 function toggleSheet() {
@@ -44,13 +40,11 @@ function toggleSheet() {
 export function openSheet() {
   document.getElementById("sidebar")?.classList.add("open");
   sheetOpen = true;
-  updateShowMap();
 }
 
 export function closeSheet(silent = false) {
   document.getElementById("sidebar")?.classList.remove("open");
   sheetOpen = false;
-  updateShowMap();
   if (!silent) invalidate();
 }
 
@@ -65,11 +59,6 @@ export function setDesktopCollapsed(collapsed) {
 export function openForContext() {
   if (isMobile()) openSheet();
   else if (state.sidebarCollapsed) setDesktopCollapsed(false);
-}
-
-function updateShowMap() {
-  const btn = document.getElementById("btn-show-map");
-  if (btn) btn.hidden = !(isMobile() && sheetOpen);
 }
 
 function invalidate() {
