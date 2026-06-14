@@ -25,7 +25,13 @@ function updateRedeBadge() {
 }
 
 function initBrandHome() {
-  const go = () => { goHome(); openForContext(); };
+  // Voltar ao início = reset limpo: fecha popup, limpa filtros e volta ao mapa da Bahia.
+  const go = () => {
+    getMap()?.closePopup();
+    if (state.filters.size) { state.filters = new Set(); refreshVisibility(); }
+    goHome();
+    openForContext();
+  };
   document.querySelectorAll("[data-home]").forEach((el) => {
     el.addEventListener("click", go);
     el.addEventListener("keydown", (e) => {
