@@ -236,7 +236,10 @@
 
   const MAX_RESULTS = 30;
   const CATEGORY_ORDER = ['Edição', 'Curso', 'Design Caboclo', 'Exposição', 'Movimento Irun', 'Contato', 'Página'];
-  const RELATED_TERMS = [['gira', 'giras', 'grias']];
+  const RELATED_TERMS = [
+    ['gira', 'giras', 'grias'],
+    ['grimaux', 'grimoux', 'grimau'],
+  ];
 
   let index: SearchEntry[] = [];
   let indexLoaded = false;
@@ -268,14 +271,73 @@
     return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
+  function levenshtein(a: string, b: string) {
+    if (a === b) return 0;
+    if (!a.length) return b.length;
+    if (!b.length) return a.length;
+
+    const row = Array.from({ length: b.length + 1 }, (_, index) => index);
+
+    for (let i = 1; i <= a.length; i++) {
+      let previous = i;
+      for (let j = 1; j <= b.length; j++) {
+        const cost = a[i - 1] === b[j - 1] ? row[j - 1] : Math.min(row[j - 1], row[j], previous) + 1;
+        row[j - 1] = previous;
+        previous = cost;
+      }
+      row[b.length] = previous;
+    }
+
+    return row[b.length];
+  }
+
+  function fuzzyFindTermIndex(haystack: string, term: string) {
+    if (term.length < 5) return -1;
+
+    const maxDistance = term.length >= 7 ? 2 : 1;
+    const words = haystack.match(/[a-z0-9]+/g) ?? [];
+
+    for (const word of words) {
+      if (Math.abs(word.length - term.length) > maxDistance) continue;
+      if (levenshtein(word, term) <= maxDistance) {
+        const index = haystack.indexOf(word);
+        if (index !== -1) return index;
+      }
+    }
+
+    return -1;
+  }
+
   function findTermIndex(haystack: string, term: string) {
     if (term.length <= 4) {
       const re = new RegExp(`(?:^|[^a-z0-9])${escapeRegex(term)}(?:[^a-z0-9]|$)`);
       const match = re.exec(` ${haystack} `);
-      return match ? Math.max(0, match.index - 1) : -1;
+      if (match) return Math.max(0, match.index - 1);
+      return fuzzyFindTermIndex(haystack, term);
     }
 
-    return haystack.indexOf(term);
+    const exact = haystack.indexOf(term);
+    if (exact !== -1) return exact;
+
+    return fuzzyFindTermIndex(haystack, term);
+  }
+
+  function findTermMatch(haystack: string, term: string) {
+    const index = findTermIndex(haystack, term);
+    if (index === -1) return null;
+
+    const words = haystack.match(/[a-z0-9]+/g) ?? [];
+    let matchedLength = term.length;
+
+    for (const word of words) {
+      const wordIndex = haystack.indexOf(word, index);
+      if (wordIndex === index) {
+        matchedLength = word.length;
+        break;
+      }
+    }
+
+    return { start: index, length: matchedLength, term };
   }
 
   function termVariants(term: string) {
@@ -312,10 +374,8 @@
     const normSource = normalize(source);
 
     for (const term of expandedTerms(terms)) {
-      const idx = findTermIndex(normSource, term);
-      if (idx !== -1) {
-        return { start: idx, length: term.length, term };
-      }
+      const match = findTermMatch(normSource, term);
+      if (match) return match;
     }
 
     return null;
@@ -345,11 +405,11 @@
 
         while (cursor < normPart.length) {
           const slice = normPart.slice(cursor);
-          const relativeIndex = findTermIndex(slice, term);
-          if (relativeIndex === -1) break;
+          const match = findTermMatch(slice, term);
+          if (!match) break;
 
-          const start = cursor + relativeIndex;
-          const end = start + term.length;
+          const start = cursor + match.start;
+          const end = start + match.length;
 
           if (start > cursor) {
             nextParts.push({ text: part.text.slice(cursor, start), mark: false });
