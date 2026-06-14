@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "node scripts/build-search-index.mjs && astro dev",
     "build": "node scripts/build-search-index.mjs && astro build",
+    "live": "node scripts/ver-site-live.mjs",
     "preview": "astro preview --host 127.0.0.1 --port 4321",
     "view": "node scripts/preview.mjs",
     "view:build": "node scripts/preview.mjs --build",
