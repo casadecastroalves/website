@@ -1,122 +1,36 @@
-import { state, subscribe, countRedeAtiva, setSelectedTi, setSelectedEntity, setMapBaseMode } from "./core/state.js";
-import { initRouter, goTerritorio, goEntity, parseRoute } from "./core/router.js";
+import { state, countRede, fichaById, tiById, fichasDoMunicipio, setSelected } from "./core/state.js";
+import { loadAll } from "./core/store.js";
+import { initRouter, parseRoute, goTerritorio, goFicha, goHome } from "./core/router.js";
 import {
-  initMap, applyBaseLayer, highlightTerritorio, resetView, refreshStyles, getMap,
-  loadRedeLayers, loadPontos, loadRoteiros, loadEntityMarkers, updateEntityMarkerSelection,
-  focusEntity, refreshOverlayVisibility,
+  initMap, getMap, setBaseMode, highlightTi, resetView, fitFichas,
+  refreshTiStyles, loadRedeLayers, loadRoteiros,
 } from "./map/map.js";
-import { renderSidebar, initSidebarKeyboard, openRedePanel } from "./sidebar/sidebar.js";
-import { initPhotoLightbox } from "./sidebar/slideshow.js";
-import { initShare } from "./share.js";
-import { initTheme } from "./theme.js";
-import { initShell, openSheetForTerritory } from "./shell.js";
-import { initSearch } from "./search.js";
+import { buildMarkers, setSelectedFicha, focusFicha, refreshVisibility, buildLegend } from "./map/markers.js";
+import { renderSidebar, initSidebarKeyboard, openRedePanel } from "./ui/sidebar.js";
+import { initSearch } from "./ui/search.js";
+import { initShare } from "./ui/share.js";
+import { applyThemeAttr, initTheme } from "./ui/theme.js";
+import { initShell, openForContext, closeSheet, isMobile } from "./ui/shell.js";
+import { initLightbox } from "./ui/lightbox.js";
 
-async function loadData() {
-  const [mapa, territoriosData, dataManifest, geoManifest, territoriosGeo] = await Promise.all([
-    fetch("data/mapa.json").then((r) => r.json()),
-    fetch("data/territorios.json").then((r) => r.json()),
-    fetch("data/manifest.json").then((r) => r.json()),
-    fetch("geo/manifest.json").then((r) => r.json()),
-    fetch("geo/base/territorios.geojson").then((r) => r.json()),
-  ]);
-
-  state.mapa = mapa;
-  state.territorios = territoriosData.territorios;
-  state.geoManifest = geoManifest;
-
-  const entidades = await Promise.all(
-    (dataManifest.entidades || []).map((id) =>
-      fetch(`data/entidades/${id}.json`).then((r) => r.json())
-    )
-  );
-  state.entidades = entidades;
-  for (const e of entidades) {
-    const ti = state.territorios.find((t) => t.id === e.territorioId);
-    if (ti) ti.redeAtiva = true;
-  }
-
-  const pontosData = await Promise.all(
-    (dataManifest.pontos || []).map((id) =>
-      fetch(`data/pontos/${id}.json`).then((r) => r.json())
-    )
-  );
-  for (const data of pontosData) {
-    const ti = state.territorios.find((t) => t.id === data.territorioId);
-    if (ti && data.pontos?.length) ti.redeAtiva = true;
-  }
-
-  document.getElementById("footer-text").textContent = mapa.footer;
-  document.title = `${mapa.title} — ${mapa.subtitle}`;
-  updateRedeBadge();
-
-  return { dataManifest, pontosData, territoriosGeo };
+function setChrome() {
+  const c = state.config.app || {};
+  document.getElementById("footer-text").textContent = c.footer || "";
+  if (c.title) document.title = `${c.title} — ${c.subtitle || ""}`.trim();
 }
 
 function updateRedeBadge() {
   const el = document.getElementById("btn-rede-badge");
-  if (el) el.textContent = `REDE ${countRedeAtiva()}/${state.mapa?.redeMeta || 27}`;
+  if (el) el.textContent = `REDE ${countRede()}/${state.config.rede?.meta || state.territorios.length}`;
 }
 
-function handleRoute(route) {
-  setSelectedTi(route.tiId || null);
-  setSelectedEntity(route.entityId || null);
-  renderSidebar(route);
-
-  if (route.view === "entity" && route.entityId) {
-    const ti = state.territorios.find((t) => t.id === route.tiId);
-    const ent = state.entidades.find((e) => e.id === route.entityId);
-    if (ti) highlightTerritorio(ti.id);
-    if (ent) focusEntity(ent);
-    openSheetForTerritory();
-  } else if (route.tiId) {
-    highlightTerritorio(route.tiId);
-    openSheetForTerritory();
-  } else {
-    resetView();
-  }
-
-  state.dontPanMap = false;
-
-  refreshStyles();
-  updateEntityMarkerSelection();
-  updateRedeBadge();
-}
-
-async function main() {
-  const { dataManifest, pontosData, territoriosGeo } = await loadData();
-
-  initShell();
-  initPhotoLightbox();
-  initTheme();
-
-  await initMap("map", state.territorios, (tiId) => {
-    goTerritorio(tiId);
-    openSheetForTerritory();
-  }, (tiId, entityId) => {
-    goEntity(tiId, entityId);
-    openSheetForTerritory();
-  }, territoriosGeo);
-
-  await Promise.all([
-    loadRedeLayers(state.geoManifest),
-    loadPontos(dataManifest.pontos || [], pontosData),
-    loadRoteiros(dataManifest.roteiros || []),
-  ]);
-  loadEntityMarkers(state.entidades);
-
-  initSearch();
-  initSidebarKeyboard();
-  initMapModes();
-  initRedeBadge();
-  initShare();
-  initRouter(handleRoute);
-
-  getMap()?.invalidateSize();
-
-  subscribe(() => {
-    refreshOverlayVisibility();
-    if (parseRoute().tiId === state.selectedTiId) refreshStyles();
+function initBrandHome() {
+  const go = () => { goHome(); openForContext(); };
+  document.querySelectorAll("[data-home]").forEach((el) => {
+    el.addEventListener("click", go);
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); }
+    });
   });
 }
 
@@ -125,18 +39,80 @@ function initMapModes() {
     btn.addEventListener("click", () => {
       document.querySelectorAll(".map-mode[data-mode]").forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
-      setMapBaseMode(btn.dataset.mode);
-      applyBaseLayer();
+      setBaseMode(btn.dataset.mode);
     });
   });
 }
 
-function initRedeBadge() {
+function initPopupLinks() {
+  getMap().getContainer().addEventListener("click", (ev) => {
+    const ext = ev.target.closest('a[target="_blank"]');
+    if (ext && isMobile()) closeSheet();
+    const link = ev.target.closest("[data-ficha],[data-ti]");
+    if (!link || link.tagName === "A") return;
+    ev.preventDefault();
+    if (link.dataset.ficha) goFicha(link.dataset.ficha);
+    else if (link.dataset.ti) goTerritorio(link.dataset.ti);
+    openForContext();
+    getMap().closePopup();
+  });
+}
+
+function handleRoute(route) {
+  setSelected({ tiId: route.tiId, fichaId: route.fichaId, municipio: route.municipio });
+  renderSidebar(route);
+
+  if (route.view === "ficha" && route.fichaId) {
+    const ficha = fichaById(route.fichaId);
+    if (route.tiId) highlightTi(route.tiId);
+    setSelectedFicha(route.fichaId);
+    if (ficha) focusFicha(ficha);
+    openForContext();
+  } else if (route.view === "ti" && route.tiId) {
+    highlightTi(route.tiId);
+    setSelectedFicha(null);
+    openForContext();
+  } else if (route.view === "municipio" && route.municipio) {
+    setSelectedFicha(null);
+    fitFichas(fichasDoMunicipio(route.municipio));
+    openForContext();
+  } else {
+    setSelectedFicha(null);
+    resetView();
+  }
+
+  refreshTiStyles();
+  updateRedeBadge();
+}
+
+async function main() {
+  applyThemeAttr();
+  await loadAll();
+  setChrome();
+
+  initShell();
+  initLightbox();
+
+  initMap("map", { onTiClick: (id) => goTerritorio(id) });
+  await Promise.all([loadRedeLayers(), loadRoteiros()]);
+  buildMarkers({});
+  buildLegend(document.getElementById("map-legend"));
+
+  initTheme();
+  initSearch();
+  initShare();
+  initSidebarKeyboard();
+  initMapModes();
+  initBrandHome();
   document.getElementById("btn-rede-badge")?.addEventListener("click", openRedePanel);
+  initPopupLinks();
+
+  initRouter(handleRoute);
+  setTimeout(() => getMap()?.invalidateSize(), 100);
 }
 
 main().catch((err) => {
   console.error(err);
-  document.getElementById("sidebar-content").innerHTML =
-    `<p class="lead">Erro ao carregar o mapa. Recarregue a página.</p>`;
+  const el = document.getElementById("sidebar-content");
+  if (el) el.innerHTML = `<p class="lead">Erro ao carregar o mapa. Verifique se está a usar um servidor HTTP (não abra via file://) e recarregue.</p>`;
 });

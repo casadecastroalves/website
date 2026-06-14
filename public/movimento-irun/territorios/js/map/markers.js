@@ -1,0 +1,146 @@
+import { state } from "../core/state.js";
+import { getMap } from "./map.js";
+import { popupHtml, popupOptions, initRichPopup } from "./popup.js";
+
+const TIPO_CAT = {
+  quilombo: "quilombos", assentamento: "quilombos", comunidade: "quilombos",
+  municipio: "municipios", instituicao: "instituicoes", projeto: "projetos",
+};
+
+let group = null;
+const markerByFichaId = {};
+let onFichaOpen = null;
+
+function categorias() {
+  return state.config.categorias || {};
+}
+
+function catOf(entry) {
+  const cats = entry.categorias || [];
+  const known = cats.find((c) => categorias()[c]);
+  return known || cats[0] || "quilombos";
+}
+
+function colorOf(entry) {
+  return categorias()[catOf(entry)]?.cor || "#f5c518";
+}
+
+function icon(color, active) {
+  return L.divIcon({
+    className: "irun-pin",
+    html: `<div class="irun-marker${active ? " active" : ""}" style="background:${color}"></div>`,
+    iconSize: [22, 22],
+    iconAnchor: [11, 20],
+    popupAnchor: [0, -18],
+  });
+}
+
+function matchesFilters(cats = []) {
+  if (!state.filters.size) return true;
+  return cats.some((c) => state.filters.has(c));
+}
+
+function fichaIdOf(entry) {
+  return entry.fichaId || entry.entidadeId || null;
+}
+
+function buildEntries() {
+  const entries = state.pontos.map((p) => ({ ...p }));
+  const referenced = new Set(entries.map(fichaIdOf).filter(Boolean));
+
+  for (const f of state.fichas) {
+    const coords = f.meta?.coords;
+    if (!coords || referenced.has(f.id)) continue;
+    entries.push({
+      id: f.id,
+      nome: f.meta?.nome || f.id,
+      coords,
+      categorias: [TIPO_CAT[f.tipo] || "quilombos"],
+      fichaId: f.id,
+      territorioId: f.territorioId,
+      resumo: f.sidebar?.apresentacao?.slice(0, 140),
+    });
+  }
+  return spreadOverlaps(entries);
+}
+
+function spreadOverlaps(entries) {
+  const buckets = new Map();
+  for (const e of entries) {
+    if (!Array.isArray(e.coords)) continue;
+    const key = `${e.coords[0].toFixed(5)},${e.coords[1].toFixed(5)}`;
+    if (!buckets.has(key)) buckets.set(key, []);
+    buckets.get(key).push(e);
+  }
+  for (const list of buckets.values()) {
+    if (list.length < 2) continue;
+    const r = 0.0006;
+    list.forEach((e, i) => {
+      const a = (2 * Math.PI * i) / list.length;
+      e.coords = [e.coords[0] + r * Math.cos(a), e.coords[1] + r * Math.sin(a)];
+    });
+  }
+  return entries;
+}
+
+export function buildMarkers(handlers = {}) {
+  onFichaOpen = handlers.onFichaOpen;
+  const map = getMap();
+  if (group) map.removeLayer(group);
+  group = L.layerGroup().addTo(map);
+  Object.keys(markerByFichaId).forEach((k) => delete markerByFichaId[k]);
+
+  for (const entry of buildEntries()) {
+    if (!Array.isArray(entry.coords)) continue;
+    const marker = L.marker(entry.coords, { icon: icon(colorOf(entry), false), keyboard: false });
+    marker._cats = entry.categorias || [];
+    marker._fichaId = fichaIdOf(entry);
+    marker._color = colorOf(entry);
+    marker.bindPopup(popupHtml(entry), popupOptions(entry));
+    marker.addTo(group);
+    if (marker._fichaId) markerByFichaId[marker._fichaId] = marker;
+  }
+
+  map.on("popupopen", (e) => initRichPopup(e.popup.getElement()));
+  refreshVisibility();
+}
+
+export function refreshVisibility() {
+  if (!group) return;
+  group.eachLayer((m) => {
+    const visible = matchesFilters(m._cats);
+    const el = m.getElement?.();
+    if (el) {
+      el.style.display = visible ? "" : "none";
+      el.style.pointerEvents = visible ? "" : "none";
+    }
+  });
+}
+
+export function setSelectedFicha(fichaId) {
+  Object.entries(markerByFichaId).forEach(([id, m]) => {
+    m.setIcon(icon(m._color, id === fichaId));
+  });
+}
+
+export function focusFicha(ficha) {
+  const map = getMap();
+  const coords = ficha?.meta?.coords;
+  if (!coords) return;
+  map.setView(coords, Math.max(map.getZoom(), 12), { animate: true });
+  const m = markerByFichaId[ficha.id];
+  if (m) setTimeout(() => m.openPopup(), 250);
+}
+
+export function buildLegend(container) {
+  if (!container) return;
+  const cats = categorias();
+  const items = Object.entries(cats)
+    .map(([k, v]) => `<div class="legend-item"><span class="legend-dot" style="background:${v.cor}"></span>${v.label}</div>`)
+    .join("");
+  container.innerHTML = `
+    <div class="legend-head" role="button" tabindex="0">Legenda <span class="legend-toggle">▾</span></div>
+    <div class="legend-items">${items}</div>`;
+  const head = container.querySelector(".legend-head");
+  head?.addEventListener("click", () => container.classList.toggle("collapsed"));
+}

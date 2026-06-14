@@ -1,69 +1,67 @@
-import { state, setSelectedTi, setSelectedEntity } from "./state.js";
+import { state, fichaById } from "./state.js";
 
 export function parseRoute() {
-  const hash = window.location.hash.slice(1) || "bahia";
-  const [path, query] = hash.split("?");
+  const raw = window.location.hash.replace(/^#\/?/, "");
+  const [path, query] = raw.split("?");
   const parts = path.split("/").filter(Boolean);
 
-  const filters = new URLSearchParams(query || "").get("f");
-  if (filters) {
-    state.filters = new Set(filters.split(",").filter(Boolean));
-  }
+  const f = new URLSearchParams(query || "").get("f");
+  state.filters = new Set((f || "").split(",").filter(Boolean));
 
-  if (!parts.length || parts[0] === "bahia") {
-    return { view: "bahia", tiId: null, entityId: null };
-  }
+  if (!parts.length) return { view: "home", tiId: null, fichaId: null, municipio: null };
 
-  if (parts[0].startsWith("ti-")) {
-    return {
-      view: parts[1] ? "entity" : "ti",
-      tiId: parts[0],
-      entityId: parts[1] || null,
-    };
+  if (parts[0] === "t" && parts[1]) {
+    return { view: parts[2] ? "ficha" : "ti", tiId: parts[1], fichaId: parts[2] || null, municipio: null };
   }
-
-  return { view: "bahia", tiId: null, entityId: null };
+  if (parts[0] === "f" && parts[1]) {
+    const ficha = fichaById(parts[1]);
+    return { view: "ficha", tiId: ficha?.territorioId || null, fichaId: parts[1], municipio: null };
+  }
+  if (parts[0] === "m" && parts[1]) {
+    return { view: "municipio", tiId: null, fichaId: null, municipio: parts[1] };
+  }
+  return { view: "home", tiId: null, fichaId: null, municipio: null };
 }
 
-export function buildHash({ view, tiId, entityId, filters }) {
-  let path = "bahia";
-  if (view === "ti" && tiId) path = tiId;
-  if (view === "entity" && tiId && entityId) path = `${tiId}/${entityId}`;
+export function buildHash({ view, tiId, fichaId, municipio, filters }) {
+  let path = "/";
+  if (view === "ti" && tiId) path = `/t/${tiId}`;
+  else if (view === "ficha" && tiId && fichaId) path = `/t/${tiId}/${fichaId}`;
+  else if (view === "ficha" && fichaId) path = `/f/${fichaId}`;
+  else if (view === "municipio" && municipio) path = `/m/${municipio}`;
 
-  const f = filters?.size ? Array.from(filters).join(",") : "";
+  const f = filters && filters.size ? Array.from(filters).join(",") : "";
   return f ? `#${path}?f=${f}` : `#${path}`;
 }
 
-export function navigate(route) {
-  const hash = buildHash({
-    view: route.view,
-    tiId: route.tiId,
-    entityId: route.entityId,
-    filters: state.filters,
-  });
-  if (window.location.hash !== hash) {
-    window.location.hash = hash;
-  }
-  if (route.tiId) setSelectedTi(route.tiId);
-  else setSelectedTi(null);
-  setSelectedEntity(route.entityId || null);
-  return route;
+function navigate(route) {
+  const hash = buildHash({ ...route, filters: state.filters });
+  if (window.location.hash !== hash) window.location.hash = hash;
+}
+
+export function goHome() {
+  navigate({ view: "home" });
+}
+
+export function goTerritorio(tiId) {
+  navigate({ view: "ti", tiId });
+}
+
+export function goFicha(fichaId, tiId) {
+  const ti = tiId || fichaById(fichaId)?.territorioId || null;
+  navigate({ view: "ficha", tiId: ti, fichaId });
+}
+
+export function goMunicipio(slug) {
+  navigate({ view: "municipio", municipio: slug });
+}
+
+export function syncHash() {
+  navigate(parseRoute());
 }
 
 export function initRouter(onRoute) {
   const handle = () => onRoute(parseRoute());
   window.addEventListener("hashchange", handle);
   handle();
-}
-
-export function goBahia() {
-  navigate({ view: "bahia", tiId: null, entityId: null });
-}
-
-export function goTerritorio(tiId) {
-  navigate({ view: "ti", tiId, entityId: null });
-}
-
-export function goEntity(tiId, entityId) {
-  navigate({ view: "entity", tiId, entityId });
 }

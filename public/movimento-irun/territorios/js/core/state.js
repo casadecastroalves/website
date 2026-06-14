@@ -1,19 +1,23 @@
+import { slugify } from "./util.js";
+
 const listeners = new Set();
 
 export const state = {
-  mapa: null,
+  config: null,
+  manifest: null,
   territorios: [],
-  entidades: [],
+  fichas: [],
+  fichaById: {},
   pontos: [],
-  geoManifest: null,
+  roteiros: [],
+  rede: [],
+  geo: null,
   selectedTiId: null,
-  selectedEntityId: null,
+  selectedFichaId: null,
+  selectedMunicipio: null,
   filters: new Set(),
   theme: "light",
-  mapBaseMode: "minimal",
-  sidebarOpen: false,
-  sidebarCollapsed: false,
-  dontPanMap: false,
+  baseMode: "mapa",
 };
 
 export function subscribe(fn) {
@@ -25,19 +29,32 @@ export function notify() {
   listeners.forEach((fn) => fn(state));
 }
 
-export function setSelectedTi(id) {
-  state.selectedTiId = id;
-  if (!id) state.selectedEntityId = null;
-  notify();
+export function tiById(id) {
+  return state.territorios.find((t) => t.id === id) || null;
 }
 
-export function setSelectedEntity(id) {
-  state.selectedEntityId = id;
-  notify();
+export function fichaById(id) {
+  return state.fichaById[id] || null;
 }
 
-export function getEntidade(id) {
-  return state.entidades.find((e) => e.id === id);
+export function fichasDoTerritorio(tiId) {
+  return state.fichas.filter((f) => f.territorioId === tiId);
+}
+
+export function fichasDoMunicipio(slug) {
+  return state.fichas.filter((f) => slugify(f.meta?.municipio || "") === slug);
+}
+
+export function redeOrdenada() {
+  return [...state.fichas.filter((f) => f.rede)].sort((a, b) => {
+    const ca = Number(tiById(a.territorioId)?.cod || 99);
+    const cb = Number(tiById(b.territorioId)?.cod || 99);
+    return ca - cb;
+  });
+}
+
+export function countRede() {
+  return state.territorios.filter((t) => t.redeAtiva).length;
 }
 
 export function toggleFilter(key) {
@@ -48,26 +65,9 @@ export function toggleFilter(key) {
   notify();
 }
 
-export function setMapBaseMode(mode) {
-  state.mapBaseMode = mode;
+export function setSelected({ tiId = null, fichaId = null, municipio = null }) {
+  state.selectedTiId = tiId;
+  state.selectedFichaId = fichaId;
+  state.selectedMunicipio = municipio;
   notify();
-}
-
-export function setSidebarOpen(open) {
-  state.sidebarOpen = open;
-  notify();
-}
-
-export function setSidebarCollapsed(collapsed) {
-  state.sidebarCollapsed = collapsed;
-  document.body.classList.toggle("sidebar-collapsed", collapsed);
-  notify();
-}
-
-export function countRedeAtiva() {
-  return state.territorios.filter((t) => t.redeAtiva).length;
-}
-
-export function getTerritorio(id) {
-  return state.territorios.find((t) => t.id === id);
 }

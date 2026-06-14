@@ -1,0 +1,13 @@
+﻿FOTOS — Quilombo Lagoa Grande
+=============================
+
+Largue aqui as fotos deste quilombo (esta pasta).
+
+Formatos aceites: .jpg  .jpeg  .png  .webp
+Recomendado: .webp ou .jpg, largura ~1600px, até ~300 KB cada (mais leve = mais rápido).
+Nomeie em ordem: foto-01.jpg, foto-02.jpg, foto-03.jpg ...
+
+Depois de adicionar/retirar fotos, corra UMA vez (na pasta MAPA MELHORADO):
+    node tools/atualizar-midia.mjs
+
+Pronto — o mapa mostra a galeria automaticamente. Não é preciso mexer no código.
