@@ -28,10 +28,10 @@ function colorOf(entry) {
 function icon(color, active) {
   return L.divIcon({
     className: "irun-pin",
-    html: `<div class="irun-marker${active ? " active" : ""}" style="background:${color}"></div>`,
-    iconSize: [22, 22],
-    iconAnchor: [11, 20],
-    popupAnchor: [0, -18],
+    html: `<span class="irun-marker${active ? " active" : ""}" style="background:${color}"></span>`,
+    iconSize: [40, 40],
+    iconAnchor: [20, 34],
+    popupAnchor: [0, -30],
   });
 }
 
@@ -64,20 +64,27 @@ function buildEntries() {
   return spreadOverlaps(entries);
 }
 
+/* Agrupa marcadores próximos (por distância, não por arredondamento) e
+   abre-os em leque, para serem visíveis e tocáveis sem zoom extremo. */
 function spreadOverlaps(entries) {
-  const buckets = new Map();
+  const THRESHOLD = 0.0009; // ~100 m: marcadores mais perto que isto são agrupados
+  const RADIUS = 0.0012;    // ~130 m: raio do leque
+  const groups = [];
   for (const e of entries) {
     if (!Array.isArray(e.coords)) continue;
-    const key = `${e.coords[0].toFixed(5)},${e.coords[1].toFixed(5)}`;
-    if (!buckets.has(key)) buckets.set(key, []);
-    buckets.get(key).push(e);
+    const g = groups.find(
+      (grp) =>
+        Math.abs(e.coords[0] - grp.center[0]) < THRESHOLD &&
+        Math.abs(e.coords[1] - grp.center[1]) < THRESHOLD
+    );
+    if (g) g.items.push(e);
+    else groups.push({ center: [e.coords[0], e.coords[1]], items: [e] });
   }
-  for (const list of buckets.values()) {
-    if (list.length < 2) continue;
-    const r = 0.0006;
-    list.forEach((e, i) => {
-      const a = (2 * Math.PI * i) / list.length;
-      e.coords = [e.coords[0] + r * Math.cos(a), e.coords[1] + r * Math.sin(a)];
+  for (const g of groups) {
+    if (g.items.length < 2) continue;
+    g.items.forEach((e, i) => {
+      const a = (2 * Math.PI * i) / g.items.length - Math.PI / 2;
+      e.coords = [g.center[0] + RADIUS * Math.cos(a), g.center[1] + RADIUS * Math.sin(a)];
     });
   }
   return entries;

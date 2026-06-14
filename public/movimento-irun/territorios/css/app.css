@@ -330,12 +330,15 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 .video-embed iframe { width: 100%; aspect-ratio: 16/9; border: none; border-radius: 10px; }
 .video-title { font-size: 0.76rem; color: var(--text-muted); margin-top: 5px; }
 
-/* ── Map markers ── */
-.irun-pin { background: transparent !important; border: none !important; }
+/* ── Map markers ──
+   .irun-pin é a área de toque (40×40, transparente) para facilitar o toque
+   no telemóvel; .irun-marker é o pin visual (18px) ancorado em baixo ao centro. */
+.irun-pin { background: transparent !important; border: none !important; cursor: pointer; touch-action: manipulation; }
 .irun-marker {
-  width: 100%; height: 100%; border-radius: 50% 50% 50% 0;
+  position: absolute; left: 50%; bottom: 6px; margin-left: -9px;
+  width: 18px; height: 18px; border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg); border: 2px solid #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4); position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 .irun-marker::after {
   content: ""; position: absolute; top: 50%; left: 50%;
