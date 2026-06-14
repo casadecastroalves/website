@@ -190,15 +190,16 @@ export async function loadRoteiros() {
       ),
     }).addTo(roteirosGroup);
 
+    const stopIcon = L.divIcon({
+      className: "route-pin",
+      html: '<span class="route-dot"></span>',
+      iconSize: [34, 34],
+      iconAnchor: [17, 17],
+      popupAnchor: [0, -12],
+    });
     L.geoJSON(geo, {
       filter: (f) => f.geometry.type === "Point",
-      pointToLayer: (f, latlng) => L.circleMarker(latlng, {
-        radius: 7,
-        color: "#ff7a59",
-        weight: 2,
-        fillColor: "#ff7a59",
-        fillOpacity: 0.85,
-      }),
+      pointToLayer: (f, latlng) => L.marker(latlng, { icon: stopIcon, keyboard: false }),
       onEachFeature: (f, layer) => {
         const nome = f.properties?.nome || "Parada";
         const ordem = f.properties?.ordem;

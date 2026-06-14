@@ -347,6 +347,13 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 }
 .irun-marker.active { box-shadow: 0 0 0 4px var(--yellow-dim), 0 2px 6px rgba(0,0,0,0.5); }
 
+/* Paradas de roteiro: ponto laranja com área de toque ampla. */
+.route-pin { background: transparent !important; border: none !important; cursor: pointer; touch-action: manipulation; }
+.route-dot {
+  position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px;
+  border-radius: 50%; background: #ff7a59; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+}
+
 /* ── Leaflet popup ── */
 .leaflet-popup-content-wrapper { border-radius: 12px; box-shadow: var(--shadow); font-family: var(--font); }
 .leaflet-popup-content { margin: 14px 16px; font-size: 0.85rem; line-height: 1.5; }
