@@ -6,27 +6,37 @@
   "rede": true,
   "meta": {
     "nome": "Vera Cruz",
-    "coords": [-12.9608, -38.6099],
+    "coords": [-13.0229254, -38.7158702],
     "municipio": "Vera Cruz",
     "uf": "BA",
     "fonte": "Movimento Irun — cartografia REDE",
     "responsavel": "Rede Movimento Irun",
     "licenca": "CC BY-NC-SA 4.0",
-    "updatedAt": "2026-06-06"
+    "updatedAt": "2026-06-14"
   },
   "sidebar": {
     "apresentacao": "Vera Cruz situa-se na ilha de Itaparica, na Baía de Todos os Santos, e concentra referências quilombolas como Tereré e Maragojipinho. Na REDE, articula turismo comunitário, memória viva e projetos como Vamos Navegar.",
+    "projetos": [
+      { "titulo": "Quilombo do Tereré e Maragojipinho", "fichaId": "terere" },
+      { "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho", "fichaId": "terere" },
+      { "titulo": "Vamos Navegar", "descricao": "Projeto de turismo náutico comunitário na Baía de Todos os Santos." },
+      { "titulo": "Roteiro Intermunicipal Itaparica · Vera Cruz", "descricao": "Contra Costa — percurso pela costa da ilha, em parceria com Itaparica." }
+    ],
     "identidade": [
       { "id": "historia", "titulo": "História e memória", "conteudo": "Território de quilombos históricos e comunidades pesqueiras na baía." },
       { "id": "comunidade", "titulo": "Comunidade", "conteudo": "Articulação entre município, quilombos vizinhos e projetos culturais na costa." },
       { "id": "turismo", "titulo": "Turismo", "conteudo": "Portal para o Quilombo do Tereré e roteiros intermunicipais com Itaparica." }
     ],
     "roteiros": [
-      { "titulo": "Contra Costa", "descricao": "Ligação com Itaparica pelo roteiro de costa da ilha." }
+      {
+        "titulo": "Contra Costa — Ilha de Itaparica",
+        "descricao": "Marina de Itaparica · Fonte do Tororó · Ilha de Matarandiba · Base Náutica de Cacha Pregos · Pousada Norage. Roteiro intermunicipal com Itaparica."
+      }
     ],
     "fotos": [],
     "videos": [
-      { "tipo": "youtube", "id": "Hd4UjhzXJy4", "titulo": "Projeto Vamos Navegar" }
+      { "tipo": "youtube", "id": "Hd4UjhzXJy4", "titulo": "Projeto Vamos Navegar" },
+      { "tipo": "youtube", "id": "gviO8E3jJfo", "titulo": "Roteiro Contra Costa — Ilha de Itaparica" }
     ],
     "links": []
   }

@@ -26,7 +26,7 @@
       ],
       "entidadeId": "terere",
       "popup": {
-        "contexto": "Região Metropolitana de Salvador · Quilombo do Tereré",
+        "contexto": "Vera Cruz · Quilombo do Tereré",
         "slides": [
           {
             "titulo": "Quilombo do Tereré — Vídeo 1",
@@ -75,7 +75,16 @@
         "turismo",
         "instituicoes"
       ],
-      "entidadeId": "terere"
+      "entidadeId": "terere",
+      "popup": {
+        "contexto": "Vera Cruz · Museu de Memória Viva",
+        "slides": [
+          {
+            "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho",
+            "texto": "Espaço de preservação e difusão da cultura quilombola na Baía de Todos os Santos."
+          }
+        ]
+      }
     },
     {
       "id": "vamos-navegar",
@@ -85,11 +94,12 @@
         -38.6148252
       ],
       "categorias": [
-        "projetos"
+        "projetos",
+        "turismo"
       ],
-      "entidadeId": "vera-cruz",
+      "resumo": "Projeto de turismo náutico comunitário na Baía de Todos os Santos",
       "popup": {
-        "contexto": "Região Metropolitana de Salvador · Vera Cruz",
+        "contexto": "Vera Cruz · Vamos Navegar",
         "slides": [
           {
             "titulo": "Vamos Navegar",
@@ -112,9 +122,8 @@
       "categorias": [
         "projetos"
       ],
-      "entidadeId": "itaparica",
       "popup": {
-        "contexto": "Região Metropolitana de Salvador · Itaparica",
+        "contexto": "Itaparica · Maré de Março",
         "slides": [
           {
             "titulo": "Maré de Março",
@@ -139,15 +148,11 @@
       ],
       "entidadeId": "itaparica",
       "popup": {
-        "contexto": "Região Metropolitana de Salvador · Itaparica",
+        "contexto": "Itaparica · Roteiro Contra Costa",
         "slides": [
           {
-            "titulo": "Roteiro Contra Costa",
-            "video": {
-              "tipo": "youtube",
-              "id": "gviO8E3jJfo",
-              "legenda": "Turismo e Roteiros na Ilha de Itaparica"
-            }
+            "titulo": "Roteiro Intermunicipal Itaparica · Vera Cruz",
+            "texto": "Contra Costa — saída da Marina de Itaparica, Fonte do Tororó, Ilha de Matarandiba, Base Náutica de Cacha Pregos e Pousada Norage."
           }
         ]
       }
@@ -162,7 +167,16 @@
       "categorias": [
         "municipios"
       ],
-      "entidadeId": "vera-cruz"
+      "entidadeId": "vera-cruz",
+      "popup": {
+        "contexto": "Vera Cruz · Roteiro Contra Costa",
+        "slides": [
+          {
+            "titulo": "Roteiro Intermunicipal Itaparica · Vera Cruz",
+            "texto": "Contra Costa — percurso pela costa da ilha: Marina de Itaparica, Fonte do Tororó, Ilha de Matarandiba, Base Náutica de Cacha Pregos e Pousada Norage."
+          }
+        ]
+      }
     },
     {
       "id": "casa-castro-alves",
@@ -177,7 +191,7 @@
       ],
       "entidadeId": "casa-castro-alves",
       "popup": {
-        "contexto": "Região Metropolitana de Salvador · Casa de Castro Alves",
+        "contexto": "Salvador · Casa de Castro Alves",
         "slides": [
           {
             "titulo": "Casa de Castro Alves",

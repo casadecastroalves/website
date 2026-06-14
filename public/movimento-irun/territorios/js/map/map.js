@@ -182,7 +182,33 @@ export async function loadRoteiros() {
       renderer: canvasRenderer,
       filter: (f) => f.geometry.type === "LineString",
       style: () => ({ color: "#ff7a59", weight: 3, opacity: 0.85, dashArray: "8 6" }),
-      onEachFeature: (f, layer) => layer.bindPopup(`<div class="popup-title">${esc(r.titulo)}</div><div class="popup-cod">Roteiro · Turismo</div>`),
+      onEachFeature: (f, layer) => layer.bindPopup(
+        `<div class="popup-rich-ctx">Roteiro · Turismo</div>
+         <div class="popup-title">${esc(r.titulo)}</div>
+         <div class="popup-cod">${esc(r.descricao || "Roteiro intermunicipal")}</div>`,
+        { maxWidth: 280, className: "irun-popup" }
+      ),
+    }).addTo(roteirosGroup);
+
+    L.geoJSON(geo, {
+      filter: (f) => f.geometry.type === "Point",
+      pointToLayer: (f, latlng) => L.circleMarker(latlng, {
+        radius: 7,
+        color: "#ff7a59",
+        weight: 2,
+        fillColor: "#ff7a59",
+        fillOpacity: 0.85,
+      }),
+      onEachFeature: (f, layer) => {
+        const nome = f.properties?.nome || "Parada";
+        const ordem = f.properties?.ordem;
+        layer.bindPopup(
+          `<div class="popup-rich-ctx">Contra Costa · ${ordem ? `Parada ${ordem}` : "Roteiro"}</div>
+           <div class="popup-title">${esc(nome)}</div>
+           <div class="popup-cod">${esc(r.titulo)}</div>`,
+          { maxWidth: 260, className: "irun-popup" }
+        );
+      },
     }).addTo(roteirosGroup);
   }
 }

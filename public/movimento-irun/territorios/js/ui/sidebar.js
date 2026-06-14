@@ -103,6 +103,18 @@ function renderList(items, key = "nome") {
   return `<ul class="content-list">${items.map((i) => `<li>${esc(i[key] || i.titulo || i.nome || "")}${i.descricao ? ` — <span class="muted">${esc(i.descricao)}</span>` : ""}</li>`).join("")}</ul>`;
 }
 
+function renderProjetos(items) {
+  if (!items?.length) return `<p class="empty-rede">Nenhum projeto mapeado ainda.</p>`;
+  const cards = [];
+  const rest = [];
+  items.forEach((p) => {
+    if (p.fichaId && fichaById(p.fichaId)) cards.push(fichaCard(fichaById(p.fichaId), "Projeto"));
+    else rest.push(`<li><strong>${esc(p.titulo)}</strong>${p.descricao ? `<br><span class="muted">${esc(p.descricao)}</span>` : ""}</li>`);
+  });
+  if (!cards.length && !rest.length) return `<p class="empty-rede">Nenhum projeto mapeado ainda.</p>`;
+  return `${cards.length ? `<ul class="entity-list">${cards.join("")}</ul>` : ""}${rest.length ? `<ul class="content-list">${rest.join("")}</ul>` : ""}`;
+}
+
 function renderLinks(items) {
   if (!items?.length) return "";
   return `<ul class="link-list">${items.map((i) => `<li><a href="${escAttr(i.href)}" target="_blank" rel="noopener">${esc(i.titulo || i.handle || i.href)}</a></li>`).join("")}</ul>`;
@@ -212,6 +224,7 @@ function renderFicha(f, ti) {
   const ext = s.externo || {};
   const out = [];
   out.push(accordion("apresentacao", "Apresentação", `<p class="lead">${esc(s.apresentacao || "")}</p>${ext.about ? verMais(ext.about, "Ler mais no site →") : ""}`, true));
+  if (s.projetos?.length) out.push(accordion("projetos", `Projetos e lugares (${s.projetos.length})`, renderProjetos(s.projetos), f.tipo === "municipio"));
   out.push(accordion("identidade", "Identidade", renderIdentidade(s.identidade), false));
   if (s.fotos?.length) out.push(accordion("fotos", `Fotos (${s.fotos.length})`, renderFotos(s.fotos), false));
   if (s.videos?.length) out.push(accordion("videos", `Vídeos (${s.videos.length})`, renderVideos(s.videos), false));
