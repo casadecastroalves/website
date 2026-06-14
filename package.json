@@ -14,7 +14,7 @@
     "view:build": "node scripts/ver-site-live.mjs",
     "watch": "node scripts/ver-site-live.mjs",
     "sync:oya-card": "node scripts/sync-oya-card.mjs",
-    "astro": "astro"
+    "astro": "node scripts/astro-guard.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",

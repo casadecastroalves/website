@@ -99,27 +99,51 @@ function runBackground(command, args, cwd = workDir) {
   return child;
 }
 
-function waitForSite(url, maxAttempts = 120) {
+function waitForSite(url, maxAttempts = 180) {
   return new Promise((resolve, reject) => {
     let attempts = 0;
 
     const tryRequest = () => {
       http
         .get(url, (response) => {
-          response.resume();
-          if (response.statusCode === 200) {
-            resolve();
-            return;
-          }
-          retry();
+          let body = '';
+          response.on('data', (chunk) => {
+            body += chunk;
+            if (body.length > 8000) response.destroy();
+          });
+          response.on('end', () => {
+            const isAstro404 = body.includes('404: Not Found') || body.includes('astro-butterlogo');
+            const isSite =
+              response.statusCode === 200 &&
+              !isAstro404 &&
+              (body.includes('Casa de Castro Alves') || body.includes('casadecastroalves'));
+
+            if (isSite) {
+              resolve();
+              return;
+            }
+
+            if (isAstro404) {
+              console.log('   Detectado astro dev (404) — a libertar porta...');
+              killPort(port);
+            }
+            retry();
+          });
         })
         .on('error', retry);
     };
 
     const retry = () => {
       attempts += 1;
+      if (attempts % 15 === 0) {
+        console.log(`   A aguardar servidor... (${attempts}s)`);
+      }
       if (attempts >= maxAttempts) {
-        reject(new Error('Servidor nao respondeu a tempo.'));
+        reject(
+          new Error(
+            'Servidor nao respondeu. Feche tabs 404 no browser, Ctrl+C aqui, e execute ver-site-live.bat de novo.'
+          )
+        );
         return;
       }
       setTimeout(tryRequest, 1000);

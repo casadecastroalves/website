@@ -193,6 +193,14 @@
     color: var(--color-carvao);
   }
 
+  .site-search-mark {
+    background: rgba(212, 175, 55, 0.35);
+    color: var(--color-preto-editorial);
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: 700;
+  }
+
   .site-search-hint {
     margin: var(--space-md) 0 0;
     font-family: var(--font-interface);
@@ -209,6 +217,7 @@
     title: string;
     url: string;
     excerpt: string;
+    searchText?: string;
     category: string;
   };
 
@@ -234,6 +243,111 @@
     indexLoaded = true;
   }
 
+  function escapeHtml(value: string) {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function escapeRegex(value: string) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function findTermIndex(haystack: string, term: string) {
+    if (term.length <= 4) {
+      const re = new RegExp(`(?:^|[^a-z0-9])${escapeRegex(term)}(?:[^a-z0-9]|$)`);
+      const match = re.exec(` ${haystack} `);
+      return match ? Math.max(0, match.index - 1) : -1;
+    }
+
+    return haystack.indexOf(term);
+  }
+
+  function entryMatches(entry: SearchEntry, terms: string[]) {
+    const haystack = normalize(`${entry.title} ${entry.excerpt} ${entry.searchText ?? ''} ${entry.category}`);
+    return terms.every((term) => findTermIndex(haystack, term) !== -1);
+  }
+
+  function highlightParts(text: string, terms: string[]) {
+    let parts: Array<{ text: string; mark: boolean }> = [{ text, mark: false }];
+
+    for (const term of terms) {
+      const nextParts: Array<{ text: string; mark: boolean }> = [];
+
+      for (const part of parts) {
+        if (part.mark) {
+          nextParts.push(part);
+          continue;
+        }
+
+        const normPart = normalize(part.text);
+        let cursor = 0;
+
+        while (cursor < normPart.length) {
+          const slice = normPart.slice(cursor);
+          const relativeIndex = findTermIndex(slice, term);
+          if (relativeIndex === -1) break;
+
+          const start = cursor + relativeIndex;
+          const end = start + term.length;
+
+          if (start > cursor) {
+            nextParts.push({ text: part.text.slice(cursor, start), mark: false });
+          }
+
+          nextParts.push({ text: part.text.slice(start, end), mark: true });
+          cursor = end;
+        }
+
+        if (cursor < part.text.length) {
+          nextParts.push({ text: part.text.slice(cursor), mark: false });
+        }
+      }
+
+      parts = nextParts.length ? nextParts : parts;
+    }
+
+    return parts
+      .map((part) =>
+        part.mark
+          ? `<mark class="site-search-mark">${escapeHtml(part.text)}</mark>`
+          : escapeHtml(part.text)
+      )
+      .join('');
+  }
+
+  function buildSnippet(entry: SearchEntry, terms: string[]) {
+    const source = entry.searchText || entry.excerpt || entry.title;
+    const normSource = normalize(source);
+
+    let matchStart = -1;
+    let matchTerm = '';
+
+    for (const term of terms) {
+      const idx = findTermIndex(normSource, term);
+      if (idx !== -1) {
+        matchStart = idx;
+        matchTerm = term;
+        break;
+      }
+    }
+
+    if (matchStart === -1) {
+      return highlightParts(entry.excerpt, terms);
+    }
+
+    const snippetStart = Math.max(0, matchStart - 70);
+    const snippetEnd = Math.min(source.length, matchStart + Math.max(matchTerm.length, 8) + 110);
+    let snippet = source.slice(snippetStart, snippetEnd);
+
+    if (snippetStart > 0) snippet = `…${snippet}`;
+    if (snippetEnd < source.length) snippet = `${snippet}…`;
+
+    return highlightParts(snippet, terms);
+  }
+
   function renderResults(query: string) {
     if (!resultsEl) return;
 
@@ -244,12 +358,7 @@
     }
 
     const terms = normalize(trimmed).split(/\s+/).filter(Boolean);
-    const matches = index
-      .filter((entry) => {
-        const haystack = normalize(`${entry.title} ${entry.excerpt} ${entry.category}`);
-        return terms.every((term) => haystack.includes(term));
-      })
-      .slice(0, 12);
+    const matches = index.filter((entry) => entryMatches(entry, terms)).slice(0, 12);
 
     if (matches.length === 0) {
       resultsEl.innerHTML = '<p class="site-search-empty">Nenhum resultado encontrado.</p>';
@@ -261,8 +370,8 @@
         (entry) => `
           <a class="site-search-result" href="${entry.url}">
             <span class="site-search-result-meta">${entry.category}</span>
-            <span class="site-search-result-title">${entry.title}</span>
-            <span class="site-search-result-excerpt">${entry.excerpt}</span>
+            <span class="site-search-result-title">${highlightParts(entry.title, terms)}</span>
+            <span class="site-search-result-excerpt">${buildSnippet(entry, terms)}</span>
           </a>
         `
       )

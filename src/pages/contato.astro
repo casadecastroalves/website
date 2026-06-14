@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ContactForm from '../components/ContactForm.astro';
+import { GOOGLE_MAPS_URL } from '../data/contact.ts';
 
 // Contato page for Casa de Castro Alves
 ---
@@ -55,9 +56,11 @@ import ContactForm from '../components/ContactForm.astro';
                 <div class="method-details">
                   <h3>Endereço</h3>
                   <p class="address-text">
-                    Rua do Passo, 52, Santo Antônio Além do Carmo,<br />
-                    Salvador - Bahia, Brasil<br />
-                    CEP: 40301-408
+                    <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" class="address-link">
+                      Rua do Passo, 52, Santo Antônio Além do Carmo,<br />
+                      Salvador - Bahia, Brasil<br />
+                      CEP: 40301-408
+                    </a>
                   </p>
                   <p class="helper-text">Localizada estrategicamente ao lado da Igreja do Passo no Centro Histórico.</p>
                 </div>
@@ -198,6 +201,16 @@ import ContactForm from '../components/ContactForm.astro';
     font-size: 1.1rem;
     line-height: 1.5;
     margin-bottom: var(--space-xs);
+  }
+
+  .address-link {
+    color: inherit;
+    text-decoration: none;
+    transition: var(--transition-fast);
+  }
+
+  .address-link:hover {
+    color: var(--color-ouro);
   }
 
   .helper-text {

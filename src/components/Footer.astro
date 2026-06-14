@@ -1,5 +1,7 @@
 ---
 // Footer component for Casa de Castro Alves
+import { GOOGLE_MAPS_URL } from '../data/contact.ts';
+
 interface Props {
   showSponsors?: boolean;
 }
@@ -55,7 +57,7 @@ const { showSponsors = false } = Astro.props;
       </p>
       <p class="contact-item">
         <strong>Endereço:</strong><br />
-        <a href="https://maps.google.com/?q=Rua+do+Passo,+52,+Santo+Antonio+Alem+do+Carmo,+Salvador,+Bahia" target="_blank" rel="noopener noreferrer" class="contact-link">
+        <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" class="contact-link">
           Rua do Passo, 52,<br />
           Santo Antônio Além do Carmo,<br />
           Salvador - BA, 40301-408
