@@ -7,7 +7,7 @@
   "meta": {
     "nome": "Museu da Costa do Dendê de Cultura Afro-Indígena",
     "coords": [-13.467506, -39.0899805],
-    "municipio": "Valença e Cajaíba",
+    "municipio": "Valença",
     "uf": "BA",
     "fonte": "Movimento Irun — cartografia REDE",
     "responsavel": "Museu da Costa do Dendê de Cultura Afro-Indígena",
@@ -35,7 +35,7 @@
       {
         "id": "rede",
         "titulo": "Valença e REDE",
-        "conteudo": "No ti-06 (Baixo Sul), o museu integra a REDE Movimento Irun junto ao Kilombo Tenondé e ao Terreiro Caxuté — três territórios de identidade distintos no mesmo município."
+        "conteudo": "No Território de Identidade Baixo Sul (ti-06), o museu integra a REDE Movimento Irun junto ao Kilombo Tenondé e ao Terreiro Caxuté — três entidades distintas no município de Valença."
       }
     ],
     "roteiros": [

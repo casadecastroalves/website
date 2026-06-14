@@ -58,7 +58,7 @@ function fichaCard(f, badge) {
 }
 
 function tipoLabel(tipo) {
-  return ({ municipio: "Município", quilombo: "Quilombo", instituicao: "Instituição", projeto: "Projeto" })[tipo] || tipo;
+  return ({ municipio: "Município", quilombo: "Quilombo", instituicao: "Instituição", projeto: "Projeto", comunidade: "Comunidade" })[tipo] || tipo;
 }
 
 function fichaBadge(f) {
