@@ -4,6 +4,7 @@
   "territorioId": "ti-06",
   "tipo": "instituicao",
   "rede": true,
+  "pontoCultura": true,
   "meta": {
     "nome": "Museu da Costa do Dendê de Cultura Afro-Indígena",
     "coords": [-13.467506, -39.0899805],

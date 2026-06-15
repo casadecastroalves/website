@@ -4,6 +4,7 @@
   "territorioId": "ti-06",
   "tipo": "quilombo",
   "rede": true,
+  "pontoCultura": "desde 2024",
   "meta": {
     "nome": "Kilombo Tenondé",
     "coords": [-13.323106165476451, -39.25321337737795],

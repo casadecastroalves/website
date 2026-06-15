@@ -4,6 +4,7 @@
   "territorioId": "ti-26",
   "tipo": "quilombo",
   "rede": true,
+  "pontoCultura": true,
   "meta": {
     "nome": "Quilombo do Tereré",
     "coords": [-12.9658403, -38.6195329],

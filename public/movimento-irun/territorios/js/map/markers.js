@@ -29,7 +29,7 @@ function colorOf(entry) {
 function icon(color, active, pontoCultura) {
   return L.divIcon({
     className: "irun-pin",
-    html: `<span class="irun-marker${active ? " active" : ""}" style="background:${color}"></span>${pontoCultura ? '<span class="pc-badge" aria-hidden="true">★</span>' : ""}`,
+    html: `<span class="irun-marker${active ? " active" : ""}${pontoCultura ? " pc" : ""}" style="background:${color}">${pontoCultura ? '<span class="pc-star" aria-hidden="true">★</span>' : ""}</span>`,
     iconSize: [40, 40],
     iconAnchor: [20, 34],
     popupAnchor: [0, -30],

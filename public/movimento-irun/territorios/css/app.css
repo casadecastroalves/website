@@ -349,17 +349,27 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 }
 .irun-marker.active { box-shadow: 0 0 0 4px var(--yellow-dim), 0 2px 6px rgba(0,0,0,0.5); }
 
-/* ── Ponto de Cultura badge ──────────────────
+/* ── Ponto de Cultura: estrela centralizada no pin ──────────────────
    NÃO mexer em position do .irun-pin: o Leaflet posiciona cada marcador
-   com position:absolute + transform. O .pc-badge ancora a esse contexto. */
-.pc-badge {
-  position: absolute; top: 0; right: 0;
-  width: 16px; height: 16px; border-radius: 50%;
-  background: #c9a227; color: #fff;
-  font-size: 9px; line-height: 16px; text-align: center;
-  border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.4);
-  pointer-events: none; z-index: 2; display: block;
+   com position:absolute + transform. A estrela substitui o ponto branco
+   central; como o pin está rodado -45deg, contra-rodamos +45deg. */
+.irun-marker.pc::after { display: none; }
+.pc-star {
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  color: #fff; font-size: 11px; line-height: 1;
+  text-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
 }
+/* ── Ponto de Cultura: selo na ficha (sidebar) ── */
+.ficha-pc-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #c9a227; color: #fff;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em;
+  padding: 4px 11px; border-radius: 13px;
+  margin: 0 0 12px;
+}
+.ficha-pc-badge .ficha-pc-star { font-size: 0.82rem; }
 .popup-pc-tag {
   display: inline-block;
   background: #c9a227; color: #fff;

@@ -366,6 +366,7 @@ function renderFicha(f, ti) {
     ${redePager(f.id)}
     <div class="ti-header-cod">REDE · ${esc(tipoLabel(f.tipo))}</div>
     <h2 class="ti-header-title">${esc(f.meta?.nome || f.id)}</h2>
+    ${f.pontoCultura ? `<p class="ficha-pc-badge"><span class="ficha-pc-star">★</span> Ponto de Cultura${typeof f.pontoCultura === "string" ? ` ${esc(f.pontoCultura)}` : ""}</p>` : ""}
     <p class="lead">${leadHtml}</p>
     <p class="ti-header-sub"><a href="#/ti/${escAttr(ti.id)}" class="link-territorio">← ${esc(ti.cod)} · ${esc(ti.nome)}</a></p>
     ${out.join("")}
