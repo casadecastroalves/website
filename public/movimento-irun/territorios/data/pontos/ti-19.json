@@ -9,7 +9,6 @@
         -38.9894126
       ],
       "categorias": [
-        "quilombos",
         "instituicoes"
       ],
       "entidadeId": "lagoa-grande"
@@ -22,7 +21,6 @@
         -38.9898594
       ],
       "categorias": [
-        "quilombos",
         "instituicoes"
       ],
       "entidadeId": "lagoa-grande"
@@ -104,7 +102,7 @@
       "id": "lg-aqcomaq---associação-quilombola-comunitá",
       "nome": "AQCOMAQ - Associação Quilombola Comunitária de Maria Quitéria - Comunidade Quilombola de Lagoa Grande",
       "coords": [-12.1368249, -38.9898146],
-      "categorias": ["quilombos", "instituicoes"],
+      "categorias": ["instituicoes"],
       "entidadeId": "lagoa-grande",
       "popup": {
         "contexto": "Portal do Sertão · Quilombo Lagoa Grande",
