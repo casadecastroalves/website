@@ -15,7 +15,9 @@ function fichaLinkId(entry) {
   if (!id) return null;
   const f = state.fichaById?.[id];
   if (!f) return null;
-  if (f.tipo === "municipio" && slugify(f.meta?.nome || "") !== slugify(entry.nome || "")) return null;
+  // Bloqueia o link só quando o vínculo é implícito (entidadeId) e o nome do
+  // pin difere do município. Um fichaId explícito é intencional e sempre liga.
+  if (!entry.fichaId && f.tipo === "municipio" && slugify(f.meta?.nome || "") !== slugify(entry.nome || "")) return null;
   return id;
 }
 
