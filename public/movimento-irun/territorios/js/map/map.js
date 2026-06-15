@@ -123,9 +123,15 @@ function buildTerritorios() {
         { maxWidth: 260, className: "irun-popup" }
       );
       layer.on({
-        mouseover: () => { if (state.selectedTiId !== id) layer.setStyle(tiStyles().hover); },
+        mouseover: (e) => {
+          if (map.getZoom() > 10) return; // zoomed in: ignore territory hover
+          if (state.selectedTiId !== id) layer.setStyle(tiStyles().hover);
+        },
         mouseout: () => { if (state.selectedTiId !== id) layer.setStyle(styleFor(id)); },
-        click: () => onTiClick?.(id),
+        click: (e) => {
+          if (map.getZoom() > 10) return; // zoomed in: let pins handle clicks
+          onTiClick?.(id);
+        },
       });
     },
   }).addTo(map);
