@@ -367,7 +367,7 @@ function renderFicha(f, ti) {
     <div class="ti-header-cod">REDE · ${esc(tipoLabel(f.tipo))}</div>
     <h2 class="ti-header-title">${esc(f.meta?.nome || f.id)}</h2>
     <p class="lead">${leadHtml}</p>
-    <p class="ti-header-sub muted">${esc(ti.cod)} · ${esc(ti.nome)}</p>
+    <p class="ti-header-sub"><a href="#/ti/${escAttr(ti.id)}" class="link-territorio">← ${esc(ti.cod)} · ${esc(ti.nome)}</a></p>
     ${out.join("")}
   `;
 }
