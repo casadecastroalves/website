@@ -309,7 +309,6 @@ function renderHome() {
 }
 
 function renderTerritorio(ti) {
-  const fichas = fichasDoTerritorio(ti.id);
   const pontos = state.pontos.filter((p) => p.territorioId === ti.id);
   const lugares = pontos.length
     ? `<ul class="entity-list">${pontos.map(pinCard).join("")}</ul>`
@@ -320,8 +319,7 @@ function renderTerritorio(ti) {
     <h2 class="ti-header-title">${esc(ti.nome)}</h2>
     <p class="lead">Território oficial de planejamento do Estado da Bahia (SEI/SEPLAN · SecultBA).</p>
     ${accordion("identidade", "Identidade do Território", `<p class="section-title">Dimensões</p><p class="lead">${(state.config.dimensoes || []).join(" · ")}</p>`, true)}
-    ${accordion("rede-ti", `REDE neste território (${fichas.length})`, fichas.length ? `<ul class="entity-list">${fichas.map((f) => fichaCard(f, fichaBadge(f))).join("")}</ul>` : `<p class="empty-rede">Nenhuma ficha mapeada aqui ainda.</p>`, fichas.length > 0)}
-    ${accordion("lugares", `Lugares no mapa (${pontos.length})`, lugares, false)}
+    ${accordion("lugares", `Lugares no mapa (${pontos.length})`, lugares, true)}
     ${accordion("territorios-nav", "Ir para outro território", renderTiList(ti.id), false)}
   `;
 }
