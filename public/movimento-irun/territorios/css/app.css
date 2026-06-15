@@ -349,8 +349,9 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 }
 .irun-marker.active { box-shadow: 0 0 0 4px var(--yellow-dim), 0 2px 6px rgba(0,0,0,0.5); }
 
-/* ── Ponto de Cultura badge ────────────────── */
-.irun-pin { position: relative; overflow: visible !important; }
+/* ── Ponto de Cultura badge ──────────────────
+   NÃO mexer em position do .irun-pin: o Leaflet posiciona cada marcador
+   com position:absolute + transform. O .pc-badge ancora a esse contexto. */
 .pc-badge {
   position: absolute; top: 0; right: 0;
   width: 16px; height: 16px; border-radius: 50%;
