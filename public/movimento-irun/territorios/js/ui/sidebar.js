@@ -65,21 +65,23 @@ function fichaBadge(f) {
   return tipoLabel(f.tipo);
 }
 
-/* Card de um ponto do mapa: mostra SEMPRE o nome do pin.
-   Liga à ficha quando faz sentido (sublocal de quilombo ou o próprio município),
-   mas nunca aponta um lugar distinto para a ficha de um município com outro nome. */
+/* Card de um ponto do mapa: sempre clicável (foca pin no mapa).
+   Se tiver ficha compatível, no desktop navega também para a ficha. */
 function pinCard(p) {
   const f = fichaById(p.fichaId || p.entidadeId);
   const nomesIguais = f && slugify(f.meta?.nome || "") === slugify(p.nome);
   const ligar = f && (f.tipo !== "municipio" || nomesIguais);
-  if (ligar) {
-    return `<li class="entity-card" data-ficha="${f.id}" tabindex="0" role="button">
-      <span class="entity-badge">Lugar</span>
-      <span class="entity-name">${esc(p.nome)}</span>
-      <span class="entity-arrow">→</span>
-    </li>`;
-  }
-  return `<li class="place-static"><span class="entity-badge">Lugar</span><span class="entity-name">${esc(p.nome)}</span></li>`;
+  const fichaAttr = ligar ? ` data-ficha="${escAttr(f.id)}"` : "";
+  return `<li class="entity-card"${fichaAttr} data-ponto="${escAttr(p.id)}" tabindex="0" role="button">
+    <span class="entity-badge">Lugar</span>
+    <span class="entity-name">${esc(p.nome)}</span>
+    <span class="entity-arrow">→</span>
+  </li>`;
+}
+
+/* Pontos cujo entidadeId/fichaId aponta para esta ficha. */
+function pontosDaFicha(fichaId) {
+  return state.pontos.filter((p) => (p.entidadeId || p.fichaId) === fichaId);
 }
 
 /* Territórios da REDE: lista explícita do config (ordem por código),
@@ -317,6 +319,8 @@ function renderFicha(f, ti) {
     ];
     out.push(accordion("redes", "Redes e links", renderLinks(links), false));
   }
+  const lugarPins = pontosDaFicha(f.id);
+  if (lugarPins.length) out.push(accordion("lugares", `Lugares no mapa (${lugarPins.length})`, `<ul class="entity-list">${lugarPins.map(pinCard).join("")}</ul>`, true));
   out.push(accordion("contato", "Contato", renderContato(s.contato, ext), false));
 
   const mun = f.meta?.municipio || "";
@@ -398,7 +402,8 @@ function bindEvents(el, route) {
     item.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
   });
 
-  el.querySelectorAll(".entity-card[data-ficha], .entity-card[data-ti]").forEach((card) => {
+  /* Fichas e territórios puros (sem pin de mapa associado) */
+  el.querySelectorAll(".entity-card[data-ficha]:not([data-ponto]), .entity-card[data-ti]").forEach((card) => {
     const go = () => {
       if (card.dataset.ficha) goFicha(card.dataset.ficha);
       else if (card.dataset.ti) goTerritorio(card.dataset.ti);
@@ -409,13 +414,21 @@ function bindEvents(el, route) {
     card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
   });
 
-  el.querySelectorAll(".entity-card[data-ponto]").forEach((card) => {
+  /* Todos os items com data-ponto: foca o pin no mapa.
+     Mobile → fecha o sidebar.
+     Desktop → se tiver ficha, navega também para a ficha no sidebar. */
+  el.querySelectorAll("[data-ponto]").forEach((item) => {
     const go = () => {
-      focusPonto(card.dataset.ponto);
-      if (isMobile()) closeSheet();
+      focusPonto(item.dataset.ponto);
+      if (isMobile()) {
+        closeSheet();
+      } else if (item.dataset.ficha) {
+        goFicha(item.dataset.ficha);
+        openForContext();
+      }
     };
-    card.addEventListener("click", go);
-    card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+    item.addEventListener("click", go);
+    item.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
   });
 
   el.querySelectorAll("[data-filter]").forEach((chip) => {
