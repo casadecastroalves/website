@@ -1,4 +1,4 @@
-import { state, togglePontoCulturaFilter } from "../core/state.js";
+import { state, toggleFilter, togglePontoCulturaFilter } from "../core/state.js";
 import { getMap } from "./map.js";
 import { popupHtml, popupOptions, initRichPopup } from "./popup.js";
 
@@ -125,6 +125,11 @@ export function refreshVisibility() {
     btn.classList.toggle("active", state.filterPontoCultura);
     btn.setAttribute("aria-pressed", state.filterPontoCultura ? "true" : "false");
   }
+  document.querySelectorAll(".legend-item[data-cat]").forEach((el) => {
+    const active = state.filters.has(el.dataset.cat);
+    el.classList.toggle("active", active);
+    el.setAttribute("aria-pressed", active ? "true" : "false");
+  });
   group.eachLayer((m) => {
     const visible = matchesFilters(m._cats, m._pontoCultura);
     const el = m.getElement?.();
@@ -162,7 +167,7 @@ export function buildLegend(container) {
   if (!container) return;
   const cats = categorias();
   const items = Object.entries(cats)
-    .map(([k, v]) => `<div class="legend-item"><span class="legend-dot" style="background:${v.cor}"></span>${v.label}</div>`)
+    .map(([k, v]) => `<button type="button" class="legend-item" data-cat="${k}" aria-pressed="false"><span class="legend-dot" style="background:${v.cor}"></span><span class="legend-label">${v.label}</span></button>`)
     .join("");
   container.innerHTML = `
     <div class="legend-head" role="button" tabindex="0">Legenda <span class="legend-toggle">▾</span></div>
@@ -174,6 +179,12 @@ export function buildLegend(container) {
     </div>`;
   const head = container.querySelector(".legend-head");
   head?.addEventListener("click", () => container.classList.toggle("collapsed"));
+  container.querySelectorAll(".legend-item[data-cat]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      toggleFilter(btn.dataset.cat);
+      refreshVisibility();
+    });
+  });
   const btnPC = container.querySelector("#btn-pc-filter");
   btnPC?.addEventListener("click", () => {
     togglePontoCulturaFilter();
