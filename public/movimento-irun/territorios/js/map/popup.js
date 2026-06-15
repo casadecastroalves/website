@@ -29,6 +29,7 @@ export function popupHtml(entry) {
   const link = bestLink(entry.links || []);
   const fichaId = fichaLinkId(entry);
   return `<div class="popup-title">${esc(entry.nome)}</div>
+    ${entry.pontoCultura ? `<span class="popup-pc-tag">★ Ponto de Cultura</span>` : ""}
     ${entry.resumo ? `<div class="popup-cod">${esc(entry.resumo)}</div>` : ""}
     ${link ? `<a class="popup-link" href="${escAttr(link)}" target="_blank" rel="noopener">Saiba mais →</a>` : ""}
     ${fichaId ? `<span class="popup-link" data-ficha="${escAttr(fichaId)}">Ver ficha →</span>` : ""}`;
@@ -73,7 +74,7 @@ export function richPopupHtml(entry) {
   const n = slides.length;
   const fichaId = fichaLinkId(entry);
   return `<div class="irun-rich-popup" data-slides="${n}">
-    <div class="popup-rich-ctx">${esc(ctx)}</div>
+    <div class="popup-rich-ctx">${esc(ctx)}${entry.pontoCultura ? `<span class="popup-pc-tag">★</span>` : ""}</div>
     <div class="popup-rich-viewport">
       ${slides.map((s, i) => `<div class="popup-rich-slide${i === 0 ? " active" : ""}" data-idx="${i}">${slideBody(s, i === 0)}</div>`).join("")}
     </div>

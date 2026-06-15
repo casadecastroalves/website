@@ -16,6 +16,7 @@ export const state = {
   selectedFichaId: null,
   selectedMunicipio: null,
   filters: new Set(),
+  filterPontoCultura: false,
   theme: "light",
   baseMode: "mapa",
 };
@@ -62,6 +63,11 @@ export function toggleFilter(key) {
   if (next.has(key)) next.delete(key);
   else next.add(key);
   state.filters = next;
+  notify();
+}
+
+export function togglePontoCulturaFilter() {
+  state.filterPontoCultura = !state.filterPontoCultura;
   notify();
 }
 

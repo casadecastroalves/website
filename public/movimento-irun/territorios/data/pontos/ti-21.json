@@ -13,6 +13,7 @@
       "nome": "Casa das Rendeiras e Trançadeiras",
       "coords": [-12.7391106, -38.7628271],
       "categorias": ["instituicoes", "producao"],
+      "pontoCultura": true,
       "entidadeId": "saubara",
       "popup": {
         "contexto": "Recôncavo · Saubara",

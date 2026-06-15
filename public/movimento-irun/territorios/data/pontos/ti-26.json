@@ -75,6 +75,7 @@
         "turismo",
         "instituicoes"
       ],
+      "pontoCultura": true,
       "entidadeId": "terere",
       "popup": {
         "contexto": "Vera Cruz · Museu de Memória Viva",
@@ -209,6 +210,7 @@
         "instituicoes",
         "projetos"
       ],
+      "pontoCultura": true,
       "entidadeId": "casa-castro-alves",
       "popup": {
         "contexto": "Salvador · Casa de Castro Alves",

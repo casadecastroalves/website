@@ -349,6 +349,40 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 }
 .irun-marker.active { box-shadow: 0 0 0 4px var(--yellow-dim), 0 2px 6px rgba(0,0,0,0.5); }
 
+/* ── Ponto de Cultura badge ────────────────── */
+.irun-pin { position: relative; overflow: visible !important; }
+.pc-badge {
+  position: absolute; top: 0; right: 0;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #c9a227; color: #fff;
+  font-size: 9px; line-height: 16px; text-align: center;
+  border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  pointer-events: none; z-index: 2; display: block;
+}
+.popup-pc-tag {
+  display: inline-block;
+  background: #c9a227; color: #fff;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;
+  padding: 2px 7px; border-radius: 10px;
+  margin: 2px 0 5px; vertical-align: middle;
+}
+.popup-rich-ctx .popup-pc-tag {
+  margin-left: 6px; padding: 1px 6px; font-size: 0.6rem;
+}
+.legend-pc-section { padding: 6px 10px 8px; border-top: 1px solid var(--border-color, rgba(0,0,0,0.08)); margin-top: 2px; }
+.btn-pc-filter {
+  display: flex; align-items: center; gap: 5px;
+  width: 100%; padding: 6px 10px;
+  background: transparent; border: 1.5px solid var(--border-color, #ddd);
+  border-radius: 8px; cursor: pointer;
+  font-family: inherit; font-size: 0.78rem; font-weight: 600;
+  color: var(--text-muted, #888);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.btn-pc-filter:hover { border-color: #c9a227; color: #c9a227; }
+.btn-pc-filter.active { background: #c9a227; border-color: #c9a227; color: #fff; }
+.pc-filter-star { font-size: 0.9rem; }
+
 /* Paradas de roteiro: alvo de toque 44×44px (acima dos pins normais via routeStops pane). */
 .route-pin { background: transparent !important; border: none !important; cursor: pointer; touch-action: manipulation; width: 44px !important; height: 44px !important; }
 .route-dot {

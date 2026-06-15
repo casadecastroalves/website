@@ -1,4 +1,4 @@
-import { state } from "../core/state.js";
+import { state, togglePontoCulturaFilter } from "../core/state.js";
 import { getMap } from "./map.js";
 import { popupHtml, popupOptions, initRichPopup } from "./popup.js";
 
@@ -26,17 +26,18 @@ function colorOf(entry) {
   return categorias()[catOf(entry)]?.cor || "#f5c518";
 }
 
-function icon(color, active) {
+function icon(color, active, pontoCultura) {
   return L.divIcon({
     className: "irun-pin",
-    html: `<span class="irun-marker${active ? " active" : ""}" style="background:${color}"></span>`,
+    html: `<span class="irun-marker${active ? " active" : ""}" style="background:${color}"></span>${pontoCultura ? '<span class="pc-badge" aria-hidden="true">★</span>' : ""}`,
     iconSize: [40, 40],
     iconAnchor: [20, 34],
     popupAnchor: [0, -30],
   });
 }
 
-function matchesFilters(cats = []) {
+function matchesFilters(cats = [], pontoCultura = false) {
+  if (state.filterPontoCultura && !pontoCultura) return false;
   if (!state.filters.size) return true;
   return cats.some((c) => state.filters.has(c));
 }
@@ -101,10 +102,12 @@ export function buildMarkers(handlers = {}) {
 
   for (const entry of buildEntries()) {
     if (!Array.isArray(entry.coords)) continue;
-    const marker = L.marker(entry.coords, { icon: icon(colorOf(entry), false), keyboard: false });
+    const pc = entry.pontoCultura || false;
+    const marker = L.marker(entry.coords, { icon: icon(colorOf(entry), false, pc), keyboard: false });
     marker._cats = entry.categorias || [];
     marker._fichaId = fichaIdOf(entry);
     marker._color = colorOf(entry);
+    marker._pontoCultura = pc;
     marker.bindPopup(popupHtml(entry), popupOptions(entry));
     marker.addTo(group);
     if (marker._fichaId) markerByFichaId[marker._fichaId] = marker;
@@ -117,8 +120,13 @@ export function buildMarkers(handlers = {}) {
 
 export function refreshVisibility() {
   if (!group) return;
+  const btn = document.getElementById("btn-pc-filter");
+  if (btn) {
+    btn.classList.toggle("active", state.filterPontoCultura);
+    btn.setAttribute("aria-pressed", state.filterPontoCultura ? "true" : "false");
+  }
   group.eachLayer((m) => {
-    const visible = matchesFilters(m._cats);
+    const visible = matchesFilters(m._cats, m._pontoCultura);
     const el = m.getElement?.();
     if (el) {
       el.style.display = visible ? "" : "none";
@@ -129,7 +137,7 @@ export function refreshVisibility() {
 
 export function setSelectedFicha(fichaId) {
   Object.entries(markerByFichaId).forEach(([id, m]) => {
-    m.setIcon(icon(m._color, id === fichaId));
+    m.setIcon(icon(m._color, id === fichaId, m._pontoCultura));
   });
 }
 
@@ -158,7 +166,17 @@ export function buildLegend(container) {
     .join("");
   container.innerHTML = `
     <div class="legend-head" role="button" tabindex="0">Legenda <span class="legend-toggle">▾</span></div>
-    <div class="legend-items">${items}</div>`;
+    <div class="legend-items">${items}</div>
+    <div class="legend-pc-section">
+      <button type="button" id="btn-pc-filter" class="btn-pc-filter" aria-pressed="false">
+        <span class="pc-filter-star" aria-hidden="true">★</span> Pontos de Cultura
+      </button>
+    </div>`;
   const head = container.querySelector(".legend-head");
   head?.addEventListener("click", () => container.classList.toggle("collapsed"));
+  const btnPC = container.querySelector("#btn-pc-filter");
+  btnPC?.addEventListener("click", () => {
+    togglePontoCulturaFilter();
+    refreshVisibility();
+  });
 }

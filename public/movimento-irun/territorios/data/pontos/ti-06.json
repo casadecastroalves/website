@@ -28,6 +28,7 @@
       "coords": [-13.467506, -39.0899805],
       "categorias": ["instituicoes", "turismo"],
       "resumo": "Museu vivo · cosmovisões Bantu e Indígena · trilhas e oficinas · Valença e Cajaíba",
+      "pontoCultura": true,
       "entidadeId": "museu-dende",
       "popup": {
         "contexto": "Costa do Dendê · Valença",
@@ -48,6 +49,7 @@
       "nome": "Kilombo Tenondé",
       "coords": [-13.323106165476451, -39.25321337737795],
       "categorias": ["quilombos", "instituicoes"],
+      "pontoCultura": true,
       "entidadeId": "tenonde",
       "popup": {
         "contexto": "Costa do Dendê · Kilombo Tenondé",
