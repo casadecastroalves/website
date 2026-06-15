@@ -16,12 +16,12 @@
     "updatedAt": "2025-06-06"
   },
   "sidebar": {
-    "apresentacao": "O Território Quilombola de Lagoa Grande, em Feira de Santana, é representado legalmente pela AQCOMAQ — Associação Quilombola Comunitária de Maria Quitéria. A comunidade articula memória, cultura, produção comunitária e formação da juventude quilombola, com destaque para o Novembro Negro (desde 1973) e o Coletivo da Juventude, fundado em 2023.",
+    "apresentacao": "O Território Quilombola de Lagoa Grande, em Feira de Santana, é representado legalmente pela AQCOMAQ — Associação Quilombola Comunitária de Maria Quitéria (fundada em 1973, a primeira do distrito). A comunidade articula memória, cultura, produção comunitária e formação da juventude quilombola, com destaque para o Novembro Negro (desde 2013) e o Coletivo da Juventude, fundado em novembro de 2023.",
     "identidade": [
       {
         "id": "historia",
         "titulo": "História e memória",
-        "conteudo": "Lagoa Grande é território de resistência quilombola com tradição de celebração do Novembro Negro desde 1973. O evento reúne a comunidade em torno de histórias locais de resistência, saberes ancestrais e demandas coletivas — chegando à 11ª edição em 2023. Ações como \"Recontando o 2 de Julho\" (2024) reforçam a memória afro-brasileira no território."
+        "conteudo": "Lagoa Grande é território de resistência quilombola. A AQCOMAQ foi fundada em 1973. O Novembro Negro — evento anual de memória e cultura — foi criado em 2013. O evento reúne a comunidade em torno de histórias locais de resistência, saberes ancestrais e demandas coletivas — chegando à 11ª edição em 2023. Ações como \"Recontando o 2 de Julho\" (2024) reforçam a memória afro-brasileira no território."
       },
       {
         "id": "cultura",
@@ -110,7 +110,7 @@
       { "titulo": "Portfólio da Proponente (AQCOMAQ)", "href": "assets/lagoa-grande/pdf/Portifólio da Proponente upload.pdf", "tipo": "pdf" }
     ],
     "festas": [
-      { "nome": "Novembro Negro", "periodo": "Desde 1973", "descricao": "Evento anual de resistência e memória quilombola — 11ª edição em 2023." },
+      { "nome": "Novembro Negro", "periodo": "Desde 2013", "descricao": "Evento anual de resistência e memória quilombola — 11ª edição em 2023." },
       { "nome": "Recontando o 2 de Julho", "periodo": "Julho", "descricao": "Roda de conversa e celebração da independência da Bahia no território." },
       { "nome": "Pré-Jornada da Juventude", "periodo": "Junho 2024", "descricao": "Primeiro evento do Coletivo da Juventude — escuta, mutirão e show comunitário." }
     ],

@@ -38,16 +38,7 @@
         "conteudo": "No Território de Identidade Baixo Sul (ti-06), o museu integra a REDE Movimento Irun junto ao Kilombo Tenondé e ao Terreiro Caxuté — três entidades distintas no município de Valença."
       }
     ],
-    "roteiros": [
-      {
-        "titulo": "Trilhas ecológicas",
-        "descricao": "Percursos no território entre matas, manguezais e paisagem dos dendezeiros."
-      },
-      {
-        "titulo": "Oficinas culturais",
-        "descricao": "Atividades formativas e vivências sobre manifestações tradicionais afro-indígenas."
-      }
-    ],
+    "roteiros": [],
     "fotos": [],
     "videos": [
       { "tipo": "youtube", "id": "__qN37AyAro", "titulo": "Museu da Costa do Dendê de Cultura Afro-Indígena" }
