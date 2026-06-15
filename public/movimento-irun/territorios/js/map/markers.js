@@ -9,6 +9,7 @@ const TIPO_CAT = {
 
 let group = null;
 const markerByFichaId = {};
+const markerByPontoId = {};
 let onFichaOpen = null;
 
 function categorias() {
@@ -96,6 +97,7 @@ export function buildMarkers(handlers = {}) {
   if (group) map.removeLayer(group);
   group = L.layerGroup().addTo(map);
   Object.keys(markerByFichaId).forEach((k) => delete markerByFichaId[k]);
+  Object.keys(markerByPontoId).forEach((k) => delete markerByPontoId[k]);
 
   for (const entry of buildEntries()) {
     if (!Array.isArray(entry.coords)) continue;
@@ -106,6 +108,7 @@ export function buildMarkers(handlers = {}) {
     marker.bindPopup(popupHtml(entry), popupOptions(entry));
     marker.addTo(group);
     if (marker._fichaId) markerByFichaId[marker._fichaId] = marker;
+    if (entry.id) markerByPontoId[entry.id] = marker;
   }
 
   map.on("popupopen", (e) => initRichPopup(e.popup.getElement()));
@@ -128,6 +131,14 @@ export function setSelectedFicha(fichaId) {
   Object.entries(markerByFichaId).forEach(([id, m]) => {
     m.setIcon(icon(m._color, id === fichaId));
   });
+}
+
+export function focusPonto(pontoId) {
+  const m = markerByPontoId[pontoId];
+  if (!m) return;
+  const map = getMap();
+  map.setView(m.getLatLng(), Math.max(map.getZoom(), 13), { animate: true });
+  setTimeout(() => m.openPopup(), 280);
 }
 
 export function focusFicha(ficha) {

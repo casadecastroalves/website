@@ -1,0 +1,44 @@
+{
+  "id": "vamos-navegar",
+  "version": "1.0.0",
+  "territorioId": "ti-26",
+  "tipo": "projeto",
+  "rede": true,
+  "meta": {
+    "nome": "Vamos Navegar",
+    "coords": [-12.974, -38.5085],
+    "municipio": "Salvador",
+    "uf": "BA",
+    "fonte": "Movimento Irun — cartografia REDE",
+    "responsavel": "Rede Movimento Irun",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-14"
+  },
+  "sidebar": {
+    "apresentacao": "Atelier de réplicas de embarcações típicas da Bahia — saveiros, canoas e barcos artesanais que navegaram a Baía de Todos os Santos por séculos. O projeto preserva o saber-fazer da construção naval tradicional e promove o turismo náutico comunitário na baía.",
+    "identidade": [
+      {
+        "id": "cultura",
+        "titulo": "Cultura e memória náutica",
+        "conteudo": "As embarcações típicas da Bahia — saveiros, canoas de tronco, catraias — são patrimônio imaterial da Baía de Todos os Santos. Vamos Navegar recupera técnicas de construção tradicionais e forma novos artesãos."
+      },
+      {
+        "id": "turismo",
+        "titulo": "Turismo comunitário",
+        "conteudo": "Passeios náuticos pela Baía de Todos os Santos a bordo de réplicas de embarcações históricas, com saídas da ilha de Itaparica e de Salvador. Vivência da cultura marítima afro-baiana."
+      }
+    ],
+    "contato": {
+      "endereco": "Rua Epifânio, Gamboa — Salvador, Bahia",
+      "maps": "https://maps.google.com/?q=Gamboa,+Salvador,+Bahia"
+    },
+    "videos": [
+      {
+        "tipo": "youtube",
+        "id": "Hd4UjhzXJy4",
+        "titulo": "Vamos Navegar — Embarcações Típicas da Bahia"
+      }
+    ],
+    "links": []
+  }
+}

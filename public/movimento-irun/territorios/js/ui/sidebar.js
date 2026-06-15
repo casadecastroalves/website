@@ -5,7 +5,7 @@ import {
 import { goHome, goTerritorio, goFicha, goMunicipio, parseRoute } from "../core/router.js";
 import { esc, escAttr, slugify } from "../core/util.js";
 import { isMobile, openForContext, setDesktopCollapsed, closeSheet } from "./shell.js";
-import { refreshVisibility } from "../map/markers.js";
+import { refreshVisibility, focusPonto } from "../map/markers.js";
 import { openLightbox } from "./lightbox.js";
 
 const YT = "rel=0&modestbranding=1&iv_load_policy=3";
@@ -161,7 +161,19 @@ function renderVideos(videos) {
 
 function renderList(items, key = "nome") {
   if (!items?.length) return `<p class="empty-rede">Conteúdo em breve.</p>`;
-  return `<ul class="content-list">${items.map((i) => `<li>${esc(i[key] || i.titulo || i.nome || "")}${i.descricao ? ` — <span class="muted">${esc(i.descricao)}</span>` : ""}</li>`).join("")}</ul>`;
+  const cards = items.filter((i) => i.pontoId);
+  const rest = items.filter((i) => !i.pontoId);
+  const cardsHtml = cards.map((i) => pontoCard(i.pontoId, i[key] || i.titulo || i.nome || "")).join("");
+  const restHtml = rest.map((i) => `<li>${esc(i[key] || i.titulo || i.nome || "")}${i.descricao ? ` — <span class="muted">${esc(i.descricao)}</span>` : ""}</li>`).join("");
+  return `${cards.length ? `<ul class="entity-list">${cardsHtml}</ul>` : ""}${rest.length ? `<ul class="content-list">${restHtml}</ul>` : ""}`;
+}
+
+function pontoCard(pontoId, titulo) {
+  return `<li class="entity-card" data-ponto="${escAttr(pontoId)}" tabindex="0" role="button">
+    <span class="entity-badge">Ver no mapa</span>
+    <span class="entity-name">${esc(titulo)}</span>
+    <span class="entity-arrow">→</span>
+  </li>`;
 }
 
 function renderProjetos(items) {
@@ -169,7 +181,9 @@ function renderProjetos(items) {
   const cards = [];
   const rest = [];
   items.forEach((p) => {
-    if (p.fichaId && fichaById(p.fichaId)) cards.push(fichaCard(fichaById(p.fichaId), "Projeto"));
+    const f = p.fichaId ? fichaById(p.fichaId) : null;
+    if (f) cards.push(fichaCard(f, fichaBadge(f)));
+    else if (p.pontoId) cards.push(pontoCard(p.pontoId, p.titulo));
     else rest.push(`<li><strong>${esc(p.titulo)}</strong>${p.descricao ? `<br><span class="muted">${esc(p.descricao)}</span>` : ""}</li>`);
   });
   if (!cards.length && !rest.length) return `<p class="empty-rede">Nenhum projeto mapeado ainda.</p>`;
@@ -390,6 +404,15 @@ function bindEvents(el, route) {
       else if (card.dataset.ti) goTerritorio(card.dataset.ti);
       else return;
       openForContext();
+    };
+    card.addEventListener("click", go);
+    card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  });
+
+  el.querySelectorAll(".entity-card[data-ponto]").forEach((card) => {
+    const go = () => {
+      focusPonto(card.dataset.ponto);
+      if (isMobile()) closeSheet();
     };
     card.addEventListener("click", go);
     card.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });

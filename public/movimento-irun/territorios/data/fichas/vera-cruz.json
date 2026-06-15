@@ -17,10 +17,10 @@
   "sidebar": {
     "apresentacao": "Vera Cruz situa-se na ilha de Itaparica, na Baía de Todos os Santos, e concentra referências quilombolas como Tereré e Maragojipinho. Na REDE, articula turismo comunitário, memória viva e projetos como Vamos Navegar.",
     "projetos": [
-      { "titulo": "Quilombo do Tereré e Maragojipinho", "fichaId": "terere" },
-      { "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho", "fichaId": "terere" },
-      { "titulo": "Vamos Navegar", "descricao": "Projeto de turismo náutico comunitário na Baía de Todos os Santos." },
-      { "titulo": "Roteiro Intermunicipal Itaparica · Vera Cruz", "descricao": "Contra Costa — percurso pela costa da ilha, em parceria com Itaparica." }
+      { "titulo": "Quilombo do Tereré", "fichaId": "terere" },
+      { "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho", "pontoId": "museu-de-memoria-viva-dos-quilombos-do-terere-e-" },
+      { "titulo": "Vamos Navegar", "fichaId": "vamos-navegar" },
+      { "titulo": "Roteiro Contra Costa", "pontoId": "vera-cruz" }
     ],
     "identidade": [
       { "id": "historia", "titulo": "História e memória", "conteudo": "Território de quilombos históricos e comunidades pesqueiras na baía." },
@@ -30,7 +30,8 @@
     "roteiros": [
       {
         "titulo": "Contra Costa — Ilha de Itaparica",
-        "descricao": "Marina de Itaparica · Fonte do Tororó · Ilha de Matarandiba · Base Náutica de Cacha Pregos · Pousada Norage. Roteiro intermunicipal com Itaparica."
+        "descricao": "Marina de Itaparica · Fonte do Tororó · Ilha de Matarandiba · Base Náutica de Cacha Pregos · Pousada Norage. Roteiro intermunicipal com Itaparica.",
+        "pontoId": "vera-cruz"
       }
     ],
     "fotos": [],

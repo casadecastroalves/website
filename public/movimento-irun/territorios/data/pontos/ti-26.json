@@ -87,26 +87,50 @@
       }
     },
     {
-      "id": "vamos-navegar",
-      "nome": "Vamos Navegar",
-      "coords": [
-        -12.9760342,
-        -38.6148252
-      ],
-      "categorias": [
-        "projetos",
-        "turismo"
-      ],
-      "resumo": "Projeto de turismo náutico comunitário na Baía de Todos os Santos",
+      "id": "vamos-navegar-atelier",
+      "nome": "Vamos Navegar — Atelier",
+      "coords": [-12.974, -38.5085],
+      "categorias": ["projetos", "turismo"],
+      "entidadeId": "vamos-navegar",
       "popup": {
-        "contexto": "Vera Cruz · Vamos Navegar",
+        "contexto": "Salvador · Gamboa — Atelier",
         "slides": [
+          {
+            "titulo": "Vamos Navegar — Atelier de Embarcações Típicas",
+            "texto": "Atelier de réplicas de embarcações típicas da Bahia — saveiros, canoas e barcos artesanais. Rua Epifânio, Gamboa, Salvador.",
+            "links": {
+              "label": "Ver no Google Maps",
+              "href": "https://maps.google.com/?q=Gamboa,+Salvador,+Bahia"
+            }
+          },
           {
             "titulo": "Vamos Navegar",
             "video": {
               "tipo": "youtube",
               "id": "Hd4UjhzXJy4",
-              "legenda": "Projeto Vamos Navegar"
+              "legenda": "Embarcações Típicas da Bahia"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "vamos-navegar",
+      "nome": "Vamos Navegar",
+      "coords": [-12.9760342, -38.6148252],
+      "categorias": ["projetos", "turismo"],
+      "entidadeId": "vamos-navegar",
+      "resumo": "Passeios náuticos e atelier de embarcações típicas da Baía de Todos os Santos",
+      "popup": {
+        "contexto": "Vera Cruz · Vamos Navegar",
+        "slides": [
+          {
+            "titulo": "Vamos Navegar",
+            "texto": "Passeios náuticos pela Baía de Todos os Santos a bordo de réplicas de embarcações históricas. Saídas da ilha de Itaparica.",
+            "video": {
+              "tipo": "youtube",
+              "id": "Hd4UjhzXJy4",
+              "legenda": "Embarcações Típicas da Bahia"
             }
           }
         ]
