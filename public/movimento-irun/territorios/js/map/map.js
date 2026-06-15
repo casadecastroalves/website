@@ -17,6 +17,9 @@ let tiLayer = null;
 let redeGroup = null;
 let roteirosGroup = null;
 const tiLayerById = {};
+const roteiroLayerById = {};   // L.featureGroup por roteiro (para getBounds)
+const roteiroParadasById = {}; // features Point por roteiro (para listar paradas)
+const markerByStopId = {};     // L.marker de cada parada (para focar)
 let onTiClick = null;
 
 export function initMap(containerId, handlers = {}) {
@@ -178,6 +181,9 @@ export async function loadRoteiros() {
     if (!r.file) continue;
     const geo = await fetch(r.file).then((res) => res.json()).catch(() => null);
     if (!geo) continue;
+
+    const rGroup = L.featureGroup();
+
     L.geoJSON(geo, {
       renderer: canvasRenderer,
       filter: (f) => f.geometry.type === "LineString",
@@ -188,7 +194,7 @@ export async function loadRoteiros() {
          <div class="popup-cod">${esc(r.descricao || "Roteiro intermunicipal")}</div>`,
         { maxWidth: 280, className: "irun-popup" }
       ),
-    }).addTo(roteirosGroup);
+    }).addTo(rGroup);
 
     const stopIcon = L.divIcon({
       className: "route-pin",
@@ -197,21 +203,48 @@ export async function loadRoteiros() {
       iconAnchor: [17, 17],
       popupAnchor: [0, -12],
     });
+
+    const pontosGeo = geo.features.filter((f) => f.geometry.type === "Point");
+    roteiroParadasById[r.id] = pontosGeo;
+
     L.geoJSON(geo, {
       filter: (f) => f.geometry.type === "Point",
-      pointToLayer: (f, latlng) => L.marker(latlng, { icon: stopIcon, keyboard: false }),
+      pointToLayer: (f, latlng) => {
+        const m = L.marker(latlng, { icon: stopIcon, keyboard: false });
+        if (f.properties?.id) markerByStopId[f.properties.id] = m;
+        return m;
+      },
       onEachFeature: (f, layer) => {
         const nome = f.properties?.nome || "Parada";
         const ordem = f.properties?.ordem;
         layer.bindPopup(
-          `<div class="popup-rich-ctx">Contra Costa · ${ordem ? `Parada ${ordem}` : "Roteiro"}</div>
-           <div class="popup-title">${esc(nome)}</div>
-           <div class="popup-cod">${esc(r.titulo)}</div>`,
+          `<div class="popup-rich-ctx">${esc(r.titulo)} · ${ordem ? `Parada ${ordem}` : "Parada"}</div>
+           <div class="popup-title">${esc(nome)}</div>`,
           { maxWidth: 260, className: "irun-popup" }
         );
       },
-    }).addTo(roteirosGroup);
+    }).addTo(rGroup);
+
+    rGroup.addTo(roteirosGroup);
+    roteiroLayerById[r.id] = rGroup;
   }
+}
+
+export function focusRoteiro(id) {
+  const group = roteiroLayerById[id];
+  if (!group) return;
+  map.fitBounds(group.getBounds(), { padding: [40, 80], maxZoom: 12, animate: true });
+}
+
+export function focusRouteStop(stopId) {
+  const m = markerByStopId[stopId];
+  if (!m) return;
+  map.setView(m.getLatLng(), Math.max(map.getZoom(), 13), { animate: true });
+  setTimeout(() => m.openPopup(), 280);
+}
+
+export function getRoteiroParadas(id) {
+  return roteiroParadasById[id] || [];
 }
 
 export function getMap() {

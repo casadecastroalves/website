@@ -6,6 +6,7 @@ import { goHome, goTerritorio, goFicha, goMunicipio, parseRoute } from "../core/
 import { esc, escAttr, slugify } from "../core/util.js";
 import { isMobile, openForContext, setDesktopCollapsed, closeSheet } from "./shell.js";
 import { refreshVisibility, focusPonto } from "../map/markers.js";
+import { focusRoteiro, focusRouteStop, getRoteiroParadas } from "../map/map.js";
 import { openLightbox } from "./lightbox.js";
 
 const YT = "rel=0&modestbranding=1&iv_load_policy=3";
@@ -161,13 +162,40 @@ function renderVideos(videos) {
   }).join("");
 }
 
+function roteiroCard(roteiroId, titulo) {
+  const paradas = getRoteiroParadas(roteiroId)
+    .slice()
+    .sort((a, b) => (a.properties.ordem || 99) - (b.properties.ordem || 99));
+  const paradasHtml = paradas.length
+    ? `<ul class="entity-list paradas-list">${paradas.map((p) => `<li class="entity-card" data-stop="${escAttr(p.properties.id)}" tabindex="0" role="button">
+        <span class="entity-badge">Parada ${p.properties.ordem || "·"}</span>
+        <span class="entity-name">${esc(p.properties.nome)}</span>
+        <span class="entity-arrow">→</span>
+      </li>`).join("")}</ul>`
+    : "";
+  return `<ul class="entity-list"><li class="entity-card" data-roteiro="${escAttr(roteiroId)}" tabindex="0" role="button">
+    <span class="entity-badge">Roteiro</span>
+    <span class="entity-name">${esc(titulo)}</span>
+    <span class="entity-arrow">→</span>
+  </li></ul>${paradasHtml}`;
+}
+
 function renderList(items, key = "nome") {
   if (!items?.length) return `<p class="empty-rede">Conteúdo em breve.</p>`;
-  const cards = items.filter((i) => i.pontoId);
-  const rest = items.filter((i) => !i.pontoId);
-  const cardsHtml = cards.map((i) => pontoCard(i.pontoId, i[key] || i.titulo || i.nome || "")).join("");
-  const restHtml = rest.map((i) => `<li>${esc(i[key] || i.titulo || i.nome || "")}${i.descricao ? ` — <span class="muted">${esc(i.descricao)}</span>` : ""}</li>`).join("");
-  return `${cards.length ? `<ul class="entity-list">${cardsHtml}</ul>` : ""}${rest.length ? `<ul class="content-list">${restHtml}</ul>` : ""}`;
+  const out = [];
+  const cards = [];
+  const rest = [];
+  items.forEach((i) => {
+    const nome = i[key] || i.titulo || i.nome || "";
+    if (i.roteiroId) {
+      out.push(roteiroCard(i.roteiroId, nome));
+    } else if (i.pontoId) {
+      cards.push(pontoCard(i.pontoId, nome));
+    } else {
+      rest.push(`<li>${esc(nome)}${i.descricao ? ` — <span class="muted">${esc(i.descricao)}</span>` : ""}</li>`);
+    }
+  });
+  return `${out.join("")}${cards.length ? `<ul class="entity-list">${cards.join("")}</ul>` : ""}${rest.length ? `<ul class="content-list">${rest.join("")}</ul>` : ""}`;
 }
 
 function pontoCard(pontoId, titulo) {
@@ -180,16 +208,18 @@ function pontoCard(pontoId, titulo) {
 
 function renderProjetos(items) {
   if (!items?.length) return `<p class="empty-rede">Nenhum projeto mapeado ainda.</p>`;
+  const out = [];
   const cards = [];
   const rest = [];
   items.forEach((p) => {
     const f = p.fichaId ? fichaById(p.fichaId) : null;
     if (f) cards.push(fichaCard(f, fichaBadge(f)));
+    else if (p.roteiroId) out.push(roteiroCard(p.roteiroId, p.titulo));
     else if (p.pontoId) cards.push(pontoCard(p.pontoId, p.titulo));
     else rest.push(`<li><strong>${esc(p.titulo)}</strong>${p.descricao ? `<br><span class="muted">${esc(p.descricao)}</span>` : ""}</li>`);
   });
-  if (!cards.length && !rest.length) return `<p class="empty-rede">Nenhum projeto mapeado ainda.</p>`;
-  return `${cards.length ? `<ul class="entity-list">${cards.join("")}</ul>` : ""}${rest.length ? `<ul class="content-list">${rest.join("")}</ul>` : ""}`;
+  if (!cards.length && !rest.length && !out.length) return `<p class="empty-rede">Nenhum projeto mapeado ainda.</p>`;
+  return `${out.join("")}${cards.length ? `<ul class="entity-list">${cards.join("")}</ul>` : ""}${rest.length ? `<ul class="content-list">${rest.join("")}</ul>` : ""}`;
 }
 
 function renderLinks(items) {
@@ -426,6 +456,26 @@ function bindEvents(el, route) {
         goFicha(item.dataset.ficha);
         openForContext();
       }
+    };
+    item.addEventListener("click", go);
+    item.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  });
+
+  /* data-roteiro: enquadra o mapa na rota inteira. Mobile fecha sidebar. */
+  el.querySelectorAll("[data-roteiro]").forEach((item) => {
+    const go = () => {
+      focusRoteiro(item.dataset.roteiro);
+      if (isMobile()) closeSheet();
+    };
+    item.addEventListener("click", go);
+    item.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  });
+
+  /* data-stop: foca uma parada do roteiro no mapa. Mobile fecha sidebar. */
+  el.querySelectorAll("[data-stop]").forEach((item) => {
+    const go = () => {
+      focusRouteStop(item.dataset.stop);
+      if (isMobile()) closeSheet();
     };
     item.addEventListener("click", go);
     item.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
