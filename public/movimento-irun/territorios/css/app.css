@@ -382,6 +382,10 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 .popup-rich-btn { width: 32px; height: 30px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); color: var(--text); cursor: pointer; }
 .popup-rich-btn:hover { border-color: var(--yellow); }
 .popup-rich-pos { font-size: 0.72rem; font-weight: 600; color: var(--text-faint); }
+.leaflet-popup-scrolled { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
+@media (max-width: 768px) {
+  .irun-rich-popup { width: 74vw; max-width: 300px; }
+}
 
 /* ── Search ── */
 .search-overlay, .share-overlay {

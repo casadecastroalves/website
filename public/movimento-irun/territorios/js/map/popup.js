@@ -33,10 +33,34 @@ export function popupHtml(entry) {
     ${fichaId ? `<span class="popup-link" data-ficha="${escAttr(fichaId)}">Ver ficha →</span>` : ""}`;
 }
 
+/* Altura máxima do popup = parte do ecrã, para caber sempre e rolar por dentro
+   (evita ficar cortado em cima e ter de arrastar o mapa). */
+function popupMaxHeight() {
+  const vh = window.innerHeight || 700;
+  const mobile = window.innerWidth <= 768;
+  return Math.max(220, Math.round(vh * (mobile ? 0.46 : 0.66)));
+}
+
 export function popupOptions(entry) {
-  return hasRich(entry)
-    ? { maxWidth: 340, minWidth: 280, className: "irun-popup irun-popup-rich" }
-    : { maxWidth: 260, className: "irun-popup" };
+  if (hasRich(entry)) {
+    return {
+      maxWidth: 320,
+      minWidth: 260,
+      maxHeight: popupMaxHeight(),
+      className: "irun-popup irun-popup-rich",
+      autoPanPaddingTopLeft: L.point(14, 84),
+      autoPanPaddingBottomRight: L.point(14, 84),
+      keepInView: true,
+    };
+  }
+  return {
+    maxWidth: 260,
+    maxHeight: popupMaxHeight(),
+    className: "irun-popup",
+    autoPanPaddingTopLeft: L.point(14, 84),
+    autoPanPaddingBottomRight: L.point(14, 70),
+    keepInView: true,
+  };
 }
 
 function slideBody(slide, eager) {
