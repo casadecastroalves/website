@@ -1,4 +1,4 @@
-{
+﻿{
   "territorioId": "ti-19",
   "pontos": [
     {
@@ -35,7 +35,6 @@
         -38.9885283
       ],
       "categorias": [
-        "quilombos",
         "producao"
       ],
       "entidadeId": "lagoa-grande"
@@ -73,7 +72,6 @@
         -38.9911207
       ],
       "categorias": [
-        "quilombos",
         "producao"
       ],
       "entidadeId": "lagoa-grande"
@@ -86,7 +84,6 @@
         -38.9916659
       ],
       "categorias": [
-        "quilombos",
         "producao"
       ],
       "entidadeId": "lagoa-grande"
@@ -99,7 +96,6 @@
         -38.9904151
       ],
       "categorias": [
-        "quilombos",
         "producao"
       ],
       "entidadeId": "lagoa-grande"
@@ -115,7 +111,7 @@
         "slides": [
           {
             "titulo": "AQCOMAQ — sede comunitária",
-            "texto": "A Associação Quilombola Comunitária de Maria Quitéria articula famílias do território de Lagoa Grande, em Feira de Santana. Novembro Negro desde 1973, Coletivo da Juventude, casas de farinha e formação quilombola.",
+            "texto": "A Associação Quilombola Comunitária de Maria Quitéria articula famílias do território de Lagoa Grande, em Feira de Santana. Novembro Negro desde 2013, Coletivo da Juventude, casas de farinha e formação quilombola.",
             "links": [
               { "titulo": "mov.lagoagrande", "href": "https://www.instagram.com/mov.lagoagrande/" },
               { "titulo": "teiadospovos.org", "href": "https://teiadospovos.org/o-novembro-negro-e-a-demarcacao-do-quilombo-da-lagoa-grande/" }

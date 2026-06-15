@@ -335,7 +335,7 @@ function renderFicha(f, ti) {
   out.push(accordion("identidade", "Identidade", renderIdentidade(s.identidade), false));
   if (s.fotos?.length) out.push(accordion("fotos", `Fotos (${s.fotos.length})`, renderFotos(s.fotos), false));
   if (s.videos?.length) out.push(accordion("videos", `Vídeos (${s.videos.length})`, renderVideos(s.videos), false));
-  if (s.documentos?.length) out.push(accordion("documentos", `Documentos (${s.documentos.length})`, renderDocumentos(s.documentos), false));
+  if (s.documentos?.length && !s.portfolio?.length) out.push(accordion("documentos", `Documentos (${s.documentos.length})`, renderDocumentos(s.documentos), false));
   if (s.produtos?.length || ext.produtos) out.push(accordion("produtos", "Produtos", `${renderList(s.produtos || [])}${verMais(ext.produtos, "Ver todos os produtos →")}`, false));
   if (s.roteiros?.length || ext.reservas) out.push(accordion("roteiros", "Turismo e vivências", `${renderList(s.roteiros || [], "titulo")}${verMais(ext.reservas, "Reservar →")}`, false));
   if (s.portfolio?.length) out.push(accordion("portfolio", "Portfólio", renderPortfolio(s.portfolio), false));
