@@ -6,20 +6,22 @@
   "rede": true,
   "meta": {
     "nome": "Vamos Navegar",
-    "coords": [-12.974, -38.5085],
-    "municipio": "Salvador",
+    "coords": [-12.9744205, -38.6216078],
+    "municipio": "Vera Cruz",
     "uf": "BA",
     "fonte": "Movimento Irun — cartografia REDE",
-    "responsavel": "Rede Movimento Irun",
+    "responsavel": "Ademir Santana",
     "licenca": "CC BY-NC-SA 4.0",
-    "updatedAt": "2026-06-14"
+    "updatedAt": "2026-06-15"
   },
   "sidebar": {
-    "apresentacao": "Atelier de réplicas de embarcações típicas da Bahia. Salvador — Gamboa.",
+    "apresentacao": "Réplicas de embarcações artesanais produzidas por Ademir Santana, na Gamboa, Ilha de Itaparica (Vera Cruz — BA). Agende a sua visita: (71) 99207-3600.",
     "identidade": [],
     "contato": {
-      "endereco": "Rua Epifânio, Gamboa — Salvador, Bahia",
-      "maps": "https://maps.google.com/?q=Gamboa,+Salvador,+Bahia"
+      "organizacao": "Vamos Navegar — Ademir Santana · Agende a sua visita: (71) 99207-3600",
+      "endereco": "Gamboa, Ilha de Itaparica — Vera Cruz, BA",
+      "maps": "https://maps.google.com/?q=Gamboa,+Vera+Cruz,+Ilha+de+Itaparica,+Bahia",
+      "whatsapp": "https://wa.me/5571992073600"
     },
     "videos": [
       {

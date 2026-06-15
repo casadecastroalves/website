@@ -88,46 +88,18 @@
       }
     },
     {
-      "id": "vamos-navegar-atelier",
-      "nome": "Vamos Navegar — Atelier",
-      "coords": [-12.974, -38.5085],
-      "categorias": ["projetos", "turismo"],
-      "entidadeId": "vamos-navegar",
-      "popup": {
-        "contexto": "Salvador · Gamboa — Atelier",
-        "slides": [
-          {
-            "titulo": "Vamos Navegar — Atelier de Embarcações Típicas",
-            "texto": "Atelier de réplicas de embarcações típicas da Bahia — saveiros, canoas e barcos artesanais. Rua Epifânio, Gamboa, Salvador.",
-            "links": {
-              "label": "Ver no Google Maps",
-              "href": "https://maps.google.com/?q=Gamboa,+Salvador,+Bahia"
-            }
-          },
-          {
-            "titulo": "Vamos Navegar",
-            "video": {
-              "tipo": "youtube",
-              "id": "Hd4UjhzXJy4",
-              "legenda": "Embarcações Típicas da Bahia"
-            }
-          }
-        ]
-      }
-    },
-    {
       "id": "vamos-navegar",
       "nome": "Vamos Navegar",
-      "coords": [-12.9760342, -38.6148252],
+      "coords": [-12.9744205, -38.6216078],
       "categorias": ["projetos", "turismo"],
       "entidadeId": "vamos-navegar",
-      "resumo": "Passeios náuticos e atelier de embarcações típicas da Baía de Todos os Santos",
+      "resumo": "Réplicas de embarcações artesanais produzidas por Ademir Santana — Gamboa, Ilha de Itaparica",
       "popup": {
-        "contexto": "Vera Cruz · Vamos Navegar",
+        "contexto": "Vera Cruz · Gamboa, Ilha de Itaparica",
         "slides": [
           {
             "titulo": "Vamos Navegar",
-            "texto": "Passeios náuticos pela Baía de Todos os Santos a bordo de réplicas de embarcações históricas. Saídas da ilha de Itaparica.",
+            "texto": "Réplicas de embarcações artesanais produzidas por Ademir Santana. Agende a sua visita: (71) 99207-3600. Gamboa, Ilha de Itaparica — Vera Cruz, BA.",
             "video": {
               "tipo": "youtube",
               "id": "Hd4UjhzXJy4",
