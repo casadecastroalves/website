@@ -39,6 +39,9 @@
         "titulo": "Vamos Navegar — Embarcações Típicas da Bahia"
       }
     ],
+    "redes": [
+      { "rede": "Instagram", "handle": "@vamosnavegar", "href": "https://www.instagram.com/vamosnavegar" }
+    ],
     "links": []
   }
 }
