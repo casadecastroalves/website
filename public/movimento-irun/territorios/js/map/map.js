@@ -40,6 +40,11 @@ export function initMap(containerId, handlers = {}) {
   map.getPane("labels").style.zIndex = 450;
   map.getPane("labels").style.pointerEvents = "none";
 
+  /* Pane exclusivo para paradas de roteiro — fica acima dos pins normais
+     (markerPane = 600) para capturar toques em primeiro lugar. */
+  map.createPane("routeStops");
+  map.getPane("routeStops").style.zIndex = 650;
+
   canvasRenderer = L.canvas({ padding: 0.5 });
   L.control.zoom({ position: "bottomright" }).addTo(map);
 
@@ -199,9 +204,9 @@ export async function loadRoteiros() {
     const stopIcon = L.divIcon({
       className: "route-pin",
       html: '<span class="route-dot"></span>',
-      iconSize: [34, 34],
-      iconAnchor: [17, 17],
-      popupAnchor: [0, -12],
+      iconSize: [44, 44],
+      iconAnchor: [22, 22],
+      popupAnchor: [0, -16],
     });
 
     const pontosGeo = geo.features.filter((f) => f.geometry.type === "Point");
@@ -210,7 +215,7 @@ export async function loadRoteiros() {
     L.geoJSON(geo, {
       filter: (f) => f.geometry.type === "Point",
       pointToLayer: (f, latlng) => {
-        const m = L.marker(latlng, { icon: stopIcon, keyboard: false });
+        const m = L.marker(latlng, { icon: stopIcon, keyboard: false, pane: "routeStops" });
         if (f.properties?.id) markerByStopId[f.properties.id] = m;
         return m;
       },
