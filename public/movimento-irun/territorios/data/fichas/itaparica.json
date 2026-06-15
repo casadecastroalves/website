@@ -17,7 +17,7 @@
   "sidebar": {
     "apresentacao": "Município de Itaparica, na ilha homônima — Território de Identidade RMS, junto com Vera Cruz e Salvador. Tradição pesqueira, festiva e de proximidade com a capital. Na REDE Movimento Irun articula-se com Vera Cruz — destaque para os Caboclos de Itaparica, Maré de Março e o roteiro Contra Costa.",
     "projetos": [
-      { "titulo": "Maré de Março", "pontoId": "mare-de-marco" },
+      { "titulo": "Maré de Março", "fichaId": "mare-de-marco" },
       { "titulo": "Roteiro Contra Costa", "pontoId": "itaparica" }
     ],
     "identidade": [

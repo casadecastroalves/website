@@ -1,0 +1,38 @@
+{
+  "id": "mare-de-marco",
+  "version": "1.0.0",
+  "territorioId": "ti-26",
+  "tipo": "projeto",
+  "rede": true,
+  "meta": {
+    "nome": "Maré de Março",
+    "coords": [-12.8891911, -38.6766525],
+    "municipio": "Itaparica",
+    "uf": "BA",
+    "fonte": "Movimento Irun — cartografia REDE",
+    "responsavel": "Rede Movimento Irun",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-14"
+  },
+  "sidebar": {
+    "apresentacao": "Projeto cultural em Itaparica — ilha de Todos os Santos, Baía da Bahia. Maré de Março articula cultura, território e comunidade na ilha histórica de Itaparica.",
+    "identidade": [
+      {
+        "id": "cultura",
+        "titulo": "Cultura e território",
+        "conteudo": "Projeto enraizado na história e nas tradições da ilha de Itaparica, articulando comunidade, memória e criação cultural na Baía de Todos os Santos."
+      }
+    ],
+    "videos": [
+      {
+        "tipo": "youtube",
+        "id": "THUbZcbA4qg",
+        "titulo": "Maré de Março — Itaparica"
+      }
+    ],
+    "redes": [
+      { "rede": "Instagram", "handle": "@instaparica", "href": "https://www.instagram.com/instaparica" }
+    ],
+    "links": []
+  }
+}

@@ -138,14 +138,10 @@
     },
     {
       "id": "mare-de-marco",
-      "nome": "Mare de Março",
-      "coords": [
-        -12.8891911,
-        -38.6766525
-      ],
-      "categorias": [
-        "projetos"
-      ],
+      "nome": "Maré de Março",
+      "coords": [-12.8891911, -38.6766525],
+      "categorias": ["projetos"],
+      "entidadeId": "mare-de-marco",
       "popup": {
         "contexto": "Itaparica · Maré de Março",
         "slides": [
