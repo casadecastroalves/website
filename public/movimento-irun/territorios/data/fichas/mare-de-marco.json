@@ -15,14 +15,8 @@
     "updatedAt": "2026-06-14"
   },
   "sidebar": {
-    "apresentacao": "Projeto cultural em Itaparica — ilha de Todos os Santos, Baía da Bahia. Maré de Março articula cultura, território e comunidade na ilha histórica de Itaparica.",
-    "identidade": [
-      {
-        "id": "cultura",
-        "titulo": "Cultura e território",
-        "conteudo": "Projeto enraizado na história e nas tradições da ilha de Itaparica, articulando comunidade, memória e criação cultural na Baía de Todos os Santos."
-      }
-    ],
+    "apresentacao": "Projeto em Itaparica — Ilha de Todos os Santos.",
+    "identidade": [],
     "videos": [
       {
         "tipo": "youtube",
