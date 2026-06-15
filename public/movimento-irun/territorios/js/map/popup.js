@@ -1,5 +1,6 @@
 import { escAttr, esc, slugify } from "../core/util.js";
 import { state } from "../core/state.js";
+import { openLightbox } from "../ui/lightbox.js";
 
 const YT = "rel=0&modestbranding=1&iv_load_policy=3";
 
@@ -33,20 +34,11 @@ export function popupHtml(entry) {
     ${fichaId ? `<span class="popup-link" data-ficha="${escAttr(fichaId)}">Ver ficha →</span>` : ""}`;
 }
 
-/* Altura máxima do popup = parte do ecrã, para caber sempre e rolar por dentro
-   (evita ficar cortado em cima e ter de arrastar o mapa). */
-function popupMaxHeight() {
-  const vh = window.innerHeight || 700;
-  const mobile = window.innerWidth <= 768;
-  return Math.max(220, Math.round(vh * (mobile ? 0.46 : 0.66)));
-}
-
 export function popupOptions(entry) {
   if (hasRich(entry)) {
     return {
       maxWidth: 320,
       minWidth: 260,
-      maxHeight: popupMaxHeight(),
       className: "irun-popup irun-popup-rich",
       autoPanPaddingTopLeft: L.point(14, 84),
       autoPanPaddingBottomRight: L.point(14, 84),
@@ -55,7 +47,6 @@ export function popupOptions(entry) {
   }
   return {
     maxWidth: 260,
-    maxHeight: popupMaxHeight(),
     className: "irun-popup",
     autoPanPaddingTopLeft: L.point(14, 84),
     autoPanPaddingBottomRight: L.point(14, 70),
@@ -66,7 +57,7 @@ export function popupOptions(entry) {
 function slideBody(slide, eager) {
   let html = `<h3 class="popup-rich-title">${esc(slide.titulo)}</h3>`;
   if (slide.texto) html += `<p class="popup-rich-text">${esc(slide.texto)}</p>`;
-  if (slide.foto) html += `<figure class="popup-rich-media"><img src="${escAttr(slide.foto)}" alt="${escAttr(slide.legenda || slide.titulo)}" loading="lazy" decoding="async"></figure>`;
+  if (slide.foto) html += `<button class="popup-rich-thumb" data-lb-src="${escAttr(slide.foto)}" data-lb-cap="${escAttr(slide.legenda || slide.titulo)}" type="button" aria-label="Ver foto em tela cheia"><img src="${escAttr(slide.foto)}" alt="${escAttr(slide.legenda || slide.titulo)}" loading="lazy" decoding="async"><span class="popup-rich-expand" aria-hidden="true">⛶</span></button>`;
   if (slide.video?.tipo === "youtube" && slide.video.id) {
     html += eager
       ? `<div class="popup-rich-video"><iframe src="https://www.youtube-nocookie.com/embed/${escAttr(slide.video.id)}?${YT}" title="${escAttr(slide.video.legenda || slide.titulo)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`
@@ -120,6 +111,16 @@ export function initRichPopup(popupEl) {
   };
 
   mountVideo(slides[idx]);
+
+  root.querySelectorAll(".popup-rich-thumb").forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const src = btn.dataset.lbSrc;
+      const cap = btn.dataset.lbCap || "";
+      if (src) openLightbox([{ src, legenda: cap }], 0);
+    });
+  });
+
   if (slides.length < 2) return;
   root.querySelector(".popup-rich-prev")?.addEventListener("click", (e) => { e.stopPropagation(); show(idx - 1); });
   root.querySelector(".popup-rich-next")?.addEventListener("click", (e) => { e.stopPropagation(); show(idx + 1); });
