@@ -6,7 +6,9 @@ export function parseRoute() {
   const parts = path.split("/").filter(Boolean);
 
   const f = new URLSearchParams(query || "").get("f");
-  state.filters = new Set((f || "").split(",").filter(Boolean));
+  if ((query || "").includes("f=")) {
+    state.filters = new Set((f || "").split(",").filter(Boolean));
+  }
 
   if (!parts.length) return { view: "home", tiId: null, fichaId: null, municipio: null };
 
@@ -20,6 +22,12 @@ export function parseRoute() {
   if (parts[0] === "m" && parts[1]) {
     return { view: "municipio", tiId: null, fichaId: null, municipio: parts[1] };
   }
+  if (parts[0] === "pontos-cultura") {
+    return { view: "pontos-cultura", tiId: null, fichaId: null, municipio: null };
+  }
+  if (parts[0] === "teia-dos-povos") {
+    return { view: "teia-dos-povos", tiId: null, fichaId: null, municipio: null };
+  }
   return { view: "home", tiId: null, fichaId: null, municipio: null };
 }
 
@@ -29,6 +37,8 @@ export function buildHash({ view, tiId, fichaId, municipio, filters }) {
   else if (view === "ficha" && tiId && fichaId) path = `/t/${tiId}/${fichaId}`;
   else if (view === "ficha" && fichaId) path = `/f/${fichaId}`;
   else if (view === "municipio" && municipio) path = `/m/${municipio}`;
+  else if (view === "pontos-cultura") path = "/pontos-cultura";
+  else if (view === "teia-dos-povos") path = "/teia-dos-povos";
 
   const f = filters && filters.size ? Array.from(filters).join(",") : "";
   return f ? `#${path}?f=${f}` : `#${path}`;
@@ -54,6 +64,14 @@ export function goFicha(fichaId, tiId) {
 
 export function goMunicipio(slug) {
   navigate({ view: "municipio", municipio: slug });
+}
+
+export function goPontosCultura() {
+  navigate({ view: "pontos-cultura" });
+}
+
+export function goTeiaDosPovos() {
+  navigate({ view: "teia-dos-povos" });
 }
 
 export function syncHash() {

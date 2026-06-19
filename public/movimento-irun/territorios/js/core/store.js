@@ -37,6 +37,8 @@ export async function loadAll() {
   }
   state.pontos = pins;
 
+  state.filters = new Set(Object.keys(config.categorias || {}));
+
   mergeMidia(midia);
   markRede();
   return state;
