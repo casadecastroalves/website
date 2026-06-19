@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "node scripts/ver-site-live.mjs",
-    "build": "node scripts/build-search-index.mjs && astro build",
+    "build": "node scripts/compress-territorios-assets.mjs && node scripts/build-search-index.mjs && astro build",
     "live": "node scripts/ver-site-live.mjs",
     "preview": "node scripts/ver-site-live.mjs",
     "view": "node scripts/ver-site-live.mjs",
@@ -19,5 +19,8 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
     "astro": "^6.3.7"
+  },
+  "devDependencies": {
+    "sharp": "^0.34.5"
   }
 }
