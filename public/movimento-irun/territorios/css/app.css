@@ -168,7 +168,7 @@ body.sidebar-collapsed .sidebar { margin-left: calc(-1 * var(--sidebar-w)); }
   backdrop-filter: blur(6px);
 }
 .map-legend.collapsed .legend-items,
-.map-legend.collapsed .legend-pc-section { display: none; }
+.map-legend.collapsed .legend-actions { display: none; }
 .legend-head {
   display: flex; align-items: center; justify-content: space-between; gap: 8px;
   font-size: 0.64rem; font-weight: 700; letter-spacing: 0.08em;
@@ -176,18 +176,46 @@ body.sidebar-collapsed .sidebar { margin-left: calc(-1 * var(--sidebar-w)); }
 }
 .legend-items { display: flex; flex-direction: column; gap: 2px; }
 .legend-item {
-  display: flex; align-items: center; gap: 7px;
-  width: 100%; padding: 4px 6px; margin: 0;
-  font-family: inherit; font-size: 0.72rem; color: var(--text-muted);
+  display: flex; align-items: center; gap: 6px;
+  width: 100%; padding: 5px 6px; margin: 0;
+  font-family: inherit; font-size: 0.72rem; font-weight: 500; color: var(--text-muted);
   background: none; border: none; border-radius: 6px;
   text-align: left; cursor: pointer;
   transition: background 0.12s, color 0.12s, opacity 0.12s;
 }
+.legend-check {
+  width: 14px; height: 14px; flex-shrink: 0;
+  border: 1.5px solid var(--border); border-radius: 3px;
+  background: var(--surface);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.58rem; font-weight: 800; line-height: 1; color: transparent;
+}
+.legend-item.active .legend-check { color: #fff; }
+.legend-item.active .legend-check::after { content: "✓"; }
+.legend-item[data-cat].active .legend-check { background: var(--yellow, #c9a227); border-color: var(--yellow, #c9a227); }
+.legend-item-teia.active .legend-check { background: #2d6a4f; border-color: #2d6a4f; }
+.legend-item-pc.active .legend-check { background: #c9a227; border-color: #c9a227; }
+.legend-dot-teia, .legend-dot-pc {
+  width: 11px; height: 11px; border-radius: 50%; border: none; box-shadow: none;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.58rem; line-height: 1; background: transparent;
+}
+.legend-dot-teia { color: #2d6a4f; }
+.legend-dot-pc { color: #c9a227; }
 .legend-item:hover { background: var(--bg-muted, rgba(0,0,0,0.05)); color: var(--text); }
 .legend-item.active { background: var(--bg-muted, rgba(0,0,0,0.06)); color: var(--text); font-weight: 600; }
 .legend-item.active .legend-dot { box-shadow: 0 0 0 2px var(--accent, #c9a227), 0 0 0 3px rgba(0,0,0,0.2); }
 /* Quando há filtro(s) de categoria activos, esmaece os não seleccionados */
 .legend-items:has(.legend-item.active) .legend-item:not(.active) { opacity: 0.45; }
+.legend-actions {
+  display: flex; gap: 6px; padding: 4px 8px 6px; border-top: 1px solid var(--border);
+}
+.legend-action {
+  flex: 1; padding: 5px 6px; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--surface); font-family: var(--font); font-size: 0.72rem; font-weight: 600;
+  color: var(--text-muted); cursor: pointer;
+}
+.legend-action:hover { border-color: var(--yellow); color: var(--text); }
 .legend-dot { width: 11px; height: 11px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,0.25); flex-shrink: 0; }
 .legend-label { line-height: 1.2; }
 
@@ -216,6 +244,13 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 .empty-rede { font-size: 0.84rem; color: var(--text-faint); padding: 8px 0; }
 
 .ver-mais { margin-top: 12px; }
+.ver-mais-wrap { margin-top: 10px; }
+.link-btn {
+  background: none; border: none; padding: 0; cursor: pointer;
+  font-family: var(--font); font-size: 0.86rem; font-weight: 600;
+  color: var(--text-muted); text-decoration: underline; text-underline-offset: 3px;
+}
+.link-btn:hover { color: var(--yellow); }
 .ver-mais a, .link-list a {
   font-size: 0.82rem; font-weight: 600; color: var(--text);
   text-decoration: none; border-bottom: 2px solid var(--yellow);
@@ -248,7 +283,7 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 .sub-accordion.open .chevron-sm { transform: rotate(90deg); }
 .sub-panel { max-height: 0; overflow: hidden; transition: max-height var(--transition); }
 .sub-accordion.open .sub-panel { max-height: 2000px; }
-.sub-panel p { font-size: 0.84rem; line-height: 1.6; color: var(--text-muted); padding: 0 2px 12px; }
+.sub-panel p { font-size: 0.84rem; line-height: 1.6; color: var(--text-muted); padding: 0 2px 12px; white-space: pre-line; }
 
 /* ── Lists ── */
 .ti-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
@@ -336,6 +371,8 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 .chip:hover { border-color: var(--text-faint); }
 .chip.active { background: var(--inverse-bg); border-color: var(--inverse-bg); color: var(--inverse-text); }
 .chip-dot { width: 9px; height: 9px; border-radius: 50%; }
+.filter-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.chip-muted { background: var(--bg-muted); font-size: 0.72rem; }
 
 /* ── Media ── */
 .media-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
@@ -362,6 +399,14 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
   transform: translate(-50%, -50%);
 }
 .irun-marker.active { box-shadow: 0 0 0 4px var(--yellow-dim), 0 2px 6px rgba(0,0,0,0.5); }
+.irun-marker.stub {
+  opacity: 0.55;
+  box-shadow: 0 0 0 2px var(--surface, #fff), 0 0 0 4px var(--text-faint, #888);
+  outline: 2px dashed var(--text-faint, #888);
+  outline-offset: 1px;
+}
+.irun-marker.stub::after { opacity: 0.45; }
+.pesquisa-meta { display: block; font-size: 0.72rem; color: var(--text-faint); margin-top: 2px; }
 
 /* ── Ponto de Cultura: estrela centralizada no pin ──────────────────
    NÃO mexer em position do .irun-pin: o Leaflet posiciona cada marcador
@@ -384,29 +429,39 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
   margin: 0 0 12px;
 }
 .ficha-pc-badge .ficha-pc-star { font-size: 0.82rem; }
+
+.ficha-logo {
+  display: block;
+  max-width: min(100%, 280px);
+  height: auto;
+  margin: 0 auto 16px;
+}
+.ficha-teia-badge {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600;
+  color: #2d6a4f; margin: 0 0 8px;
+}
+.ficha-teia-mark { font-size: 0.9rem; }
+.teia-mark {
+  position: absolute; bottom: -2px; right: -4px; font-size: 0.62rem; line-height: 1;
+  filter: drop-shadow(0 0 1px #fff);
+}
+.irun-marker.teia { box-shadow: 0 0 0 2px #2d6a4f, 0 2px 6px rgba(0,0,0,0.35); }
+.irun-marker.pc-teia {
+  box-shadow: 0 0 0 2px #c9a227, 0 0 0 4px #2d6a4f, 0 2px 6px rgba(0,0,0,0.35);
+}
+.popup-tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 8px; }
+.popup-teia-tag {
+  display: inline-block;
+  background: #2d6a4f; color: #fff;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.03em;
+  padding: 2px 7px; border-radius: 10px;
+}
 .popup-pc-tag {
   display: inline-block;
   background: #c9a227; color: #fff;
-  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.05em;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.03em;
   padding: 2px 7px; border-radius: 10px;
-  margin: 2px 0 5px; vertical-align: middle;
 }
-.popup-rich-ctx .popup-pc-tag {
-  margin-left: 6px; padding: 1px 6px; font-size: 0.6rem;
-}
-.legend-pc-section { padding: 6px 10px 8px; border-top: 1px solid var(--border-color, rgba(0,0,0,0.08)); margin-top: 2px; }
-.btn-pc-filter {
-  display: flex; align-items: center; gap: 5px;
-  width: 100%; padding: 6px 10px;
-  background: transparent; border: 1.5px solid var(--border-color, #ddd);
-  border-radius: 8px; cursor: pointer;
-  font-family: inherit; font-size: 0.78rem; font-weight: 600;
-  color: var(--text-muted, #888);
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-.btn-pc-filter:hover { border-color: #c9a227; color: #c9a227; }
-.btn-pc-filter.active { background: #c9a227; border-color: #c9a227; color: #fff; }
-.pc-filter-star { font-size: 0.9rem; }
 
 /* Paradas de roteiro: alvo de toque 44×44px (acima dos pins normais via routeStops pane). */
 .route-pin { background: transparent !important; border: none !important; cursor: pointer; touch-action: manipulation; width: 44px !important; height: 44px !important; }
@@ -431,6 +486,8 @@ body.sidebar-collapsed .btn-reopen-desktop { display: inline-flex; }
 
 /* ── Rich popup ── */
 .irun-rich-popup { width: 300px; max-width: 78vw; }
+.popup-rich-head { margin: 0 0 6px; line-height: 1.25; }
+.irun-rich-popup > .popup-tags { margin-bottom: 8px; }
 .popup-rich-ctx { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; color: var(--text-faint); text-transform: uppercase; margin-bottom: 8px; }
 .popup-rich-slide { display: none; }
 .popup-rich-slide.active { display: block; }

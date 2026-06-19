@@ -4,6 +4,7 @@
   "territorioId": "ti-19",
   "tipo": "quilombo",
   "rede": true,
+  "teiaDosPovos": true,
   "geoLayerId": "lagoa-grande",
   "meta": {
     "nome": "Quilombo Lagoa Grande",
@@ -126,7 +127,7 @@
       { "rede": "Instagram", "handle": "@associacaoquilombola2003", "href": "https://www.instagram.com/associacaoquilombola2003/" }
     ],
     "links": [
-      { "titulo": "Google Maps — Território", "href": "https://www.google.com/maps/d/u/0/embed?mid=1ptFqMRSiLd7Y5gcNj3ID3QlRy2wFO5Y" }
+      { "titulo": "Google Maps — Território", "href": "https://www.google.com/maps/d/viewer?mid=1ptFqMRSiLd7Y5gcNj3ID3QlRy2wFO5Y" }
     ],
     "contato": {
       "organizacao": "AQCOMAQ — Associação Quilombola Comunitária de Maria Quitéria",
@@ -138,7 +139,7 @@
         "Renilda Cruz dos Santos",
         "João Eduardo dos Santos Ferreira"
       ],
-      "maps": "https://www.google.com/maps/d/u/0/embed?mid=1ptFqMRSiLd7Y5gcNj3ID3QlRy2wFO5Y"
+      "maps": "https://www.google.com/maps/d/viewer?mid=1ptFqMRSiLd7Y5gcNj3ID3QlRy2wFO5Y"
     }
   }
 }

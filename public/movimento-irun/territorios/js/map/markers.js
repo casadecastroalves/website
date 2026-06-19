@@ -1,5 +1,5 @@
-import { state, toggleFilter, togglePontoCulturaFilter } from "../core/state.js";
-import { getMap } from "./map.js";
+import { state, toggleFilter, togglePontoCulturaFilter, toggleTeiaDosPovosFilter, isPontoCultura, isTeiaDosPovos, clearAllFilters, selectAllFilters } from "../core/state.js";
+import { getMap, focusRoteiro } from "./map.js";
 import { popupHtml, popupOptions, initRichPopup } from "./popup.js";
 
 const TIPO_CAT = {
@@ -26,20 +26,45 @@ function colorOf(entry) {
   return categorias()[catOf(entry)]?.cor || "#f5c518";
 }
 
-function icon(color, active, pontoCultura) {
+function isStub(entry) {
+  if (entry.stub) return true;
+  const fid = fichaIdOf(entry);
+  return !!(fid && state.fichaById?.[fid]?.stub);
+}
+
+function icon(color, active, pontoCultura, stub, teiaDosPovos) {
+  const dual = pontoCultura && teiaDosPovos;
+  const cls = [
+    "irun-marker",
+    active && "active",
+    pontoCultura && "pc",
+    teiaDosPovos && "teia",
+    dual && "pc-teia",
+    stub && "stub",
+  ].filter(Boolean).join(" ");
+  let marks = "";
+  if (pontoCultura) marks += '<span class="pc-star" aria-hidden="true">★</span>';
   return L.divIcon({
     className: "irun-pin",
-    html: `<span class="irun-marker${active ? " active" : ""}${pontoCultura ? " pc" : ""}" style="background:${color}">${pontoCultura ? '<span class="pc-star" aria-hidden="true">★</span>' : ""}</span>`,
+    html: `<span class="${cls}" style="background:${color}">${marks}</span>`,
     iconSize: [40, 40],
     iconAnchor: [20, 34],
     popupAnchor: [0, -30],
   });
 }
 
-function matchesFilters(cats = [], pontoCultura = false) {
-  if (state.filterPontoCultura && !pontoCultura) return false;
-  if (!state.filters.size) return true;
-  return cats.some((c) => state.filters.has(c));
+function matchesFilters(cats = [], pontoCultura = false, teiaDosPovos = false) {
+  if (state.filterSomenteRoteiro) return false;
+
+  const catKeys = Object.keys(state.config?.categorias || {});
+  const hasCat = catKeys.some((k) => state.filters.has(k));
+  const hasAny = hasCat || state.filterPontoCultura || state.filterTeiaDosPovos;
+  if (!hasAny) return false;
+
+  if (hasCat && cats.some((c) => state.filters.has(c))) return true;
+  if (state.filterPontoCultura && pontoCultura) return true;
+  if (state.filterTeiaDosPovos && teiaDosPovos) return true;
+  return false;
 }
 
 function fichaIdOf(entry) {
@@ -61,6 +86,9 @@ function buildEntries() {
       fichaId: f.id,
       territorioId: f.territorioId,
       resumo: f.sidebar?.apresentacao?.slice(0, 140),
+      stub: f.stub || false,
+      pontoCultura: !!f.pontoCultura,
+      teiaDosPovos: !!f.teiaDosPovos,
     });
   }
   return spreadOverlaps(entries);
@@ -102,12 +130,18 @@ export function buildMarkers(handlers = {}) {
 
   for (const entry of buildEntries()) {
     if (!Array.isArray(entry.coords)) continue;
-    const pc = entry.pontoCultura || false;
-    const marker = L.marker(entry.coords, { icon: icon(colorOf(entry), false, pc), keyboard: false });
+    const fid = fichaIdOf(entry);
+    const ficha = fid ? state.fichaById?.[fid] : null;
+    const pc = isPontoCultura(entry, ficha);
+    const teia = isTeiaDosPovos(entry, ficha);
+    const stub = isStub(entry);
+    const marker = L.marker(entry.coords, { icon: icon(colorOf(entry), false, pc, stub, teia), keyboard: false });
     marker._cats = entry.categorias || [];
     marker._fichaId = fichaIdOf(entry);
     marker._color = colorOf(entry);
     marker._pontoCultura = pc;
+    marker._teiaDosPovos = teia;
+    marker._stub = stub;
     marker.bindPopup(popupHtml(entry), popupOptions(entry));
     marker.addTo(group);
     if (marker._fichaId) markerByFichaId[marker._fichaId] = marker;
@@ -125,13 +159,18 @@ export function refreshVisibility() {
     btn.classList.toggle("active", state.filterPontoCultura);
     btn.setAttribute("aria-pressed", state.filterPontoCultura ? "true" : "false");
   }
+  const btnTeia = document.getElementById("btn-teia-filter");
+  if (btnTeia) {
+    btnTeia.classList.toggle("active", state.filterTeiaDosPovos);
+    btnTeia.setAttribute("aria-pressed", state.filterTeiaDosPovos ? "true" : "false");
+  }
   document.querySelectorAll(".legend-item[data-cat]").forEach((el) => {
     const active = state.filters.has(el.dataset.cat);
     el.classList.toggle("active", active);
     el.setAttribute("aria-pressed", active ? "true" : "false");
   });
   group.eachLayer((m) => {
-    const visible = matchesFilters(m._cats, m._pontoCultura);
+    const visible = matchesFilters(m._cats, m._pontoCultura, m._teiaDosPovos);
     const el = m.getElement?.();
     if (el) {
       el.style.display = visible ? "" : "none";
@@ -142,7 +181,7 @@ export function refreshVisibility() {
 
 export function setSelectedFicha(fichaId) {
   Object.entries(markerByFichaId).forEach(([id, m]) => {
-    m.setIcon(icon(m._color, id === fichaId, m._pontoCultura));
+    m.setIcon(icon(m._color, id === fichaId, m._pontoCultura, m._stub, m._teiaDosPovos));
   });
 }
 
@@ -163,19 +202,59 @@ export function focusFicha(ficha) {
   if (m) setTimeout(() => m.openPopup(), 250);
 }
 
+export function fitPontosCultura() {
+  fitFilteredMarkers((m) => m._pontoCultura);
+}
+
+export function fitTeiaDosPovos() {
+  fitFilteredMarkers((m) => m._teiaDosPovos);
+}
+
+function fitFilteredMarkers(pred) {
+  const map = getMap();
+  if (!map || !group) return;
+  const latlngs = [];
+  group.eachLayer((m) => {
+    if (!pred(m)) return;
+    const el = m.getElement?.();
+    if (el && el.style.display === "none") return;
+    latlngs.push(m.getLatLng());
+  });
+  if (!latlngs.length) return;
+  if (latlngs.length === 1) {
+    map.setView(latlngs[0], Math.max(map.getZoom(), 11), { animate: true });
+    return;
+  }
+  map.fitBounds(L.latLngBounds(latlngs), { padding: [48, 48], maxZoom: 10, animate: true });
+}
+
 export function buildLegend(container) {
   if (!container) return;
   const cats = categorias();
-  const items = Object.entries(cats)
-    .map(([k, v]) => `<button type="button" class="legend-item" data-cat="${k}" aria-pressed="false"><span class="legend-dot" style="background:${v.cor}"></span><span class="legend-label">${v.label}</span></button>`)
+  const catItems = Object.entries(cats)
+    .map(([k, v]) => `<button type="button" class="legend-item" data-cat="${k}" aria-pressed="false">
+      <span class="legend-check" aria-hidden="true"></span>
+      <span class="legend-dot" style="background:${v.cor}"></span>
+      <span class="legend-label">${v.label}</span>
+    </button>`)
     .join("");
   container.innerHTML = `
     <div class="legend-head" role="button" tabindex="0">Legenda <span class="legend-toggle">▾</span></div>
-    <div class="legend-items">${items}</div>
-    <div class="legend-pc-section">
-      <button type="button" id="btn-pc-filter" class="btn-pc-filter" aria-pressed="false">
-        <span class="pc-filter-star" aria-hidden="true">★</span> Pontos de Cultura
+    <div class="legend-items">${catItems}
+      <button type="button" class="legend-item legend-item-teia" id="btn-teia-filter" aria-pressed="false">
+        <span class="legend-check" aria-hidden="true"></span>
+        <span class="legend-dot legend-dot-teia">🕸</span>
+        <span class="legend-label">Teia dos Povos</span>
       </button>
+      <button type="button" class="legend-item legend-item-pc" id="btn-pc-filter" aria-pressed="false">
+        <span class="legend-check" aria-hidden="true"></span>
+        <span class="legend-dot legend-dot-pc">★</span>
+        <span class="legend-label">Pontos de Cultura</span>
+      </button>
+    </div>
+    <div class="legend-actions">
+      <button type="button" class="legend-action" id="btn-filter-none" title="Ocultar todos os pins">Nenhum</button>
+      <button type="button" class="legend-action" id="btn-filter-all" title="Mostrar todos os pins">Todos</button>
     </div>`;
   const head = container.querySelector(".legend-head");
   head?.addEventListener("click", () => container.classList.toggle("collapsed"));
@@ -185,9 +264,23 @@ export function buildLegend(container) {
       refreshVisibility();
     });
   });
+  document.getElementById("btn-filter-none")?.addEventListener("click", () => {
+    clearAllFilters();
+    refreshVisibility();
+    focusRoteiro("contra-costa");
+  });
+  document.getElementById("btn-filter-all")?.addEventListener("click", () => {
+    selectAllFilters();
+    refreshVisibility();
+  });
   const btnPC = container.querySelector("#btn-pc-filter");
   btnPC?.addEventListener("click", () => {
     togglePontoCulturaFilter();
+    refreshVisibility();
+  });
+  const btnTeia = container.querySelector("#btn-teia-filter");
+  btnTeia?.addEventListener("click", () => {
+    toggleTeiaDosPovosFilter();
     refreshVisibility();
   });
 }

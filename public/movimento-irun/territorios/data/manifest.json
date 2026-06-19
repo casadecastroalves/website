@@ -12,17 +12,41 @@
     "terere",
     "vamos-navegar",
     "mare-de-marco",
-    "casa-castro-alves"
+    "casa-castro-alves",
+    "centro-cultural-kitembo",
+    "coletivo-uinaj",
+    "guarda-mocambique-bh",
+    "associacao-mulheres-negras",
+    "assentamento-terra-vista",
+    "associacao-gaiatayama",
+    "associacao-nova-bahia",
+    "mstb-bahia",
+    "quilombo-bananeira-payaya"
   ],
-  "pontos": ["ti-03", "ti-05", "ti-06", "ti-19", "ti-21", "ti-26"],
+  "pontos": [
+    "ti-03",
+    "ti-05",
+    "ti-06",
+    "ti-19",
+    "ti-21",
+    "ti-26"
+  ],
   "roteiros": [
     {
       "id": "contra-costa",
       "titulo": "Contra Costa — Ilha de Itaparica",
       "file": "geo/roteiros/contra-costa.geojson",
-      "territorioIds": ["ti-26"],
-      "fichaIds": ["itaparica", "vera-cruz"],
-      "categorias": ["turismo", "projetos"],
+      "territorioIds": [
+        "ti-26"
+      ],
+      "fichaIds": [
+        "itaparica",
+        "vera-cruz"
+      ],
+      "categorias": [
+        "turismo",
+        "projetos"
+      ],
       "descricao": "Marina de Itaparica · Fonte do Tororó · Ilha de Matarandiba · Base Náutica de Cacha Pregos · Pousada Norage. Roteiro intermunicipal (Itaparica e Vera Cruz)."
     }
   ],

@@ -1,0 +1,77 @@
+{
+  "id": "assentamento-terra-vista",
+  "version": "1.0.0",
+  "territorioId": "ti-05",
+  "tipo": "comunidade",
+  "rede": true,
+  "teiaDosPovos": true,
+  "meta": {
+    "nome": "Assentamento Terra Vista — sede da Teia dos Povos",
+    "coords": [
+      -15.2608,
+      -39.4144
+    ],
+    "municipio": "Arataca",
+    "uf": "BA",
+    "fonte": "Teia dos Povos — Movimento Irun / Design de Território",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-19"
+  },
+  "sidebar": {
+    "logo": {
+      "src": "assets/teia-dos-povos/fotos/logo.png",
+      "alt": "Teia dos Povos"
+    },
+    "apresentacao": "O Assentamento Terra Vista, em Arataca (BA), é a sede da Teia dos Povos — experiência de rede que articula Povos Indígenas, Quilombolas, comunidades de terreiro, assentados, universidades e coletivos urbanos em torno da agroecologia, das sementes crioulas e da emancipação coletiva.",
+    "identidade": [
+      {
+        "id": "teia-dos-povos",
+        "titulo": "Teia dos Povos",
+        "conteudo": "A Teia dos Povos é uma experiência de rede, formada junto a Povos Indígenas, Quilombolas, os afro descendentes, remanescentes de comunidades formadas por escravizados fugitivos (os quilombos), entre o século XVI e o ano de 1888, quando houve a abolição da escravatura no Brasil, além de Povos de terreiro, em sua maioria também de origem afro-brasileira, ligados às comunidades religiosas de matrizes africanas por vínculos de parentescos ou iniciáticos. Esses grupos, no Brasil, são denominados como comunidades tradicionais, que segundo a Política Nacional de Desenvolvimento Sustentável dos Povos e Comunidades Tradicionais (PNPCT), são definidos como: “grupos culturalmente diferenciados e que se reconhecem como tais, que possuem formas próprias de organização social, que ocupam e usam territórios e recursos naturais como condição para sua reprodução cultural, social, religiosa, ancestral e econômica, utilizando conhecimentos, inovações e práticas gerados e transmitidos pela tradição”. Cada comunidade tradicional e demais entes que participam da rede, como assentados, pesquisadores, universidades, coletivos urbanos, são entendidos como elos da rede."
+      },
+      {
+        "id": "agroecologia",
+        "titulo": "Agroecologia e sementes crioulas",
+        "conteudo": "A Teia dos Povos começou pautada na agroecologia e na difusão das sementes crioulas (Ferreira & Felício, 2021), com o objetivo de formular os caminhos da emancipação coletiva, tendo por princípios fundantes a terra e alimento, o trabalho e o estudo para liberdade que possibilite a construção de um novo modo de vida e a reafirmação da ancestralidade. As sementes crioulas são sementes cultivadas em famílias por gerações e que, portanto, são preservadas geneticamente e livres de defensivos agrícolas. Elas se tornam heranças passadas de pais para filhos, mães para filhas, assim como o conhecimento de como plantar, quando colher, como cultivar."
+      },
+      {
+        "id": "encontro",
+        "titulo": "Encontro bianual",
+        "conteudo": "Uma das principais atividades da Teia é um encontro bianual, onde as comunidades se reúnem, criando um espaço de troca de experiências e de aprendizados, de conhecimento das lutas e dos problemas de cada comunidade, engajamento crítico em defesa de uma sociedade sustentável e fortalecimento do protagonismo dos povos originais e movimentos sociais no debate."
+      }
+    ],
+    "fotos": [
+      {
+        "src": "assets/teia-dos-povos/fotos/foto-01.jpg",
+        "legenda": "VI Jornada de Agroecologia — 19 de outubro de 2019"
+      },
+      {
+        "src": "assets/teia-dos-povos/fotos/foto-02.jpg",
+        "legenda": "Teia dos Povos"
+      },
+      {
+        "src": "assets/teia-dos-povos/fotos/foto-03.jpg",
+        "legenda": "Caminhada — Jornada de Agroecologia da Bahia, 19/10/2019"
+      }
+    ],
+    "videos": [
+      {
+        "tipo": "youtube",
+        "id": "L-hwcxfWvSQ",
+        "titulo": "Teia dos Povos — Vídeo 1"
+      },
+      {
+        "tipo": "youtube",
+        "id": "3SJAajkQWAs",
+        "titulo": "Teia dos Povos — Vídeo 2"
+      },
+      {
+        "tipo": "youtube",
+        "id": "sHvMuEyjxIE",
+        "titulo": "Teia dos Povos — Vídeo 3"
+      }
+    ],
+    "portfolio": [],
+    "pesquisas": []
+  }
+}

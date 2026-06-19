@@ -3,7 +3,7 @@
   "app": {
     "title": "MOVIMENTO IRUN",
     "subtitle": "IDENTIDADE E TERRITÓRIO",
-    "footer": "DESIGN DE TERRITÓRIO · GRIMAUX · MOVIMENTO IRUN",
+    "footer": "Cartografia e interface: Ines Grimaux · Design de Território",
     "siteBase": "https://casadecastroalves.com.br/movimento-irun/territorios",
     "embedBase": "https://casadecastroalves.com.br/movimento-irun/territorios",
     "ogImage": "assets/og-mapa-bahia.png"
@@ -25,7 +25,7 @@
   "rede": {
     "label": "REDE Movimento Irun",
     "meta": 27,
-    "territorios": ["ti-03", "ti-05", "ti-06", "ti-19", "ti-21", "ti-26"]
+    "territorios": ["ti-03", "ti-05", "ti-06", "ti-16", "ti-19", "ti-21", "ti-22", "ti-26", "ti-27"]
   },
   "categorias": {
     "quilombos": { "label": "Quilombos / Assentamentos", "cor": "#f5c518" },

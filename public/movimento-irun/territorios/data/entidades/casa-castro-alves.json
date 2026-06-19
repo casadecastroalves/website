@@ -1,0 +1,112 @@
+{
+  "id": "casa-castro-alves",
+  "version": "1.0.0",
+  "territorioId": "ti-26",
+  "tipo": "instituicao",
+  "rede": true,
+  "meta": {
+    "nome": "Casa de Castro Alves",
+    "coords": [-12.969721, -38.5082396],
+    "municipio": "Salvador",
+    "uf": "BA",
+    "fonte": "Movimento Irun — cartografia REDE",
+    "responsavel": "Projeto Movimento Irun · Programa Bem Viver",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-08"
+  },
+  "sidebar": {
+    "apresentacao": "A Casa de Castro Alves sedia o Projeto Movimento Irun e o Programa Bem Viver no Centro Histórico de Salvador, sendo um importante ponto de articulação institucional da nossa REDE para o design de território e soberania alimentar.",
+    "identidade": [
+      {
+        "id": "historia",
+        "titulo": "História e memória",
+        "conteudo": "Localizada no bairro do Santo Antônio Além do Carmo, Salvador, a Casa de Castro Alves é um espaço dedicado à memória do poeta e à articulação de saberes e patrimônios da Baía de Todos os Santos."
+      },
+      {
+        "id": "projetos",
+        "titulo": "Projeto Movimento Irun",
+        "conteudo": "Plataforma de pesquisa, cartografia social e design de território que conecta comunidades tradicionais, quilombos e saberes ancestrais da Bahia."
+      },
+      {
+        "id": "programa",
+        "titulo": "Programa Bem Viver",
+        "conteudo": "Conjunto de ações integradas voltadas para o desenvolvimento local sustentável, soberania alimentar, agroecologia e promoção do bem viver nas comunidades da rede."
+      }
+    ],
+    "fotos": [],
+    "videos": [
+      {
+        "tipo": "youtube",
+        "id": "GcVCVR7_7A4",
+        "titulo": "Movimento Irun — 8ª Edição: Show Yaya Muxima"
+      },
+      {
+        "tipo": "youtube",
+        "id": "z2eHDjU_oUw",
+        "titulo": "Movimento Irun — 7ª Edição (25 de Janeiro)"
+      },
+      {
+        "tipo": "youtube",
+        "id": "vKX18JHBm4E",
+        "titulo": "Cabuloso Trio — Movimento Irun 6ª Edição"
+      },
+      {
+        "tipo": "youtube",
+        "id": "RNx5kS9YRwA",
+        "titulo": "Movimento Irun — 6ª Edição (21 de Dezembro)"
+      },
+      {
+        "tipo": "youtube",
+        "id": "v_1ItcV1JNE",
+        "titulo": "Movimento Irun — 5ª Edição (16 de Novembro)"
+      },
+      {
+        "tipo": "youtube",
+        "id": "Sywh0BGRFCo",
+        "titulo": "Movimento Irun — 4ª Edição (26 de Outubro)"
+      },
+      {
+        "tipo": "youtube",
+        "id": "8xsNSgMrAvw",
+        "titulo": "Movimento Irun — 3ª Edição (28 de Setembro)"
+      },
+      {
+        "tipo": "youtube",
+        "id": "3g1t911jlA0",
+        "titulo": "Movimento Irun — 2ª Edição (17 de Agosto)"
+      },
+      {
+        "tipo": "youtube",
+        "id": "s9w44W419Co",
+        "titulo": "Movimento Irun — Institucional (Edição I)"
+      },
+      {
+        "tipo": "youtube",
+        "id": "WLejQZfEbdQ",
+        "titulo": "Movimento Irun — 9ª Edição: Show Mariella Santiago & Ícaro Santiago"
+      }
+    ],
+    "contato": {
+      "organizacao": "Casa de Castro Alves",
+      "gestores": [
+        "Projeto Movimento Irun",
+        "Programa Bem Viver"
+      ],
+      "maps": "https://maps.app.goo.gl/dA23jvKsXh72yWmUA"
+    },
+    "links": [
+      {
+        "titulo": "Site oficial",
+        "href": "https://casadecastroalves.com.br/"
+      },
+      {
+        "titulo": "Página de contato",
+        "href": "https://casadecastroalves.com.br/contato/"
+      },
+      {
+        "titulo": "Google Maps — Localização",
+        "href": "https://maps.app.goo.gl/dA23jvKsXh72yWmUA"
+      }
+    ]
+  }
+}

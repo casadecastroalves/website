@@ -1,11 +1,11 @@
-import { state, countRede, fichaById, tiById, fichasDoMunicipio, setSelected } from "./core/state.js";
+import { state, countRede, fichaById, tiById, fichasDoMunicipio, setSelected, setPontoCulturaFilter, setTeiaDosPovosFilter } from "./core/state.js";
 import { loadAll } from "./core/store.js";
 import { initRouter, parseRoute, goTerritorio, goFicha, goHome } from "./core/router.js";
 import {
   initMap, getMap, setBaseMode, highlightTi, resetView, fitFichas,
   refreshTiStyles, loadRedeLayers, loadRoteiros,
 } from "./map/map.js";
-import { buildMarkers, setSelectedFicha, focusFicha, refreshVisibility, buildLegend } from "./map/markers.js";
+import { buildMarkers, setSelectedFicha, focusFicha, refreshVisibility, buildLegend, fitPontosCultura, fitTeiaDosPovos } from "./map/markers.js";
 import { renderSidebar, initSidebarKeyboard, openRedePanel } from "./ui/sidebar.js";
 import { initSearch } from "./ui/search.js";
 import { initShare } from "./ui/share.js";
@@ -29,6 +29,9 @@ function initBrandHome() {
   const go = () => {
     getMap()?.closePopup();
     if (state.filters.size) { state.filters = new Set(); refreshVisibility(); }
+    setPontoCulturaFilter(false);
+    setTeiaDosPovosFilter(false);
+    refreshVisibility();
     goHome();
     openForContext();
   };
@@ -64,6 +67,25 @@ function initPopupLinks() {
   });
 }
 
+/** Links http(s) abrem sempre noutro separador — o mapa fica aberto. */
+function initExternalLinks() {
+  document.getElementById("app")?.addEventListener("click", (ev) => {
+    const a = ev.target.closest("a[href]");
+    if (!a) return;
+    const raw = a.getAttribute("href") || "";
+    if (!raw || raw.startsWith("#") || raw.startsWith("mailto:") || raw.startsWith("tel:")) return;
+    let url;
+    try { url = new URL(a.href, window.location.href); } catch { return; }
+    if (url.protocol !== "http:" && url.protocol !== "https:") return;
+    a.rel = "noopener noreferrer";
+    if (a.target !== "_blank") {
+      ev.preventDefault();
+      window.open(url.href, "_blank", "noopener,noreferrer");
+    }
+    if (isMobile()) closeSheet();
+  }, true);
+}
+
 function handleRoute(route) {
   setSelected({ tiId: route.tiId, fichaId: route.fichaId, municipio: route.municipio });
   renderSidebar(route);
@@ -82,8 +104,30 @@ function handleRoute(route) {
     setSelectedFicha(null);
     fitFichas(fichasDoMunicipio(route.municipio));
     openForContext();
+  } else if (route.view === "pontos-cultura") {
+    setSelectedFicha(null);
+    setPontoCulturaFilter(true);
+    refreshVisibility();
+    resetView();
+    setTimeout(() => fitPontosCultura(), 320);
+    openForContext();
+  } else if (route.view === "teia-dos-povos") {
+    setSelectedFicha(null);
+    setTeiaDosPovosFilter(true);
+    refreshVisibility();
+    resetView();
+    setTimeout(() => fitTeiaDosPovos(), 320);
+    openForContext();
   } else {
     setSelectedFicha(null);
+    if (state.filterPontoCultura) {
+      setPontoCulturaFilter(false);
+      refreshVisibility();
+    }
+    if (state.filterTeiaDosPovos) {
+      setTeiaDosPovosFilter(false);
+      refreshVisibility();
+    }
     resetView();
   }
 
@@ -110,6 +154,7 @@ async function main() {
   initSidebarKeyboard();
   initMapModes();
   initBrandHome();
+  initExternalLinks();
   document.getElementById("btn-rede-badge")?.addEventListener("click", openRedePanel);
   initPopupLinks();
 
