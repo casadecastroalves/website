@@ -283,4 +283,5 @@ export function buildLegend(container) {
     toggleTeiaDosPovosFilter();
     refreshVisibility();
   });
+  refreshVisibility();
 }
