@@ -14,61 +14,11 @@
       ]
     },
     {
-      "id": "quilombo-do-terere",
-      "nome": "Quilombo do Tereré",
-      "coords": [
-        -12.9658403,
-        -38.6195329
-      ],
-      "categorias": [
-        "quilombos",
-        "turismo"
-      ],
-      "entidadeId": "terere",
-      "popup": {
-        "contexto": "Vera Cruz · Quilombo do Tereré",
-        "slides": [
-          {
-            "titulo": "Quilombo do Tereré — Vídeo 1",
-            "video": {
-              "tipo": "youtube",
-              "id": "GucuBt3CxX8",
-              "legenda": "Vivência no Quilombo do Tereré"
-            }
-          },
-          {
-            "titulo": "Quilombo do Tereré — Vídeo 2",
-            "video": {
-              "tipo": "youtube",
-              "id": "4YoWZMHOurk",
-              "legenda": "Cultura e tradição do Tereré"
-            }
-          },
-          {
-            "titulo": "Quilombo do Tereré — Vídeo 3",
-            "video": {
-              "tipo": "youtube",
-              "id": "xDIs2lqDhWI",
-              "legenda": "História e resistência quilombola"
-            }
-          },
-          {
-            "titulo": "Quilombo do Tereré — Vídeo 4",
-            "video": {
-              "tipo": "youtube",
-              "id": "sKQqroXIp4I",
-              "legenda": "Saberes e comunidade no Tereré"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "id": "museu-de-memoria-viva-dos-quilombos-do-terere-e-",
+      "id": "museu-memoria-viva-terere",
       "nome": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho",
       "coords": [
-        -12.9661881,
-        -38.6197858
+        -12.965929759926647,
+        -38.61977168842896
       ],
       "categorias": [
         "quilombos",
@@ -76,13 +26,42 @@
         "instituicoes"
       ],
       "pontoCultura": true,
+      "fichaId": "terere",
       "entidadeId": "terere",
       "popup": {
-        "contexto": "Vera Cruz · Museu de Memória Viva",
+        "contexto": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho",
         "slides": [
           {
-            "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho",
-            "texto": "Espaço de preservação e difusão da cultura quilombola na Baía de Todos os Santos."
+            "video": {
+              "tipo": "youtube",
+              "id": "GucuBt3CxX8",
+              "legenda": "Vivência no Quilombo do Tereré",
+              "embed": false
+            }
+          },
+          {
+            "video": {
+              "tipo": "youtube",
+              "id": "4YoWZMHOurk",
+              "legenda": "Cultura e tradição do Tereré",
+              "embed": false
+            }
+          },
+          {
+            "video": {
+              "tipo": "youtube",
+              "id": "xDIs2lqDhWI",
+              "legenda": "História e resistência quilombola",
+              "embed": false
+            }
+          },
+          {
+            "video": {
+              "tipo": "youtube",
+              "id": "sKQqroXIp4I",
+              "legenda": "Saberes e comunidade no Tereré",
+              "embed": false
+            }
           }
         ]
       }
@@ -90,8 +69,14 @@
     {
       "id": "vamos-navegar",
       "nome": "Vamos Navegar",
-      "coords": [-12.9744205, -38.6216078],
-      "categorias": ["projetos", "turismo"],
+      "coords": [
+        -12.9744205,
+        -38.6216078
+      ],
+      "categorias": [
+        "projetos",
+        "turismo"
+      ],
       "entidadeId": "vamos-navegar",
       "resumo": "Réplicas de embarcações artesanais produzidas por Ademir Santana — Gamboa, Ilha de Itaparica",
       "popup": {
@@ -103,7 +88,8 @@
             "video": {
               "tipo": "youtube",
               "id": "Hd4UjhzXJy4",
-              "legenda": "Embarcações Típicas da Bahia"
+              "legenda": "Embarcações Típicas da Bahia",
+              "embed": false
             }
           }
         ]
@@ -112,8 +98,13 @@
     {
       "id": "mare-de-marco",
       "nome": "Maré de Março",
-      "coords": [-12.8891911, -38.6766525],
-      "categorias": ["projetos"],
+      "coords": [
+        -12.8891911,
+        -38.6766525
+      ],
+      "categorias": [
+        "projetos"
+      ],
       "entidadeId": "mare-de-marco",
       "popup": {
         "contexto": "Itaparica · Maré de Março",
@@ -123,7 +114,8 @@
             "video": {
               "tipo": "youtube",
               "id": "THUbZcbA4qg",
-              "legenda": "Projeto Maré de Março"
+              "legenda": "Projeto Maré de Março",
+              "embed": false
             }
           }
         ]
@@ -193,7 +185,8 @@
             "video": {
               "tipo": "youtube",
               "id": "GcVCVR7_7A4",
-              "legenda": "Movimento Irun 8ª Edição — Show Yaya Muxima"
+              "legenda": "Movimento Irun 8ª Edição — Show Yaya Muxima",
+              "embed": false
             }
           },
           {
@@ -202,7 +195,8 @@
             "video": {
               "tipo": "youtube",
               "id": "z2eHDjU_oUw",
-              "legenda": "Movimento Irun 7ª Edição"
+              "legenda": "Movimento Irun 7ª Edição",
+              "embed": false
             }
           },
           {
@@ -211,7 +205,8 @@
             "video": {
               "tipo": "youtube",
               "id": "vKX18JHBm4E",
-              "legenda": "Cabuloso Trio no Movimento Irun"
+              "legenda": "Cabuloso Trio no Movimento Irun",
+              "embed": false
             }
           },
           {
@@ -220,7 +215,8 @@
             "video": {
               "tipo": "youtube",
               "id": "RNx5kS9YRwA",
-              "legenda": "Movimento Irun 6ª Edição"
+              "legenda": "Movimento Irun 6ª Edição",
+              "embed": false
             }
           },
           {
@@ -229,7 +225,8 @@
             "video": {
               "tipo": "youtube",
               "id": "v_1ItcV1JNE",
-              "legenda": "Movimento Irun 5ª Edição"
+              "legenda": "Movimento Irun 5ª Edição",
+              "embed": false
             }
           },
           {
@@ -238,7 +235,8 @@
             "video": {
               "tipo": "youtube",
               "id": "Sywh0BGRFCo",
-              "legenda": "Movimento Irun 4ª Edição"
+              "legenda": "Movimento Irun 4ª Edição",
+              "embed": false
             }
           },
           {
@@ -247,7 +245,8 @@
             "video": {
               "tipo": "youtube",
               "id": "8xsNSgMrAvw",
-              "legenda": "Movimento Irun 3ª Edição"
+              "legenda": "Movimento Irun 3ª Edição",
+              "embed": false
             }
           },
           {
@@ -256,7 +255,8 @@
             "video": {
               "tipo": "youtube",
               "id": "3g1t911jlA0",
-              "legenda": "Movimento Irun 2ª Edição"
+              "legenda": "Movimento Irun 2ª Edição",
+              "embed": false
             }
           },
           {
@@ -265,7 +265,8 @@
             "video": {
               "tipo": "youtube",
               "id": "s9w44W419Co",
-              "legenda": "Movimento Irun Edição I"
+              "legenda": "Movimento Irun Edição I",
+              "embed": false
             }
           },
           {
@@ -274,7 +275,8 @@
             "video": {
               "tipo": "youtube",
               "id": "WLejQZfEbdQ",
-              "legenda": "Movimento Irun 9ª Edição — Show Mariella Santiago"
+              "legenda": "Movimento Irun 9ª Edição — Show Mariella Santiago",
+              "embed": false
             }
           }
         ]

@@ -24,6 +24,26 @@ function searchText(...parts) {
   return parts.filter(Boolean).join(" ");
 }
 
+function fichaSearchMeta(f) {
+  const tags = [tipoLabel(f.tipo)];
+  if (f.pontoCultura) tags.push("Ponto de Cultura");
+  if (f.teiaDosPovos) tags.push("Teia dos Povos");
+  const cod = [
+    f.rede ? "REDE" : "",
+    f.pontoCultura ? "★" : "",
+    f.teiaDosPovos ? "🕸" : "",
+  ].filter(Boolean).join(" ");
+  return { type: tags.join(" · "), cod };
+}
+
+function pinMatchesFicha(p, f) {
+  if (!f) return false;
+  const a = slugify(p.nome || "");
+  const b = slugify(f.meta?.nome || "");
+  if (!a || !b) return false;
+  return a === b || a.includes(b) || b.includes(a);
+}
+
 function isPontosCulturaQuery(q) {
   const n = searchNorm(q);
   if (!n) return false;
@@ -32,6 +52,12 @@ function isPontosCulturaQuery(q) {
     || (n.includes("ponto") && n.includes("cultura"))
     || n.includes("pontos cultura")
   );
+}
+
+function isTeiaQuery(q) {
+  const n = searchNorm(q);
+  if (!n) return false;
+  return matchSearch("teia dos povos teia povos", n) || (n.includes("teia") && n.includes("povo"));
 }
 
 function goPontoMap(p) {
@@ -65,6 +91,7 @@ function goPcItem(item) {
 
 function buildIndex() {
   index = [];
+  const fichaIndexed = new Set();
 
   index.push({
     type: "Coleção",
@@ -123,10 +150,13 @@ function buildIndex() {
   });
 
   state.fichas.forEach((f) => {
+    if (f.stub) return;
+    fichaIndexed.add(f.id);
     const ti = tiById(f.territorioId);
+    const { type, cod } = fichaSearchMeta(f);
     index.push({
-      type: tipoLabel(f.tipo),
-      cod: f.rede ? "REDE" : "",
+      type,
+      cod,
       name: f.meta?.nome || f.id,
       sub: [f.meta?.municipio, ti?.nome].filter(Boolean).join(" · "),
       searchText: searchText(
@@ -139,10 +169,12 @@ function buildIndex() {
         f.teiaDosPovos ? "teia dos povos" : "",
       ),
       action: () => goFicha(f.id),
+      fichaId: f.id,
     });
   });
 
   listTeiaDosPovos().forEach((t) => {
+    if (t.fichaId && fichaIndexed.has(t.fichaId)) return;
     index.push({
       type: "Teia dos Povos",
       cod: "🕸",
@@ -155,6 +187,7 @@ function buildIndex() {
   });
 
   listPontosCultura().forEach((pc) => {
+    if (pc.fichaId && fichaIndexed.has(pc.fichaId)) return;
     index.push({
       type: "Ponto de Cultura",
       cod: "★",
@@ -167,15 +200,19 @@ function buildIndex() {
   });
 
   state.pontos.forEach((p) => {
+    const fid = p.fichaId || p.entidadeId;
+    const f = fid ? fichaById(fid) : null;
+    if (fid && fichaIndexed.has(fid) && pinMatchesFicha(p, f)) return;
+
     const ti = tiById(p.territorioId);
-    const f = fichaById(p.fichaId || p.entidadeId);
     const cat = p.categorias?.find((c) => CAT_LABEL[c]) || p.categorias?.[0];
-    const type = p.categorias?.includes("municipios")
-      ? "Município"
-      : (CAT_LABEL[cat] || "Lugar");
+    const typeParts = [p.categorias?.includes("municipios") ? "Município" : (CAT_LABEL[cat] || "Lugar")];
+    if (p.pontoCultura || f?.pontoCultura) typeParts.push("Ponto de Cultura");
+    if (p.teiaDosPovos || f?.teiaDosPovos) typeParts.push("Teia dos Povos");
+
     index.push({
-      type,
-      cod: "",
+      type: typeParts.join(" · "),
+      cod: [p.pontoCultura || f?.pontoCultura ? "★" : "", p.teiaDosPovos || f?.teiaDosPovos ? "🕸" : ""].filter(Boolean).join(" "),
       name: p.nome,
       sub: [f?.meta?.municipio, ti?.nome].filter(Boolean).join(" · "),
       searchText: searchText(
@@ -186,6 +223,8 @@ function buildIndex() {
         ti?.nome,
         p.categorias?.join(" "),
         p.pontoCultura ? "ponto de cultura" : "",
+        p.teiaDosPovos ? "teia dos povos" : "",
+        p.nome.includes("Barriguda") ? "guine guiné quilombo barriguda povoado" : "",
       ),
       action: () => goPontoMap(p),
     });
@@ -225,8 +264,12 @@ function render(q) {
     if (!results.length) results = index.slice(0, 8);
   } else if (isPontosCulturaQuery(term)) {
     const coleção = index.find((i) => i.name === "Pontos de Cultura");
-    const pcs = index.filter((i) => i.type === "Ponto de Cultura" && matchSearch(i.searchText || i.name, term));
+    const pcs = index.filter((i) => i.type.includes("Ponto de Cultura") && matchSearch(i.searchText || i.name, term));
     results = coleção ? [coleção, ...pcs] : pcs;
+  } else if (isTeiaQuery(term)) {
+    const coleção = index.find((i) => i.name === "Teia dos Povos");
+    const teia = index.filter((i) => i.type.includes("Teia dos Povos") && matchSearch(i.searchText || i.name, term));
+    results = coleção ? [coleção, ...teia] : teia;
   } else {
     results = index
       .map((i) => ({ item: i, score: scoreItem(i, term) }))
@@ -291,4 +334,15 @@ export function initSearch() {
 
 export function rebuildSearchIndex() {
   buildIndex();
+}
+
+/** Para auditoria: nomes que aparecem mais de uma vez no índice. */
+export function findSearchDuplicates() {
+  const byKey = new Map();
+  for (const item of index) {
+    const key = slugify(item.name);
+    if (!byKey.has(key)) byKey.set(key, []);
+    byKey.get(key).push(item);
+  }
+  return [...byKey.entries()].filter(([, items]) => items.length > 1).map(([key, items]) => ({ key, items }));
 }

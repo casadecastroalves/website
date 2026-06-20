@@ -1,7 +1,8 @@
 import {
   state, tiById, fichaById, fichasDoTerritorio, fichasDoMunicipio,
   redeOrdenada, countRede, toggleFilter, listPontosCultura, listTeiaDosPovos,
-  setPontoCulturaFilter, setTeiaDosPovosFilter, clearAllFilters, selectAllFilters,
+  setPontoCulturaFilter, setTeiaDosPovosFilter, togglePontoCulturaFilter, toggleTeiaDosPovosFilter,
+  clearAllFilters, selectAllFilters, TEIA_HUB_ID,
 } from "../core/state.js";
 import { goHome, goTerritorio, goFicha, goMunicipio, goPontosCultura, goTeiaDosPovos, parseRoute } from "../core/router.js";
 import { esc, escAttr, slugify } from "../core/util.js";
@@ -166,6 +167,13 @@ function renderFilters() {
       }).join("")}</div>
     </div>`).join("");
   return `${chips}
+    <div class="filter-group">
+      <div class="filter-label">Redes</div>
+      <div class="filter-chips">
+        <button type="button" class="chip chip-teia${state.filterTeiaDosPovos ? " active" : ""}" data-filter-teia>🕸 Teia dos Povos</button>
+        <button type="button" class="chip chip-pc${state.filterPontoCultura ? " active" : ""}" data-filter-pc>★ Pontos de Cultura</button>
+      </div>
+    </div>
     <div class="filter-actions">
       <button type="button" class="chip chip-muted" data-filter-none>Desmarcar tudo</button>
       <button type="button" class="chip chip-muted" data-filter-all>Marcar tudo</button>
@@ -196,9 +204,23 @@ function renderVideos(videos) {
   if (!videos?.length) return `<p class="empty-rede">Vídeos em breve.</p>`;
   return videos.map((v) => {
     if (v.tipo === "youtube" && v.id) {
+      if (v.embed !== true) {
+        const url = `https://www.youtube.com/watch?v=${encodeURIComponent(v.id)}`;
+        const thumb = `https://i.ytimg.com/vi/${encodeURIComponent(v.id)}/hqdefault.jpg`;
+        return `<p class="video-title">${esc(v.titulo)}</p>
+          <a class="popup-yt-external sidebar-yt-external" href="${escAttr(url)}" target="_blank" rel="noopener noreferrer">
+            <img src="${escAttr(thumb)}" alt="${escAttr(v.titulo)}" loading="lazy" decoding="async">
+            <span class="popup-yt-play" aria-hidden="true">▶</span>
+            <span class="popup-yt-open">Ver no YouTube</span>
+          </a>
+          <p class="popup-yt-hint">Este vídeo não permite reprodução incorporada — abre no YouTube.</p>`;
+      }
       return `<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/${escAttr(v.id)}?${YT}" title="${escAttr(v.titulo)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><p class="video-title">${esc(v.titulo)}</p></div>`;
     }
-    return v.href ? `<p><a href="${escAttr(v.href)}" target="_blank" rel="noopener">${esc(v.titulo)}</a></p>` : "";
+    if (v.href) {
+      return `<p class="video-title">${esc(v.titulo || "Vídeo")}</p><p><a href="${escAttr(v.href)}" target="_blank" rel="noopener" class="pdf-link">${esc(v.titulo || "Ver vídeo")} ↗</a></p>`;
+    }
+    return "";
   }).join("");
 }
 
@@ -359,10 +381,11 @@ function renderHome() {
        <ul class="entity-list">${pcs.map(pcCard).join("")}</ul>
        <p class="ver-mais-wrap"><button type="button" class="link-btn" data-nav="pontos-cultura">Ver todos (${pcs.length}) →</button></p>`
     : `<p class="empty-rede">Mapeamento em curso.</p>`;
-  const teiaList = teia.length
-    ? `<p class="lead">Rede de comunidades tradicionais, quilombos e povos originários. Toque para ver no mapa.</p>
-       <ul class="entity-list">${teia.map(teiaCard).join("")}</ul>
-       <p class="ver-mais-wrap"><button type="button" class="link-btn" data-nav="teia-dos-povos">Ver todos (${teia.length}) →</button></p>`
+  const teiaHub = fichaById(TEIA_HUB_ID);
+  const teiaList = teiaHub
+    ? `<p class="lead">Rede de povos indígenas, quilombolas, terreiros e comunidades tradicionais. A sede da Teia é o Assentamento Terra Vista — aqui estão os <strong>lugares da nossa rede</strong> mapeados.</p>
+       ${teia.length ? `<ul class="entity-list">${teia.slice(0, 5).map(teiaCard).join("")}</ul>` : ""}
+       <p class="ver-mais-wrap"><button type="button" class="link-btn" data-nav="ficha" data-ficha="${escAttr(TEIA_HUB_ID)}">Abrir ficha da Teia dos Povos →</button></p>`
     : `<p class="empty-rede">Mapeamento em curso.</p>`;
   return `
     ${accordion("sobre", state.config.sobre?.titulo || "Sobre o Mapa", renderSobre(), true)}
@@ -372,6 +395,21 @@ function renderHome() {
     ${accordion("rede", `${redeLabel} (${countRede()}/${meta})`, `<p class="lead">Territórios da rede com mapeamento participativo. Toque para abrir cada território e ver os lugares no mapa.</p>${renderRedeList()}`, rede.length > 0)}
     ${accordion("filtros", "Filtros", renderFilters(), false)}
   `;
+}
+
+function teiaBadgeHtml(f) {
+  if (!f?.teiaDosPovos) return "";
+  if (f.id === TEIA_HUB_ID) {
+    return `<p class="ficha-teia-badge"><span class="ficha-teia-mark">🕸</span> Teia dos Povos</p>`;
+  }
+  return `<p class="ficha-teia-badge"><button type="button" class="teia-badge-link" data-nav="ficha" data-ficha="${escAttr(TEIA_HUB_ID)}"><span class="ficha-teia-mark">🕸</span> Teia dos Povos</button></p>`;
+}
+
+function renderTeiaRedeList() {
+  const rede = listTeiaDosPovos();
+  if (!rede.length) return `<p class="empty-rede">Mapeamento em curso.</p>`;
+  return `<p class="lead">Lugares da nossa rede que participam da Teia dos Povos — toque para ver no mapa.</p>
+    <ul class="entity-list">${rede.map(teiaCard).join("")}</ul>`;
 }
 
 function pcCard(pc) {
@@ -403,30 +441,26 @@ function teiaCard(item) {
 }
 
 function renderTeiaDosPovos() {
-  const teia = listTeiaDosPovos();
-  const list = teia.length
-    ? `<ul class="entity-list">${teia.map(teiaCard).join("")}</ul>`
-    : `<p class="empty-rede">Nenhum lugar da Teia mapeado ainda.</p>`;
-  return `
-    <nav class="nav-pager"><button type="button" class="nav-pager-btn nav-pager-back" data-nav="home">← Início</button></nav>
-    <div class="ti-header-cod">🕸 Teia dos Povos</div>
-    <h2 class="ti-header-title">Teia dos Povos no mapa</h2>
-    <p class="lead">Rede de povos indígenas, quilombolas, terreiros e comunidades tradicionais. Toque para focar no mapa.</p>
-    ${accordion("lista-teia", `Lugares (${teia.length})`, list, true)}
-  `;
+  const f = fichaById(TEIA_HUB_ID);
+  const ti = tiById(f?.territorioId);
+  return f && ti ? renderFicha(f, ti) : renderHome();
 }
 
 function renderPontosCultura() {
   const pcs = listPontosCultura();
+  const pcCfg = state.config.pontosCultura || {};
   const list = pcs.length
     ? `<ul class="entity-list">${pcs.map(pcCard).join("")}</ul>`
     : `<p class="empty-rede">Nenhum Ponto de Cultura mapeado ainda.</p>`;
+  const definicao = pcCfg.definicao
+    ? `<p class="lead">${esc(pcCfg.definicao)}</p>${pcCfg.href ? verMais(pcCfg.href, pcCfg.fonte ? `${pcCfg.fonte} →` : "Saiba mais →") : ""}`
+    : `<p class="lead">Programa de fomento à cultura viva. Toque num lugar para o mapa focar o pin.</p>`;
   return `
     <nav class="nav-pager"><button type="button" class="nav-pager-btn nav-pager-back" data-nav="home">← Início</button></nav>
     <div class="ti-header-cod">★ Ponto de Cultura</div>
-    <h2 class="ti-header-title">Pontos de Cultura no mapa</h2>
-    <p class="lead">Programa de fomento à cultura viva. Toque num lugar para o mapa focar o pin — no telemóvel o painel fecha e mostra o vídeo ou a ficha no popup.</p>
-    ${accordion("lista-pc", `Lugares (${pcs.length})`, list, true)}
+    <h2 class="ti-header-title">${esc(pcCfg.titulo || "Pontos de Cultura")}</h2>
+    ${definicao}
+    ${accordion("lista-pc", `Lugares mapeados (${pcs.length})`, list, true)}
   `;
 }
 
@@ -462,12 +496,17 @@ function renderFichaSemTerritorio(f) {
 function renderFicha(f, ti) {
   const s = f.sidebar || {};
   const ext = s.externo || {};
+  const isHub = f.id === TEIA_HUB_ID;
   const out = [];
   out.push(accordion("apresentacao", "Apresentação", renderApresentacao(s, ext), true));
+  if (isHub) {
+    out.push(accordion("identidade", "A Teia dos Povos", renderIdentidade(s.identidade), true));
+    out.push(accordion("rede-teia", `Nossa Rede na Teia dos Povos (${listTeiaDosPovos().length})`, renderTeiaRedeList(), true));
+  }
   if (s.projetos?.length) out.push(accordion("projetos", `Projetos e lugares (${s.projetos.length})`, renderProjetos(s.projetos), f.tipo === "municipio"));
-  out.push(accordion("identidade", "Identidade", renderIdentidade(s.identidade), false));
+  if (!isHub) out.push(accordion("identidade", "Identidade", renderIdentidade(s.identidade), false));
+  if (s.videos?.length) out.push(accordion("videos", `Vídeos (${s.videos.length})`, renderVideos(s.videos), true));
   if (s.fotos?.length) out.push(accordion("fotos", `Fotos (${s.fotos.length})`, renderFotos(s.fotos), false));
-  if (s.videos?.length) out.push(accordion("videos", `Vídeos (${s.videos.length})`, renderVideos(s.videos), false));
   if (s.documentos?.length && !s.portfolio?.length && !s.pesquisas?.length) out.push(accordion("documentos", `Documentos (${s.documentos.length})`, renderDocumentos(s.documentos), false));
   if (s.produtos?.length || ext.produtos) out.push(accordion("produtos", "Produtos", `${renderList(s.produtos || [])}${verMais(ext.produtos, "Ver todos os produtos →")}`, false));
   if (s.roteiros?.length || ext.reservas) out.push(accordion("roteiros", "Turismo e vivências", `${renderList(s.roteiros || [], "titulo")}${verMais(ext.reservas, "Reservar →")}`, false));
@@ -484,7 +523,10 @@ function renderFicha(f, ti) {
     out.push(accordion("redes", "Redes e links", renderLinks(links), false));
   }
   const lugarPins = pontosDaFicha(f.id);
-  if (lugarPins.length) out.push(accordion("lugares", `Lugares no mapa (${lugarPins.length})`, `<ul class="entity-list">${lugarPins.map(pinCard).join("")}</ul>`, true));
+  if (lugarPins.length) {
+    const lugaresLabel = isHub ? "Lugar no mapa" : "Lugares no mapa";
+    out.push(accordion("lugares", `${lugaresLabel} (${lugarPins.length})`, `<ul class="entity-list">${lugarPins.map(pinCard).join("")}</ul>`, isHub));
+  }
   out.push(accordion("contato", "Contato", renderContato(s.contato, ext), false));
 
   const mun = f.meta?.municipio || "";
@@ -495,15 +537,16 @@ function renderFicha(f, ti) {
         : `${esc(mun)}${uf}`)
     : "";
 
+  const headerCod = isHub ? "🕸 Teia dos Povos" : `REDE · ${esc(tipoLabel(f.tipo))}`;
+
   return `
     ${tiPager(ti.id, "ti", "Território")}
     ${redePager(f.id)}
-    <div class="ti-header-cod">REDE · ${esc(tipoLabel(f.tipo))}</div>
+    <div class="ti-header-cod">${headerCod}</div>
     <h2 class="ti-header-title">${esc(f.meta?.nome || f.id)}</h2>
     ${f.pontoCultura ? `<p class="ficha-pc-badge"><span class="ficha-pc-star">★</span> Ponto de Cultura${typeof f.pontoCultura === "string" ? ` ${esc(f.pontoCultura)}` : ""}</p>` : ""}
-    ${f.teiaDosPovos ? `<p class="ficha-teia-badge"><span class="ficha-teia-mark">🕸</span> Teia dos Povos</p>` : ""}
+    ${teiaBadgeHtml(f)}
     ${f.pontoCultura ? `<p class="lead"><button type="button" class="link-btn" data-nav="pontos-cultura">Ver todos os Pontos de Cultura no mapa →</button></p>` : ""}
-    ${f.teiaDosPovos ? `<p class="lead"><button type="button" class="link-btn" data-nav="teia-dos-povos">Ver todos os lugares da Teia dos Povos →</button></p>` : ""}
     <p class="lead">${leadHtml}</p>
     <p class="ti-header-sub"><a href="#/ti/${escAttr(ti.id)}" class="link-territorio">← ${esc(ti.cod)} · ${esc(ti.nome)}</a></p>
     ${out.join("")}
@@ -629,6 +672,28 @@ function bindEvents(el, route) {
       refreshVisibility();
       renderSidebar(route);
     });
+  });
+  el.querySelector("[data-filter-teia]")?.addEventListener("click", () => {
+    if (!state.filterTeiaDosPovos) {
+      setTeiaDosPovosFilter(true);
+      refreshVisibility();
+      goTeiaDosPovos();
+    } else {
+      toggleTeiaDosPovosFilter();
+      refreshVisibility();
+      renderSidebar(route);
+    }
+  });
+  el.querySelector("[data-filter-pc]")?.addEventListener("click", () => {
+    if (!state.filterPontoCultura) {
+      setPontoCulturaFilter(true);
+      refreshVisibility();
+      goPontosCultura();
+    } else {
+      togglePontoCulturaFilter();
+      refreshVisibility();
+      renderSidebar(route);
+    }
   });
   el.querySelector("[data-filter-none]")?.addEventListener("click", () => {
     clearAllFilters();

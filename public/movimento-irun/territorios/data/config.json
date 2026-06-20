@@ -3,7 +3,7 @@
   "app": {
     "title": "MOVIMENTO IRUN",
     "subtitle": "IDENTIDADE E TERRITÓRIO",
-    "footer": "Cartografia e interface: Ines Grimaux · Design de Território",
+    "footer": "DESIGN DE TERRITÓRIO: INES GRIMAUX",
     "siteBase": "https://casadecastroalves.com.br/movimento-irun/territorios",
     "embedBase": "https://casadecastroalves.com.br/movimento-irun/territorios",
     "ogImage": "assets/og-mapa-bahia.png"
@@ -71,5 +71,11 @@
   "fonte": {
     "geografica": "SEI/SEPLAN — REG_TI_A_100K_2022_GCS_SIR_SEPLAN",
     "social": "Cartografia Social — Design de Território · Programa Bem Viver · Movimento Irun"
+  },
+  "pontosCultura": {
+    "titulo": "Pontos de Cultura",
+    "definicao": "O Programa Ponto de Cultura é uma política pública de fomento à cultura, instituída pelo Ministério da Cultura em 2004, no âmbito da Política Nacional de Cultura Viva. Reconhece e apoia grupos, coletivos e entidades que atuam de forma autônoma na promoção de atividades culturais com base comunitária, fortalecendo a diversidade cultural, os modos de vida locais e o acesso da população à cultura.",
+    "fonte": "Ministério da Cultura — Cultura Viva",
+    "href": "https://www.gov.br/cultura/pt-br/assuntos/politica-nacional-cultura-viva/ponto-de-cultura"
   }
 }

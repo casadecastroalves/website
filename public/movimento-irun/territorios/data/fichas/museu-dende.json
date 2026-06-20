@@ -7,7 +7,10 @@
   "pontoCultura": true,
   "meta": {
     "nome": "Museu da Costa do Dendê de Cultura Afro-Indígena",
-    "coords": [-13.467506, -39.0899805],
+    "coords": [
+      -13.467506,
+      -39.0899805
+    ],
     "municipio": "Valença",
     "uf": "BA",
     "fonte": "Movimento Irun — cartografia REDE",
@@ -42,7 +45,12 @@
     "roteiros": [],
     "fotos": [],
     "videos": [
-      { "tipo": "youtube", "id": "__qN37AyAro", "titulo": "Museu da Costa do Dendê de Cultura Afro-Indígena" }
+      {
+        "tipo": "youtube",
+        "id": "__qN37AyAro",
+        "titulo": "Museu da Costa do Dendê de Cultura Afro-Indígena",
+        "embed": false
+      }
     ],
     "links": [],
     "contato": {

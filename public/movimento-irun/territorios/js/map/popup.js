@@ -1,8 +1,31 @@
 import { escAttr, esc, slugify } from "../core/util.js";
-import { state, isPontoCultura, isTeiaDosPovos } from "../core/state.js";
+import { state, isPontoCultura, isTeiaDosPovos, TEIA_HUB_ID } from "../core/state.js";
 import { openLightbox } from "../ui/lightbox.js";
 
 const YT = "rel=0&modestbranding=1&iv_load_policy=3";
+
+function youtubeWatchUrl(id) {
+  return `https://www.youtube.com/watch?v=${id}`;
+}
+
+function youtubeThumbUrl(id) {
+  return `https://i.ytimg.com/vi/${encodeURIComponent(id)}/hqdefault.jpg`;
+}
+
+function youtubeAllowsEmbed(video) {
+  /* Por defeito link externo — a maioria dos vídeos do mapa bloqueia iframe. */
+  return video?.embed === true;
+}
+
+function youtubeExternalHtml(id, title) {
+  const url = youtubeWatchUrl(id);
+  return `<a class="popup-yt-external" href="${escAttr(url)}" target="_blank" rel="noopener noreferrer">
+    <img src="${escAttr(youtubeThumbUrl(id))}" alt="${escAttr(title)}" loading="lazy" decoding="async">
+    <span class="popup-yt-play" aria-hidden="true">▶</span>
+    <span class="popup-yt-open">Ver no YouTube</span>
+  </a>
+  <p class="popup-yt-hint">Este vídeo não permite reprodução incorporada — abre no YouTube.</p>`;
+}
 
 function fichaOf(entry) {
   const id = entry.fichaId || entry.entidadeId;
@@ -13,51 +36,78 @@ function fichaYoutubeVideos(entry) {
   return (fichaOf(entry)?.sidebar?.videos || []).filter((v) => v.tipo === "youtube" && v.id);
 }
 
+function fichaPhotos(entry) {
+  const f = fichaOf(entry);
+  if (!f || f.tipo === "municipio") return [];
+  return (f.sidebar?.fotos || []).filter((p) => {
+    const src = typeof p === "string" ? p : p?.src;
+    return !!src;
+  });
+}
+
 function videoSlide(v, entry) {
   return {
-    video: { tipo: "youtube", id: v.id, legenda: v.titulo || entry.nome },
+    video: {
+      tipo: "youtube",
+      id: v.id,
+      legenda: v.titulo || entry.nome,
+      embed: v.embed,
+    },
   };
 }
 
-/* Ficha com vídeos → popup rico no pin (slides só com vídeo, sem texto). */
-function mergeFichaVideos(entry) {
-  const fromFicha = fichaYoutubeVideos(entry);
-  if (!fromFicha.length) return entry.popup;
+function photoSlide(photo, entry) {
+  const src = typeof photo === "string" ? photo : photo.src;
+  const legenda = typeof photo === "string" ? entry.nome : (photo.legenda || entry.nome);
+  return { foto: src, legenda, titulo: legenda };
+}
 
+/* Separa slides com vídeo dos restantes — vídeos sempre primeiro. */
+function partitionSlides(slides = []) {
+  const videos = [];
+  const rest = [];
+  for (const s of slides) {
+    if (s.video?.id) videos.push(s);
+    else rest.push(s);
+  }
+  return { videos, rest };
+}
+
+/* Ficha com vídeos/fotos → popup rico no pin (vídeos primeiro, depois fotos). */
+function mergeFichaMedia(entry) {
+  const fromVideos = fichaYoutubeVideos(entry);
+  const fromPhotos = fichaPhotos(entry);
   const slides = entry.popup?.slides || [];
-  const inPopup = new Set(slides.filter((s) => s.video?.id).map((s) => s.video.id));
+  const { videos: pointVideos, rest: pointRest } = partitionSlides(slides);
+  const seenVideoIds = new Set(pointVideos.map((s) => s.video.id));
 
-  if (!slides.length) {
-    return {
-      contexto: entry.nome,
-      slides: fromFicha.map((v) => videoSlide(v, entry)),
-    };
-  }
+  const extraVideos = fromVideos
+    .filter((v) => !seenVideoIds.has(v.id))
+    .map((v) => videoSlide(v, entry));
 
-  if (!inPopup.size) {
-    return {
-      ...entry.popup,
-      contexto: entry.popup.contexto || entry.nome,
-      slides: [...slides, ...fromFicha.map((v) => videoSlide(v, entry))],
-    };
-  }
+  const inPopupPhotos = new Set(
+    [...pointRest, ...pointVideos].filter((s) => s.foto).map((s) => s.foto),
+  );
+  const extraPhotos = fromPhotos
+    .map((p) => photoSlide(p, entry))
+    .filter((s) => !inPopupPhotos.has(s.foto));
 
-  const missing = fromFicha.filter((v) => !inPopup.has(v.id));
-  if (!missing.length) return entry.popup;
+  const merged = [...pointVideos, ...extraVideos, ...pointRest, ...extraPhotos];
+  if (!merged.length) return entry.popup;
+
   return {
-    ...entry.popup,
-    slides: [...slides, ...missing.map((v) => videoSlide(v, entry))],
+    ...(entry.popup || {}),
+    contexto: entry.popup?.contexto || entry.nome,
+    slides: merged,
   };
 }
 
-function withPopup(entry) {
-  const popup = mergeFichaVideos(entry);
-  if (!popup?.slides?.length) return entry;
-  return { ...entry, popup };
+function resolvePopup(entry) {
+  return mergeFichaMedia(entry);
 }
 
 export function hasRich(entry) {
-  const popup = mergeFichaVideos(entry);
+  const popup = resolvePopup(entry);
   return Array.isArray(popup?.slides) && popup.slides.length > 0;
 }
 
@@ -82,12 +132,20 @@ function entryBadges(entry) {
   };
 }
 
+function labelRepeats(a, b) {
+  const x = slugify(a || "");
+  const y = slugify(b || "");
+  if (!x || !y) return false;
+  if (x === y) return true;
+  return x.includes(y) || y.includes(x);
+}
+
 function popupTagsHtml(entry) {
   const { pc, teia } = entryBadges(entry);
   if (!pc && !teia) return "";
   const tags = [];
   if (pc) tags.push('<span class="popup-pc-tag">★ Ponto de Cultura</span>');
-  if (teia) tags.push('<span class="popup-teia-tag">🕸 Teia dos Povos</span>');
+  if (teia) tags.push(`<button type="button" class="popup-teia-tag" data-ficha="${escAttr(TEIA_HUB_ID)}">🕸 Teia dos Povos</button>`);
   return `<div class="popup-tags">${tags.join("")}</div>`;
 }
 
@@ -97,8 +155,8 @@ function bestLink(links = []) {
 }
 
 export function popupHtml(entry) {
-  const e = withPopup(entry);
-  if (hasRich(e)) return richPopupHtml(e);
+  const popup = resolvePopup(entry);
+  if (popup?.slides?.length) return richPopupHtml({ ...entry, popup });
   const link = bestLink(entry.links || []);
   const fichaId = fichaLinkId(entry);
   return `<div class="popup-title">${esc(entry.nome)}</div>
@@ -109,8 +167,7 @@ export function popupHtml(entry) {
 }
 
 export function popupOptions(entry) {
-  const e = withPopup(entry);
-  if (hasRich(e)) {
+  if (hasRich(entry)) {
     return {
       maxWidth: 320,
       minWidth: 260,
@@ -129,13 +186,19 @@ export function popupOptions(entry) {
   };
 }
 
-function slideBody(slide, eager) {
+function slideBody(slide, eager, entry, ctx) {
   let html = "";
-  if (slide.titulo) html += `<h3 class="popup-rich-title">${esc(slide.titulo)}</h3>`;
+  const skipTitle = slide.titulo && (labelRepeats(slide.titulo, entry?.nome) || labelRepeats(slide.titulo, ctx));
+  if (slide.titulo && !skipTitle) html += `<h3 class="popup-rich-title">${esc(slide.titulo)}</h3>`;
   if (slide.video?.tipo === "youtube" && slide.video.id) {
-    html += eager
-      ? `<div class="popup-rich-video"><iframe src="https://www.youtube-nocookie.com/embed/${escAttr(slide.video.id)}?${YT}" title="${escAttr(slide.video.legenda || slide.titulo)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`
-      : `<div class="popup-rich-video" data-yt-id="${escAttr(slide.video.id)}" data-yt-title="${escAttr(slide.video.legenda || slide.titulo)}"></div>`;
+    const title = slide.video.legenda || slide.titulo || "";
+    if (!youtubeAllowsEmbed(slide.video)) {
+      html += youtubeExternalHtml(slide.video.id, title);
+    } else {
+      html += eager
+        ? `<div class="popup-rich-video"><iframe src="https://www.youtube-nocookie.com/embed/${escAttr(slide.video.id)}?${YT}" title="${escAttr(title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`
+        : `<div class="popup-rich-video" data-yt-id="${escAttr(slide.video.id)}" data-yt-title="${escAttr(title)}"></div>`;
+    }
   }
   if (slide.texto) html += `<p class="popup-rich-text">${esc(slide.texto)}</p>`;
   if (slide.foto) html += `<button class="popup-rich-thumb" data-lb-src="${escAttr(slide.foto)}" data-lb-cap="${escAttr(slide.legenda || slide.titulo)}" type="button" aria-label="Ver foto em tela cheia"><img src="${escAttr(slide.foto)}" alt="${escAttr(slide.legenda || slide.titulo)}" loading="lazy" decoding="async"><span class="popup-rich-expand" aria-hidden="true">⛶</span></button>`;
@@ -148,13 +211,13 @@ export function richPopupHtml(entry) {
   const ctx = entry.popup.contexto || entry.nome;
   const n = slides.length;
   const fichaId = fichaLinkId(entry);
-  const subtitle = ctx && ctx !== entry.nome ? `<div class="popup-rich-ctx">${esc(ctx)}</div>` : "";
+  const subtitle = ctx && !labelRepeats(ctx, entry.nome) ? `<div class="popup-rich-ctx">${esc(ctx)}</div>` : "";
   return `<div class="irun-rich-popup" data-slides="${n}">
     <h3 class="popup-title popup-rich-head">${esc(entry.nome)}</h3>
     ${popupTagsHtml(entry)}
     ${subtitle}
     <div class="popup-rich-viewport">
-      ${slides.map((s, i) => `<div class="popup-rich-slide${i === 0 ? " active" : ""}" data-idx="${i}">${slideBody(s, i === 0)}</div>`).join("")}
+      ${slides.map((s, i) => `<div class="popup-rich-slide${i === 0 ? " active" : ""}" data-idx="${i}">${slideBody(s, i === 0, entry, ctx)}</div>`).join("")}
     </div>
     ${fichaId ? `<span class="popup-link" data-ficha="${escAttr(fichaId)}">Ver ficha →</span>` : ""}
     ${n > 1 ? `<div class="popup-rich-nav">
@@ -191,12 +254,17 @@ export function initRichPopup(popupEl) {
 
   mountVideo(slides[idx]);
 
+  const photoList = slides.flatMap((slideEl) => {
+    const btn = slideEl.querySelector(".popup-rich-thumb");
+    if (!btn) return [];
+    return [{ src: btn.dataset.lbSrc, legenda: btn.dataset.lbCap || "" }];
+  });
+
   root.querySelectorAll(".popup-rich-thumb").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
-      const src = btn.dataset.lbSrc;
-      const cap = btn.dataset.lbCap || "";
-      if (src) openLightbox([{ src, legenda: cap }], 0);
+      const idx = photoList.findIndex((p) => p.src === btn.dataset.lbSrc);
+      openLightbox(photoList, Math.max(0, idx));
     });
   });
 

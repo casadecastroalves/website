@@ -5,9 +5,13 @@
   "tipo": "quilombo",
   "rede": true,
   "pontoCultura": "desde 2024",
+  "teiaDosPovos": true,
   "meta": {
     "nome": "Kilombo Tenondé",
-    "coords": [-13.323106165476451, -39.25321337737795],
+    "coords": [
+      -13.323106165476451,
+      -39.25321337737795
+    ],
     "municipio": "Valença",
     "uf": "BA",
     "fonte": "Kilombo Tenondé — Movimento Irun / Design de Território",
@@ -70,10 +74,22 @@
       }
     ],
     "produtos": [
-      { "nome": "Cacau orgânico", "descricao": "Do cultivo agroflorestal na fazenda em Valença." },
-      { "nome": "Chocolate artesanal", "descricao": "Do grão à barra — bean to bar." },
-      { "nome": "Mel de meliponíneos", "descricao": "Meliponicultura comunitária." },
-      { "nome": "Artesanato e bens de bem-estar", "descricao": "Produtos handcrafted do Kilombo." }
+      {
+        "nome": "Cacau orgânico",
+        "descricao": "Do cultivo agroflorestal na fazenda em Valença."
+      },
+      {
+        "nome": "Chocolate artesanal",
+        "descricao": "Do grão à barra — bean to bar."
+      },
+      {
+        "nome": "Mel de meliponíneos",
+        "descricao": "Meliponicultura comunitária."
+      },
+      {
+        "nome": "Artesanato e bens de bem-estar",
+        "descricao": "Produtos handcrafted do Kilombo."
+      }
     ],
     "externo": {
       "site": "https://kilombotenonde.net/",
@@ -84,49 +100,85 @@
       "contato": "https://kilombotenonde.net/contact.html"
     },
     "roteiros": [
-      { "titulo": "Vivências imersivas", "descricao": "Turismo de base comunitária com capoeira, agrofloresta e recuperação ambiental." },
-      { "titulo": "Permangola / CosmoAngola", "descricao": "Eventos formativos e culturais de referência nacional." }
+      {
+        "titulo": "Vivências imersivas",
+        "descricao": "Turismo de base comunitária com capoeira, agrofloresta e recuperação ambiental."
+      },
+      {
+        "titulo": "Permangola / CosmoAngola",
+        "descricao": "Eventos formativos e culturais de referência nacional."
+      }
     ],
     "fotos": [],
     "videos": [
       {
         "tipo": "youtube",
-        "id": "gUdY4gsP31U",
-        "titulo": "Kilombo Tenondé — Vídeo 1"
-      },
-      {
-        "tipo": "youtube",
         "id": "oSvMHXPDZZQ",
-        "titulo": "Kilombo Tenondé — Vídeo 2"
+        "titulo": "Kilombo Tenondé — Vídeo 2",
+        "embed": false
       },
       {
         "tipo": "youtube",
         "id": "ki8kFywP6W4",
-        "titulo": "Kilombo Tenondé — Vídeo 3"
+        "titulo": "Kilombo Tenondé — Vídeo 3",
+        "embed": false
       },
       {
         "tipo": "youtube",
         "id": "NzHk9tOp9V8",
-        "titulo": "Kilombo Tenondé — Vídeo 4"
+        "titulo": "Kilombo Tenondé — Vídeo 4",
+        "embed": false
+      },
+      {
+        "tipo": "youtube",
+        "id": "gUdY4gsP31U",
+        "titulo": "Kilombo Tenondé — Um foco de resistência",
+        "embed": false
       }
     ],
     "portfolio": [
-      { "titulo": "Portfólio Kilombo Tenondé 2025", "href": "assets/tenonde/pdf/Portfólio Kilombo Tenondé 2025 ver01.pdf", "tipo": "pdf" },
-      { "titulo": "Portfólio Kilombo Tenondé", "href": "assets/tenonde/pdf/Portfólio Kilombo Tenonde.pdf", "tipo": "pdf" },
-      { "titulo": "Portfólio Mestre Cobra Mansa", "href": "assets/tenonde/pdf/Portfolio Mestre Cobra Mansa (1)_compressed (2).pdf", "tipo": "pdf" }
+      {
+        "titulo": "Portfólio Kilombo Tenondé 2025",
+        "href": "assets/tenonde/pdf/Portfólio Kilombo Tenondé 2025 ver01.pdf",
+        "tipo": "pdf"
+      },
+      {
+        "titulo": "Portfólio Kilombo Tenondé",
+        "href": "assets/tenonde/pdf/Portfólio Kilombo Tenonde.pdf",
+        "tipo": "pdf"
+      },
+      {
+        "titulo": "Portfólio Mestre Cobra Mansa",
+        "href": "assets/tenonde/pdf/Portfolio Mestre Cobra Mansa (1)_compressed (2).pdf",
+        "tipo": "pdf"
+      }
     ],
     "festas": [
-      { "nome": "CosmoAngola", "periodo": "2022–2025", "descricao": "Encruzilhada de debate contracolonial, capoeira angola e formação comunitária." },
-      { "nome": "Permangola", "periodo": "Desde 2006", "descricao": "Encontro de permacultura e agrofloresta na região." }
+      {
+        "nome": "CosmoAngola",
+        "periodo": "2022–2025",
+        "descricao": "Encruzilhada de debate contracolonial, capoeira angola e formação comunitária."
+      },
+      {
+        "nome": "Permangola",
+        "periodo": "Desde 2006",
+        "descricao": "Encontro de permacultura e agrofloresta na região."
+      }
     ],
     "noticias": [],
     "redes": [
-      { "rede": "Site", "handle": "kilombotenonde.net", "href": "https://kilombotenonde.net/" }
+      {
+        "rede": "Site",
+        "handle": "kilombotenonde.net",
+        "href": "https://kilombotenonde.net/"
+      }
     ],
     "links": [],
     "contato": {
       "organizacao": "Associação Eco Educativa e Cultural Kilombo Tenondé",
-      "gestores": ["Mestre Cobra Mansa"],
+      "gestores": [
+        "Mestre Cobra Mansa"
+      ],
       "email": "info@kilombotenonde.net",
       "maps": "https://maps.app.goo.gl/cNztDSPXEuRLvqRj8"
     }

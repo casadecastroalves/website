@@ -77,18 +77,6 @@
       "entidadeId": "lagoa-grande"
     },
     {
-      "id": "lg-casa-de-farinha-e--quintal-produtivo",
-      "nome": "Casa de Farinha e  Quintal Produtivo",
-      "coords": [
-        -12.1286818,
-        -38.9916659
-      ],
-      "categorias": [
-        "producao"
-      ],
-      "entidadeId": "lagoa-grande"
-    },
-    {
       "id": "lg-casa-de-farinha-e-quintal-produtivo",
       "nome": "Casa de Farinha e Quintal Produtivo",
       "coords": [
@@ -103,8 +91,13 @@
     {
       "id": "lg-aqcomaq---associação-quilombola-comunitá",
       "nome": "AQCOMAQ - Associação Quilombola Comunitária de Maria Quitéria - Comunidade Quilombola de Lagoa Grande",
-      "coords": [-12.1368249, -38.9898146],
-      "categorias": ["instituicoes"],
+      "coords": [
+        -12.1368249,
+        -38.9898146
+      ],
+      "categorias": [
+        "instituicoes"
+      ],
       "entidadeId": "lagoa-grande",
       "popup": {
         "contexto": "Portal do Sertão · Quilombo Lagoa Grande",
@@ -113,8 +106,14 @@
             "titulo": "AQCOMAQ — sede comunitária",
             "texto": "A Associação Quilombola Comunitária de Maria Quitéria articula famílias do território de Lagoa Grande, em Feira de Santana. Novembro Negro desde 2013, Coletivo da Juventude, casas de farinha e formação quilombola.",
             "links": [
-              { "titulo": "mov.lagoagrande", "href": "https://www.instagram.com/mov.lagoagrande/" },
-              { "titulo": "teiadospovos.org", "href": "https://teiadospovos.org/o-novembro-negro-e-a-demarcacao-do-quilombo-da-lagoa-grande/" }
+              {
+                "titulo": "mov.lagoagrande",
+                "href": "https://www.instagram.com/mov.lagoagrande/"
+              },
+              {
+                "titulo": "teiadospovos.org",
+                "href": "https://teiadospovos.org/o-novembro-negro-e-a-demarcacao-do-quilombo-da-lagoa-grande/"
+              }
             ],
             "foto": "assets/lagoa-grande/fotos/page_4_img_16_Image41.jpg",
             "legenda": "Comunidade quilombola de Lagoa Grande"
@@ -125,7 +124,8 @@
             "video": {
               "tipo": "youtube",
               "id": "Z_xr3JTQzyg",
-              "legenda": "Documentário — Os Guardiões da Lagoa"
+              "legenda": "Documentário — Os Guardiões da Lagoa",
+              "embed": false
             }
           },
           {
@@ -133,7 +133,8 @@
             "video": {
               "tipo": "youtube",
               "id": "JJJUScrmlFs",
-              "legenda": "Feira Quilombola da Lagoa movimenta comércio local"
+              "legenda": "Feira Quilombola da Lagoa movimenta comércio local",
+              "embed": false
             }
           },
           {
@@ -141,7 +142,8 @@
             "video": {
               "tipo": "youtube",
               "id": "c_mW3zFYE10",
-              "legenda": "Quilombo da Lagoa — Feira de Santana"
+              "legenda": "Quilombo da Lagoa — Feira de Santana",
+              "embed": false
             }
           }
         ]

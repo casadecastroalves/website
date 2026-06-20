@@ -1,7 +1,7 @@
-import { state, toggleFilter, togglePontoCulturaFilter, toggleTeiaDosPovosFilter, isPontoCultura, isTeiaDosPovos, clearAllFilters, selectAllFilters } from "../core/state.js";
-import { goHome, syncHash } from "../core/router.js";
+import { state, toggleFilter, togglePontoCulturaFilter, toggleTeiaDosPovosFilter, isPontoCultura, isTeiaDosPovos, clearAllFilters, selectAllFilters, setTeiaDosPovosFilter, setPontoCulturaFilter } from "../core/state.js";
+import { goHome, syncHash, goTeiaDosPovos, goPontosCultura } from "../core/router.js";
 import { getMap, refreshRoteiroVisibility } from "./map.js";
-import { popupHtml, popupOptions, initRichPopup } from "./popup.js";
+import { popupHtml, popupOptions, initRichPopup } from "./popup.js?v=20250625";
 
 const TIPO_CAT = {
   quilombo: "quilombos", assentamento: "quilombos", comunidade: "quilombos",
@@ -208,13 +208,33 @@ export function fitPontosCultura() {
   fitFilteredMarkers((m) => m._pontoCultura);
 }
 
-export function fitTeiaDosPovos() {
-  fitFilteredMarkers((m) => m._teiaDosPovos);
+export function fitTeiaDosPovos(onDone) {
+  fitFilteredMarkers((m) => m._teiaDosPovos, onDone);
 }
 
-function fitFilteredMarkers(pred) {
+/** Enquadra todos os pins da Teia e abre popup da sede (Terra Vista). */
+export function showTeiaOnMap() {
+  fitTeiaDosPovos(() => {
+    const m = markerByPontoId["assentamento-terra-vista"] || markerByFichaId["assentamento-terra-vista"];
+    if (!m) return;
+    const el = m.getElement?.();
+    if (el && el.style.display === "none") return;
+    m.openPopup();
+  });
+}
+
+/** Abre popup do hub Terra Vista sem alterar o zoom. */
+export function openTeiaHubPopup() {
+  const m = markerByPontoId["assentamento-terra-vista"] || markerByFichaId["assentamento-terra-vista"];
+  if (m) m.openPopup();
+}
+
+function fitFilteredMarkers(pred, onDone) {
   const map = getMap();
-  if (!map || !group) return;
+  if (!map || !group) {
+    onDone?.();
+    return;
+  }
   const latlngs = [];
   group.eachLayer((m) => {
     if (!pred(m)) return;
@@ -222,12 +242,20 @@ function fitFilteredMarkers(pred) {
     if (el && el.style.display === "none") return;
     latlngs.push(m.getLatLng());
   });
-  if (!latlngs.length) return;
-  if (latlngs.length === 1) {
-    map.setView(latlngs[0], Math.max(map.getZoom(), 11), { animate: true });
+  if (!latlngs.length) {
+    onDone?.();
     return;
   }
-  map.fitBounds(L.latLngBounds(latlngs), { padding: [48, 48], maxZoom: 10, animate: true });
+  const done = () => {
+    map.off("moveend", done);
+    onDone?.();
+  };
+  if (latlngs.length === 1) {
+    map.setView(latlngs[0], Math.max(map.getZoom(), 11), { animate: true });
+  } else {
+    map.fitBounds(L.latLngBounds(latlngs), { padding: [48, 48], maxZoom: 10, animate: true });
+  }
+  map.once("moveend", done);
 }
 
 export function buildLegend(container) {
@@ -278,13 +306,25 @@ export function buildLegend(container) {
   });
   const btnPC = container.querySelector("#btn-pc-filter");
   btnPC?.addEventListener("click", () => {
-    togglePontoCulturaFilter();
-    refreshVisibility();
+    if (!state.filterPontoCultura) {
+      setPontoCulturaFilter(true);
+      refreshVisibility();
+      goPontosCultura();
+    } else {
+      togglePontoCulturaFilter();
+      refreshVisibility();
+    }
   });
   const btnTeia = container.querySelector("#btn-teia-filter");
   btnTeia?.addEventListener("click", () => {
-    toggleTeiaDosPovosFilter();
-    refreshVisibility();
+    if (!state.filterTeiaDosPovos) {
+      setTeiaDosPovosFilter(true);
+      refreshVisibility();
+      goTeiaDosPovos();
+    } else {
+      toggleTeiaDosPovosFilter();
+      refreshVisibility();
+    }
   });
   refreshVisibility();
 }

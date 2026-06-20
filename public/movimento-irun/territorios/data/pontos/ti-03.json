@@ -77,7 +77,10 @@
             "titulo": "Ponto de Cultura de Guiné",
             "texto": "Entidade sem fins lucrativos certificada pela Secretaria Estadual de Cultura (Política Nacional Cultura Viva). Promove arte, cultura, educação e sustentabilidade por meio de oficinas e projetos para crianças, jovens e adultos da Vila de Guiné, Mucugê.",
             "links": [
-              { "titulo": "Rede Cultura Viva de Mucugê", "href": "https://mucuge.chapada.ba/acomunitariaguinegmail-com/" }
+              {
+                "titulo": "Rede Cultura Viva de Mucugê",
+                "href": "https://mucuge.chapada.ba/acomunitariaguinegmail-com/"
+              }
             ]
           }
         ]
@@ -97,7 +100,7 @@
     },
     {
       "id": "povoado-quilombo-da-barriguda",
-      "nome": "Povoado Quilombo da Barriguda",
+      "nome": "Quilombo da Barriguda",
       "coords": [
         -12.708641,
         -41.5733648
@@ -106,6 +109,7 @@
         "quilombos",
         "turismo"
       ],
+      "resumo": "Povoado quilombola na região de Guiné, Chapada Diamantina (Mucugê) — mapeamento participativo",
       "links": [
         "https://www.youtube.com/watch?v=Dy_jp8KOMPc",
         "https://www.youtube.com/watch?v=bt1mTbBoJAE"
@@ -117,12 +121,16 @@
             "titulo": "Quilombo da Barriguda",
             "texto": "Povoado quilombola na região de Guiné, Chapada Diamantina. Vídeos do mapeamento participativo (Google My Maps).",
             "links": [
-              { "titulo": "youtube.com/watch", "href": "https://www.youtube.com/watch?v=Dy_jp8KOMPc" }
+              {
+                "titulo": "youtube.com/watch",
+                "href": "https://www.youtube.com/watch?v=Dy_jp8KOMPc"
+              }
             ],
             "video": {
               "tipo": "youtube",
               "id": "Dy_jp8KOMPc",
-              "legenda": "Quilombo da Barriguda — vídeo 1"
+              "legenda": "Quilombo da Barriguda — vídeo 1",
+              "embed": false
             }
           },
           {
@@ -130,7 +138,8 @@
             "video": {
               "tipo": "youtube",
               "id": "bt1mTbBoJAE",
-              "legenda": "Quilombo da Barriguda — vídeo 2"
+              "legenda": "Quilombo da Barriguda — vídeo 2",
+              "embed": false
             }
           }
         ]

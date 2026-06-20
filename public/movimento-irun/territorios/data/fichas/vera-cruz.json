@@ -6,7 +6,10 @@
   "rede": true,
   "meta": {
     "nome": "Vera Cruz",
-    "coords": [-13.0229254, -38.7158702],
+    "coords": [
+      -13.0229254,
+      -38.7158702
+    ],
     "municipio": "Vera Cruz",
     "uf": "BA",
     "fonte": "Movimento Irun — cartografia REDE",
@@ -17,15 +20,39 @@
   "sidebar": {
     "apresentacao": "Vera Cruz situa-se na ilha de Itaparica, na Baía de Todos os Santos, e concentra referências quilombolas como Tereré e Maragojipinho. Na REDE, articula turismo comunitário, memória viva e projetos como Vamos Navegar.",
     "projetos": [
-      { "titulo": "Quilombo do Tereré", "fichaId": "terere" },
-      { "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho", "pontoId": "museu-de-memoria-viva-dos-quilombos-do-terere-e-" },
-      { "titulo": "Vamos Navegar", "fichaId": "vamos-navegar" },
-      { "titulo": "Roteiro Contra Costa", "roteiroId": "contra-costa" }
+      {
+        "titulo": "Quilombo do Tereré",
+        "fichaId": "terere"
+      },
+      {
+        "titulo": "Museu de Memória Viva dos Quilombos do Tereré e Maragojipinho",
+        "pontoId": "museu-memoria-viva-terere"
+      },
+      {
+        "titulo": "Vamos Navegar",
+        "fichaId": "vamos-navegar"
+      },
+      {
+        "titulo": "Roteiro Contra Costa",
+        "roteiroId": "contra-costa"
+      }
     ],
     "identidade": [
-      { "id": "historia", "titulo": "História e memória", "conteudo": "Território de quilombos históricos e comunidades pesqueiras na baía." },
-      { "id": "comunidade", "titulo": "Comunidade", "conteudo": "Articulação entre município, quilombos vizinhos e projetos culturais na costa." },
-      { "id": "turismo", "titulo": "Turismo", "conteudo": "Portal para o Quilombo do Tereré e roteiros intermunicipais com Itaparica." }
+      {
+        "id": "historia",
+        "titulo": "História e memória",
+        "conteudo": "Território de quilombos históricos e comunidades pesqueiras na baía."
+      },
+      {
+        "id": "comunidade",
+        "titulo": "Comunidade",
+        "conteudo": "Articulação entre município, quilombos vizinhos e projetos culturais na costa."
+      },
+      {
+        "id": "turismo",
+        "titulo": "Turismo",
+        "conteudo": "Portal para o Quilombo do Tereré e roteiros intermunicipais com Itaparica."
+      }
     ],
     "roteiros": [
       {
@@ -36,8 +63,18 @@
     ],
     "fotos": [],
     "videos": [
-      { "tipo": "youtube", "id": "Hd4UjhzXJy4", "titulo": "Projeto Vamos Navegar" },
-      { "tipo": "youtube", "id": "gviO8E3jJfo", "titulo": "Roteiro Contra Costa — Ilha de Itaparica" }
+      {
+        "tipo": "youtube",
+        "id": "Hd4UjhzXJy4",
+        "titulo": "Projeto Vamos Navegar",
+        "embed": false
+      },
+      {
+        "tipo": "youtube",
+        "id": "gviO8E3jJfo",
+        "titulo": "Roteiro Contra Costa — Ilha de Itaparica",
+        "embed": false
+      }
     ],
     "links": []
   }

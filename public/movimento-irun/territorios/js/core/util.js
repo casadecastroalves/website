@@ -65,10 +65,19 @@ export function matchSearch(haystack, query) {
   });
 }
 
-export async function fetchJSON(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Falha ao carregar ${url} (${res.status})`);
-  return res.json();
+export async function fetchJSON(url, { timeoutMs = 45000 } = {}) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, { signal: ctrl.signal });
+    if (!res.ok) throw new Error(`Falha ao carregar ${url} (${res.status})`);
+    return res.json();
+  } catch (err) {
+    if (err?.name === "AbortError") throw new Error(`Tempo esgotado ao carregar ${url}`);
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 export function debounce(fn, ms = 120) {

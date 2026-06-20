@@ -6,7 +6,10 @@
   "rede": true,
   "meta": {
     "nome": "Comunidade Terreiro Caxuté",
-    "coords": [-13.4146908, -39.0809139],
+    "coords": [
+      -13.4146908,
+      -39.0809139
+    ],
     "municipio": "Valença",
     "uf": "BA",
     "fonte": "Movimento Irun — cartografia REDE",
@@ -73,7 +76,12 @@
     ],
     "fotos": [],
     "videos": [
-      { "tipo": "youtube", "id": "A7WJNnO3gQE", "titulo": "Comunidade Terreiro Caxuté" }
+      {
+        "tipo": "youtube",
+        "id": "A7WJNnO3gQE",
+        "titulo": "Comunidade Terreiro Caxuté",
+        "embed": false
+      }
     ],
     "redes": [
       {
@@ -90,7 +98,9 @@
     ],
     "contato": {
       "organizacao": "ACULTEMA — Comunidade Terreiro Caxuté",
-      "gestores": ["Mam'etu Kafurengá (Mãe Bárbara de Cajaíba)"],
+      "gestores": [
+        "Mam'etu Kafurengá (Mãe Bárbara de Cajaíba)"
+      ],
       "endereco": "Rua da Graciosa, Valença — BA (terreiro desde 2000) · Cajaíba, Maricoabo",
       "maps": "https://www.google.com/maps/search/?api=1&query=Comunidade+Terreiro+Caxut%C3%A9,+Valen%C3%A7a,+BA"
     }

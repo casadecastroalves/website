@@ -7,7 +7,10 @@
   "pontoCultura": true,
   "meta": {
     "nome": "Casa de Castro Alves",
-    "coords": [-12.969721, -38.5082396],
+    "coords": [
+      -12.969721,
+      -38.5082396
+    ],
     "municipio": "Salvador",
     "uf": "BA",
     "fonte": "Movimento Irun — cartografia REDE",
@@ -39,52 +42,62 @@
       {
         "tipo": "youtube",
         "id": "GcVCVR7_7A4",
-        "titulo": "Movimento Irun — 8ª Edição: Show Yaya Muxima"
+        "titulo": "Movimento Irun — 8ª Edição: Show Yaya Muxima",
+        "embed": false
       },
       {
         "tipo": "youtube",
         "id": "z2eHDjU_oUw",
-        "titulo": "Movimento Irun — 7ª Edição (25 de Janeiro)"
+        "titulo": "Movimento Irun — 7ª Edição (25 de Janeiro)",
+        "embed": false
       },
       {
         "tipo": "youtube",
         "id": "vKX18JHBm4E",
-        "titulo": "Cabuloso Trio — Movimento Irun 6ª Edição"
+        "titulo": "Cabuloso Trio — Movimento Irun 6ª Edição",
+        "embed": false
       },
       {
         "tipo": "youtube",
         "id": "RNx5kS9YRwA",
-        "titulo": "Movimento Irun — 6ª Edição (21 de Dezembro)"
+        "titulo": "Movimento Irun — 6ª Edição (21 de Dezembro)",
+        "embed": false
       },
       {
         "tipo": "youtube",
         "id": "v_1ItcV1JNE",
-        "titulo": "Movimento Irun — 5ª Edição (16 de Novembro)"
+        "titulo": "Movimento Irun — 5ª Edição (16 de Novembro)",
+        "embed": false
       },
       {
         "tipo": "youtube",
         "id": "Sywh0BGRFCo",
-        "titulo": "Movimento Irun — 4ª Edição (26 de Outubro)"
+        "titulo": "Movimento Irun — 4ª Edição (26 de Outubro)",
+        "embed": false
       },
       {
         "tipo": "youtube",
         "id": "8xsNSgMrAvw",
-        "titulo": "Movimento Irun — 3ª Edição (28 de Setembro)"
+        "titulo": "Movimento Irun — 3ª Edição (28 de Setembro)",
+        "embed": false
       },
       {
         "tipo": "youtube",
         "id": "3g1t911jlA0",
-        "titulo": "Movimento Irun — 2ª Edição (17 de Agosto)"
+        "titulo": "Movimento Irun — 2ª Edição (17 de Agosto)",
+        "embed": false
       },
       {
         "tipo": "youtube",
         "id": "s9w44W419Co",
-        "titulo": "Movimento Irun — Institucional (Edição I)"
+        "titulo": "Movimento Irun — Institucional (Edição I)",
+        "embed": false
       },
       {
         "tipo": "youtube",
         "id": "WLejQZfEbdQ",
-        "titulo": "Movimento Irun — 9ª Edição: Show Mariella Santiago & Ícaro Santiago"
+        "titulo": "Movimento Irun — 9ª Edição: Show Mariella Santiago & Ícaro Santiago",
+        "embed": false
       }
     ],
     "contato": {

@@ -1,11 +1,11 @@
-import { state, countRede, fichaById, tiById, fichasDoMunicipio, setSelected, setPontoCulturaFilter, setTeiaDosPovosFilter, clearAllFilters } from "./core/state.js";
+import { state, countRede, fichaById, tiById, fichasDoMunicipio, setSelected, setPontoCulturaFilter, setTeiaDosPovosFilter, clearAllFilters, selectAllFilters, TEIA_HUB_ID } from "./core/state.js";
 import { loadAll } from "./core/store.js";
 import { initRouter, parseRoute, goTerritorio, goFicha, goHome } from "./core/router.js";
 import {
   initMap, getMap, setBaseMode, highlightTi, resetView, fitFichas,
   refreshTiStyles, loadRedeLayers, loadRoteiros,
 } from "./map/map.js";
-import { buildMarkers, setSelectedFicha, focusFicha, refreshVisibility, buildLegend, fitPontosCultura, fitTeiaDosPovos } from "./map/markers.js";
+import { buildMarkers, setSelectedFicha, focusFicha, refreshVisibility, buildLegend, fitPontosCultura, showTeiaOnMap } from "./map/markers.js";
 import { renderSidebar, initSidebarKeyboard, openRedePanel } from "./ui/sidebar.js";
 import { initSearch } from "./ui/search.js";
 import { initShare } from "./ui/share.js";
@@ -24,11 +24,16 @@ function updateRedeBadge() {
   if (el) el.textContent = `REDE ${countRede()}/${state.config.rede?.meta || state.territorios.length}`;
 }
 
+function applyDefaultFilters() {
+  if (/[?&]f=/.test(window.location.hash)) return;
+  if (isMobile()) selectAllFilters();
+}
+
 function initBrandHome() {
-  // Voltar ao início = mapa vazio (legenda Nenhum) + vista da Bahia.
   const go = () => {
     getMap()?.closePopup();
-    clearAllFilters();
+    if (isMobile()) selectAllFilters();
+    else clearAllFilters();
     refreshVisibility();
     goHome();
     openForContext();
@@ -84,25 +89,52 @@ function initExternalLinks() {
   }, true);
 }
 
+function exitTeiaMode() {
+  setTeiaDosPovosFilter(false);
+  getMap()?.closePopup();
+  refreshVisibility();
+}
+
+function activateTeiaHub() {
+  state.filters = new Set();
+  state.filterPontoCultura = false;
+  state.filterSomenteRoteiro = false;
+  setTeiaDosPovosFilter(true);
+  refreshVisibility();
+  setSelectedFicha(TEIA_HUB_ID);
+  getMap()?.closePopup();
+  showTeiaOnMap();
+  openForContext();
+}
+
 function handleRoute(route) {
   setSelected({ tiId: route.tiId, fichaId: route.fichaId, municipio: route.municipio });
-  renderSidebar(route);
+  const sidebarRoute = (route.view === "ficha" && route.fichaId === TEIA_HUB_ID)
+    ? { view: "teia-dos-povos", tiId: null, fichaId: null, municipio: null }
+    : route;
+  renderSidebar(sidebarRoute);
 
-  if (route.view === "ficha" && route.fichaId) {
+  if (route.view === "ficha" && route.fichaId === TEIA_HUB_ID) {
+    activateTeiaHub();
+  } else if (route.view === "ficha" && route.fichaId) {
+    getMap()?.closePopup();
     const ficha = fichaById(route.fichaId);
     if (route.tiId) highlightTi(route.tiId);
     setSelectedFicha(route.fichaId);
     if (ficha) focusFicha(ficha);
     openForContext();
   } else if (route.view === "ti" && route.tiId) {
+    exitTeiaMode();
     highlightTi(route.tiId);
     setSelectedFicha(null);
     openForContext();
   } else if (route.view === "municipio" && route.municipio) {
+    exitTeiaMode();
     setSelectedFicha(null);
     fitFichas(fichasDoMunicipio(route.municipio));
     openForContext();
   } else if (route.view === "pontos-cultura") {
+    exitTeiaMode();
     setSelectedFicha(null);
     setPontoCulturaFilter(true);
     refreshVisibility();
@@ -110,12 +142,7 @@ function handleRoute(route) {
     setTimeout(() => fitPontosCultura(), 320);
     openForContext();
   } else if (route.view === "teia-dos-povos") {
-    setSelectedFicha(null);
-    setTeiaDosPovosFilter(true);
-    refreshVisibility();
-    resetView();
-    setTimeout(() => fitTeiaDosPovos(), 320);
-    openForContext();
+    activateTeiaHub();
   } else {
     setSelectedFicha(null);
     if (state.filterPontoCultura) {
@@ -123,8 +150,9 @@ function handleRoute(route) {
       refreshVisibility();
     }
     if (state.filterTeiaDosPovos) {
-      setTeiaDosPovosFilter(false);
-      refreshVisibility();
+      exitTeiaMode();
+    } else {
+      getMap()?.closePopup();
     }
     resetView();
   }
@@ -134,16 +162,28 @@ function handleRoute(route) {
   updateRedeBadge();
 }
 
+function setBootStatus(html) {
+  const el = document.getElementById("sidebar-content");
+  if (el) el.innerHTML = html;
+}
+
+function setBootReady() {
+  document.body.classList.remove("map-booting");
+}
+
 async function main() {
+  document.body.classList.add("map-booting");
+  setBootStatus(`<p class="lead map-boot-msg">A carregar mapa…</p>`);
   applyThemeAttr();
+
   await loadAll();
+  applyDefaultFilters();
   setChrome();
 
   initShell();
   initLightbox();
 
   initMap("map", { onTiClick: (id) => goTerritorio(id) });
-  await Promise.all([loadRedeLayers(), loadRoteiros()]);
   buildMarkers({});
   buildLegend(document.getElementById("map-legend"));
 
@@ -158,11 +198,20 @@ async function main() {
   initPopupLinks();
 
   initRouter(handleRoute);
+  setBootReady();
   setTimeout(() => getMap()?.invalidateSize(), 100);
+
+  /* Camadas REDE/roteiro em segundo plano — não bloqueiam legenda nem sidebar. */
+  Promise.all([loadRedeLayers(), loadRoteiros()])
+    .then(() => {
+      refreshVisibility();
+      refreshTiStyles();
+    })
+    .catch((err) => console.warn("Camadas REDE/roteiro:", err));
 }
 
 main().catch((err) => {
   console.error(err);
-  const el = document.getElementById("sidebar-content");
-  if (el) el.innerHTML = `<p class="lead">Erro ao carregar o mapa. Verifique se está a usar um servidor HTTP (não abra via file://) e recarregue.</p>`;
+  setBootReady();
+  setBootStatus(`<p class="lead">Erro ao carregar o mapa: ${err?.message || err}. Recarregue a página (Ctrl+Shift+R). Se persistir, verifique a ligação à internet.</p>`);
 });

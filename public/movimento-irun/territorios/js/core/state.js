@@ -109,6 +109,8 @@ export function setTeiaDosPovosFilter(on) {
   notify();
 }
 
+export const TEIA_HUB_ID = "assentamento-terra-vista";
+
 export function isTeiaDosPovos(ponto, ficha = null) {
   if (ponto?.teiaDosPovos) return true;
   const fid = ponto?.fichaId || ponto?.entidadeId;
@@ -116,33 +118,55 @@ export function isTeiaDosPovos(ponto, ficha = null) {
   return !!f?.teiaDosPovos;
 }
 
+function teiaPinRank(p, f) {
+  if (p.popup?.slides?.length) return 0;
+  if (f && slugify(p.nome) === slugify(f.meta?.nome || "")) return 1;
+  if (p.categorias?.includes("quilombos")) return 2;
+  if (p.categorias?.includes("instituicoes")) return 3;
+  return 4;
+}
+
+function teiaItemFromPin(p, fid) {
+  const f = fid ? fichaById(fid) : null;
+  const ti = tiById(p.territorioId);
+  return {
+    pontoId: p.id,
+    fichaId: fid,
+    nome: f?.meta?.nome || p.nome,
+    municipio: f?.meta?.municipio || "",
+    tiId: p.territorioId,
+    tiNome: ti?.nome || "",
+  };
+}
+
+/** Lugares da nossa rede na Teia (uma entrada por entidade; exclui a sede Terra Vista). */
 export function listTeiaDosPovos() {
   const items = [];
-  const seen = new Set();
+  const byEntity = new Map();
 
   for (const p of state.pontos) {
     if (!isTeiaDosPovos(p)) continue;
     const fid = p.fichaId || p.entidadeId || null;
-    const f = fid ? fichaById(fid) : null;
-    const ti = tiById(p.territorioId);
-    items.push({
-      pontoId: p.id,
-      fichaId: fid,
-      nome: f?.meta?.nome || p.nome,
-      municipio: f?.meta?.municipio || "",
-      tiId: p.territorioId,
-      tiNome: ti?.nome || "",
-    });
-    seen.add(p.id);
+    if (fid === TEIA_HUB_ID) continue;
+    if (fid) {
+      const f = fichaById(fid);
+      const cur = byEntity.get(fid);
+      if (!cur || teiaPinRank(p, f) < teiaPinRank(cur, f)) byEntity.set(fid, p);
+      continue;
+    }
+    items.push(teiaItemFromPin(p, null));
   }
 
+  for (const [fid, p] of byEntity) items.push(teiaItemFromPin(p, fid));
+
   for (const f of state.fichas) {
-    if (!f.teiaDosPovos || !f.meta?.coords) continue;
+    if (!f.teiaDosPovos || f.id === TEIA_HUB_ID || !f.meta?.coords) continue;
+    if (byEntity.has(f.id)) continue;
     const pin = state.pontos.find((p) => (p.fichaId || p.entidadeId) === f.id);
-    if (pin && seen.has(pin.id)) continue;
+    if (pin) continue;
     const ti = tiById(f.territorioId);
     items.push({
-      pontoId: pin?.id || null,
+      pontoId: null,
       fichaId: f.id,
       nome: f.meta?.nome || f.id,
       municipio: f.meta?.municipio || "",

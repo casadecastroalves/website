@@ -6,7 +6,10 @@
   "rede": true,
   "meta": {
     "nome": "Saubara",
-    "coords": [-12.7411, -38.7672],
+    "coords": [
+      -12.7411,
+      -38.7672
+    ],
     "municipio": "Saubara",
     "uf": "BA",
     "fonte": "Movimento Irun — cartografia REDE",
@@ -78,9 +81,24 @@
     ],
     "fotos": [],
     "videos": [
-      { "tipo": "youtube", "id": "QsCTyB8e21s", "titulo": "Rendeiras de Saubara — Renda de Bilro" },
-      { "tipo": "youtube", "id": "Mb-IBAQtyuY", "titulo": "Rendeiras de Saubara — Cantos de Trabalho" },
-      { "tipo": "youtube", "id": "U5Ngh6hGOr4", "titulo": "Rendeiras de Saubara — Tradição e Memória" }
+      {
+        "tipo": "youtube",
+        "id": "QsCTyB8e21s",
+        "titulo": "Rendeiras de Saubara — Renda de Bilro",
+        "embed": false
+      },
+      {
+        "tipo": "youtube",
+        "id": "Mb-IBAQtyuY",
+        "titulo": "Rendeiras de Saubara — Cantos de Trabalho",
+        "embed": false
+      },
+      {
+        "tipo": "youtube",
+        "id": "U5Ngh6hGOr4",
+        "titulo": "Rendeiras de Saubara — Tradição e Memória",
+        "embed": false
+      }
     ],
     "redes": [
       {
