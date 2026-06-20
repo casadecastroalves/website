@@ -258,6 +258,17 @@ export function getRoteiroParadas(id) {
   return roteiroParadasById[id] || [];
 }
 
+/** Roteiro Contra Costa: visível só em "Nenhum" ou com filtro Turismo activo. */
+export function refreshRoteiroVisibility() {
+  if (!map || !roteirosGroup) return;
+  const show = state.filterSomenteRoteiro || state.filters.has("turismo");
+  if (show) {
+    if (!map.hasLayer(roteirosGroup)) roteirosGroup.addTo(map);
+  } else {
+    map.removeLayer(roteirosGroup);
+  }
+}
+
 export function getMap() {
   return map;
 }

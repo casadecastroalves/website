@@ -1,5 +1,5 @@
 import { state, toggleFilter, togglePontoCulturaFilter, toggleTeiaDosPovosFilter, isPontoCultura, isTeiaDosPovos, clearAllFilters, selectAllFilters } from "../core/state.js";
-import { getMap, focusRoteiro } from "./map.js";
+import { getMap, focusRoteiro, refreshRoteiroVisibility } from "./map.js";
 import { popupHtml, popupOptions, initRichPopup } from "./popup.js";
 
 const TIPO_CAT = {
@@ -177,6 +177,7 @@ export function refreshVisibility() {
       el.style.pointerEvents = visible ? "" : "none";
     }
   });
+  refreshRoteiroVisibility();
 }
 
 export function setSelectedFicha(fichaId) {
