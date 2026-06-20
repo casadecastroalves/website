@@ -37,7 +37,11 @@ export async function loadAll() {
   }
   state.pontos = pins;
 
-  state.filters = new Set(Object.keys(config.categorias || {}));
+  /* Mapa vazio por defeito — utilizador escolhe na legenda (Todos / categorias). */
+  state.filters = new Set();
+  state.filterPontoCultura = false;
+  state.filterTeiaDosPovos = false;
+  state.filterSomenteRoteiro = true;
 
   mergeMidia(midia);
   markRede();

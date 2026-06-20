@@ -8,6 +8,7 @@ export function parseRoute() {
   const f = new URLSearchParams(query || "").get("f");
   if ((query || "").includes("f=")) {
     state.filters = new Set((f || "").split(",").filter(Boolean));
+    state.filterSomenteRoteiro = state.filters.size === 0;
   }
 
   if (!parts.length) return { view: "home", tiId: null, fichaId: null, municipio: null };

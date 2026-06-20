@@ -1,4 +1,4 @@
-import { state, countRede, fichaById, tiById, fichasDoMunicipio, setSelected, setPontoCulturaFilter, setTeiaDosPovosFilter, selectAllFilters } from "./core/state.js";
+import { state, countRede, fichaById, tiById, fichasDoMunicipio, setSelected, setPontoCulturaFilter, setTeiaDosPovosFilter, clearAllFilters } from "./core/state.js";
 import { loadAll } from "./core/store.js";
 import { initRouter, parseRoute, goTerritorio, goFicha, goHome } from "./core/router.js";
 import {
@@ -24,23 +24,11 @@ function updateRedeBadge() {
   if (el) el.textContent = `REDE ${countRede()}/${state.config.rede?.meta || state.territorios.length}`;
 }
 
-function hashHasFilterParam() {
-  const raw = window.location.hash.replace(/^#\/?/, "");
-  return raw.includes("f=");
-}
-
-/** Sem ?f= na URL e sem filtros activos → mostrar tudo (estado inicial). */
-function ensureDefaultFilters() {
-  if (hashHasFilterParam() || state.filterSomenteRoteiro) return;
-  const hasAny = state.filters.size || state.filterPontoCultura || state.filterTeiaDosPovos;
-  if (!hasAny) selectAllFilters();
-}
-
 function initBrandHome() {
-  // Voltar ao início = reset limpo: fecha popup, repõe filtros e volta ao mapa da Bahia.
+  // Voltar ao início = mapa vazio (legenda Nenhum) + vista da Bahia.
   const go = () => {
     getMap()?.closePopup();
-    selectAllFilters();
+    clearAllFilters();
     refreshVisibility();
     goHome();
     openForContext();
@@ -141,7 +129,6 @@ function handleRoute(route) {
     resetView();
   }
 
-  ensureDefaultFilters();
   refreshVisibility();
   refreshTiStyles();
   updateRedeBadge();
