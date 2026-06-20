@@ -1,4 +1,5 @@
 import { state, toggleFilter, togglePontoCulturaFilter, toggleTeiaDosPovosFilter, isPontoCultura, isTeiaDosPovos, clearAllFilters, selectAllFilters } from "../core/state.js";
+import { goHome, syncHash } from "../core/router.js";
 import { getMap, refreshRoteiroVisibility } from "./map.js";
 import { popupHtml, popupOptions, initRichPopup } from "./popup.js";
 
@@ -268,10 +269,12 @@ export function buildLegend(container) {
   document.getElementById("btn-filter-none")?.addEventListener("click", () => {
     clearAllFilters();
     refreshVisibility();
+    goHome();
   });
   document.getElementById("btn-filter-all")?.addEventListener("click", () => {
     selectAllFilters();
     refreshVisibility();
+    syncHash();
   });
   const btnPC = container.querySelector("#btn-pc-filter");
   btnPC?.addEventListener("click", () => {

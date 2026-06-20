@@ -633,11 +633,13 @@ function bindEvents(el, route) {
   el.querySelector("[data-filter-none]")?.addEventListener("click", () => {
     clearAllFilters();
     refreshVisibility();
+    goHome();
     renderSidebar(route);
   });
   el.querySelector("[data-filter-all]")?.addEventListener("click", () => {
     selectAllFilters();
     refreshVisibility();
+    syncHash();
     renderSidebar(route);
   });
 
