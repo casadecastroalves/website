@@ -633,7 +633,6 @@ function bindEvents(el, route) {
   el.querySelector("[data-filter-none]")?.addEventListener("click", () => {
     clearAllFilters();
     refreshVisibility();
-    focusRoteiro("contra-costa");
     renderSidebar(route);
   });
   el.querySelector("[data-filter-all]")?.addEventListener("click", () => {

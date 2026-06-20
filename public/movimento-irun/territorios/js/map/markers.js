@@ -1,5 +1,5 @@
 import { state, toggleFilter, togglePontoCulturaFilter, toggleTeiaDosPovosFilter, isPontoCultura, isTeiaDosPovos, clearAllFilters, selectAllFilters } from "../core/state.js";
-import { getMap, focusRoteiro, refreshRoteiroVisibility } from "./map.js";
+import { getMap, refreshRoteiroVisibility } from "./map.js";
 import { popupHtml, popupOptions, initRichPopup } from "./popup.js";
 
 const TIPO_CAT = {
@@ -254,7 +254,7 @@ export function buildLegend(container) {
       </button>
     </div>
     <div class="legend-actions">
-      <button type="button" class="legend-action" id="btn-filter-none" title="Ocultar todos os pins">Nenhum</button>
+      <button type="button" class="legend-action" id="btn-filter-none" title="Ocultar tudo no mapa">Nenhum</button>
       <button type="button" class="legend-action" id="btn-filter-all" title="Mostrar todos os pins">Todos</button>
     </div>`;
   const head = container.querySelector(".legend-head");
@@ -268,7 +268,6 @@ export function buildLegend(container) {
   document.getElementById("btn-filter-none")?.addEventListener("click", () => {
     clearAllFilters();
     refreshVisibility();
-    focusRoteiro("contra-costa");
   });
   document.getElementById("btn-filter-all")?.addEventListener("click", () => {
     selectAllFilters();
