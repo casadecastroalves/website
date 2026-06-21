@@ -1,7 +1,4 @@
-import JSZip from "https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm";
-
-const EXPORT_EMAIL = "casadecastroalves@gmail.com";
-const PHOTO_MAX = 10;
+const EXPORT_EMAIL = "casadecastroalves@gmail.com";const PHOTO_MAX = 10;
 const PHOTO_BYTES = 2 * 1024 * 1024;
 /** Fotos + PDF no ZIP — margem segura para anexo Gmail (~25 MB). */
 const ATTACH_MAX = 18 * 1024 * 1024;
@@ -85,7 +82,7 @@ function updateAttachBudget(photos, pdf, ok) {
   el.className = `attach-budget${state ? ` ${state}` : ""}`;
   el.innerHTML = `
     <div class="attach-budget-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${ATTACH_MAX}" aria-valuenow="${used}" aria-label="Espaço usado nos anexos">
-      <span style="width:${pct}%"></span>
+      <span style="width:${Math.max(pct, used > 0 ? 4 : 2)}%"></span>
     </div>
     <p class="attach-budget-text">
       <strong>${pct}%</strong> · Anexos: <strong>${fmtBytes(used)}</strong> / ${fmtBytes(ATTACH_MAX)}
@@ -220,6 +217,11 @@ function buildSubmission() {
   return { slug, data };
 }
 
+async function loadJSZip() {
+  const mod = await import("https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm");
+  return mod.default;
+}
+
 async function exportZip() {
   $("err").textContent = "";
 
@@ -229,6 +231,7 @@ async function exportZip() {
   }
 
   const { slug, data } = buildSubmission();
+  const JSZip = await loadJSZip();
   const zip = new JSZip();
 
   mediaCheck.files.forEach((file, i) => {
@@ -281,13 +284,13 @@ async function exportZip() {
 
 function bindPreview() {
   const refresh = () => validateMedia();
-  $("fotos").addEventListener("change", refresh);
-  $("pdf").addEventListener("change", refresh);
+  $("fotos")?.addEventListener("change", refresh);
+  $("pdf")?.addEventListener("change", refresh);
   refresh();
 }
 
 function bindExport() {
-  $("btn-export").addEventListener("click", async () => {
+  $("btn-export")?.addEventListener("click", async () => {
     $("btn-export").disabled = true;
     try {
       const filename = await exportZip();

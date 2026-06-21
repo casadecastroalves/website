@@ -119,11 +119,12 @@ textarea { min-height: 96px; resize: vertical; }
   background: #fafafa;
 }
 .attach-budget-bar {
-  height: 10px;
-  background: var(--border);
+  height: 12px;
+  background: #d8dbe0;
   border-radius: 999px;
   overflow: hidden;
   margin-bottom: 8px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
 }
 .attach-budget-bar span {
   display: block;
@@ -131,7 +132,7 @@ textarea { min-height: 96px; resize: vertical; }
   background: var(--yellow);
   border-radius: 999px;
   transition: width 0.25s ease;
-  min-width: 0;
+  min-width: 2%;
 }
 .attach-budget.warn .attach-budget-bar span { background: #b8860b; }
 .attach-budget.bad .attach-budget-bar span { background: var(--err); }

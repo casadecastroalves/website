@@ -6,7 +6,7 @@
   <title>Propor um lugar — Mapa Movimento Irun</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="admin.css">
+  <link rel="stylesheet" href="admin.css?v=20250626">
 </head>
 <body>
   <div class="wrap">
@@ -86,7 +86,12 @@
       <section>
         <h2>Mídia</h2>
         <p class="media-limit">Limite de <strong>18 MB</strong> em anexos (fotos + PDF juntos) — margem segura para envio por email.</p>
-        <div id="attach-budget" class="attach-budget" aria-live="polite"></div>
+        <div id="attach-budget" class="attach-budget" aria-live="polite">
+          <div class="attach-budget-bar" role="progressbar" aria-valuemin="0" aria-valuemax="18874368" aria-valuenow="0" aria-label="Espaço usado nos anexos">
+            <span style="width:0%"></span>
+          </div>
+          <p class="attach-budget-text"><strong>0%</strong> · Anexos: <strong>0 B</strong> / 18,0 MB</p>
+        </div>
 
         <label for="video">Link YouTube <span class="hint">(opcional — vídeo no popup do pin; não conta no limite)</span></label>
         <input id="video" type="url" placeholder="https://www.youtube.com/watch?v=…">
@@ -142,6 +147,6 @@
     </div>
   </div>
 
-  <script type="module" src="admin.js"></script>
+  <script type="module" src="admin.js?v=20250626"></script>
 </body>
 </html>
