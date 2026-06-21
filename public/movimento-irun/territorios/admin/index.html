@@ -18,8 +18,8 @@
       <strong>Como funciona</strong>
       <ol>
         <li>Preencha o formulário (coordenadas, categorias, fotos, vídeo…)</li>
-        <li>Clique em <strong>Exportar ZIP</strong> — descarrega um pacote com JSON + ficheiros</li>
-        <li>Envie por email para <strong>casadecastroalves@gmail.com</strong> (anexe o ZIP)</li>
+        <li>Clique em <strong>Exportar ZIP</strong> — descarrega JSON + fotos/PDF (máx. <strong>18 MB</strong> no total)</li>
+        <li>Envie por email para <strong>casadecastroalves@gmail.com</strong> (anexe o ZIP — limite Gmail ~25 MB)</li>
         <li>Após validação editorial, publicamos no mapa</li>
       </ol>
     </div>
@@ -85,14 +85,17 @@
 
       <section>
         <h2>Mídia</h2>
-        <label for="video">Link YouTube <span class="hint">(opcional — vídeo no popup do pin)</span></label>
+        <p class="media-limit">Limite de <strong>18 MB</strong> em anexos (fotos + PDF juntos) — margem segura para envio por email.</p>
+        <div id="attach-budget" class="attach-budget" aria-live="polite"></div>
+
+        <label for="video">Link YouTube <span class="hint">(opcional — vídeo no popup do pin; não conta no limite)</span></label>
         <input id="video" type="url" placeholder="https://www.youtube.com/watch?v=…">
 
         <label for="fotos">Fotos <span class="hint">(até 10 imagens, máx. 2 MB cada — JPG, PNG ou WebP)</span></label>
         <input id="fotos" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
         <ul id="fotos-list" class="file-list"></ul>
 
-        <label for="pdf">PDF / portfólio <span class="hint">(opcional, máx. 12 MB)</span></label>
+        <label for="pdf">PDF / portfólio <span class="hint">(opcional — partilha o limite de 18 MB com as fotos)</span></label>
         <input id="pdf" type="file" accept="application/pdf,.pdf">
         <ul id="pdf-list" class="file-list"></ul>
       </section>

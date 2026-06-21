@@ -3,7 +3,8 @@ import JSZip from "https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm";
 const EXPORT_EMAIL = "casadecastroalves@gmail.com";
 const PHOTO_MAX = 10;
 const PHOTO_BYTES = 2 * 1024 * 1024;
-const PDF_BYTES = 12 * 1024 * 1024;
+/** Fotos + PDF no ZIP — margem segura para anexo Gmail (~25 MB). */
+const ATTACH_MAX = 18 * 1024 * 1024;
 
 const $ = (id) => document.getElementById(id);
 
@@ -68,32 +69,72 @@ function readPdf() {
   return f || null;
 }
 
-function validatePhotos(files) {
-  const list = $("fotos-list");
-  list.innerHTML = "";
-  if (!files.length) return { ok: true, files: [] };
-
-  if (files.length > PHOTO_MAX) {
-    list.innerHTML = `<li class="bad">Máximo ${PHOTO_MAX} imagens.</li>`;
-    return { ok: false, files: [] };
-  }
-
-  let ok = true;
-  for (const f of files) {
-    const good = f.size <= PHOTO_BYTES && /^image\//.test(f.type);
-    if (!good) ok = false;
-    list.innerHTML += `<li class="${good ? "ok" : "bad"}">${f.name} — ${fmtBytes(f.size)}${good ? "" : " (máx. 2 MB, só imagem)"}</li>`;
-  }
-  return { ok, files: ok ? files : [] };
+function attachmentBytes(photos, pdf) {
+  const photoTotal = photos.reduce((n, f) => n + f.size, 0);
+  return photoTotal + (pdf?.size || 0);
 }
 
-function validatePdf(file) {
-  const list = $("pdf-list");
+function updateAttachBudget(photos, pdf, ok) {
+  const el = $("attach-budget");
+  if (!el) return;
+  const used = attachmentBytes(photos, pdf);
+  const pct = Math.min(100, Math.round((used / ATTACH_MAX) * 100));
+  const over = used > ATTACH_MAX;
+  const warn = !over && used > ATTACH_MAX * 0.85;
+  const state = over || (!ok && used > 0) ? "bad" : warn ? "warn" : "";
+  el.className = `attach-budget${state ? ` ${state}` : ""}`;
+  el.innerHTML = `
+    <div class="attach-budget-bar" role="progressbar" aria-valuemin="0" aria-valuemax="${ATTACH_MAX}" aria-valuenow="${used}" aria-label="Espaço usado nos anexos">
+      <span style="width:${pct}%"></span>
+    </div>
+    <p class="attach-budget-text">
+      <strong>${pct}%</strong> · Anexos: <strong>${fmtBytes(used)}</strong> / ${fmtBytes(ATTACH_MAX)}
+      ${over ? " — reduza fotos ou PDF" : warn ? " — perto do limite" : ""}
+    </p>`;
+}
+
+function validateMedia() {
+  const photos = readPhotos();
+  const pdf = readPdf();
+  const list = $("fotos-list");
+  const pdfList = $("pdf-list");
   list.innerHTML = "";
-  if (!file) return { ok: true, file: null };
-  const good = file.size <= PDF_BYTES && (file.type === "application/pdf" || file.name.toLowerCase().endsWith(".pdf"));
-  list.innerHTML = `<li class="${good ? "ok" : "bad"}">${file.name} — ${fmtBytes(file.size)}${good ? "" : " (máx. 12 MB, PDF)"}</li>`;
-  return { ok: good, file: good ? file : null };
+  pdfList.innerHTML = "";
+
+  let ok = true;
+
+  if (photos.length > PHOTO_MAX) {
+    list.innerHTML = `<li class="bad">Máximo ${PHOTO_MAX} imagens.</li>`;
+    ok = false;
+  } else {
+    for (const f of photos) {
+      const typeOk = /^image\//.test(f.type);
+      const sizeOk = f.size <= PHOTO_BYTES;
+      const good = typeOk && sizeOk;
+      if (!good) ok = false;
+      let note = "";
+      if (!typeOk) note = " (só JPG, PNG ou WebP)";
+      else if (!sizeOk) note = " (máx. 2 MB por foto)";
+      list.innerHTML += `<li class="${good ? "ok" : "bad"}">${f.name} — ${fmtBytes(f.size)}${note}</li>`;
+    }
+  }
+
+  if (pdf) {
+    const typeOk = pdf.type === "application/pdf" || pdf.name.toLowerCase().endsWith(".pdf");
+    if (!typeOk) ok = false;
+    pdfList.innerHTML = `<li class="${typeOk ? "ok" : "bad"}">${pdf.name} — ${fmtBytes(pdf.size)}${typeOk ? "" : " (só PDF)"}</li>`;
+  }
+
+  const total = attachmentBytes(photos, pdf);
+  if (total > ATTACH_MAX) ok = false;
+
+  updateAttachBudget(photos, pdf, ok);
+
+  return {
+    ok,
+    files: ok ? photos : [],
+    file: ok ? pdf : null,
+  };
 }
 
 function selectedCategories() {
@@ -182,16 +223,15 @@ function buildSubmission() {
 async function exportZip() {
   $("err").textContent = "";
 
-  const photosCheck = validatePhotos(readPhotos());
-  const pdfCheck = validatePdf(readPdf());
-  if (!photosCheck.ok || !pdfCheck.ok) {
-    throw new Error("Corrija os ficheiros antes de exportar.");
+  const mediaCheck = validateMedia();
+  if (!mediaCheck.ok) {
+    throw new Error("Corrija os ficheiros antes de exportar (limite total de anexos: 18 MB).");
   }
 
   const { slug, data } = buildSubmission();
   const zip = new JSZip();
 
-  photosCheck.files.forEach((file, i) => {
+  mediaCheck.files.forEach((file, i) => {
     const ext = (file.name.match(/\.(jpe?g|png|webp|gif)$/i) || [,"jpg"])[1].toLowerCase().replace("jpeg", "jpg");
     const name = `foto-${String(i + 1).padStart(2, "0")}.${ext}`;
     const rel = `fotos/${name}`;
@@ -203,11 +243,11 @@ async function exportZip() {
     data.assets.fotos.push(rel);
   });
 
-  if (pdfCheck.file) {
+  if (mediaCheck.file) {
     const pdfName = "documento.pdf";
-    zip.file(`pdf/${pdfName}`, pdfCheck.file);
+    zip.file(`pdf/${pdfName}`, mediaCheck.file);
     data.sidebar.documentos = [{
-      titulo: pdfCheck.file.name.replace(/\.pdf$/i, ""),
+      titulo: mediaCheck.file.name.replace(/\.pdf$/i, ""),
       href: `assets/${slug}/pdf/${pdfName}`,
       tipo: "pdf",
     }];
@@ -240,8 +280,10 @@ async function exportZip() {
 }
 
 function bindPreview() {
-  $("fotos").addEventListener("change", () => validatePhotos(readPhotos()));
-  $("pdf").addEventListener("change", () => validatePdf(readPdf()));
+  const refresh = () => validateMedia();
+  $("fotos").addEventListener("change", refresh);
+  $("pdf").addEventListener("change", refresh);
+  refresh();
 }
 
 function bindExport() {
