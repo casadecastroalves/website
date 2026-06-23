@@ -1,22 +1,28 @@
-# MAPA MELHORADO — Movimento Irun · Identidade e Território
+# Movimento Irun — Mapa Identidade e Território
 
 Mapa territorial interativo, **leve e escalável**, construído em HTML + CSS + JavaScript puro (ES modules) com [Leaflet](https://leafletjs.com). **Sem build, sem `node_modules`** — ideal para Google Drive e para publicar como ficheiros estáticos.
+
+**Localização canónica (única cópia de trabalho):**
+
+```
+G:\Meu Drive\1. WEBSITES\castro-alves\codigo\public\movimento-irun\territorios\
+```
 
 ## Como abrir localmente
 
 Não abra o `index.html` com duplo-clique (`file://` não carrega módulos). Use um servidor HTTP:
 
-```bash
-cd "MAPA MELHORADO"
+```powershell
+cd "G:\Meu Drive\1. WEBSITES\castro-alves\codigo\public\movimento-irun\territorios"
 python -m http.server 8099
 ```
 
-Depois abra `http://localhost:8099`.
+Ou duplo-clique em `VER-MAPA.bat`. Depois abra `http://localhost:8099`.
 
 ## Estrutura
 
 ```
-MAPA MELHORADO/
+territorios/
   index.html              # casca da página
   css/app.css             # estilos (tema claro/escuro)
   js/
@@ -35,6 +41,7 @@ MAPA MELHORADO/
     rede/ , roteiros/         # camadas participativas e roteiros
   assets/<id>/fotos/      # fotos da ficha (WebP/JPG otimizados)
   assets/<id>/pdf/        # PDFs/portfólios da ficha
+  tools/                  # scripts de manutenção (mídia, deploy, compressão)
 ```
 
 ## Como funciona (resumo)
@@ -47,22 +54,26 @@ MAPA MELHORADO/
 ## Mídia: vídeos e fotos
 
 - **Vídeos:** sempre no **YouTube**. Guarde só o ID do vídeo (ex.: `dQw4w9WgXcQ`).
-- **Fotos:** o **Google Drive é o arquivo de trabalho**; para publicar, exporte versões **otimizadas (WebP, ~150–300 KB)** para `assets/<id>/fotos/`. São carregadas só quando o utilizador abre a ficha (lazy), por isso não pesam na navegação.
+- **Fotos:** exporte versões **otimizadas (WebP, ~150–300 KB)** para `assets/<id>/fotos/`. Originais grandes (>25 MB) vão para `castro-alves/originais-grandes/`, nunca para o deploy.
 
-> Evite usar links diretos do Google Drive como fonte ao vivo das imagens: o Google limita o tráfego e quebra os links quando o mapa tem visitas.
+> Evite usar links directos do Google Drive como fonte ao vivo das imagens: o Google limita o tráfego e quebra os links quando o mapa tem visitas.
 
 ## Partilhar
 
-O botão **Compartilhar** gera link e código de incorporação (iframe). O link guarda a vista atual: território, ficha, município ou filtros — por exemplo:
+O botão **Compartilhar** gera link e código de incorporação (iframe). O link guarda a vista actual: território, ficha, município ou filtros — por exemplo:
 
 - `#/t/ti-06` → Território Baixo Sul
 - `#/t/ti-06/tenonde` → ficha do Kilombo Tenondé
 - `#/m/valenca` → tudo no município de Valença
-- `#/f/terere` → ficha direta (deriva o território)
+- `#/f/terere` → ficha directa (deriva o território)
 
 ## Publicar (produção)
 
-Repositório no GitHub de `casadecastroalves@gmail.com` → deploy automático via Cloudflare Pages. Copiar o conteúdo desta pasta para `public/territorios/` do site, fazer commit e push.
+1. Editar nesta pasta (`territorios/`)
+2. `git add` + `commit` + `push` no repo `castro-alves/codigo/`
+3. Cloudflare Pages faz deploy automático (~2 min)
+
+Script auxiliar: `tools/deploy.ps1` (comprime ficheiros grandes e faz push).
 
 ## Adicionar um novo território/quilombo
 

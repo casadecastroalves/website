@@ -65,7 +65,7 @@ Não é preciso listar nada à mão. O fluxo é **largar ficheiros → 1 comando
 1. Copie as **fotos** para `assets/<id>/fotos/` (ex.: `foto-01.jpg`, `foto-02.jpg`…).
    - Recomendado: WebP ou JPG, lado maior ~1600px, ~150–300 KB cada (mais leve = mais rápido).
 2. Copie os **PDFs** para `assets/<id>/pdf/` (use nomes claros — viram o título no mapa).
-3. Na pasta `MAPA MELHORADO`, corra **uma vez**:
+3. Na pasta do mapa (`territorios/`), corra **uma vez**:
 
 ```bash
 node tools/atualizar-midia.mjs

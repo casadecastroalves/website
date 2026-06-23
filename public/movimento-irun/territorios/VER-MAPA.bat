@@ -1,7 +1,7 @@
 @echo off
 cd /d "%~dp0"
 echo.
-echo  Mapa Movimento Irun — versao MAPA MELHORADO
+echo  Mapa Movimento Irun — preview local
 echo  Abrindo http://127.0.0.1:8099
 echo  (nao feche esta janela enquanto usar o mapa)
 echo.

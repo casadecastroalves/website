@@ -26,7 +26,7 @@ pnpm-debug.log*
 # backup folders
 node_modules_backup/
 
-# mapa: originais grandes ficam só no MAPA MELHORADO (nunca no deploy)
+# mapa: originais grandes ficam em territorios/**/originais/ (nunca no deploy)
 public/movimento-irun/territorios/**/original/
 public/movimento-irun/territorios/**/originais/
 

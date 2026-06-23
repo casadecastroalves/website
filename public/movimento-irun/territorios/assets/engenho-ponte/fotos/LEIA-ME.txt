@@ -8,7 +8,7 @@ Recomendado: .webp ou .jpg, largura ~1600px, até ~300 KB cada (mais leve = mais
 Nomeie em ordem: foto-01.jpg, foto-02.jpg, foto-03.jpg ...
 (Já existe foto-01.jpg referenciada no popup do mapa — pode manter ou substituir.)
 
-Depois de adicionar/retirar fotos, corra UMA vez (na pasta MAPA MELHORADO):
+Depois de adicionar/retirar fotos, corra UMA vez (na pasta territorios/):
     node tools/atualizar-midia.mjs
 
 Pronto — o mapa mostra a galeria automaticamente. Não é preciso mexer no código.

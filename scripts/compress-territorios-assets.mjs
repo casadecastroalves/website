@@ -3,7 +3,7 @@
  * - comprime imagens >24 MB (sharp)
  * - falha o build se algum PDF/outro ficheiro >25 MB (limite Cloudflare)
  *
- * Os originais ficam no MAPA MELHORADO; o deploy.ps1 comprime a copia antes do push.
+ * Os originais grandes ficam em territorios/**/originais/; o deploy comprime antes do push.
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -81,7 +81,7 @@ async function main() {
       console.log(`  imagem: ${(newSize / 1024 / 1024).toFixed(2)} MB`);
       if (newSize > HARD_LIMIT) failures.push(rel);
     } else if (ext === ".pdf") {
-      failures.push(`${rel} (PDF — comprimir localmente: python MAPA MELHORADO/tools/compress-for-deploy.py)`);
+      failures.push(`${rel} (PDF — comprimir: python public/movimento-irun/territorios/tools/compress-for-deploy.py)`);
     } else {
       failures.push(`${rel} (tipo nao suportado no build)`);
     }

@@ -5,7 +5,7 @@
  * lista de fotos e PDFs encontrados. O mapa lê esse ficheiro e mostra as
  * galerias e documentos automaticamente — SEM mexer no código.
  *
- * COMO USAR (a partir da pasta MAPA MELHORADO):
+ * COMO USAR (a partir da pasta territorios/):
  *   node tools/atualizar-midia.mjs
  *
  * Estrutura esperada (exemplo):
@@ -42,7 +42,7 @@ function tituloFrom(file) {
 }
 
 if (!existsSync(assetsDir)) {
-  console.error("Pasta /assets não encontrada. Corra o comando dentro de MAPA MELHORADO.");
+  console.error("Pasta /assets não encontrada. Corra o comando na pasta territorios/.");
   process.exit(1);
 }
 
