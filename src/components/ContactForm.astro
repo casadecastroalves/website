@@ -231,6 +231,7 @@
       formData.forEach((value, key) => {
         payload[key] = value.toString();
       });
+      payload['token'] = 'sestepa_secure_2026';
 
       try {
         const controller = new AbortController();
