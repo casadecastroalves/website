@@ -106,3 +106,18 @@
   animation: pinPulse 2s infinite ease-in-out;
 }
 
+#map {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0;
+  left: 0;
+}
+
+#mapa-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
