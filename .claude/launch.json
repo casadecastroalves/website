@@ -6,6 +6,13 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 4321
+    },
+    {
+      "name": "territorios-v2",
+      "runtimeExecutable": "C:/Users/inesg/AppData/Local/hermes/hermes-agent/venv/Scripts/python.exe",
+      "runtimeArgs": ["-m", "http.server", "8765"],
+      "cwd": "public",
+      "port": 8765
     }
   ]
 }

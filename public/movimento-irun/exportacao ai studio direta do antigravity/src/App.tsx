@@ -781,7 +781,7 @@ export default function App() {
           {!selectedTerritory && searchQuery === '' && activeCategory === 'todos' && (
             <div className="p-4 bg-white border border-slate-100 rounded-xl shadow-sm text-xs text-slate-600 leading-relaxed font-light space-y-2.5">
               <h3 className="font-display font-semibold text-sm text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-1.5">
-                <Map className="w-4 h-4 text-slate-500 shrink-0" />
+                <MapIcon className="w-4 h-4 text-slate-500 shrink-0" />
                 Sobre o Mapa Identidade e Território
               </h3>
               <p>
@@ -1182,7 +1182,7 @@ export default function App() {
                 Compartilhar
               </button>
             </div>
-            </motion.aside>
+          </motion.aside>
           </>
         )}
       </AnimatePresence>
