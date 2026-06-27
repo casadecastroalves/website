@@ -13,6 +13,7 @@ export interface Territory {
   activities: string[];
   imageUrl: string;
   contact?: string;
+  rawFicha?: any;
 }
 
 export type FilterCategory = 'todos' | 'quilombo' | 'cultura' | 'tradicional';

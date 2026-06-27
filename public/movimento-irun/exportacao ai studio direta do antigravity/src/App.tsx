@@ -29,19 +29,82 @@ import { motion, AnimatePresence } from 'motion/react';
 import { territoriesData } from './data/territories';
 import { Territory, FilterCategory } from './types';
 
-// Map Styles mapping (free CartoDB base maps that don't require API keys)
+// Map Styles mapping using reliable raster tile layers to prevent WebGL/CORS tile loading issues
 const MAP_STYLES = {
   voyager: {
     name: 'Colorido (Voyager)',
-    url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json'
+    style: {
+      version: 8,
+      sources: {
+        'raster-tiles': {
+          type: 'raster',
+          tiles: [
+            'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+            'https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+            'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+            'https://d.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
+          ],
+          tileSize: 256,
+          attribution: '&copy; OpenStreetMap &copy; CARTO'
+        }
+      },
+      layers: [{ id: 'raster-tiles-layer', type: 'raster', source: 'raster-tiles' }]
+    }
   },
   positron: {
     name: 'Mínimo (Positron)',
-    url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+    style: {
+      version: 8,
+      sources: {
+        'raster-tiles': {
+          type: 'raster',
+          tiles: [
+            'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            'https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            'https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+            'https://d.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
+          ],
+          tileSize: 256,
+          attribution: '&copy; OpenStreetMap &copy; CARTO'
+        }
+      },
+      layers: [{ id: 'raster-tiles-layer', type: 'raster', source: 'raster-tiles' }]
+    }
   },
   dark: {
     name: 'Contraste Escuro',
-    url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+    style: {
+      version: 8,
+      sources: {
+        'raster-tiles': {
+          type: 'raster',
+          tiles: [
+            'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+            'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+            'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+            'https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+          ],
+          tileSize: 256,
+          attribution: '&copy; OpenStreetMap &copy; CARTO'
+        }
+      },
+      layers: [{ id: 'raster-tiles-layer', type: 'raster', source: 'raster-tiles' }]
+    }
+  },
+  satellite: {
+    name: 'Satélite',
+    style: {
+      version: 8,
+      sources: {
+        'raster-tiles': {
+          type: 'raster',
+          tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+          tileSize: 256,
+          attribution: 'Tiles &copy; Esri'
+        }
+      },
+      layers: [{ id: 'raster-tiles-layer', type: 'raster', source: 'raster-tiles' }]
+    }
   }
 };
 
@@ -72,14 +135,45 @@ export default function App() {
           }
         });
         const loadedFichas = (await Promise.all(fichasPromises)).filter(Boolean);
+
+        // Load all points files
+        const pontosPromises = (manifest.pontos || []).map(async (id: string) => {
+          try {
+            const res = await fetch(`../territorios/data/pontos/${id}.json`);
+            return await res.json();
+          } catch (e) {
+            console.error(`Failed to load pontos ${id}:`, e);
+            return null;
+          }
+        });
+        const loadedPontos = (await Promise.all(pontosPromises)).filter(Boolean);
+        const allPins: any[] = [];
+        loadedPontos.forEach((pf: any) => {
+          if (pf && pf.pontos) {
+            pf.pontos.forEach((p: any) => {
+              allPins.push({ ...p, territorioId: p.territorioId || pf.territorioId });
+            });
+          }
+        });
         
         // Map Fichas to Territory format for React layout
         const mapped: Territory[] = loadedFichas.map((f: any) => {
+          // Find pins that point to this Ficha
+          const matchingPins = allPins.filter((p: any) => (p.fichaId === f.id || p.entidadeId === f.id));
+          // Extract YouTube videos from popup slides
+          const videos: string[] = [];
+          matchingPins.forEach((p: any) => {
+            if (p.popup && p.popup.slides) {
+              p.popup.slides.forEach((s: any) => {
+                if (s.video && s.video.tipo === 'youtube' && s.video.id) {
+                  videos.push(s.video.id);
+                }
+              });
+            }
+          });
+
           const historySection = f.sidebar?.identidade?.find((i: any) => i.id === 'historia')?.conteudo || '';
           const heritageStatus = f.sidebar?.identidade?.find((i: any) => i.id === 'patrimonio')?.conteudo || 'Certificado';
-          const activities = f.sidebar?.identidade?.find((i: any) => i.id === 'cultura')?.conteudo 
-            ? [f.sidebar.identidade.find((i: any) => i.id === 'cultura').conteudo]
-            : [];
           
           return {
             id: f.id,
@@ -92,11 +186,12 @@ export default function App() {
             description: f.sidebar?.apresentacao || '',
             history: historySection,
             heritageStatus: heritageStatus,
-            activities: activities,
+            activities: [],
             imageUrl: f.sidebar?.fotos?.[0]?.src 
               ? `../territorios/${f.sidebar.fotos[0].src}`
               : 'https://images.unsplash.com/photo-1540206395-68808572332f?auto=format&fit=crop&q=80&w=600',
-            contact: f.meta?.responsavel || ''
+            contact: f.meta?.responsavel || '',
+            rawFicha: { ...f, videos } // Attach matching video IDs here!
           };
         });
         
@@ -265,7 +360,7 @@ export default function App() {
     // Centered around Recôncavo Baiano / Salvador
     const map = new maplibregl.Map({
       container: mapContainerRef.current,
-      style: MAP_STYLES[mapStyle].url,
+      style: MAP_STYLES[mapStyle].style as any,
       center: [-38.6500, -12.8200], // Bahia center
       zoom: 9.2,
       maxBounds: [
@@ -351,7 +446,7 @@ export default function App() {
   // Sync map style when state changes
   useEffect(() => {
     if (mapRef.current) {
-      mapRef.current.setStyle(MAP_STYLES[mapStyle].url);
+      mapRef.current.setStyle(MAP_STYLES[mapStyle].style as any);
     }
   }, [mapStyle]);
 
@@ -900,25 +995,52 @@ export default function App() {
                   </span>
                 </div>
                 <div>
-                  <span className="block text-[10px] font-mono text-slate-400 uppercase">Estado</span>
-                  <span className="text-sm font-semibold text-slate-700 mt-0.5 block">
+                  <span className="block text-[10px] font-mono text-slate-400 uppercase">TI (Código)</span>
+                  <span className="text-sm font-semibold text-slate-700 mt-0.5 block uppercase">
                     {selectedTerritory.state}
                   </span>
                 </div>
                 <div>
                   <span className="block text-[10px] font-mono text-slate-400 uppercase">Liderança</span>
                   <span className="text-sm font-semibold text-slate-700 flex items-center gap-1 mt-0.5">
-                    <Users className="w-3.5 h-3.5 text-amber-600 animate-pulse" />
-                    {selectedTerritory.leader || 'Tradicional'}
+                    <Users className="w-3.5 h-3.5 text-amber-600" />
+                    {selectedTerritory.rawFicha?.meta?.responsavel || 'Tradicional'}
                   </span>
                 </div>
                 <div>
-                  <span className="block text-[10px] font-mono text-slate-400 uppercase">Fundação</span>
+                  <span className="block text-[10px] font-mono text-slate-400 uppercase">Atualizado em</span>
                   <span className="text-sm font-semibold text-slate-700 mt-0.5 block font-display">
-                    {selectedTerritory.founded || 'Ancestral'}
+                    {selectedTerritory.rawFicha?.meta?.updatedAt || 'Ancestral'}
                   </span>
                 </div>
               </div>
+
+              {/* Photo Gallery (Carousel) */}
+              {selectedTerritory.rawFicha?.sidebar?.fotos && selectedTerritory.rawFicha.sidebar.fotos.length > 0 && (
+                <div className="space-y-2">
+                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <Layers className="w-4 h-4 text-amber-600 shrink-0" />
+                    Galeria de Fotos
+                  </h3>
+                  <div className="flex gap-3 overflow-x-auto pb-2 pt-1 snap-x scrollbar-thin">
+                    {selectedTerritory.rawFicha.sidebar.fotos.map((photo: any, index: number) => (
+                      <div key={index} className="snap-center shrink-0 w-72 h-44 relative rounded-xl overflow-hidden border border-slate-200 shadow-sm">
+                        <img 
+                          src={`../territorios/${photo.src}`} 
+                          alt={photo.legenda} 
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).style.display = 'none';
+                          }}
+                        />
+                        <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent text-white text-[10px] p-3 font-light truncate">
+                          {photo.legenda}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Description */}
               <div className="space-y-1.5">
@@ -931,53 +1053,105 @@ export default function App() {
                 </p>
               </div>
 
-              {/* History / Origin */}
-              <div className="space-y-1.5">
-                <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                  <BookOpen className="w-4 h-4 text-amber-600 shrink-0" />
-                  Resistência Histórica
-                </h3>
-                <p className="text-xs text-slate-600 bg-amber-50/25 border-l-2 border-amber-600/50 pl-3 py-1 leading-relaxed font-light italic">
-                  "{selectedTerritory.history}"
-                </p>
-              </div>
-
-              {/* Heritage Status */}
-              <div className="space-y-1.5">
-                <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                  <Award className="w-4 h-4 text-amber-600 shrink-0" />
-                  Status de Reconhecimento
-                </h3>
-                <div className="flex items-start gap-2 bg-emerald-50/40 border border-emerald-100 p-2.5 rounded-lg text-emerald-800 text-xs">
-                  <CheckCircle className="w-4.5 h-4.5 text-emerald-600 shrink-0 mt-0.5" />
-                  <span>{selectedTerritory.heritageStatus}</span>
+              {/* YouTube Video Slides */}
+              {selectedTerritory.rawFicha?.videos && selectedTerritory.rawFicha.videos.length > 0 && (
+                <div className="space-y-3.5">
+                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                    Mídias e Vídeos
+                  </h3>
+                  <div className="space-y-3">
+                    {selectedTerritory.rawFicha.videos.map((vidId: string, idx: number) => (
+                      <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-slate-200 shadow-md">
+                        <iframe
+                          className="absolute inset-0 w-full h-full"
+                          src={`https://www.youtube.com/embed/${vidId}?rel=0&modestbranding=1&playsinline=1`}
+                          title="Vídeo do Território"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Key local Activities / Saberes */}
-              <div className="space-y-2">
-                <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-                  Atividades e Saberes locais
-                </h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedTerritory.activities.map((act, idx) => (
-                    <span 
-                      key={idx} 
-                      className="text-[10px] font-medium bg-slate-100 border border-slate-200/60 px-2.5 py-1 rounded-full text-slate-600"
-                    >
-                      {act}
-                    </span>
-                  ))}
+              {/* Collapsible/Accordion Identity Sections */}
+              {selectedTerritory.rawFicha?.sidebar?.identidade && selectedTerritory.rawFicha.sidebar.identidade.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <BookOpen className="w-4 h-4 text-amber-600 shrink-0" />
+                    Identidade Territorial
+                  </h3>
+                  <div className="space-y-2">
+                    {selectedTerritory.rawFicha.sidebar.identidade.map((item: any, idx: number) => (
+                      <div key={idx} className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1.5">
+                        <h4 className="text-xs font-semibold text-slate-800 flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                          {item.titulo}
+                        </h4>
+                        <p className="text-[11px] text-slate-600 leading-relaxed font-light">
+                          {item.conteudo}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Products and Production */}
+              {selectedTerritory.rawFicha?.sidebar?.produtos && selectedTerritory.rawFicha.sidebar.produtos.length > 0 && (
+                <div className="space-y-3">
+                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                    Produção e Produtos
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {selectedTerritory.rawFicha.sidebar.produtos.map((prod: any, idx: number) => (
+                      <div key={idx} className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
+                        <h4 className="text-xs font-semibold text-slate-800">{prod.nome}</h4>
+                        {prod.descricao && (
+                          <p className="text-[10px] text-slate-500 mt-1 leading-relaxed font-light">
+                            {prod.descricao}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Documents & PDFs */}
+              {selectedTerritory.rawFicha?.sidebar?.documentos && selectedTerritory.rawFicha.sidebar.documentos.length > 0 && (
+                <div className="space-y-2.5">
+                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <Award className="w-4 h-4 text-amber-600 shrink-0" />
+                    Documentos e Cartografia
+                  </h3>
+                  <div className="flex flex-col gap-2">
+                    {selectedTerritory.rawFicha.sidebar.documentos.map((doc: any, idx: number) => (
+                      <a
+                        key={idx}
+                        href={`../territorios/${doc.src}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/60 rounded-xl hover:bg-slate-100 hover:border-slate-300 transition-all text-xs text-slate-700 font-medium"
+                      >
+                        <span className="truncate pr-4">{doc.legenda || 'Ver PDF'}</span>
+                        <span className="text-[10px] text-amber-700 font-semibold shrink-0">Baixar PDF →</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Coordinates block */}
-              <div className="p-3 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between text-xs font-mono">
+              <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-between text-xs font-mono">
                 <span className="text-slate-500">Lat, Lng: <span className="text-slate-800">{selectedTerritory.coordinates[1].toFixed(5)}, {selectedTerritory.coordinates[0].toFixed(5)}</span></span>
                 <button 
                   onClick={() => handleCopyCoords(selectedTerritory.coordinates)}
-                  className="p-1 text-slate-400 hover:text-amber-700 hover:bg-slate-200/50 rounded transition-all cursor-pointer"
+                  className="p-1.5 text-slate-400 hover:text-amber-700 hover:bg-slate-200/50 rounded-lg transition-all cursor-pointer"
                   title="Copiar Coordenadas"
                 >
                   <Copy className="w-3.5 h-3.5" />
