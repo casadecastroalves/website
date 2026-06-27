@@ -197,6 +197,7 @@ export default function App() {
   const [showAddModal, setShowAddModal] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isSelectingCoords, setIsSelectingCoords] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   
   // New Territory Form State
   const [newTerritory, setNewTerritory] = useState<Partial<Territory>>({
@@ -228,7 +229,19 @@ export default function App() {
   // Filtered list based on active category and search text
   const filteredTerritories = useMemo(() => {
     return territories.filter(t => {
-      const matchesCategory = activeCategory === 'todos' || t.category === activeCategory;
+      let matchesCategory = false;
+      if (activeCategory === 'todos') {
+        matchesCategory = true;
+      } else if (activeCategory === 'Teia dos Povos') {
+        matchesCategory = t.rawFicha?.teiaDosPovos === true;
+      } else if (activeCategory === 'Ponto de Cultura') {
+        matchesCategory = t.rawFicha?.pontoDeCultura === true;
+      } else if (activeCategory === 'Rede Irun') {
+        matchesCategory = t.rawFicha?.rede === true;
+      } else {
+        matchesCategory = t.category === activeCategory;
+      }
+
       const matchesSearch = 
         (t.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
         (t.city || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -429,7 +442,7 @@ export default function App() {
       // Custom marker inner SVG with safe scale transitions on hover/select
       el.innerHTML = `
         <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 transition-transform duration-300 hover:scale-120 ${isSelected ? 'marker-pulse scale-110' : ''}">
-          <path d="${iconHex}" />
+          <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
         </svg>
       `;
 
@@ -439,19 +452,16 @@ export default function App() {
         handleSelectTerritory(t);
       });
 
-      // MapLibre popup on hover (brief summary with photo if available)
-      const popupPhoto = `<img src="${t.imageUrl}" class="w-full h-20 object-cover rounded-lg mb-1.5 shadow-sm" style="display:block;" />`;
-
+      // MapLibre popup on hover (brief summary without photo)
       const popup = new maplibregl.Popup({
         offset: 15,
         closeButton: false,
         closeOnClick: false
       }).setHTML(`
-        <div class="text-[11px] p-1.5 max-w-[190px] font-sans leading-normal">
-          ${popupPhoto}
-          <p class="font-semibold text-slate-900 leading-tight">${t.name}</p>
+        <div class="text-[11px] p-1.5 max-w-[190px] font-sans leading-normal text-center">
+          <p class="font-bold text-slate-900 leading-tight">${t.name}</p>
           <p class="text-slate-500 mt-0.5">${t.city}</p>
-          <span class="inline-block mt-1.5 px-1.5 py-0.5 text-[9px] font-bold rounded uppercase tracking-wider bg-slate-100 border border-slate-200 text-slate-700">${t.category}</span>
+          <span class="inline-block mt-1.5 px-1.5 py-0.5 text-[9px] font-bold rounded uppercase tracking-wider bg-slate-100 border border-slate-200 text-slate-700">Clique para ver</span>
         </div>
       `);
 
@@ -483,6 +493,7 @@ export default function App() {
   // Handler for selecting a territory
   const handleSelectTerritory = (t: Territory) => {
     setSelectedTerritory(t);
+    setIsSidebarOpen(true);
     if (mapRef.current) {
       mapRef.current.flyTo({
         center: t.coordinates,
@@ -508,6 +519,7 @@ export default function App() {
     setSelectedTerritory(null);
     setSearchQuery('');
     setActiveCategory('todos');
+    setIsSidebarOpen(true);
   };
 
   // Add customized activities to form
@@ -640,12 +652,22 @@ export default function App() {
   // Filter videos based on search
   const filteredVideos = useMemo(() => {
     return allVideos.filter(v => {
-      const matchSearch = v.title.toLowerCase().includes(videoSearchQuery.toLowerCase()) || 
-                          v.city.toLowerCase().includes(videoSearchQuery.toLowerCase());
+      const matchSearch = (v.title || '').toLowerCase().includes((videoSearchQuery || '').toLowerCase()) || 
+                          (v.city || '').toLowerCase().includes((videoSearchQuery || '').toLowerCase());
       const matchCategory = activeVideoCategory === 'todos' || v.category === activeVideoCategory;
       return matchSearch && matchCategory;
     });
   }, [allVideos, videoSearchQuery, activeVideoCategory]);
+
+  const stats = useMemo(() => {
+    const s = { total: filteredTerritories.length, quilombos: 0, cultura: 0, tradicional: 0 };
+    filteredTerritories.forEach(t => {
+      if (t.category === 'quilombo') s.quilombos++;
+      else if (t.category === 'cultura' || t.category === 'terreiro') s.cultura++;
+      else s.tradicional++;
+    });
+    return s;
+  }, [filteredTerritories]);
 
   return (
     <div id="mapa-container" className="relative w-screen h-screen overflow-hidden bg-slate-100 font-sans select-none">
@@ -654,67 +676,48 @@ export default function App() {
       <div id="map" ref={mapContainerRef} className="absolute inset-0 z-0" />
 
       {/* 2. Brand Floating Sidebar (Left Panel) */}
-      <aside 
-        id="panel-lateral"
-        className="absolute top-4 left-4 z-10 w-[calc(100%-2rem)] md:w-80 lg:w-96 max-h-[calc(100vh-2rem)] flex flex-col bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 overflow-hidden transition-all duration-300 mobile-drawer"
-      >
-        {/* Brand Header */}
-        <div className="p-5 border-b border-slate-100 bg-white/95 relative overflow-hidden">
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col">
-              <h1 
-                onClick={handleResetView}
-                className="text-xl font-display font-bold tracking-tight text-slate-900 cursor-pointer hover:text-amber-800 transition-colors"
-              >
-                MOVIMENTO IRUN
-              </h1>
-              <p className="text-[10px] text-slate-500 font-medium tracking-wider mt-0.5 uppercase">
-                IDENTIDADE E TERRITÓRIO
-              </p>
+      <AnimatePresence>
+        {isSidebarOpen && (
+          <motion.aside 
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -50 }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            id="panel-lateral"
+            className="absolute top-4 left-4 z-10 w-[calc(100%-2rem)] md:w-80 lg:w-96 max-h-[calc(100vh-2rem)] flex flex-col bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 overflow-hidden"
+          >
+            {/* Brand Header */}
+            <div className="p-4 pb-4 border-b border-slate-100 bg-white/95 relative flex items-start justify-between gap-3">
+              <div className="flex flex-col">
+                <h1 
+                  onClick={handleResetView}
+                  className="text-[1.35rem] font-display font-bold tracking-tight text-slate-900 cursor-pointer hover:text-amber-800 transition-colors leading-none"
+                >
+                  MOVIMENTO IRUN
+                </h1>
+                <p className="text-[10px] text-slate-500 font-medium tracking-wider mt-1.5 uppercase">
+                  IDENTIDADE E TERRITÓRIO
+                </p>
+              </div>
+              <div className="flex items-center gap-1 shrink-0">
+                <button 
+                  onClick={handleResetView}
+                  className="p-1.5 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                  title="Centralizar no Recôncavo"
+                >
+                  <Compass className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={() => setIsSidebarOpen(false)}
+                  className="p-1.5 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-500 hover:text-slate-700 transition-colors cursor-pointer shadow-sm"
+                  title="Ocultar painel"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <button 
-                onClick={handleGeolocate}
-                disabled={isLocating}
-                className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                  isLocating 
-                    ? 'bg-blue-50 text-blue-600 animate-pulse' 
-                    : 'hover:bg-slate-100 text-slate-400 hover:text-slate-700'
-                }`}
-                title="Minha Localização"
-              >
-                <Locate className={`w-4 h-4 ${isLocating ? 'animate-spin' : ''}`} />
-              </button>
-              <button 
-                onClick={handleResetView}
-                className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
-                title="Centralizar no Recôncavo"
-              >
-                <Compass className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
 
-        {/* Aggregate Stats Bar */}
-        <div className="grid grid-cols-4 divide-x divide-slate-100 bg-slate-50/80 border-b border-slate-100 text-center py-2.5">
-          <div>
-            <span className="block text-xs font-semibold text-slate-800 font-display">{stats.total}</span>
-            <span className="text-[9px] text-slate-500 font-medium uppercase">Locais</span>
-          </div>
-          <div>
-            <span className="block text-xs font-semibold text-emerald-700 font-display">{stats.quilombos}</span>
-            <span className="text-[9px] text-slate-500 font-medium uppercase">Quilombos</span>
-          </div>
-          <div>
-            <span className="block text-xs font-semibold text-amber-700 font-display">{stats.cultura}</span>
-            <span className="text-[9px] text-slate-500 font-medium uppercase">Cultura</span>
-          </div>
-          <div>
-            <span className="block text-xs font-semibold text-sky-700 font-display">{stats.tradicional}</span>
-            <span className="text-[9px] text-slate-500 font-medium uppercase">Outros</span>
-          </div>
-        </div>
+        {/* Aggregate Stats Bar Removed as per user request */}
 
         {/* Live Search and Hotkey Indicator */}
         <div className="p-4 border-b border-slate-100 bg-white">
@@ -756,11 +759,11 @@ export default function App() {
           >
             Todos
           </button>
-          {Array.from(new Set(territories.map(t => t.category))).filter(Boolean).sort().map(cat => (
+          {['Teia dos Povos', 'Ponto de Cultura', 'Rede Irun'].map(cat => (
             <button 
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all shrink-0 flex items-center gap-1 capitalize ${
+              className={`px-3.5 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all shrink-0 flex items-center gap-1 ${
                 activeCategory === cat
                   ? 'bg-amber-600 text-white shadow-sm' 
                   : 'bg-white border border-slate-200 text-slate-600 hover:bg-amber-50 hover:text-amber-800'
@@ -778,17 +781,19 @@ export default function App() {
           {!selectedTerritory && searchQuery === '' && activeCategory === 'todos' && (
             <div className="p-4 bg-white border border-slate-100 rounded-xl shadow-sm text-xs text-slate-600 leading-relaxed font-light space-y-2.5">
               <h3 className="font-display font-semibold text-sm text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-1.5">
-                <Info className="w-4 h-4 text-amber-600 shrink-0" />
+                <Map className="w-4 h-4 text-slate-500 shrink-0" />
                 Sobre o Mapa Identidade e Território
               </h3>
               <p>
                 Sejam bem-vindos ao Mapa Identidade e Território, construído coletivamente com as comunidades mapeadas pelo Projeto Movimento Irun.
               </p>
               <p>
-                Este documento é resultado do Programa Design Dialógico (2017) e dos cursos do Programa Bem Viver (2026), a partir do curso Design de Território — centrado em visão participativa, identidade territorial e narrativas de futuro. Por meio desse processo, foram mapeadas as comunidades quilombolas de Lagoa Grande, Tenodé e Engenho da Ponte, em parceria com a Teia dos Povos.
+                Este mapa é resultado do Programa Design Dialógico (2017) e dos cursos do Programa Bem Viver (2026), a partir do curso Design de Território — centrado em visão participativa, identidade territorial e narrativas de futuro. Por meio desse processo, foram mapeadas as comunidades quilombolas de Lagoa Grande, Tenodé e Engenho da Ponte, em parceria com a Teia dos Povos.
               </p>
               <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl text-[11px]">
-                <strong className="block font-semibold text-slate-800 mb-1">Os 27 Territórios de Identidade</strong>
+                <strong className="block font-semibold text-slate-800 mb-1">Autoria e Realização</strong>
+                <span className="text-slate-600 block mb-2">Projeto Movimento Irun, sob a coordenação geral da Casa de Castro Alves, com mapeamento colaborativo pelas comunidades locais, parceiros e alunos.</span>
+                <strong className="block font-semibold text-slate-800 mb-1 mt-2">Os 27 Territórios de Identidade</strong>
                 A demarcação segue critérios ambientais, econômicos e culturais que expressam identidade, coesão social e pertencimento territorial.
               </div>
               <div className="pt-2 border-t border-slate-100 flex gap-2">
@@ -866,7 +871,7 @@ export default function App() {
 
                     {/* Bottom stats/details indicator */}
                     <div className="mt-3 pt-2.5 border-t border-slate-100/60 pl-1.5 flex items-center justify-between text-[10px] text-slate-400 font-mono">
-                      <span>Fundado: {t.founded || 'Ancestral'}</span>
+                      {t.founded && <span>Fundado: {t.founded}</span>}
                       <span className="text-amber-700 group-hover:translate-x-1 transition-transform duration-200">
                         Ver detalhes →
                       </span>
@@ -895,27 +900,33 @@ export default function App() {
             Novo Ponto
           </button>
         </div>
-      </aside>
+          </motion.aside>
+        )}
 
+        {!isSidebarOpen && (
+          <motion.button
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ type: "spring", damping: 20, stiffness: 300 }}
+            onClick={() => setIsSidebarOpen(true)}
+            className="absolute top-4 left-4 z-10 px-4 py-3 bg-white/90 backdrop-blur-md border border-slate-200 shadow-2xl rounded-2xl text-slate-800 hover:text-amber-700 hover:shadow-amber-500/10 transition-all flex items-center gap-3 group"
+          >
+            <Layers className="w-5 h-5 text-amber-600 group-hover:scale-110 transition-transform" />
+            <span className="font-display font-bold tracking-tight text-sm">MOVIMENTO IRUN</span>
+          </motion.button>
+        )}
+      </AnimatePresence>
       {/* 3. Floating Map Style Selector & Geolocation Controls (Top-Right on desktop, Bottom on mobile) */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-auto md:top-4 md:right-16 md:left-auto md:translate-x-0 z-10 flex gap-1.5 items-center bg-white/95 backdrop-blur-md p-1.5 rounded-xl border border-slate-200/80 shadow-lg max-w-[calc(100vw-2rem)] overflow-x-auto scrollbar-none shrink-0">
-        <button
-          onClick={handleGeolocate}
-          disabled={isLocating}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-all border ${
-            isLocating 
-              ? 'bg-blue-50 text-blue-700 border-blue-200 animate-pulse' 
-              : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200 hover:text-slate-900 shadow-sm'
-          }`}
-          title="Focar na minha localização atual"
-        >
-          <Locate className={`w-3.5 h-3.5 text-blue-600 ${isLocating ? 'animate-spin' : ''}`} />
-          {isLocating ? 'Buscando...' : 'Minha Localização'}
-        </button>
-
-        <div className="h-5 w-px bg-slate-200 mx-1" />
-
-        {(Object.keys(MAP_STYLES) as Array<keyof typeof MAP_STYLES>).map((styleKey) => (
+      <AnimatePresence>
+        {!selectedTerritory && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-auto md:top-4 md:right-16 md:left-auto md:translate-x-0 z-10 flex gap-1.5 items-center bg-white/95 backdrop-blur-md p-1.5 rounded-xl border border-slate-200/80 shadow-lg max-w-[calc(100vw-2rem)] overflow-x-auto scrollbar-none shrink-0"
+          >
+            {(Object.keys(MAP_STYLES) as Array<keyof typeof MAP_STYLES>).map((styleKey) => (
           <button
             key={styleKey}
             onClick={() => setMapStyle(styleKey)}
@@ -928,18 +939,29 @@ export default function App() {
             {MAP_STYLES[styleKey].name}
           </button>
         ))}
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* 4. Interactive Territory Detail Drawer (Floating Right Panel) */}
       <AnimatePresence>
         {selectedTerritory && (
-          <motion.aside
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 100 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-x-0 bottom-0 z-50 w-full h-[85vh] md:absolute md:inset-auto md:top-4 md:right-4 md:w-80 lg:w-96 md:h-auto md:max-h-[calc(100vh-2rem)] bg-white/95 backdrop-blur-md rounded-t-3xl md:rounded-2xl shadow-2xl border-t md:border border-slate-200 flex flex-col overflow-hidden text-slate-800"
-          >
+          <>
+            {/* Backdrop for Netflix style focus */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedTerritory(null)}
+              className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-[2px] cursor-pointer"
+            />
+            <motion.aside
+              initial={{ opacity: 0, x: 400 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 400 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed inset-y-0 right-0 z-50 w-full md:w-[420px] lg:w-[480px] bg-white shadow-2xl border-l border-slate-200 flex flex-col overflow-hidden text-slate-800"
+            >
             {/* Mobile Pull Handle bar */}
             <div 
               className="w-12 h-1.5 bg-slate-300 hover:bg-slate-400 transition-colors rounded-full mx-auto my-3 md:hidden block shrink-0 cursor-pointer" 
@@ -981,17 +1003,11 @@ export default function App() {
                     {selectedTerritory.state}
                   </span>
                 </div>
-                <div>
-                  <span className="block text-[10px] font-mono text-slate-400 uppercase">Liderança</span>
+                <div className="col-span-2">
+                  <span className="block text-[10px] font-mono text-slate-400 uppercase">Representação</span>
                   <span className="text-sm font-semibold text-slate-700 flex items-center gap-1 mt-0.5">
                     <Users className="w-3.5 h-3.5 text-amber-600" />
-                    {selectedTerritory.rawFicha?.meta?.responsavel || 'Tradicional'}
-                  </span>
-                </div>
-                <div>
-                  <span className="block text-[10px] font-mono text-slate-400 uppercase">Atualizado em</span>
-                  <span className="text-sm font-semibold text-slate-700 mt-0.5 block font-display">
-                    {selectedTerritory.rawFicha?.meta?.updatedAt || 'Ancestral'}
+                    {selectedTerritory.rawFicha?.meta?.responsavel || selectedTerritory.leader || 'Comunidade'}
                   </span>
                 </div>
               </div>
@@ -1031,7 +1047,7 @@ export default function App() {
               {/* Description */}
               <div className="space-y-1.5">
                 <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                  <Info className="w-4 h-4 text-amber-600 shrink-0" />
+                  <Info className="w-4 h-4 text-slate-400 shrink-0" />
                   Visão Geral
                 </h3>
                 <p className="text-xs text-slate-600 leading-relaxed font-light">
@@ -1154,7 +1170,7 @@ export default function App() {
                   className="flex-1 py-2.5 px-3 rounded-xl bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-100 text-slate-700 text-xs font-medium text-center transition-all flex items-center justify-center gap-1.5"
                 >
                   <Mail className="w-4 h-4 text-slate-500" />
-                  Falar com Coordenação
+                  Contato
                 </a>
               )}
               <button 
@@ -1166,7 +1182,8 @@ export default function App() {
                 Compartilhar
               </button>
             </div>
-          </motion.aside>
+            </motion.aside>
+          </>
         )}
       </AnimatePresence>
 
@@ -1502,32 +1519,31 @@ export default function App() {
       {/* 7. Cine Irun (Netflix-style video library) Overlay Modal */}
       <AnimatePresence>
         {showCineIrun && (
-          <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex flex-col overflow-hidden text-white font-sans">
+          <div className="fixed inset-0 z-50 bg-[#141414] flex flex-col overflow-hidden text-white font-sans">
             {/* Modal Header */}
-            <div className="p-6 md:p-8 border-b border-black flex flex-col md:flex-row md:items-center justify-between gap-6 shrink-0 bg-gradient-to-r from-black via-slate-900 to-black">
+            <div className="px-6 py-6 md:px-12 md:py-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shrink-0 bg-[#141414]">
               <div>
-                <h2 className="text-2xl md:text-3xl font-display font-black tracking-tighter text-red-600 flex items-center gap-3">
+                <h2 className="text-3xl md:text-4xl font-display font-black tracking-tighter text-[#E50914] flex items-center gap-3">
                   CINE IRUN 
-                  <span className="text-sm font-normal text-slate-300 font-sans tracking-normal border-l border-slate-700 pl-3">Acervo de Documentários</span>
                 </h2>
-                <p className="text-sm text-slate-400 font-light mt-1.5 max-w-xl">
-                  Biblioteca digital estilo streaming com memórias, saberes e documentários das comunidades mapeadas.
+                <p className="text-sm text-gray-400 font-light mt-1.5">
+                  Acervo de documentários e saberes.
                 </p>
               </div>
 
               {/* Video Search and Filter pills */}
               <div className="flex items-center gap-4 w-full md:w-auto">
-                <div className="relative flex items-center bg-black/50 border border-slate-800 focus-within:border-red-600 rounded-lg px-4 py-3 w-full md:w-80 transition-colors shadow-inner">
-                  <Search className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
+                <div className="relative flex items-center bg-black/60 border border-white/20 focus-within:border-white focus-within:bg-black rounded px-4 py-2.5 w-full md:w-80 transition-all">
+                  <Search className="w-5 h-5 text-gray-400 mr-3 shrink-0" />
                   <input 
                     type="text" 
-                    placeholder="Buscar título, comunidade ou cidade..." 
+                    placeholder="Buscar..." 
                     value={videoSearchQuery}
                     onChange={(e) => setVideoSearchQuery(e.target.value)}
-                    className="bg-transparent border-none outline-none w-full text-sm text-white placeholder-slate-600 font-light"
+                    className="bg-transparent border-none outline-none w-full text-sm text-white placeholder-gray-500 font-light"
                   />
                   {videoSearchQuery && (
-                    <button onClick={() => setVideoSearchQuery('')} className="ml-2 text-slate-500 hover:text-white cursor-pointer">
+                    <button onClick={() => setVideoSearchQuery('')} className="ml-2 text-gray-400 hover:text-white cursor-pointer">
                       <X className="w-4 h-4" />
                     </button>
                   )}
@@ -1539,20 +1555,20 @@ export default function App() {
                     setVideoSearchQuery('');
                     setPlayingVideo(null);
                   }}
-                  className="p-3.5 bg-slate-900/50 hover:bg-red-600 rounded-full border border-slate-700 hover:border-red-500 text-slate-300 hover:text-white transition-all duration-300 cursor-pointer shrink-0 group flex items-center justify-center shadow-lg"
+                  className="p-2 text-gray-400 hover:text-white transition-colors cursor-pointer shrink-0"
                   title="Fechar Cine Irun"
                 >
-                  <X className="w-6 h-6 group-hover:scale-110 transition-transform" />
+                  <X className="w-8 h-8" />
                 </button>
               </div>
             </div>
 
             {/* Video Category Filter Tabs */}
-            <div className="px-6 py-4 border-b border-black bg-black flex gap-3 overflow-x-auto scrollbar-none shrink-0">
+            <div className="px-6 md:px-12 flex gap-6 overflow-x-auto scrollbar-none shrink-0 mb-4">
               <button 
                 onClick={() => setActiveVideoCategory('todos')}
-                className={`px-4 py-1.5 rounded-sm text-sm font-semibold transition-all shrink-0 cursor-pointer ${
-                  activeVideoCategory === 'todos' ? 'text-white border-l-4 border-red-600 bg-slate-900/50' : 'text-slate-400 hover:text-white bg-transparent border-l-4 border-transparent hover:border-slate-700'
+                className={`pb-2 text-sm md:text-base font-medium transition-all shrink-0 cursor-pointer ${
+                  activeVideoCategory === 'todos' ? 'text-white border-b-2 border-[#E50914]' : 'text-gray-400 hover:text-white border-b-2 border-transparent'
                 }`}
               >
                 Todos
@@ -1561,8 +1577,8 @@ export default function App() {
                 <button 
                   key={cat}
                   onClick={() => setActiveVideoCategory(cat)}
-                  className={`px-4 py-1.5 rounded-sm text-sm font-semibold transition-all shrink-0 cursor-pointer capitalize ${
-                    activeVideoCategory === cat ? 'text-white border-l-4 border-red-600 bg-slate-900/50' : 'text-slate-400 hover:text-white bg-transparent border-l-4 border-transparent hover:border-slate-700'
+                  className={`pb-2 text-sm md:text-base font-medium transition-all shrink-0 cursor-pointer capitalize ${
+                    activeVideoCategory === cat ? 'text-white border-b-2 border-[#E50914]' : 'text-gray-400 hover:text-white border-b-2 border-transparent'
                   }`}
                 >
                   {cat}
@@ -1571,19 +1587,18 @@ export default function App() {
             </div>
 
             {/* Videos Grid */}
-            <div className="flex-1 overflow-y-auto p-6 scrollbar-thin">
+            <div className="flex-1 overflow-y-auto px-6 md:px-12 pb-12 scrollbar-thin">
               {filteredVideos.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 text-slate-500 gap-2">
-                  <AlertCircle className="w-10 h-10 text-slate-600 animate-pulse" />
+                <div className="flex flex-col items-center justify-center py-20 text-gray-500 gap-2">
+                  <AlertCircle className="w-10 h-10 text-gray-600 animate-pulse" />
                   <p className="text-sm font-semibold">Nenhum vídeo localizado</p>
-                  <p className="text-xs text-slate-600">Altere os filtros ou o termo pesquisado.</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-10">
                   {filteredVideos.map((video: any, index: number) => (
-                    <div className="group bg-slate-900/60 rounded overflow-hidden hover:bg-slate-800 transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-red-900/20 cursor-pointer flex flex-col border border-transparent hover:border-slate-700">
+                    <div key={index} className="group rounded-md overflow-hidden bg-[#181818] transition-all duration-300 hover:scale-105 hover:z-10 hover:shadow-2xl hover:shadow-black/80 cursor-pointer flex flex-col relative">
                       {/* Video Player Embed (Lazy loaded) */}
-                      <div className="relative aspect-video bg-black overflow-hidden shrink-0 group/vid" onClick={() => setPlayingVideo(video.id)}>
+                      <div className="relative aspect-video bg-[#141414] overflow-hidden shrink-0 group/vid" onClick={() => setPlayingVideo(video.id)}>
                         {playingVideo === video.id ? (
                           <iframe
                             className="absolute inset-0 w-full h-full"
@@ -1598,11 +1613,11 @@ export default function App() {
                             <img 
                               src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`} 
                               alt="Thumbnail" 
-                              className="w-full h-full object-cover opacity-70 group-hover/vid:opacity-100 transition-opacity duration-300" 
+                              className="w-full h-full object-cover opacity-90 group-hover/vid:opacity-100 transition-opacity duration-300" 
                             />
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover/vid:bg-transparent transition-colors">
-                              <div className="w-14 h-14 bg-red-600/90 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(220,38,38,0.5)] group-hover/vid:scale-110 transition-transform duration-300">
-                                <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/vid:opacity-100 bg-black/30 transition-all duration-300">
+                              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/50 group-hover/vid:bg-[#E50914] group-hover/vid:border-transparent transition-all duration-300">
+                                <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                               </div>
                             </div>
                           </>
@@ -1611,7 +1626,7 @@ export default function App() {
                       
                       {/* Info Footer on Card */}
                       <div 
-                        className="p-4 flex-1 flex flex-col justify-between gap-3"
+                        className="p-3 flex-1 flex flex-col justify-between gap-2"
                         onClick={() => {
                           if (playingVideo === video.id) return;
                           handleSelectTerritory(video.territory);
@@ -1620,20 +1635,16 @@ export default function App() {
                         }}
                       >
                         <div>
-                          <h4 className="font-display font-bold text-sm text-slate-200 leading-snug group-hover:text-white transition-colors line-clamp-2">
+                          <h4 className="font-semibold text-sm text-white leading-snug line-clamp-2">
                             {video.title}
                           </h4>
-                          <p className="text-xs text-slate-500 font-light mt-1.5 flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                          <p className="text-[11px] text-gray-400 font-light mt-1 flex items-center gap-1.5">
                             <span className="truncate">{video.city}</span>
                           </p>
                         </div>
-                        <div className="flex items-center justify-between pt-3 border-t border-slate-800">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest capitalize">
+                        <div className="flex items-center justify-between pt-1">
+                          <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest border border-gray-600 px-1 rounded-sm">
                             {video.category}
-                          </span>
-                          <span className="text-[11px] text-white font-medium group-hover:translate-x-1 group-hover:text-red-400 transition-all duration-200 flex items-center gap-1">
-                            Ir ao Mapa →
                           </span>
                         </div>
                       </div>
@@ -1644,6 +1655,8 @@ export default function App() {
             </div>
           </div>
         )}
+      </AnimatePresence>
+
       {/* 8. Fullscreen Image Lightbox */}
       <AnimatePresence>
         {fullscreenImage && (
