@@ -1,0 +1,81 @@
+{
+  "version": "2.0.0",
+  "app": {
+    "title": "MOVIMENTO IRUN",
+    "subtitle": "IDENTIDADE E TERRITÓRIO",
+    "footer": "DESIGN DE TERRITÓRIO: INES GRIMAUX",
+    "siteBase": "https://casadecastroalves.com.br/movimento-irun/territorios",
+    "embedBase": "https://casadecastroalves.com.br/movimento-irun/territorios",
+    "ogImage": "assets/og-mapa-bahia.png"
+  },
+  "map": {
+    "centerFallback": [-12.5, -41.5],
+    "zoomInicial": 7,
+    "minZoom": 5,
+    "maxZoom": 19,
+    "maxBounds": [[-20, -50], [-7, -35]],
+    "baseDefault": "mapa"
+  },
+  "geo": {
+    "territorios": "geo/base/territorios.geojson",
+    "propId": "id",
+    "propNome": "nome",
+    "propCod": "cod"
+  },
+  "rede": {
+    "label": "REDE Movimento Irun",
+    "meta": 27,
+    "territorios": ["ti-03", "ti-05", "ti-06", "ti-16", "ti-19", "ti-21", "ti-22", "ti-26", "ti-27"]
+  },
+  "categorias": {
+    "quilombos": { "label": "Quilombos / Assentamentos", "cor": "#f5c518" },
+    "municipios": { "label": "Municípios", "cor": "#9aa0a6" },
+    "instituicoes": { "label": "Instituições", "cor": "#7c5cff" },
+    "projetos": { "label": "Projetos", "cor": "#2bb673" },
+    "turismo": { "label": "Turismo", "cor": "#ff7a59" },
+    "natureza": { "label": "Natureza", "cor": "#1aa6b7" },
+    "producao": { "label": "Produção", "cor": "#d96b27" }
+  },
+  "filtros": [
+    {
+      "label": "Tipo territorial",
+      "items": ["municipios", "quilombos"]
+    },
+    {
+      "label": "Temática",
+      "items": ["turismo", "natureza", "instituicoes", "producao", "projetos"]
+    }
+  ],
+  "dimensoes": [
+    "História e memória", "Cultura", "Meio ambiente", "Património", "Economia",
+    "Comunidade", "Educação", "Mobilidade", "Potencialidades", "Visão de futuro"
+  ],
+  "sobre": {
+    "titulo": "Sobre o Mapa",
+    "heading": "Mapa Identidade e Território — Movimento Irun",
+    "paragrafos": [
+      "Sejam bem-vindos ao Mapa Identidade e Território, construído coletivamente com as comunidades mapeadas pelo Projeto Movimento Irun.",
+      "Este mapa é resultado de processos de cartografia participativa iniciados em 2017 e aprofundados nos cursos do Programa Bem Viver (2026), a partir do curso Design de Território — centrado em visão participativa, identidade territorial e narrativas de futuro. Por meio desse processo, foram mapeadas as comunidades quilombolas de Lagoa Grande, Tenondé e Engenho da Ponte, em parceria com a Teia dos Povos.",
+      "O projeto Movimento Irun foi contemplado nos editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado da Bahia via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva."
+    ],
+    "secao": {
+      "titulo": "Os 27 Territórios de Identidade",
+      "texto": "A demarcação segue critérios ambientais, econômicos e culturais que expressam identidade, coesão social e pertencimento territorial — conceito desenvolvido pela SEI para o MDA e adotado pela SecultBA como eixo de sua Política de Territorialização da Cultura."
+    },
+    "cursos": {
+      "intro": "Saiba mais e acesse os cursos:",
+      "label": "Movimento Irun · Cursos",
+      "href": "https://casadecastroalves.com.br/movimento-irun/cursos/"
+    }
+  },
+  "fonte": {
+    "geografica": "SEI/SEPLAN — REG_TI_A_100K_2022_GCS_SIR_SEPLAN",
+    "social": "Cartografia Social — Design de Território · Programa Bem Viver · Movimento Irun"
+  },
+  "pontosCultura": {
+    "titulo": "Pontos de Cultura",
+    "definicao": "O Programa Ponto de Cultura é uma política pública de fomento à cultura, instituída pelo Ministério da Cultura em 2004, no âmbito da Política Nacional de Cultura Viva. Reconhece e apoia grupos, coletivos e entidades que atuam de forma autônoma na promoção de atividades culturais com base comunitária, fortalecendo a diversidade cultural, os modos de vida locais e o acesso da população à cultura.",
+    "fonte": "Ministério da Cultura — Cultura Viva",
+    "href": "https://www.gov.br/cultura/pt-br/assuntos/politica-nacional-cultura-viva/ponto-de-cultura"
+  }
+}

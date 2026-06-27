@@ -1,0 +1,129 @@
+{
+  "territorioId": "ti-06",
+  "pontos": [
+    {
+      "id": "comunidade-terreiro-caxute",
+      "nome": "Comunidade Terreiro Caxuté",
+      "coords": [
+        -13.4146908,
+        -39.0809139
+      ],
+      "categorias": [
+        "instituicoes",
+        "projetos"
+      ],
+      "resumo": "Comunidade de terreiro bantu-ameríndia · Cajaíba, Maricoabo · ACULTEMA",
+      "entidadeId": "caxute",
+      "popup": {
+        "contexto": "Costa do Dendê · Terreiro Caxuté",
+        "slides": [
+          {
+            "titulo": "Terreiro Caxuté",
+            "video": {
+              "tipo": "youtube",
+              "id": "A7WJNnO3gQE",
+              "legenda": "Comunidade Terreiro Caxuté",
+              "embed": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "museu-da-costa-do-dende-de-cultura-afro-indigena",
+      "nome": "Museu da Costa do Dendê de Cultura Afro-Indígena",
+      "coords": [
+        -13.467506,
+        -39.0899805
+      ],
+      "categorias": [
+        "instituicoes",
+        "turismo"
+      ],
+      "resumo": "Museu vivo · cosmovisões Bantu e Indígena · trilhas e oficinas · Valença e Cajaíba",
+      "pontoCultura": true,
+      "entidadeId": "museu-dende",
+      "popup": {
+        "contexto": "Costa do Dendê · Valença",
+        "slides": [
+          {
+            "titulo": "Museu da Costa do Dendê de Cultura Afro-Indígena",
+            "video": {
+              "tipo": "youtube",
+              "id": "__qN37AyAro",
+              "legenda": "Museu da Costa do Dendê de Cultura Afro-Indígena",
+              "embed": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "kilombo-tenonde",
+      "nome": "Kilombo Tenondé",
+      "coords": [
+        -13.323106165476451,
+        -39.25321337737795
+      ],
+      "categorias": [
+        "quilombos",
+        "instituicoes"
+      ],
+      "pontoCultura": true,
+      "teiaDosPovos": true,
+      "entidadeId": "tenonde",
+      "popup": {
+        "contexto": "Costa do Dendê · Kilombo Tenondé",
+        "slides": [
+          {
+            "titulo": "Kilombo Tenondé — Vídeo 2",
+            "video": {
+              "tipo": "youtube",
+              "id": "oSvMHXPDZZQ",
+              "legenda": "Agroecologia e permacultura",
+              "embed": false
+            }
+          },
+          {
+            "titulo": "Kilombo Tenondé — Vídeo 3",
+            "video": {
+              "tipo": "youtube",
+              "id": "ki8kFywP6W4",
+              "legenda": "Construção ancestral e ecologia",
+              "embed": false
+            }
+          },
+          {
+            "titulo": "Kilombo Tenondé — Vídeo 4",
+            "video": {
+              "tipo": "youtube",
+              "id": "NzHk9tOp9V8",
+              "legenda": "CosmoAngola e encontros",
+              "embed": false
+            }
+          },
+          {
+            "titulo": "Kilombo Tenondé — Um foco de resistência",
+            "video": {
+              "tipo": "youtube",
+              "id": "gUdY4gsP31U",
+              "legenda": "Vivência e capoeira angola no Kilombo",
+              "embed": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "valenca",
+      "nome": "Valença",
+      "coords": [
+        -13.370017,
+        -39.0720559
+      ],
+      "categorias": [
+        "municipios"
+      ]
+    }
+  ]
+}

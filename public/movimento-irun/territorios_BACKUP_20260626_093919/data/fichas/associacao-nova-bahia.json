@@ -1,0 +1,33 @@
+{
+  "id": "associacao-nova-bahia",
+  "version": "1.0.0",
+  "territorioId": "ti-27",
+  "tipo": "instituicao",
+  "rede": true,
+  "teiaDosPovos": true,
+  "stub": true,
+  "meta": {
+    "nome": "Associação Nova Bahia e Associação Escola",
+    "coords": [
+      -16.4497,
+      -39.0647
+    ],
+    "municipio": "Porto Seguro",
+    "uf": "BA",
+    "fonte": "Movimento Irun — cartografia REDE (stub)",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-19"
+  },
+  "sidebar": {
+    "apresentacao": "Iniciativa associativa e educativa com impacto no desenvolvimento comunitário no território de Porto Seguro.",
+    "identidade": [
+      {
+        "id": "historia",
+        "titulo": "História e memória",
+        "conteudo": "Iniciativa associativa e educativa com impacto no desenvolvimento comunitário no território de Porto Seguro."
+      }
+    ],
+    "portfolio": [],
+    "pesquisas": []
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "associacao-gaiatayama",
+  "version": "1.0.0",
+  "territorioId": "ti-26",
+  "tipo": "instituicao",
+  "rede": true,
+  "teiaDosPovos": true,
+  "stub": true,
+  "meta": {
+    "nome": "Associação Gaiatayama",
+    "coords": [
+      -12.6975,
+      -38.3241
+    ],
+    "municipio": "Camaçari",
+    "uf": "BA",
+    "fonte": "Movimento Irun — cartografia REDE (stub)",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-19"
+  },
+  "sidebar": {
+    "apresentacao": "Organização comunitária com atuação sociocultural no território de Camaçari.",
+    "identidade": [
+      {
+        "id": "historia",
+        "titulo": "História e memória",
+        "conteudo": "Organização comunitária com atuação sociocultural no território de Camaçari."
+      }
+    ],
+    "portfolio": [],
+    "pesquisas": []
+  }
+}

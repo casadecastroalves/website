@@ -1,0 +1,33 @@
+{
+  "id": "mstb-bahia",
+  "version": "1.0.0",
+  "territorioId": "ti-26",
+  "tipo": "projeto",
+  "rede": true,
+  "teiaDosPovos": true,
+  "stub": true,
+  "meta": {
+    "nome": "Movimento Sem Teto da Bahia (MSTB)",
+    "coords": [
+      -12.9777,
+      -38.5016
+    ],
+    "municipio": "Salvador",
+    "uf": "BA",
+    "fonte": "Movimento Irun — cartografia REDE (stub)",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-19"
+  },
+  "sidebar": {
+    "apresentacao": "Movimento social de luta por moradia digna, direito à cidade e articulação de comunidades urbanas em Salvador e região metropolitana.",
+    "identidade": [
+      {
+        "id": "historia",
+        "titulo": "História e memória",
+        "conteudo": "Movimento social de luta por moradia digna, direito à cidade e articulação de comunidades urbanas em Salvador e região metropolitana."
+      }
+    ],
+    "portfolio": [],
+    "pesquisas": []
+  }
+}

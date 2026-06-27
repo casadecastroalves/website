@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Propor um lugar — Mapa Movimento Irun</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css?v=20250626">
+</head>
+<body>
+  <div class="wrap">
+    <span class="badge">CONTRIBUIR · REDE</span>
+    <h1>PROPOR UM LUGAR NO MAPA</h1>
+    <p class="lead">Preencha os dados do território, ponto ou entidade. Nada entra no mapa público sem revisão da equipa Movimento Irun.</p>
+
+    <div class="flow">
+      <strong>Como funciona</strong>
+      <ol>
+        <li>Preencha o formulário (coordenadas, categorias, fotos, vídeo…)</li>
+        <li>Clique em <strong>Exportar ZIP</strong> — descarrega JSON + fotos/PDF (máx. <strong>18 MB</strong> no total)</li>
+        <li>Envie por email para <strong>casadecastroalves@gmail.com</strong> (anexe o ZIP — limite Gmail ~25 MB)</li>
+        <li>Após validação editorial, publicamos no mapa</li>
+      </ol>
+    </div>
+
+    <form id="form-proposta" onsubmit="return false;">
+      <section>
+        <h2>Identificação</h2>
+        <label for="tipo">Tipo</label>
+        <select id="tipo">
+          <option value="quilombo">Quilombo / Assentamento</option>
+          <option value="comunidade">Comunidade / Coletivo</option>
+          <option value="instituicao">Instituição</option>
+          <option value="projeto">Projeto</option>
+          <option value="municipio">Município</option>
+        </select>
+
+        <label for="nome">Nome do lugar / entidade</label>
+        <input id="nome" type="text" required placeholder="Ex.: Quilombo Lagoa Grande">
+
+        <label for="territorioId">Território de Identidade</label>
+        <select id="territorioId"></select>
+
+        <label for="municipio">Município</label>
+        <input id="municipio" type="text" placeholder="Ex.: Valença">
+      </section>
+
+      <section>
+        <h2>Localização no mapa</h2>
+        <p class="hint" style="margin-bottom:10px;font-size:0.84rem;color:var(--muted)">
+          No Google Maps: clique com o botão direito no local → «Copiar coordenadas». Latitude primeiro, depois longitude.
+        </p>
+        <div class="grid-2">
+          <div>
+            <label for="lat">Latitude</label>
+            <input id="lat" type="number" step="any" placeholder="-13.3231" required>
+          </div>
+          <div>
+            <label for="lng">Longitude</label>
+            <input id="lng" type="number" step="any" placeholder="-39.2532" required>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Textos</h2>
+        <label for="resumo">Resumo curto <span class="hint">(aparece no pin do mapa)</span></label>
+        <input id="resumo" type="text" maxlength="200" placeholder="Uma frase sobre o lugar">
+
+        <label for="apresentacao">Apresentação</label>
+        <textarea id="apresentacao" placeholder="Texto introdutório para a ficha lateral…"></textarea>
+      </section>
+
+      <section>
+        <h2>Categorias e redes</h2>
+        <label>Categorias no mapa</label>
+        <div id="categorias" class="chips"></div>
+
+        <div class="chips" style="margin-top:12px">
+          <label class="chip"><input type="checkbox" id="teiaDosPovos"> 🕸 Teia dos Povos</label>
+          <label class="chip"><input type="checkbox" id="pontoCultura"> ★ Ponto de Cultura</label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Mídia</h2>
+        <p class="media-limit">Limite de <strong>18 MB</strong> em anexos (fotos + PDF juntos) — margem segura para envio por email.</p>
+        <div id="attach-budget" class="attach-budget" aria-live="polite">
+          <div class="attach-budget-bar" role="progressbar" aria-valuemin="0" aria-valuemax="18874368" aria-valuenow="0" aria-label="Espaço usado nos anexos">
+            <span style="width:2%"></span>
+          </div>
+          <p class="attach-budget-text"><strong>0%</strong> · Anexos: <strong>0 B</strong> / 18,0 MB</p>
+        </div>
+
+        <label for="video">Link YouTube <span class="hint">(opcional — vídeo no popup do pin; não conta no limite)</span></label>
+        <input id="video" type="url" placeholder="https://www.youtube.com/watch?v=…">
+
+        <label for="fotos">Fotos <span class="hint">(até 10 imagens, máx. 2 MB cada — JPG, PNG ou WebP)</span></label>
+        <input id="fotos" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple>
+        <ul id="fotos-list" class="file-list"></ul>
+
+        <label for="pdf">PDF / portfólio <span class="hint">(opcional — partilha o limite de 18 MB com as fotos)</span></label>
+        <input id="pdf" type="file" accept="application/pdf,.pdf">
+        <ul id="pdf-list" class="file-list"></ul>
+      </section>
+
+      <section>
+        <h2>Contacto</h2>
+        <label for="responsavel">Nome do responsável / organização</label>
+        <input id="responsavel" type="text" placeholder="Quem preenche ou representa o lugar">
+
+        <div class="grid-2">
+          <div>
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="contacto@…">
+          </div>
+          <div>
+            <label for="telefone">Telefone</label>
+            <input id="telefone" type="tel" placeholder="+55 …">
+          </div>
+        </div>
+
+        <label for="instagram">Instagram ou site <span class="hint">(opcional)</span></label>
+        <input id="instagram" type="text" placeholder="@conta ou https://…">
+      </section>
+
+      <section>
+        <label class="chip" style="display:flex;align-items:flex-start;gap:8px;border-radius:8px;padding:10px">
+          <input type="checkbox" id="autorizo" style="margin-top:3px">
+          <span>Confirmo que tenho autorização para partilhar textos, imagens e vídeos deste lugar, e que os dados estão correctos.</span>
+        </label>
+      </section>
+
+      <p id="err" class="err" role="alert"></p>
+
+      <div class="actions">
+        <button type="button" id="btn-export">Exportar ZIP e enviar por email</button>
+        <button type="button" class="secondary" onclick="location.href='../index.html'">← Voltar ao mapa</button>
+      </div>
+    </form>
+
+    <p class="note">O mapa público só mostra conteúdo validado. O ZIP não altera o site automaticamente — a equipa GRIMAUX / Movimento Irun integra manualmente após revisão.</p>
+
+    <div class="links">
+      <a href="../index.html">← Mapa Identidade e Território</a>
+    </div>
+  </div>
+
+  <script type="module" src="admin.js?v=20250626"></script>
+</body>
+</html>

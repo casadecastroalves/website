@@ -1,0 +1,25 @@
+{
+  "id": "guarda-mocambique-bh",
+  "version": "1.0.0",
+  "tipo": "projeto",
+  "rede": false,
+  "stub": true,
+  "meta": {
+    "nome": "Guarda de Moçambique e Congo Reinado Treze de Maio",
+    "coords": [
+      -19.9167,
+      -43.9345
+    ],
+    "municipio": "Belo Horizonte",
+    "uf": "MG",
+    "fonte": "Movimento Irun — cartografia REDE (elo fora da Bahia)",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-19"
+  },
+  "sidebar": {
+    "apresentacao": "Elo da rede em Belo Horizonte (MG), fora dos Territórios de Identidade da Bahia. Conteúdo em breve.",
+    "identidade": [],
+    "portfolio": [],
+    "pesquisas": []
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "associacao-maria-quiteria",
+  "version": "1.0.0",
+  "territorioId": "ti-19",
+  "tipo": "quilombo",
+  "rede": false,
+  "stub": true,
+  "meta": {
+    "nome": "Associação Quilombola Comunitária de Maria Quitéria",
+    "coords": [
+      -12.2666,
+      -38.9666
+    ],
+    "municipio": "Feira de Santana",
+    "uf": "BA",
+    "fonte": "Movimento Irun — cartografia REDE (stub)",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-19"
+  },
+  "sidebar": {
+    "apresentacao": "Associação de representação e luta pelos direitos e pela terra da comunidade quilombola na região de Feira de Santana.",
+    "identidade": [
+      {
+        "id": "historia",
+        "titulo": "História e memória",
+        "conteudo": "Associação de representação e luta pelos direitos e pela terra da comunidade quilombola na região de Feira de Santana."
+      }
+    ],
+    "portfolio": [],
+    "pesquisas": []
+  }
+}

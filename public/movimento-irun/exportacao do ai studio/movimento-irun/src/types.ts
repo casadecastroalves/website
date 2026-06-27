@@ -1,7 +1,7 @@
 export interface Territory {
   id: string;
   name: string;
-  category: string;
+  category: 'quilombo' | 'cultura' | 'tradicional';
   coordinates: [number, number]; // [longitude, latitude]
   city: string;
   state: string;
@@ -13,7 +13,6 @@ export interface Territory {
   activities: string[];
   imageUrl: string;
   contact?: string;
-  rawFicha?: any;
 }
 
-export type FilterCategory = string;
+export type FilterCategory = 'todos' | 'quilombo' | 'cultura' | 'tradicional';

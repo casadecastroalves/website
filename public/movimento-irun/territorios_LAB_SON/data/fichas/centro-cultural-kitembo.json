@@ -1,0 +1,33 @@
+{
+  "id": "centro-cultural-kitembo",
+  "version": "1.0.0",
+  "territorioId": "ti-06",
+  "tipo": "quilombo",
+  "rede": true,
+  "teiaDosPovos": true,
+  "stub": true,
+  "meta": {
+    "nome": "Centro Cultural Quilombola O Olhar De Kitembo",
+    "coords": [
+      -13.4686,
+      -39.0325
+    ],
+    "municipio": "Cairu",
+    "uf": "BA",
+    "fonte": "Movimento Irun — cartografia REDE (stub)",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-19"
+  },
+  "sidebar": {
+    "apresentacao": "Centro cultural quilombola focado na preservação da memória e saberes ancestrais na região de Cairu.",
+    "identidade": [
+      {
+        "id": "historia",
+        "titulo": "História e memória",
+        "conteudo": "Centro cultural quilombola focado na preservação da memória e saberes ancestrais na região de Cairu."
+      }
+    ],
+    "portfolio": [],
+    "pesquisas": []
+  }
+}

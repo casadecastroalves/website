@@ -22,177 +22,38 @@ import {
   Globe,
   Map as MapIcon,
   Check,
-  Locate,
-  Video,
-  AlertCircle
+  AlertCircle,
+  Locate
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { territoriesData } from './data/territories';
 import { Territory, FilterCategory } from './types';
 
-// Map Styles mapping using reliable raster tile layers to prevent WebGL/CORS tile loading issues
+// Map Styles mapping (free CartoDB base maps that don't require API keys)
 const MAP_STYLES = {
   voyager: {
     name: 'Colorido (Voyager)',
-    style: {
-      version: 8,
-      sources: {
-        'raster-tiles': {
-          type: 'raster',
-          tiles: [
-            'https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-            'https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-            'https://c.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-            'https://d.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
-          ],
-          tileSize: 256,
-          attribution: '&copy; OpenStreetMap &copy; CARTO'
-        }
-      },
-      layers: [{ id: 'raster-tiles-layer', type: 'raster', source: 'raster-tiles' }]
-    }
+    url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json'
   },
   positron: {
     name: 'Mínimo (Positron)',
-    style: {
-      version: 8,
-      sources: {
-        'raster-tiles': {
-          type: 'raster',
-          tiles: [
-            'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-            'https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-            'https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-            'https://d.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png'
-          ],
-          tileSize: 256,
-          attribution: '&copy; OpenStreetMap &copy; CARTO'
-        }
-      },
-      layers: [{ id: 'raster-tiles-layer', type: 'raster', source: 'raster-tiles' }]
-    }
+    url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
   },
-  satellite: {
-    name: 'Satélite',
-    style: {
-      version: 8,
-      sources: {
-        'raster-tiles': {
-          type: 'raster',
-          tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
-          tileSize: 256,
-          attribution: 'Tiles &copy; Esri'
-        }
-      },
-      layers: [{ id: 'raster-tiles-layer', type: 'raster', source: 'raster-tiles' }]
-    }
+  dark: {
+    name: 'Contraste Escuro',
+    url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
   }
 };
 
 export default function App() {
   // State variables
-  const [territories, setTerritories] = useState<Territory[]>([]);
+  const [territories, setTerritories] = useState<Territory[]>(territoriesData);
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<FilterCategory>('todos');
   const [selectedTerritory, setSelectedTerritory] = useState<Territory | null>(null);
   const [mapStyle, setMapStyle] = useState<keyof typeof MAP_STYLES>('voyager');
   const [isLocating, setIsLocating] = useState(false);
-  const [showCineIrun, setShowCineIrun] = useState(false);
-  const [videoSearchQuery, setVideoSearchQuery] = useState('');
-  const [activeVideoCategory, setActiveVideoCategory] = useState<FilterCategory>('todos');
-  const [playingVideo, setPlayingVideo] = useState<string | null>(null);
-  const [fullscreenImage, setFullscreenImage] = useState<{src: string, caption: string} | null>(null);
   
-  // Dynamic data loading
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const manifestRes = await fetch('../territorios/data/manifest.json');
-        const manifest = await manifestRes.json();
-        
-        // Load all fichas
-        const fichasPromises = (manifest.fichas || []).map(async (id: string) => {
-          try {
-            const res = await fetch(`../territorios/data/fichas/${id}.json`);
-            return await res.json();
-          } catch (e) {
-            console.error(`Failed to load ficha ${id}:`, e);
-            return null;
-          }
-        });
-        const loadedFichas = (await Promise.all(fichasPromises)).filter(Boolean);
-
-        // Load all points files
-        const pontosPromises = (manifest.pontos || []).map(async (id: string) => {
-          try {
-            const res = await fetch(`../territorios/data/pontos/${id}.json`);
-            return await res.json();
-          } catch (e) {
-            console.error(`Failed to load pontos ${id}:`, e);
-            return null;
-          }
-        });
-        const loadedPontos = (await Promise.all(pontosPromises)).filter(Boolean);
-        const allPins: any[] = [];
-        loadedPontos.forEach((pf: any) => {
-          if (pf && pf.pontos) {
-            pf.pontos.forEach((p: any) => {
-              allPins.push({ ...p, territorioId: p.territorioId || pf.territorioId });
-            });
-          }
-        });
-        
-        // Map Fichas to Territory format for React layout
-        const mapped: Territory[] = loadedFichas.map((f: any) => {
-          // Find pins that point to this Ficha
-          const matchingPins = allPins.filter((p: any) => (p.fichaId === f.id || p.entidadeId === f.id));
-          // Extract YouTube videos from popup slides
-          const videos: string[] = [];
-          matchingPins.forEach((p: any) => {
-            if (p.popup && p.popup.slides) {
-              p.popup.slides.forEach((s: any) => {
-                if (s.video && s.video.tipo === 'youtube' && s.video.id) {
-                  videos.push(s.video.id);
-                }
-              });
-            }
-          });
-
-          const historySection = f.sidebar?.identidade?.find((i: any) => i.id === 'historia')?.conteudo || '';
-          const heritageStatus = f.sidebar?.identidade?.find((i: any) => i.id === 'patrimonio')?.conteudo || 'Certificado';
-          
-          const tiMapping: Record<string, string> = {
-            "ti-01": "Irecê", "ti-02": "Velho Chico", "ti-03": "Chapada Diamantina", "ti-04": "Sisal", "ti-05": "Litoral Sul", "ti-06": "Baixo Sul", "ti-07": "Extremo Sul", "ti-08": "Médio Sudoeste da Bahia", "ti-09": "Vale do Jiquiriçá", "ti-10": "Sertão do São Francisco", "ti-11": "Bacia do Rio Grande", "ti-12": "Bacia do Paramirim", "ti-13": "Sertão Produtivo", "ti-14": "Piemonte do Paraguaçu", "ti-15": "Bacia do Jacuípe", "ti-16": "Piemonte da Diamantina", "ti-17": "Semiárido Nordeste II", "ti-18": "Litoral Norte e Agreste Baiano", "ti-19": "Portal do Sertão", "ti-20": "Sudoeste Baiano", "ti-21": "Recôncavo", "ti-22": "Médio Rio de Contas", "ti-23": "Bacia do Rio Corrente", "ti-24": "Itaparica", "ti-25": "Piemonte Norte do Itapicuru", "ti-26": "RMS — Região Metropolitana de Salvador", "ti-27": "Costa do Descobrimento"
-          };
-          const tiName = tiMapping[f.territorioId] || f.territorioId || 'Bahia';
-
-          return {
-            id: f.id,
-            name: f.meta?.nome || f.titulo || f.id,
-            category: f.tipo || 'comunidade tradicional',
-            coordinates: [f.meta?.coords[1], f.meta?.coords[0]] as [number, number], // [lng, lat]
-            city: f.meta?.municipio || '',
-            state: tiName,
-            description: f.sidebar?.apresentacao || '',
-            history: historySection,
-            heritageStatus: heritageStatus,
-            activities: [],
-            imageUrl: f.sidebar?.fotos?.[0]?.src 
-              ? `../territorios/${f.sidebar.fotos[0].src}`
-              : 'https://images.unsplash.com/photo-1540206395-68808572332f?auto=format&fit=crop&q=80&w=600',
-            contact: f.meta?.responsavel || '',
-            rawFicha: { ...f, videos } // Attach matching video IDs here!
-          };
-        });
-        
-        setTerritories(mapped);
-      } catch (err) {
-        console.error('Failed to load dynamic map data:', err);
-      }
-    }
-    loadData();
-  }, []);
-
   // Modals and notifications
   const [showAddModal, setShowAddModal] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -223,18 +84,25 @@ export default function App() {
   const userMarkerRef = useRef<maplibregl.Marker | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
-  // Statistics calculation removed as requested
+  // Statistics calculation
+  const stats = useMemo(() => {
+    const total = territories.length;
+    const quilombos = territories.filter(t => t.category === 'quilombo').length;
+    const cultura = territories.filter(t => t.category === 'cultura').length;
+    const tradicional = territories.filter(t => t.category === 'tradicional').length;
+    return { total, quilombos, cultura, tradicional };
+  }, [territories]);
 
   // Filtered list based on active category and search text
   const filteredTerritories = useMemo(() => {
     return territories.filter(t => {
       const matchesCategory = activeCategory === 'todos' || t.category === activeCategory;
       const matchesSearch = 
-        (t.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (t.city || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (t.description || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (t.leader && t.leader.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (t.activities || []).some(act => act.toLowerCase().includes(searchQuery.toLowerCase()));
+        t.activities.some(act => act.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchesCategory && matchesSearch;
     });
   }, [territories, activeCategory, searchQuery]);
@@ -343,7 +211,7 @@ export default function App() {
     // Centered around Recôncavo Baiano / Salvador
     const map = new maplibregl.Map({
       container: mapContainerRef.current,
-      style: MAP_STYLES[mapStyle].style as any,
+      style: MAP_STYLES[mapStyle].url,
       center: [-38.6500, -12.8200], // Bahia center
       zoom: 9.2,
       maxBounds: [
@@ -379,7 +247,47 @@ export default function App() {
       }
     });
 
+    // Automatically try to geolocate on initial load
+    map.on('load', () => {
+      setTimeout(() => {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { longitude, latitude } = position.coords;
+            map.flyTo({
+              center: [longitude, latitude],
+              zoom: 11.5,
+              essential: true,
+              duration: 1800
+            });
 
+            const userEl = document.createElement('div');
+            userEl.className = 'relative flex items-center justify-center z-50';
+            userEl.innerHTML = `
+              <span class="absolute inline-flex h-8 w-8 rounded-full bg-blue-500 opacity-40 animate-ping"></span>
+              <span class="relative inline-flex rounded-full h-5 w-5 bg-blue-600 border-2 border-white shadow-xl"></span>
+            `;
+
+            const popup = new maplibregl.Popup({ offset: 12 }).setHTML(`
+              <div class="text-xs p-1">
+                <p class="font-semibold text-slate-800">Sua Posição</p>
+                <p class="text-slate-500 text-[10px] mt-0.5">${latitude.toFixed(5)}, ${longitude.toFixed(5)}</p>
+              </div>
+            `);
+
+            const newUserMarker = new maplibregl.Marker({ element: userEl })
+              .setLngLat([longitude, latitude])
+              .setPopup(popup)
+              .addTo(map);
+
+            userMarkerRef.current = newUserMarker;
+          },
+          (error) => {
+            console.warn('Geolocalização automática inicial recusada ou indisponível:', error);
+          },
+          { enableHighAccuracy: true, timeout: 8000 }
+        );
+      }, 1500);
+    });
 
     return () => {
       map.remove();
@@ -389,7 +297,7 @@ export default function App() {
   // Sync map style when state changes
   useEffect(() => {
     if (mapRef.current) {
-      mapRef.current.setStyle(MAP_STYLES[mapStyle].style as any);
+      mapRef.current.setStyle(MAP_STYLES[mapStyle].url);
     }
   }, [mapStyle]);
 
@@ -411,24 +319,25 @@ export default function App() {
       el.id = `marker-${t.id}`;
       
       // Color definition
-      let bgColor = 'bg-sky-500';
-      let ringColor = 'ring-sky-200';
+      let bgColor = 'bg-emerald-600';
+      let ringColor = 'ring-emerald-200';
+      let iconHex = 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z';
       
-      if (t.category === 'quilombo' || t.category === 'natureza' || t.category === 'producao') {
-        bgColor = 'bg-emerald-600'; ringColor = 'ring-emerald-200';
-      } else if (t.category === 'cultura' || t.category === 'turismo' || t.category === 'terreiro') {
-        bgColor = 'bg-amber-500'; ringColor = 'ring-amber-200';
-      } else if (t.category === 'instituicao' || t.category === 'assentamento') {
-        bgColor = 'bg-slate-700'; ringColor = 'ring-slate-300';
+      if (t.category === 'cultura') {
+        bgColor = 'bg-amber-500';
+        ringColor = 'ring-amber-200';
+      } else if (t.category === 'tradicional') {
+        bgColor = 'bg-sky-500';
+        ringColor = 'ring-sky-200';
       }
 
-      el.className = `flex items-center justify-center rounded-full text-white cursor-pointer shadow-xl border border-white/60 ${bgColor} ${
-        isSelected ? 'w-10 h-10 ring-4 ' + ringColor + ' z-30' : 'w-8 h-8 hover:z-20'
+      el.className = `flex items-center justify-center rounded-full text-white cursor-pointer transition-all duration-300 shadow-xl border border-white/60 ${bgColor} ${
+        isSelected ? 'w-10 h-10 ring-4 ' + ringColor + ' scale-110 z-30' : 'w-8 h-8 hover:scale-115 hover:z-20'
       }`;
 
-      // Custom marker inner SVG with safe scale transitions on hover/select
+      // Custom marker inner SVG
       el.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 transition-transform duration-300 hover:scale-120 ${isSelected ? 'marker-pulse scale-110' : ''}">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 ${isSelected ? 'marker-pulse' : ''}">
           <path d="${iconHex}" />
         </svg>
       `;
@@ -439,19 +348,20 @@ export default function App() {
         handleSelectTerritory(t);
       });
 
-      // MapLibre popup on hover (brief summary with photo if available)
-      const popupPhoto = `<img src="${t.imageUrl}" class="w-full h-20 object-cover rounded-lg mb-1.5 shadow-sm" style="display:block;" />`;
-
+      // MapLibre popup on hover (brief summary)
       const popup = new maplibregl.Popup({
         offset: 15,
         closeButton: false,
         closeOnClick: false
       }).setHTML(`
-        <div class="text-[11px] p-1.5 max-w-[190px] font-sans leading-normal">
-          ${popupPhoto}
-          <p class="font-semibold text-slate-900 leading-tight">${t.name}</p>
-          <p class="text-slate-500 mt-0.5">${t.city}</p>
-          <span class="inline-block mt-1.5 px-1.5 py-0.5 text-[9px] font-bold rounded uppercase tracking-wider bg-slate-100 border border-slate-200 text-slate-700">${t.category}</span>
+        <div class="text-xs p-1">
+          <p class="font-display font-semibold text-slate-900">${t.name}</p>
+          <p class="text-slate-500 mt-0.5">${t.city}, ${t.state}</p>
+          <span class="inline-block mt-1 px-1.5 py-0.5 text-[9px] font-medium rounded capitalize ${
+            t.category === 'quilombo' ? 'bg-emerald-50 text-emerald-700' :
+            t.category === 'cultura' ? 'bg-amber-50 text-amber-700' :
+            'bg-sky-50 text-sky-700'
+          }">${t.category}</span>
         </div>
       `);
 
@@ -506,8 +416,6 @@ export default function App() {
       });
     }
     setSelectedTerritory(null);
-    setSearchQuery('');
-    setActiveCategory('todos');
   };
 
   // Add customized activities to form
@@ -615,38 +523,6 @@ export default function App() {
     });
   };
 
-  // Get all unique videos mapped from territories data
-  const allVideos = useMemo(() => {
-    const list: any[] = [];
-    territories.forEach(t => {
-      if (t.rawFicha?.videos) {
-        t.rawFicha.videos.forEach((vidId: string) => {
-          // Prevent duplicates
-          if (!list.some(v => v.id === vidId)) {
-            list.push({
-              id: vidId,
-              title: t.name,
-              territory: t,
-              category: t.category,
-              city: t.city
-            });
-          }
-        });
-      }
-    });
-    return list;
-  }, [territories]);
-
-  // Filter videos based on search
-  const filteredVideos = useMemo(() => {
-    return allVideos.filter(v => {
-      const matchSearch = v.title.toLowerCase().includes(videoSearchQuery.toLowerCase()) || 
-                          v.city.toLowerCase().includes(videoSearchQuery.toLowerCase());
-      const matchCategory = activeVideoCategory === 'todos' || v.category === activeVideoCategory;
-      return matchSearch && matchCategory;
-    });
-  }, [allVideos, videoSearchQuery, activeVideoCategory]);
-
   return (
     <div id="mapa-container" className="relative w-screen h-screen overflow-hidden bg-slate-100 font-sans select-none">
       
@@ -656,30 +532,27 @@ export default function App() {
       {/* 2. Brand Floating Sidebar (Left Panel) */}
       <aside 
         id="panel-lateral"
-        className="absolute top-4 left-4 z-10 w-[calc(100%-2rem)] md:w-80 lg:w-96 max-h-[calc(100vh-2rem)] flex flex-col bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 overflow-hidden transition-all duration-300 mobile-drawer"
+        className="absolute top-4 left-4 z-10 w-96 max-h-[calc(100vh-2rem)] flex flex-col bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 overflow-hidden transition-all duration-300 lg:w-96 md:w-80 w-full sm:static sm:h-full mobile-drawer"
       >
         {/* Brand Header */}
-        <div className="p-5 border-b border-slate-100 bg-white/95 relative overflow-hidden">
+        <div className="p-5 border-b border-slate-100 bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950 text-white relative overflow-hidden">
+          {/* Subtle light graphics */}
+          <div className="absolute right-0 bottom-0 opacity-10 translate-x-1/4 translate-y-1/4">
+            <Compass className="w-48 h-48 rotate-12" />
+          </div>
+          
           <div className="flex items-center justify-between">
-            <div className="flex flex-col">
-              <h1 
-                onClick={handleResetView}
-                className="text-xl font-display font-bold tracking-tight text-slate-900 cursor-pointer hover:text-amber-800 transition-colors"
-              >
-                MOVIMENTO IRUN
-              </h1>
-              <p className="text-[10px] text-slate-500 font-medium tracking-wider mt-0.5 uppercase">
-                IDENTIDADE E TERRITÓRIO
-              </p>
-            </div>
-            <div className="flex items-center gap-1">
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono tracking-widest bg-amber-500/20 border border-amber-500/30 text-amber-300 font-semibold uppercase">
+              Rascunho Consola
+            </span>
+            <div className="flex items-center gap-1.5">
               <button 
                 onClick={handleGeolocate}
                 disabled={isLocating}
                 className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                   isLocating 
-                    ? 'bg-blue-50 text-blue-600 animate-pulse' 
-                    : 'hover:bg-slate-100 text-slate-400 hover:text-slate-700'
+                    ? 'bg-blue-600/30 text-blue-300 animate-pulse' 
+                    : 'hover:bg-white/10 text-slate-300 hover:text-white'
                 }`}
                 title="Minha Localização"
               >
@@ -687,13 +560,19 @@ export default function App() {
               </button>
               <button 
                 onClick={handleResetView}
-                className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                className="p-1.5 hover:bg-white/10 rounded-lg text-slate-300 hover:text-white transition-colors cursor-pointer"
                 title="Centralizar no Recôncavo"
               >
                 <Compass className="w-4 h-4" />
               </button>
             </div>
           </div>
+          <h1 className="text-xl font-display font-bold tracking-tight mt-2 flex items-center gap-2">
+            MOVIMENTO IRUN
+          </h1>
+          <p className="text-xs text-slate-300 font-light tracking-wide mt-1">
+            Identidade, Território e Ancestralidade no Recôncavo Baiano
+          </p>
         </div>
 
         {/* Aggregate Stats Bar */}
@@ -756,56 +635,43 @@ export default function App() {
           >
             Todos
           </button>
-          {Array.from(new Set(territories.map(t => t.category))).filter(Boolean).sort().map(cat => (
-            <button 
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all shrink-0 flex items-center gap-1 capitalize ${
-                activeCategory === cat
-                  ? 'bg-amber-600 text-white shadow-sm' 
-                  : 'bg-white border border-slate-200 text-slate-600 hover:bg-amber-50 hover:text-amber-800'
-              }`}
-            >
-              <span className={`w-2 h-2 rounded-full border border-white ${activeCategory === cat ? 'bg-amber-400' : 'bg-slate-300'}`}></span>
-              {cat}
-            </button>
-          ))}
+          <button 
+            onClick={() => setActiveCategory('quilombo')}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all shrink-0 flex items-center gap-1 ${
+              activeCategory === 'quilombo' 
+                ? 'bg-emerald-600 text-white shadow-sm' 
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-emerald-50 hover:text-emerald-800'
+            }`}
+          >
+            <span className="w-2 h-2 rounded-full bg-emerald-500 border border-white"></span>
+            Quilombos
+          </button>
+          <button 
+            onClick={() => setActiveCategory('cultura')}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all shrink-0 flex items-center gap-1 ${
+              activeCategory === 'cultura' 
+                ? 'bg-amber-500 text-white shadow-sm' 
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-amber-50 hover:text-amber-800'
+            }`}
+          >
+            <span className="w-2 h-2 rounded-full bg-amber-400 border border-white"></span>
+            Cultura
+          </button>
+          <button 
+            onClick={() => setActiveCategory('tradicional')}
+            className={`px-3.5 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all shrink-0 flex items-center gap-1 ${
+              activeCategory === 'tradicional' 
+                ? 'bg-sky-500 text-white shadow-sm' 
+                : 'bg-white border border-slate-200 text-slate-600 hover:bg-sky-50 hover:text-sky-800'
+            }`}
+          >
+            <span className="w-2 h-2 rounded-full bg-sky-400 border border-white"></span>
+            Tradicionais
+          </button>
         </div>
 
         {/* Scrollable list of territories */}
         <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50/30">
-          {/* About Map Card (Visible only when no territory is selected and no active search) */}
-          {!selectedTerritory && searchQuery === '' && activeCategory === 'todos' && (
-            <div className="p-4 bg-white border border-slate-100 rounded-xl shadow-sm text-xs text-slate-600 leading-relaxed font-light space-y-2.5">
-              <h3 className="font-display font-semibold text-sm text-slate-900 border-b border-slate-100 pb-2 flex items-center gap-1.5">
-                <Info className="w-4 h-4 text-amber-600 shrink-0" />
-                Sobre o Mapa Identidade e Território
-              </h3>
-              <p>
-                Sejam bem-vindos ao Mapa Identidade e Território, construído coletivamente com as comunidades mapeadas pelo Projeto Movimento Irun.
-              </p>
-              <p>
-                Este documento é resultado do Programa Design Dialógico (2017) e dos cursos do Programa Bem Viver (2026), a partir do curso Design de Território — centrado em visão participativa, identidade territorial e narrativas de futuro. Por meio desse processo, foram mapeadas as comunidades quilombolas de Lagoa Grande, Tenodé e Engenho da Ponte, em parceria com a Teia dos Povos.
-              </p>
-              <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl text-[11px]">
-                <strong className="block font-semibold text-slate-800 mb-1">Os 27 Territórios de Identidade</strong>
-                A demarcação segue critérios ambientais, econômicos e culturais que expressam identidade, coesão social e pertencimento territorial.
-              </div>
-              <div className="pt-2 border-t border-slate-100 flex gap-2">
-                <a 
-                  href="https://casadecastroalves.com.br/movimento-irun/" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-900 font-semibold text-[10px]"
-                >
-                  🔗 Movimento Irun · Cursos
-                </a>
-              </div>
-              <p className="text-[10px] text-slate-400 mt-2 pt-2 border-t border-slate-100 font-mono leading-normal">
-                O projeto Movimento Irun foi contemplado nos editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado da Bahia via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva.
-              </p>
-            </div>
-          )}
           <AnimatePresence mode="popLayout">
             {filteredTerritories.length === 0 ? (
               <motion.div 
@@ -879,26 +745,19 @@ export default function App() {
         </div>
 
         {/* Footer actions: Add custom territory */}
-        <div className="p-4 border-t border-slate-100 bg-white/95 flex gap-2 shrink-0">
-          <button 
-            onClick={() => setShowCineIrun(true)}
-            className="flex-1 py-3 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 shadow-lg"
-          >
-            <Video className="w-4 h-4" />
-            Cine Irun
-          </button>
+        <div className="p-4 border-t border-slate-100 bg-white/95 flex gap-2">
           <button 
             onClick={() => setShowAddModal(true)}
-            className="flex-1 py-3 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-all duration-300 cursor-pointer flex items-center justify-center gap-1 shadow-lg"
+            className="flex-1 py-3 px-4 rounded-xl bg-slate-900 hover:bg-amber-950 text-white text-xs font-semibold transition-all duration-300 cursor-pointer flex items-center justify-center gap-2 group shadow-lg"
           >
-            <Plus className="w-4 h-4" />
-            Novo Ponto
+            <Plus className="w-4.5 h-4.5 group-hover:rotate-90 transition-transform duration-300" />
+            Adicionar Território
           </button>
         </div>
       </aside>
 
-      {/* 3. Floating Map Style Selector & Geolocation Controls (Top-Right on desktop, Bottom on mobile) */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-auto md:top-4 md:right-16 md:left-auto md:translate-x-0 z-10 flex gap-1.5 items-center bg-white/95 backdrop-blur-md p-1.5 rounded-xl border border-slate-200/80 shadow-lg max-w-[calc(100vw-2rem)] overflow-x-auto scrollbar-none shrink-0">
+      {/* 3. Floating Map Style Selector & Geolocation Controls (Top-Right) */}
+      <div className="absolute top-4 right-16 z-10 flex gap-2 items-center bg-white/95 backdrop-blur-md p-1.5 rounded-xl border border-slate-200/80 shadow-lg shrink-0">
         <button
           onClick={handleGeolocate}
           disabled={isLocating}
@@ -934,32 +793,43 @@ export default function App() {
       <AnimatePresence>
         {selectedTerritory && (
           <motion.aside
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 100 }}
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 100 }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="fixed inset-x-0 bottom-0 z-50 w-full h-[85vh] md:absolute md:inset-auto md:top-4 md:right-4 md:w-80 lg:w-96 md:h-auto md:max-h-[calc(100vh-2rem)] bg-white/95 backdrop-blur-md rounded-t-3xl md:rounded-2xl shadow-2xl border-t md:border border-slate-200 flex flex-col overflow-hidden text-slate-800"
+            className="absolute top-4 right-4 z-10 w-96 max-h-[calc(100vh-2rem)] bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 flex flex-col overflow-hidden text-slate-800 lg:w-96 md:w-80 w-full"
           >
-            {/* Mobile Pull Handle bar */}
-            <div 
-              className="w-12 h-1.5 bg-slate-300 hover:bg-slate-400 transition-colors rounded-full mx-auto my-3 md:hidden block shrink-0 cursor-pointer" 
-              onClick={() => setSelectedTerritory(null)} 
-            />
-            {/* Clean Light Text Header */}
-            <div className="p-5 border-b border-slate-100 bg-white relative flex flex-col justify-end shrink-0 pr-12">
-              <span className={`inline-block self-start text-[9px] font-mono tracking-widest px-2 py-0.5 rounded uppercase font-semibold mb-1.5 border bg-slate-50 border-slate-200 text-slate-600`}>
-                {selectedTerritory.category}
-              </span>
-              <h2 className="text-lg md:text-xl font-display font-bold leading-tight text-slate-900">
-                {selectedTerritory.name}
-              </h2>
+            {/* Image Banner Header */}
+            <div className="h-44 relative bg-slate-200 overflow-hidden shrink-0">
+              <img 
+                src={selectedTerritory.imageUrl} 
+                alt={selectedTerritory.name}
+                referrerPolicy="no-referrer"
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  // Fallback image if unsplash fails
+                  (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540206395-68808572332f?auto=format&fit=crop&q=80&w=600';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-5 text-white">
+                <span className={`inline-block self-start text-[9px] font-mono tracking-widest px-2 py-0.5 rounded uppercase font-semibold mb-1 border ${
+                  selectedTerritory.category === 'quilombo' ? 'bg-emerald-600/30 border-emerald-500/40 text-emerald-300' :
+                  selectedTerritory.category === 'cultura' ? 'bg-amber-600/30 border-amber-500/40 text-amber-300' :
+                  'bg-sky-600/30 border-sky-500/40 text-sky-300'
+                }`}>
+                  {selectedTerritory.category}
+                </span>
+                <h2 className="text-lg font-display font-bold leading-tight">
+                  {selectedTerritory.name}
+                </h2>
+              </div>
 
               {/* Close Button */}
               <button 
                 onClick={() => setSelectedTerritory(null)}
-                className="absolute top-4 right-4 p-2 md:p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-all cursor-pointer z-10"
+                className="absolute top-3 right-3 p-1.5 rounded-full bg-black/40 hover:bg-black/60 text-white hover:text-amber-400 transition-all shadow cursor-pointer"
               >
-                <X className="w-5 h-5 md:w-4 md:h-4" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -976,57 +846,25 @@ export default function App() {
                   </span>
                 </div>
                 <div>
-                  <span className="block text-[10px] font-mono text-slate-400 uppercase">TI (Código)</span>
-                  <span className="text-sm font-semibold text-slate-700 mt-0.5 block uppercase">
+                  <span className="block text-[10px] font-mono text-slate-400 uppercase">Estado</span>
+                  <span className="text-sm font-semibold text-slate-700 mt-0.5 block">
                     {selectedTerritory.state}
                   </span>
                 </div>
                 <div>
                   <span className="block text-[10px] font-mono text-slate-400 uppercase">Liderança</span>
                   <span className="text-sm font-semibold text-slate-700 flex items-center gap-1 mt-0.5">
-                    <Users className="w-3.5 h-3.5 text-amber-600" />
-                    {selectedTerritory.rawFicha?.meta?.responsavel || 'Tradicional'}
+                    <Users className="w-3.5 h-3.5 text-amber-600 animate-pulse" />
+                    {selectedTerritory.leader || 'Tradicional'}
                   </span>
                 </div>
                 <div>
-                  <span className="block text-[10px] font-mono text-slate-400 uppercase">Atualizado em</span>
+                  <span className="block text-[10px] font-mono text-slate-400 uppercase">Fundação</span>
                   <span className="text-sm font-semibold text-slate-700 mt-0.5 block font-display">
-                    {selectedTerritory.rawFicha?.meta?.updatedAt || 'Ancestral'}
+                    {selectedTerritory.founded || 'Ancestral'}
                   </span>
                 </div>
               </div>
-
-              {/* Photo Gallery (Carousel) */}
-              {selectedTerritory.rawFicha?.sidebar?.fotos && selectedTerritory.rawFicha.sidebar.fotos.length > 0 && (
-                <div className="space-y-2">
-                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <Layers className="w-4 h-4 text-amber-600 shrink-0" />
-                    Galeria de Fotos
-                  </h3>
-                  <div className="flex gap-3 overflow-x-auto pb-2 pt-1 snap-x scrollbar-thin">
-                    {selectedTerritory.rawFicha?.sidebar?.fotos?.map((photo: any, index: number) => (
-                      <div 
-                        key={index} 
-                        className="snap-center shrink-0 w-72 h-44 relative rounded-xl overflow-hidden border border-slate-200 shadow-sm cursor-pointer group hover:border-amber-400 transition-colors"
-                        onClick={() => setFullscreenImage({ src: `../territorios/${photo.src}`, caption: photo.legenda })}
-                      >
-                        <img 
-                          src={`../territorios/${photo.src}`} 
-                          alt={photo.legenda} 
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          onError={(e) => {
-                            (e.currentTarget as HTMLImageElement).style.display = 'none';
-                          }}
-                        />
-                        <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-                        <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent text-white text-[10px] p-3 font-light truncate">
-                          {photo.legenda}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
 
               {/* Description */}
               <div className="space-y-1.5">
@@ -1039,105 +877,53 @@ export default function App() {
                 </p>
               </div>
 
-              {/* YouTube Video Slides */}
-              {selectedTerritory.rawFicha?.videos && selectedTerritory.rawFicha.videos.length > 0 && (
-                <div className="space-y-3.5">
-                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-                    Mídias e Vídeos
-                  </h3>
-                  <div className="space-y-3">
-                    {selectedTerritory.rawFicha?.videos?.map((vidId: string, idx: number) => (
-                      <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-slate-200 shadow-md">
-                        <iframe
-                          className="absolute inset-0 w-full h-full"
-                          src={`https://www.youtube.com/embed/${vidId}?rel=0&modestbranding=1&playsinline=1`}
-                          title="Vídeo do Território"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              {/* History / Origin */}
+              <div className="space-y-1.5">
+                <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                  <BookOpen className="w-4 h-4 text-amber-600 shrink-0" />
+                  Resistência Histórica
+                </h3>
+                <p className="text-xs text-slate-600 bg-amber-50/25 border-l-2 border-amber-600/50 pl-3 py-1 leading-relaxed font-light italic">
+                  "{selectedTerritory.history}"
+                </p>
+              </div>
 
-              {/* Collapsible/Accordion Identity Sections */}
-              {selectedTerritory.rawFicha?.sidebar?.identidade && selectedTerritory.rawFicha.sidebar.identidade.length > 0 && (
-                <div className="space-y-3">
-                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <BookOpen className="w-4 h-4 text-amber-600 shrink-0" />
-                    Identidade Territorial
-                  </h3>
-                  <div className="space-y-2">
-                    {selectedTerritory.rawFicha?.sidebar?.identidade?.map((item: any, idx: number) => (
-                      <div key={idx} className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1.5">
-                        <h4 className="text-xs font-semibold text-slate-800 flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                          {item.titulo}
-                        </h4>
-                        <p className="text-[11px] text-slate-600 leading-relaxed font-light">
-                          {item.conteudo}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+              {/* Heritage Status */}
+              <div className="space-y-1.5">
+                <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                  <Award className="w-4 h-4 text-amber-600 shrink-0" />
+                  Status de Reconhecimento
+                </h3>
+                <div className="flex items-start gap-2 bg-emerald-50/40 border border-emerald-100 p-2.5 rounded-lg text-emerald-800 text-xs">
+                  <CheckCircle className="w-4.5 h-4.5 text-emerald-600 shrink-0 mt-0.5" />
+                  <span>{selectedTerritory.heritageStatus}</span>
                 </div>
-              )}
+              </div>
 
-              {/* Products and Production */}
-              {selectedTerritory.rawFicha?.sidebar?.produtos && selectedTerritory.rawFicha.sidebar.produtos.length > 0 && (
-                <div className="space-y-3">
-                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
-                    Produção e Produtos
-                  </h3>
-                  <div className="grid grid-cols-2 gap-3">
-                    {selectedTerritory.rawFicha?.sidebar?.produtos?.map((prod: any, idx: number) => (
-                      <div key={idx} className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
-                        <h4 className="text-xs font-semibold text-slate-800">{prod.nome}</h4>
-                        {prod.descricao && (
-                          <p className="text-[10px] text-slate-500 mt-1 leading-relaxed font-light">
-                            {prod.descricao}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+              {/* Key local Activities / Saberes */}
+              <div className="space-y-2">
+                <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                  Atividades e Saberes locais
+                </h3>
+                <div className="flex flex-wrap gap-1.5">
+                  {selectedTerritory.activities.map((act, idx) => (
+                    <span 
+                      key={idx} 
+                      className="text-[10px] font-medium bg-slate-100 border border-slate-200/60 px-2.5 py-1 rounded-full text-slate-600"
+                    >
+                      {act}
+                    </span>
+                  ))}
                 </div>
-              )}
-
-              {/* Documents & PDFs */}
-              {selectedTerritory.rawFicha?.sidebar?.documentos && selectedTerritory.rawFicha.sidebar.documentos.length > 0 && (
-                <div className="space-y-2.5">
-                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <Award className="w-4 h-4 text-amber-600 shrink-0" />
-                    Documentos e Cartografia
-                  </h3>
-                  <div className="flex flex-col gap-2">
-                    {selectedTerritory.rawFicha?.sidebar?.documentos?.map((doc: any, idx: number) => (
-                      <a
-                        key={idx}
-                        href={`../territorios/${doc.src}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/60 rounded-xl hover:bg-slate-100 hover:border-slate-300 transition-all text-xs text-slate-700 font-medium"
-                      >
-                        <span className="truncate pr-4">{doc.legenda || 'Ver PDF'}</span>
-                        <span className="text-[10px] text-amber-700 font-semibold shrink-0">Baixar PDF →</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
+              </div>
 
               {/* Coordinates block */}
-              <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-between text-xs font-mono">
+              <div className="p-3 bg-slate-50 border border-slate-100 rounded-lg flex items-center justify-between text-xs font-mono">
                 <span className="text-slate-500">Lat, Lng: <span className="text-slate-800">{selectedTerritory.coordinates[1].toFixed(5)}, {selectedTerritory.coordinates[0].toFixed(5)}</span></span>
                 <button 
                   onClick={() => handleCopyCoords(selectedTerritory.coordinates)}
-                  className="p-1.5 text-slate-400 hover:text-amber-700 hover:bg-slate-200/50 rounded-lg transition-all cursor-pointer"
+                  className="p-1 text-slate-400 hover:text-amber-700 hover:bg-slate-200/50 rounded transition-all cursor-pointer"
                   title="Copiar Coordenadas"
                 >
                   <Copy className="w-3.5 h-3.5" />
@@ -1497,183 +1283,6 @@ export default function App() {
               Cancelar
             </button>
           </div>
-        )}
-      </AnimatePresence>
-      {/* 7. Cine Irun (Netflix-style video library) Overlay Modal */}
-      <AnimatePresence>
-        {showCineIrun && (
-          <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex flex-col overflow-hidden text-white font-sans">
-            {/* Modal Header */}
-            <div className="p-6 md:p-8 border-b border-black flex flex-col md:flex-row md:items-center justify-between gap-6 shrink-0 bg-gradient-to-r from-black via-slate-900 to-black">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-display font-black tracking-tighter text-red-600 flex items-center gap-3">
-                  CINE IRUN 
-                  <span className="text-sm font-normal text-slate-300 font-sans tracking-normal border-l border-slate-700 pl-3">Acervo de Documentários</span>
-                </h2>
-                <p className="text-sm text-slate-400 font-light mt-1.5 max-w-xl">
-                  Biblioteca digital estilo streaming com memórias, saberes e documentários das comunidades mapeadas.
-                </p>
-              </div>
-
-              {/* Video Search and Filter pills */}
-              <div className="flex items-center gap-4 w-full md:w-auto">
-                <div className="relative flex items-center bg-black/50 border border-slate-800 focus-within:border-red-600 rounded-lg px-4 py-3 w-full md:w-80 transition-colors shadow-inner">
-                  <Search className="w-5 h-5 text-slate-500 mr-3 shrink-0" />
-                  <input 
-                    type="text" 
-                    placeholder="Buscar título, comunidade ou cidade..." 
-                    value={videoSearchQuery}
-                    onChange={(e) => setVideoSearchQuery(e.target.value)}
-                    className="bg-transparent border-none outline-none w-full text-sm text-white placeholder-slate-600 font-light"
-                  />
-                  {videoSearchQuery && (
-                    <button onClick={() => setVideoSearchQuery('')} className="ml-2 text-slate-500 hover:text-white cursor-pointer">
-                      <X className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-                
-                <button 
-                  onClick={() => {
-                    setShowCineIrun(false);
-                    setVideoSearchQuery('');
-                    setPlayingVideo(null);
-                  }}
-                  className="p-3.5 bg-slate-900/50 hover:bg-red-600 rounded-full border border-slate-700 hover:border-red-500 text-slate-300 hover:text-white transition-all duration-300 cursor-pointer shrink-0 group flex items-center justify-center shadow-lg"
-                  title="Fechar Cine Irun"
-                >
-                  <X className="w-6 h-6 group-hover:scale-110 transition-transform" />
-                </button>
-              </div>
-            </div>
-
-            {/* Video Category Filter Tabs */}
-            <div className="px-6 py-4 border-b border-black bg-black flex gap-3 overflow-x-auto scrollbar-none shrink-0">
-              <button 
-                onClick={() => setActiveVideoCategory('todos')}
-                className={`px-4 py-1.5 rounded-sm text-sm font-semibold transition-all shrink-0 cursor-pointer ${
-                  activeVideoCategory === 'todos' ? 'text-white border-l-4 border-red-600 bg-slate-900/50' : 'text-slate-400 hover:text-white bg-transparent border-l-4 border-transparent hover:border-slate-700'
-                }`}
-              >
-                Todos
-              </button>
-              {Array.from(new Set(allVideos.map(v => v.category))).filter(Boolean).sort().map(cat => (
-                <button 
-                  key={cat}
-                  onClick={() => setActiveVideoCategory(cat)}
-                  className={`px-4 py-1.5 rounded-sm text-sm font-semibold transition-all shrink-0 cursor-pointer capitalize ${
-                    activeVideoCategory === cat ? 'text-white border-l-4 border-red-600 bg-slate-900/50' : 'text-slate-400 hover:text-white bg-transparent border-l-4 border-transparent hover:border-slate-700'
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-
-            {/* Videos Grid */}
-            <div className="flex-1 overflow-y-auto p-6 scrollbar-thin">
-              {filteredVideos.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-20 text-slate-500 gap-2">
-                  <AlertCircle className="w-10 h-10 text-slate-600 animate-pulse" />
-                  <p className="text-sm font-semibold">Nenhum vídeo localizado</p>
-                  <p className="text-xs text-slate-600">Altere os filtros ou o termo pesquisado.</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                  {filteredVideos.map((video: any, index: number) => (
-                    <div className="group bg-slate-900/60 rounded overflow-hidden hover:bg-slate-800 transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-red-900/20 cursor-pointer flex flex-col border border-transparent hover:border-slate-700">
-                      {/* Video Player Embed (Lazy loaded) */}
-                      <div className="relative aspect-video bg-black overflow-hidden shrink-0 group/vid" onClick={() => setPlayingVideo(video.id)}>
-                        {playingVideo === video.id ? (
-                          <iframe
-                            className="absolute inset-0 w-full h-full"
-                            src={`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                            title={video.title}
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                          />
-                        ) : (
-                          <>
-                            <img 
-                              src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`} 
-                              alt="Thumbnail" 
-                              className="w-full h-full object-cover opacity-70 group-hover/vid:opacity-100 transition-opacity duration-300" 
-                            />
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover/vid:bg-transparent transition-colors">
-                              <div className="w-14 h-14 bg-red-600/90 rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(220,38,38,0.5)] group-hover/vid:scale-110 transition-transform duration-300">
-                                <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                              </div>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      
-                      {/* Info Footer on Card */}
-                      <div 
-                        className="p-4 flex-1 flex flex-col justify-between gap-3"
-                        onClick={() => {
-                          if (playingVideo === video.id) return;
-                          handleSelectTerritory(video.territory);
-                          setShowCineIrun(false);
-                          setPlayingVideo(null);
-                        }}
-                      >
-                        <div>
-                          <h4 className="font-display font-bold text-sm text-slate-200 leading-snug group-hover:text-white transition-colors line-clamp-2">
-                            {video.title}
-                          </h4>
-                          <p className="text-xs text-slate-500 font-light mt-1.5 flex items-center gap-1.5">
-                            <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
-                            <span className="truncate">{video.city}</span>
-                          </p>
-                        </div>
-                        <div className="flex items-center justify-between pt-3 border-t border-slate-800">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest capitalize">
-                            {video.category}
-                          </span>
-                          <span className="text-[11px] text-white font-medium group-hover:translate-x-1 group-hover:text-red-400 transition-all duration-200 flex items-center gap-1">
-                            Ir ao Mapa →
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-      {/* 8. Fullscreen Image Lightbox */}
-      <AnimatePresence>
-        {fullscreenImage && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-md flex items-center justify-center p-4 cursor-pointer"
-            onClick={() => setFullscreenImage(null)}
-          >
-            <button 
-              className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 rounded-full text-white transition-all shadow-xl"
-              onClick={(e) => { e.stopPropagation(); setFullscreenImage(null); }}
-            >
-              <X className="w-6 h-6" />
-            </button>
-            <div className="max-w-5xl w-full max-h-[90vh] flex flex-col items-center">
-              <img 
-                src={fullscreenImage.src} 
-                alt={fullscreenImage.caption}
-                className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
-                onClick={(e) => e.stopPropagation()}
-              />
-              {fullscreenImage.caption && (
-                <p className="text-white text-sm md:text-base font-light mt-4 text-center">
-                  {fullscreenImage.caption}
-                </p>
-              )}
-            </div>
-          </motion.div>
         )}
       </AnimatePresence>
 
