@@ -681,7 +681,7 @@ export default function App() {
       {/* 2. Brand Floating Sidebar (Left Panel) */}
       <aside 
         id="panel-lateral"
-        className="absolute top-4 left-4 z-10 w-96 max-h-[calc(100vh-2rem)] flex flex-col bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 overflow-hidden transition-all duration-300 lg:w-96 md:w-80 w-full sm:static sm:h-full mobile-drawer"
+        className="absolute top-4 left-4 z-10 w-[calc(100%-2rem)] md:w-80 lg:w-96 max-h-[calc(100vh-2rem)] flex flex-col bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 overflow-hidden transition-all duration-300 mobile-drawer"
       >
         {/* Brand Header */}
         <div className="p-5 border-b border-slate-100 bg-white/95 relative overflow-hidden">
@@ -899,8 +899,8 @@ export default function App() {
         </div>
       </aside>
 
-      {/* 3. Floating Map Style Selector & Geolocation Controls (Top-Right) */}
-      <div className="absolute top-4 right-16 z-10 flex gap-2 items-center bg-white/95 backdrop-blur-md p-1.5 rounded-xl border border-slate-200/80 shadow-lg shrink-0">
+      {/* 3. Floating Map Style Selector & Geolocation Controls (Top-Right on desktop, Bottom on mobile) */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 md:bottom-auto md:top-4 md:right-16 md:left-auto md:translate-x-0 z-10 flex gap-1.5 items-center bg-white/95 backdrop-blur-md p-1.5 rounded-xl border border-slate-200/80 shadow-lg max-w-[calc(100vw-2rem)] overflow-x-auto scrollbar-none shrink-0">
         <button
           onClick={handleGeolocate}
           disabled={isLocating}
@@ -940,7 +940,7 @@ export default function App() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 100 }}
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-            className="absolute top-4 right-4 z-10 w-96 max-h-[calc(100vh-2rem)] bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 flex flex-col overflow-hidden text-slate-800 lg:w-96 md:w-80 w-full"
+            className="absolute top-4 right-4 z-10 w-[calc(100%-2rem)] md:w-80 lg:w-96 max-h-[calc(100vh-2rem)] bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 flex flex-col overflow-hidden text-slate-800"
           >
             {/* Clean Light Text Header */}
             <div className="p-5 border-b border-slate-100 bg-white relative flex flex-col justify-end shrink-0 pr-12">
