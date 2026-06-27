@@ -1054,7 +1054,7 @@ export default function App() {
                     Galeria de Fotos
                   </h3>
                   <div className="flex gap-3 overflow-x-auto pb-2 pt-1 snap-x scrollbar-thin">
-                    {selectedTerritory.rawFicha.sidebar.fotos.map((photo: any, index: number) => (
+                    {selectedTerritory.rawFicha?.sidebar?.fotos?.map((photo: any, index: number) => (
                       <div key={index} className="snap-center shrink-0 w-72 h-44 relative rounded-xl overflow-hidden border border-slate-200 shadow-sm">
                         <img 
                           src={`../territorios/${photo.src}`} 
@@ -1092,7 +1092,7 @@ export default function App() {
                     Mídias e Vídeos
                   </h3>
                   <div className="space-y-3">
-                    {selectedTerritory.rawFicha.videos.map((vidId: string, idx: number) => (
+                    {selectedTerritory.rawFicha?.videos?.map((vidId: string, idx: number) => (
                       <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-slate-200 shadow-md">
                         <iframe
                           className="absolute inset-0 w-full h-full"
@@ -1116,7 +1116,7 @@ export default function App() {
                     Identidade Territorial
                   </h3>
                   <div className="space-y-2">
-                    {selectedTerritory.rawFicha.sidebar.identidade.map((item: any, idx: number) => (
+                    {selectedTerritory.rawFicha?.sidebar?.identidade?.map((item: any, idx: number) => (
                       <div key={idx} className="p-3.5 bg-slate-50 border border-slate-100 rounded-xl space-y-1.5">
                         <h4 className="text-xs font-semibold text-slate-800 flex items-center gap-1">
                           <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
@@ -1139,7 +1139,7 @@ export default function App() {
                     Produção e Produtos
                   </h3>
                   <div className="grid grid-cols-2 gap-3">
-                    {selectedTerritory.rawFicha.sidebar.produtos.map((prod: any, idx: number) => (
+                    {selectedTerritory.rawFicha?.sidebar?.produtos?.map((prod: any, idx: number) => (
                       <div key={idx} className="p-3 bg-slate-50 border border-slate-100 rounded-xl">
                         <h4 className="text-xs font-semibold text-slate-800">{prod.nome}</h4>
                         {prod.descricao && (
@@ -1161,7 +1161,7 @@ export default function App() {
                     Documentos e Cartografia
                   </h3>
                   <div className="flex flex-col gap-2">
-                    {selectedTerritory.rawFicha.sidebar.documentos.map((doc: any, idx: number) => (
+                    {selectedTerritory.rawFicha?.sidebar?.documentos?.map((doc: any, idx: number) => (
                       <a
                         key={idx}
                         href={`../territorios/${doc.src}`}
