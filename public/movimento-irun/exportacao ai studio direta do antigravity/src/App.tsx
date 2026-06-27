@@ -250,11 +250,11 @@ export default function App() {
     return territories.filter(t => {
       const matchesCategory = activeCategory === 'todos' || t.category === activeCategory;
       const matchesSearch = 
-        t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        t.city.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (t.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (t.city || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (t.description || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
         (t.leader && t.leader.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        t.activities.some(act => act.toLowerCase().includes(searchQuery.toLowerCase()));
+        (t.activities || []).some(act => act.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchesCategory && matchesSearch;
     });
   }, [territories, activeCategory, searchQuery]);
