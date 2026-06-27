@@ -9,8 +9,11 @@
         -39.0402116
       ],
       "categorias": [
-        "municipios"
-      ]
+        "municipios",
+        "distrito",
+        "turismo"
+      ],
+      "resumo": "Distrito de Uruçuca · Vila turística no Litoral Sul"
     },
     {
       "id": "museu-aberto-de-serra-grande",
@@ -31,7 +34,7 @@
         -39.0345647
       ],
       "categorias": [
-        "projetos"
+        "instituicoes"
       ]
     },
     {
@@ -49,7 +52,7 @@
       "id": "assentamento-terra-vista",
       "nome": "Assentamento Terra Vista",
       "coords": [-15.2608, -39.4144],
-      "categorias": ["projetos"],
+      "categorias": ["assentamento", "instituicoes", "projetos"],
       "entidadeId": "assentamento-terra-vista",
       "teiaDosPovos": true,
       "resumo": "Sede da Teia dos Povos — Arataca (BA)"

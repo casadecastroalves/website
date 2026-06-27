@@ -21,7 +21,11 @@ function setChrome() {
 
 function updateRedeBadge() {
   const el = document.getElementById("btn-rede-badge");
-  if (el) el.textContent = `REDE ${countRede()}/${state.config.rede?.meta || state.territorios.length}`;
+  if (!el) return;
+  const tisAtivos = state.territorios.filter(t => t.redeAtiva).length;
+  const fichasRede = state.fichas.filter(f => f.rede).length;
+  const pontosRede = state.pontos.filter(p => p.entidadeId || p.fichaId).length;
+  el.textContent = `REDE IRUN · ${tisAtivos} TIs · ${fichasRede} fichas · ${pontosRede} pontos`;
 }
 
 function applyDefaultFilters() {
@@ -57,16 +61,23 @@ function initMapModes() {
 }
 
 function initPopupLinks() {
-  getMap().getContainer().addEventListener("click", (ev) => {
-    const ext = ev.target.closest('a[target="_blank"]');
-    if (ext && isMobile()) closeSheet();
-    const link = ev.target.closest("[data-ficha],[data-ti]");
-    if (!link || link.tagName === "A") return;
-    ev.preventDefault();
-    if (link.dataset.ficha) goFicha(link.dataset.ficha);
-    else if (link.dataset.ti) goTerritorio(link.dataset.ti);
-    openForContext();
-    getMap().closePopup();
+  /* Leaflet chama disableClickPropagation() no container de cada popup,
+     o que bloqueia a propagação para o map container.
+     Solução: adicionar o listener directamente no popup quando abre. */
+  getMap().on("popupopen", (e) => {
+    const container = e.popup._container;
+    if (!container) return;
+    container.addEventListener("click", (ev) => {
+      const ext = ev.target.closest('a[target="_blank"]');
+      if (ext && isMobile()) closeSheet();
+      const link = ev.target.closest("[data-ficha],[data-ti]");
+      if (!link || link.tagName === "A") return;
+      ev.preventDefault();
+      if (link.dataset.ficha) goFicha(link.dataset.ficha);
+      else if (link.dataset.ti) goTerritorio(link.dataset.ti);
+      openForContext();
+      getMap().closePopup();
+    });
   });
 }
 

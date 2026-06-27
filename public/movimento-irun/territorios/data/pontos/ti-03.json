@@ -32,8 +32,10 @@
         -41.5395502
       ],
       "categorias": [
-        "municipios"
-      ]
+        "distrito",
+        "turismo"
+      ],
+      "resumo": "Distrito de Mucugê · Chapada Diamantina"
     },
     {
       "id": "guine-de-baixo",
@@ -43,8 +45,9 @@
         -41.533333
       ],
       "categorias": [
-        "municipios"
-      ]
+        "distrito"
+      ],
+      "resumo": "Distrito de Mucugê · Chapada Diamantina"
     },
     {
       "id": "escola-municipal-de-1-e-2-graus-eurico-belo",

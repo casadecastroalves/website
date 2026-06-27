@@ -118,8 +118,7 @@ function buildTerritorios() {
       tiLayerById[id] = layer;
       layer.bindPopup(
         `<div class="popup-title">${esc(cod)} — ${esc(nome)}</div>
-         <div class="popup-cod">Território de Identidade</div>
-         <span class="popup-link" data-ti="${esc(id)}">Ver ficha →</span>`,
+         <div class="popup-cod">Território de Identidade</div>`,
         { maxWidth: 260, className: "irun-popup" }
       );
       layer.on({

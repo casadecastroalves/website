@@ -28,8 +28,11 @@
     "territorios": ["ti-03", "ti-05", "ti-06", "ti-16", "ti-19", "ti-21", "ti-22", "ti-26", "ti-27"]
   },
   "categorias": {
-    "quilombos": { "label": "Quilombos / Assentamentos", "cor": "#f5c518" },
+    "quilombos": { "label": "Quilombos", "cor": "#f5c518" },
     "municipios": { "label": "Municípios", "cor": "#9aa0a6" },
+    "distrito": { "label": "Distritos / Vilas", "cor": "#6b7280" },
+    "assentamento": { "label": "Assentamentos", "cor": "#8b5e3c" },
+    "terreiro": { "label": "Terreiros", "cor": "#a855f7" },
     "instituicoes": { "label": "Instituições", "cor": "#7c5cff" },
     "projetos": { "label": "Projetos", "cor": "#2bb673" },
     "turismo": { "label": "Turismo", "cor": "#ff7a59" },
@@ -39,7 +42,7 @@
   "filtros": [
     {
       "label": "Tipo territorial",
-      "items": ["municipios", "quilombos"]
+      "items": ["municipios", "quilombos", "distrito", "assentamento", "terreiro"]
     },
     {
       "label": "Temática",

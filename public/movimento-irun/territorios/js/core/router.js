@@ -11,6 +11,9 @@ export function parseRoute() {
     state.filterSomenteRoteiro = state.filters.size === 0;
   }
 
+  const params = new URLSearchParams(query || "");
+  state.viewer = params.get("all") === "1" ? "embed" : "normal";
+
   if (!parts.length) return { view: "home", tiId: null, fichaId: null, municipio: null };
 
   if (parts[0] === "t" && parts[1]) {
@@ -32,7 +35,7 @@ export function parseRoute() {
   return { view: "home", tiId: null, fichaId: null, municipio: null };
 }
 
-export function buildHash({ view, tiId, fichaId, municipio, filters }) {
+export function buildHash({ view, tiId, fichaId, municipio, filters, viewer }) {
   let path = "/";
   if (view === "ti" && tiId) path = `/t/${tiId}`;
   else if (view === "ficha" && tiId && fichaId) path = `/t/${tiId}/${fichaId}`;
@@ -42,12 +45,31 @@ export function buildHash({ view, tiId, fichaId, municipio, filters }) {
   else if (view === "teia-dos-povos") path = "/teia-dos-povos";
 
   const f = filters && filters.size ? Array.from(filters).join(",") : "";
-  return f ? `#${path}?f=${f}` : `#${path}`;
+  const v = viewer === "embed" ? "&all=1" : "";
+  const query = f ? `?f=${f}${v}` : v ? "?all=1" : "";
+  return `#${path}${query}`;
 }
 
 function navigate(route) {
-  const hash = buildHash({ ...route, filters: state.filters });
+  const hash = buildHash({ ...route, filters: state.filters, viewer: state.viewer });
   if (window.location.hash !== hash) window.location.hash = hash;
+}
+
+export function setViewer(mode) {
+  state.viewer = mode;
+}
+
+export function getViewer() {
+  return state.viewer || "normal";
+}
+
+export function isEmbedViewer() {
+  return getViewer() === "embed";
+}
+
+export function goBack() {
+  if (window.history.length > 1) window.history.back();
+  else goHome();
 }
 
 export function goHome() {
@@ -76,6 +98,10 @@ export function goTeiaDosPovos() {
 }
 
 export function syncHash() {
+  navigate(parseRoute());
+}
+
+export function refreshRoute() {
   navigate(parseRoute());
 }
 
