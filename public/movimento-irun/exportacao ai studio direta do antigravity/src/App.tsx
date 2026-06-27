@@ -396,47 +396,7 @@ export default function App() {
       }
     });
 
-    // Automatically try to geolocate on initial load
-    map.on('load', () => {
-      setTimeout(() => {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { longitude, latitude } = position.coords;
-            map.flyTo({
-              center: [longitude, latitude],
-              zoom: 11.5,
-              essential: true,
-              duration: 1800
-            });
 
-            const userEl = document.createElement('div');
-            userEl.className = 'relative flex items-center justify-center z-50';
-            userEl.innerHTML = `
-              <span class="absolute inline-flex h-8 w-8 rounded-full bg-blue-500 opacity-40 animate-ping"></span>
-              <span class="relative inline-flex rounded-full h-5 w-5 bg-blue-600 border-2 border-white shadow-xl"></span>
-            `;
-
-            const popup = new maplibregl.Popup({ offset: 12 }).setHTML(`
-              <div class="text-xs p-1">
-                <p class="font-semibold text-slate-800">Sua Posição</p>
-                <p class="text-slate-500 text-[10px] mt-0.5">${latitude.toFixed(5)}, ${longitude.toFixed(5)}</p>
-              </div>
-            `);
-
-            const newUserMarker = new maplibregl.Marker({ element: userEl })
-              .setLngLat([longitude, latitude])
-              .setPopup(popup)
-              .addTo(map);
-
-            userMarkerRef.current = newUserMarker;
-          },
-          (error) => {
-            console.warn('Geolocalização automática inicial recusada ou indisponível:', error);
-          },
-          { enableHighAccuracy: true, timeout: 8000 }
-        );
-      }, 1500);
-    });
 
     return () => {
       map.remove();
@@ -480,13 +440,13 @@ export default function App() {
         ringColor = 'ring-sky-200';
       }
 
-      el.className = `flex items-center justify-center rounded-full text-white cursor-pointer transition-all duration-300 shadow-xl border border-white/60 ${bgColor} ${
-        isSelected ? 'w-10 h-10 ring-4 ' + ringColor + ' scale-110 z-30' : 'w-8 h-8 hover:scale-115 hover:z-20'
+      el.className = `flex items-center justify-center rounded-full text-white cursor-pointer shadow-xl border border-white/60 ${bgColor} ${
+        isSelected ? 'w-10 h-10 ring-4 ' + ringColor + ' z-30' : 'w-8 h-8 hover:z-20'
       }`;
 
-      // Custom marker inner SVG
+      // Custom marker inner SVG with safe scale transitions on hover/select
       el.innerHTML = `
-        <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 ${isSelected ? 'marker-pulse' : ''}">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 transition-transform duration-300 hover:scale-120 ${isSelected ? 'marker-pulse scale-110' : ''}">
           <path d="${iconHex}" />
         </svg>
       `;
