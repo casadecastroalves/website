@@ -11,7 +11,7 @@ import { refreshVisibility, focusPonto } from "../map/markers.js";
 import { focusRoteiro, focusRouteStop, getRoteiroParadas } from "../map/map.js";
 import { openLightbox } from "./lightbox.js";
 
-const YT = "rel=0&modestbranding=1&iv_load_policy=3";
+const YT = "rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&color=white";
 
 /* ── Helpers ── */
 function tiList() { return state.territorios; }
@@ -204,18 +204,10 @@ function renderVideos(videos) {
   if (!videos?.length) return `<p class="empty-rede">Vídeos em breve.</p>`;
   return videos.map((v) => {
     if (v.tipo === "youtube" && v.id) {
-      if (v.embed !== true) {
-        const url = `https://www.youtube.com/watch?v=${encodeURIComponent(v.id)}`;
-        const thumb = `https://i.ytimg.com/vi/${encodeURIComponent(v.id)}/hqdefault.jpg`;
-        return `<p class="video-title">${esc(v.titulo)}</p>
-          <a class="popup-yt-external sidebar-yt-external" href="${escAttr(url)}" target="_blank" rel="noopener noreferrer">
-            <img src="${escAttr(thumb)}" alt="${escAttr(v.titulo)}" loading="lazy" decoding="async">
-            <span class="popup-yt-play" aria-hidden="true">▶</span>
-            <span class="popup-yt-open">Ver no YouTube</span>
-          </a>
-          <p class="popup-yt-hint">Este vídeo não permite reprodução incorporada — abre no YouTube.</p>`;
-      }
-      return `<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/${escAttr(v.id)}?${YT}" title="${escAttr(v.titulo)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><p class="video-title">${esc(v.titulo)}</p></div>`;
+      return `<div class="video-embed">
+        <iframe src="https://www.youtube-nocookie.com/embed/${escAttr(v.id)}?${YT}" title="${escAttr(v.titulo)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        ${v.titulo ? `<p class="video-title">${esc(v.titulo)}</p>` : ""}
+      </div>`;
     }
     if (v.href) {
       return `<p class="video-title">${esc(v.titulo || "Vídeo")}</p><p><a href="${escAttr(v.href)}" target="_blank" rel="noopener" class="pdf-link">${esc(v.titulo || "Ver vídeo")} ↗</a></p>`;

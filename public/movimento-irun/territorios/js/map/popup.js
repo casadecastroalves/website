@@ -2,30 +2,7 @@ import { escAttr, esc, slugify } from "../core/util.js";
 import { state, isPontoCultura, isTeiaDosPovos, TEIA_HUB_ID } from "../core/state.js";
 import { openLightbox } from "../ui/lightbox.js";
 
-const YT = "rel=0&modestbranding=1&iv_load_policy=3";
-
-function youtubeWatchUrl(id) {
-  return `https://www.youtube.com/watch?v=${id}`;
-}
-
-function youtubeThumbUrl(id) {
-  return `https://i.ytimg.com/vi/${encodeURIComponent(id)}/hqdefault.jpg`;
-}
-
-function youtubeAllowsEmbed(video) {
-  /* Por defeito link externo — a maioria dos vídeos do mapa bloqueia iframe. */
-  return video?.embed === true;
-}
-
-function youtubeExternalHtml(id, title) {
-  const url = youtubeWatchUrl(id);
-  return `<a class="popup-yt-external" href="${escAttr(url)}" target="_blank" rel="noopener noreferrer">
-    <img src="${escAttr(youtubeThumbUrl(id))}" alt="${escAttr(title)}" loading="lazy" decoding="async">
-    <span class="popup-yt-play" aria-hidden="true">▶</span>
-    <span class="popup-yt-open">Ver no YouTube</span>
-  </a>
-  <p class="popup-yt-hint">Este vídeo não permite reprodução incorporada — abre no YouTube.</p>`;
-}
+const YT = "rel=0&modestbranding=1&iv_load_policy=3&playsinline=1&color=white";
 
 function fichaOf(entry) {
   const id = entry.fichaId || entry.entidadeId;
@@ -192,13 +169,9 @@ function slideBody(slide, eager, entry, ctx) {
   if (slide.titulo && !skipTitle) html += `<h3 class="popup-rich-title">${esc(slide.titulo)}</h3>`;
   if (slide.video?.tipo === "youtube" && slide.video.id) {
     const title = slide.video.legenda || slide.titulo || "";
-    if (!youtubeAllowsEmbed(slide.video)) {
-      html += youtubeExternalHtml(slide.video.id, title);
-    } else {
-      html += eager
-        ? `<div class="popup-rich-video"><iframe src="https://www.youtube-nocookie.com/embed/${escAttr(slide.video.id)}?${YT}" title="${escAttr(title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`
-        : `<div class="popup-rich-video" data-yt-id="${escAttr(slide.video.id)}" data-yt-title="${escAttr(title)}"></div>`;
-    }
+    html += eager
+      ? `<div class="popup-rich-video"><iframe src="https://www.youtube-nocookie.com/embed/${escAttr(slide.video.id)}?${YT}" title="${escAttr(title)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>`
+      : `<div class="popup-rich-video" data-yt-id="${escAttr(slide.video.id)}" data-yt-title="${escAttr(title)}"></div>`;
   }
   if (slide.texto) html += `<p class="popup-rich-text">${esc(slide.texto)}</p>`;
   if (slide.foto) html += `<button class="popup-rich-thumb" data-lb-src="${escAttr(slide.foto)}" data-lb-cap="${escAttr(slide.legenda || slide.titulo)}" type="button" aria-label="Ver foto em tela cheia"><img src="${escAttr(slide.foto)}" alt="${escAttr(slide.legenda || slide.titulo)}" loading="lazy" decoding="async"><span class="popup-rich-expand" aria-hidden="true">⛶</span></button>`;
@@ -232,7 +205,7 @@ function mountVideo(slideEl) {
   const box = slideEl?.querySelector(".popup-rich-video[data-yt-id]:not([data-ready])");
   if (!box) return;
   box.dataset.ready = "1";
-  box.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${box.dataset.ytId}?${YT}" title="${escAttr(box.dataset.ytTitle)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+  box.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${box.dataset.ytId}?${YT}" title="${escAttr(box.dataset.ytTitle)}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
 }
 
 export function initRichPopup(popupEl) {
