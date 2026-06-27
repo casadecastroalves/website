@@ -684,24 +684,24 @@ export default function App() {
         className="absolute top-4 left-4 z-10 w-96 max-h-[calc(100vh-2rem)] flex flex-col bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 overflow-hidden transition-all duration-300 lg:w-96 md:w-80 w-full sm:static sm:h-full mobile-drawer"
       >
         {/* Brand Header */}
-        <div className="p-5 border-b border-slate-100 bg-gradient-to-br from-slate-900 via-slate-800 to-amber-950 text-white relative overflow-hidden">
-          {/* Subtle light graphics */}
-          <div className="absolute right-0 bottom-0 opacity-10 translate-x-1/4 translate-y-1/4">
-            <Compass className="w-48 h-48 rotate-12" />
-          </div>
-          
+        <div className="p-5 border-b border-slate-100 bg-white/95 relative overflow-hidden">
           <div className="flex items-center justify-between">
-            <span className="px-2 py-0.5 rounded-full text-[10px] font-mono tracking-widest bg-amber-500/20 border border-amber-500/30 text-amber-300 font-semibold uppercase">
-              Rascunho Consola
-            </span>
-            <div className="flex items-center gap-1.5">
+            <div className="flex flex-col">
+              <h1 className="text-xl font-display font-bold tracking-tight text-slate-900">
+                MOVIMENTO IRUN
+              </h1>
+              <p className="text-[10px] text-slate-500 font-medium tracking-wider mt-0.5 uppercase">
+                IDENTIDADE E TERRITÓRIO
+              </p>
+            </div>
+            <div className="flex items-center gap-1">
               <button 
                 onClick={handleGeolocate}
                 disabled={isLocating}
                 className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                   isLocating 
-                    ? 'bg-blue-600/30 text-blue-300 animate-pulse' 
-                    : 'hover:bg-white/10 text-slate-300 hover:text-white'
+                    ? 'bg-blue-50 text-blue-600 animate-pulse' 
+                    : 'hover:bg-slate-100 text-slate-400 hover:text-slate-700'
                 }`}
                 title="Minha Localização"
               >
@@ -709,19 +709,13 @@ export default function App() {
               </button>
               <button 
                 onClick={handleResetView}
-                className="p-1.5 hover:bg-white/10 rounded-lg text-slate-300 hover:text-white transition-colors cursor-pointer"
+                className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
                 title="Centralizar no Recôncavo"
               >
                 <Compass className="w-4 h-4" />
               </button>
             </div>
           </div>
-          <h1 className="text-xl font-display font-bold tracking-tight mt-2 flex items-center gap-2">
-            MOVIMENTO IRUN
-          </h1>
-          <p className="text-xs text-slate-300 font-light tracking-wide mt-1">
-            Identidade, Território e Ancestralidade no Recôncavo Baiano
-          </p>
         </div>
 
         {/* Aggregate Stats Bar */}
@@ -948,35 +942,23 @@ export default function App() {
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             className="absolute top-4 right-4 z-10 w-96 max-h-[calc(100vh-2rem)] bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 flex flex-col overflow-hidden text-slate-800 lg:w-96 md:w-80 w-full"
           >
-            {/* Image Banner Header */}
-            <div className="h-44 relative bg-slate-200 overflow-hidden shrink-0">
-              <img 
-                src={selectedTerritory.imageUrl} 
-                alt={selectedTerritory.name}
-                referrerPolicy="no-referrer"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  // Fallback image if unsplash fails
-                  (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540206395-68808572332f?auto=format&fit=crop&q=80&w=600';
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col justify-end p-5 text-white">
-                <span className={`inline-block self-start text-[9px] font-mono tracking-widest px-2 py-0.5 rounded uppercase font-semibold mb-1 border ${
-                  selectedTerritory.category === 'quilombo' ? 'bg-emerald-600/30 border-emerald-500/40 text-emerald-300' :
-                  selectedTerritory.category === 'cultura' ? 'bg-amber-600/30 border-amber-500/40 text-amber-300' :
-                  'bg-sky-600/30 border-sky-500/40 text-sky-300'
-                }`}>
-                  {selectedTerritory.category}
-                </span>
-                <h2 className="text-lg font-display font-bold leading-tight">
-                  {selectedTerritory.name}
-                </h2>
-              </div>
+            {/* Clean Light Text Header */}
+            <div className="p-5 border-b border-slate-100 bg-white relative flex flex-col justify-end shrink-0 pr-12">
+              <span className={`inline-block self-start text-[9px] font-mono tracking-widest px-2 py-0.5 rounded uppercase font-semibold mb-1.5 border ${
+                selectedTerritory.category === 'quilombo' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' :
+                selectedTerritory.category === 'cultura' ? 'bg-amber-50 border-amber-200 text-amber-800' :
+                'bg-sky-50 border-sky-200 text-sky-800'
+              }`}>
+                {selectedTerritory.category}
+              </span>
+              <h2 className="text-lg font-display font-bold leading-tight text-slate-900">
+                {selectedTerritory.name}
+              </h2>
 
               {/* Close Button */}
               <button 
                 onClick={() => setSelectedTerritory(null)}
-                className="absolute top-3 right-3 p-1.5 rounded-full bg-black/40 hover:bg-black/60 text-white hover:text-amber-400 transition-all shadow cursor-pointer"
+                className="absolute top-4 right-4 p-1.5 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-all cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
