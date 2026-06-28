@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MOVIMENTO IRUN — Identidade e Território</title>
+  <title>MOVIMENTO IRUN — Mapa Identidade e Território</title>
+  <meta property="og:title" content="MOVIMENTO IRUN — Mapa Identidade e Território">
+  <meta property="og:description" content="Mapa participativo das comunidades quilombolas e territórios de identidade da Bahia — Curso Design de Território · Programa Bem Viver · Casa de Castro Alves.">
+  <meta property="og:image" content="https://casadecastroalves.com.br/movimento-irun/territorios/assets/og-mapa-bahia.png">
+  <meta property="og:url" content="https://casadecastroalves.com.br/movimento-irun/territorios-v2/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -13,8 +19,6 @@
       --amber: #d97706;
       --text: #1a1a1a;
       --text-muted: #6b7280;
-      --slate-900: #0f172a;
-      --slate-800: #1e293b;
       --white: #ffffff;
       --shadow-lg: 0 20px 60px rgba(0,0,0,0.18);
     }
@@ -35,13 +39,11 @@
 
     /* ── HEADER ── */
     .panel-header {
-      background: transparent;
-      color: var(--text);
-      padding: 16px 20px 14px;
-      flex-shrink: 0;
+      background: transparent; color: var(--text);
+      padding: 14px 18px 12px; flex-shrink: 0;
       border-bottom: 1px solid #f1f5f9;
     }
-    .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+    .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
     .header-tag {
       font-size: 0.58rem; font-family: monospace; letter-spacing: 0.15em; text-transform: uppercase;
       background: rgba(245,200,0,0.15); border: 1px solid rgba(245,200,0,0.35);
@@ -57,28 +59,16 @@
     .header-btn.locating { color: #2563eb; animation: pulse-btn 1s infinite; }
     @keyframes pulse-btn { 0%,100%{opacity:1} 50%{opacity:0.4} }
     .header-btn svg { width: 16px; height: 16px; }
-    .header-title {
-      font-size: 1rem; font-weight: 700; letter-spacing: 0.06em;
-      color: var(--text);
-    }
+    .header-brand { cursor: pointer; display: inline-block; }
+    .header-brand:hover .header-title { text-decoration: underline; text-decoration-color: var(--yellow); }
+    .header-title { font-size: 1rem; font-weight: 700; letter-spacing: 0.06em; color: var(--text); }
     .header-sub {
-      font-size: 0.62rem; color: var(--text-muted); letter-spacing: 0.12em;
-      margin-top: 2px; font-weight: 600;
+      font-size: 0.62rem; color: var(--text-muted); letter-spacing: 0.08em;
+      margin-top: 1px; font-weight: 500; text-transform: none;
     }
-
-    /* ── STATS ── */
-    .stats-bar {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      border-bottom: 1px solid #f1f5f9; background: #f8fafc; flex-shrink: 0;
-    }
-    .stat { padding: 10px 4px; text-align: center; }
-    .stat + .stat { border-left: 1px solid #f1f5f9; }
-    .stat-num { display: block; font-size: 0.82rem; font-weight: 700; color: var(--text); }
-    .stat-num.g { color: #15803d; } .stat-num.a { color: #b45309; } .stat-num.b { color: #0369a1; }
-    .stat-label { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); font-weight: 600; }
 
     /* ── SEARCH ── */
-    .search-wrap { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; flex-shrink: 0; }
+    .search-wrap { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; flex-shrink: 0; }
     .search-inner {
       display: flex; align-items: center; gap: 8px;
       background: #f8fafc; border: 1px solid #e2e8f0;
@@ -97,24 +87,43 @@
     /* ── FILTERS ── */
     .filters {
       display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
-      padding: 10px 14px; border-bottom: 1px solid #f1f5f9; flex-shrink: 0;
+      padding: 8px 14px; border-bottom: 1px solid #f1f5f9; flex-shrink: 0;
     }
     .filters::-webkit-scrollbar { display: none; }
     .filter-pill {
       display: flex; align-items: center; gap: 5px; padding: 6px 12px;
-      border-radius: 20px; font-size: 0.7rem; font-weight: 600; cursor: pointer;
+      border-radius: 20px; font-size: 0.68rem; font-weight: 600; cursor: pointer;
       white-space: nowrap; border: 1px solid #e2e8f0; background: white;
       color: var(--text-muted); transition: all 0.15s;
     }
     .filter-pill:hover { border-color: #94a3b8; color: var(--text); }
-    .fp-all    { background: #0f172a; color: white; border-color: #0f172a; }
-    .fp-rede   { background: #92400e; color: white; border-color: #92400e; }
-    .fp-fichas { background: #15803d; color: white; border-color: #15803d; }
-    .fp-sem    { background: #475569; color: white; border-color: #475569; }
+    .fp-ti    { background: #0f172a; color: white; border-color: #0f172a; }
+    .fp-rede  { background: #92400e; color: white; border-color: #92400e; }
+    .fp-teia  { background: #5b21b6; color: white; border-color: #5b21b6; }
+    .fp-pc    { background: #15803d; color: white; border-color: #15803d; }
     .filter-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
 
     /* ── LIST ── */
     .panel-body { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 10px; }
+
+    /* ── ABOUT (info do mapa) ── */
+    .about-wrap { padding: 14px 4px 4px; }
+    .about-heading { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .about-p { font-size: 0.76rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 8px; }
+    .about-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; font-weight: 600; color: #92400e;
+      background: rgba(245,200,0,0.12); border: 1px solid rgba(245,200,0,0.3);
+      padding: 7px 14px; border-radius: 20px; margin-top: 8px;
+      text-decoration: none; transition: background 0.15s;
+    }
+    .about-link:hover { background: rgba(245,200,0,0.22); }
+    .about-secao-title { font-size: 0.78rem; font-weight: 700; color: var(--text); margin: 14px 0 4px; }
+    .about-credits {
+      margin-top: 18px; padding-top: 12px; border-top: 1px solid #f1f5f9;
+      font-size: 0.62rem; color: #94a3b8; font-family: monospace;
+      letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.8;
+    }
 
     /* ── CARD ── */
     .ti-card {
@@ -127,8 +136,10 @@
     .ti-card:hover { border-color: #cbd5e1; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
     .ti-card.active { background: rgba(245,200,0,0.05); border-color: var(--yellow); box-shadow: 0 4px 16px rgba(245,200,0,0.14); }
     .ti-card-bar { position: absolute; top: 0; left: 0; bottom: 0; width: 4px; border-radius: 14px 0 0 14px; }
-    .bar-rede { background: var(--yellow); }
-    .bar-sem  { background: #cbd5e1; }
+    .bar-rede  { background: var(--yellow); }
+    .bar-teia  { background: #7c3aed; }
+    .bar-pc    { background: #15803d; }
+    .bar-sem   { background: #cbd5e1; }
     .ti-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
     .ti-card-num {
       font-size: 0.62rem; font-family: monospace; font-weight: 700;
@@ -138,6 +149,16 @@
     .ti-card.active .ti-card-num { background: rgba(245,200,0,0.2); color: #92400e; }
     .ti-card-name { font-size: 0.83rem; font-weight: 700; color: var(--text); line-height: 1.3; flex: 1; }
     .ti-rede-tag {
+      font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      color: #92400e; background: rgba(245,200,0,0.15); border: 1px solid rgba(245,200,0,0.3);
+      padding: 2px 7px; border-radius: 10px; flex-shrink: 0;
+    }
+    .ti-teia-tag {
+      font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+      color: #5b21b6; background: #f5f3ff; border: 1px solid #ddd6fe;
+      padding: 2px 7px; border-radius: 10px; flex-shrink: 0;
+    }
+    .ti-pc-tag {
       font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
       color: #15803d; background: #f0fdf4; border: 1px solid #bbf7d0;
       padding: 2px 7px; border-radius: 10px; flex-shrink: 0;
@@ -173,28 +194,38 @@
     }
     .detail-panel.visible { transform: translateX(0); }
 
-    .detail-img-wrap { height: 160px; position: relative; background: #e2e8f0; flex-shrink: 0; overflow: hidden; }
+    /* Header com foto */
+    .detail-img-wrap { height: 160px; position: relative; background: #f1f5f9; flex-shrink: 0; overflow: hidden; }
     .detail-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
     .detail-overlay {
       position: absolute; inset: 0;
       background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
       display: flex; flex-direction: column; justify-content: flex-end; padding: 16px;
     }
+    /* Header sem foto (TI sem imagem) */
+    .detail-text-header {
+      padding: 20px 20px 16px; background: white; flex-shrink: 0;
+      border-bottom: 1px solid #f1f5f9; position: relative;
+    }
     .detail-close {
       position: absolute; top: 10px; right: 10px;
-      background: rgba(0,0,0,0.4); border: none; cursor: pointer;
-      color: white; border-radius: 50%; padding: 6px;
+      background: rgba(0,0,0,0.07); border: none; cursor: pointer;
+      color: #374151; border-radius: 50%; padding: 6px;
       transition: background 0.15s; display: flex; align-items: center;
     }
-    .detail-close:hover { background: rgba(0,0,0,0.7); }
+    .detail-close.on-photo { background: rgba(0,0,0,0.4); color: white; top: 10px; right: 10px; position: absolute; }
+    .detail-close:hover { background: rgba(0,0,0,0.15); }
     .detail-close svg { width: 16px; height: 16px; }
     .detail-tag-img {
       font-size: 0.58rem; font-family: monospace; letter-spacing: 0.12em; text-transform: uppercase;
       font-weight: 700; padding: 3px 8px; border-radius: 12px; margin-bottom: 6px; display: inline-block;
     }
-    .tag-rede { background: rgba(245,200,0,0.22); border: 1px solid rgba(245,200,0,0.4); color: #fbbf24; }
-    .tag-sem  { background: rgba(148,163,184,0.2); border: 1px solid rgba(148,163,184,0.3); color: #cbd5e1; }
+    .tag-rede  { background: rgba(245,200,0,0.22); border: 1px solid rgba(245,200,0,0.4); color: #92400e; }
+    .tag-teia  { background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3); color: #5b21b6; }
+    .tag-pc    { background: rgba(21,128,61,0.12); border: 1px solid rgba(21,128,61,0.3); color: #15803d; }
+    .tag-sem   { background: rgba(148,163,184,0.2); border: 1px solid rgba(148,163,184,0.3); color: #64748b; }
     .detail-name-img { font-size: 1.05rem; font-weight: 700; color: white; line-height: 1.2; }
+    .detail-name-text { font-size: 1.05rem; font-weight: 700; color: var(--text); line-height: 1.2; padding-right: 28px; }
 
     .detail-body { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 16px; }
     .detail-grid {
@@ -215,11 +246,36 @@
     }
     .detail-section-title svg { width: 13px; height: 13px; color: var(--amber); flex-shrink: 0; }
     .detail-section p { font-size: 0.77rem; color: var(--text-muted); line-height: 1.7; }
-    .detail-coord {
-      display: flex; align-items: center; justify-content: space-between;
-      background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 10px;
-      padding: 9px 12px; font-size: 0.68rem; font-family: monospace; color: #475569;
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.92);
+      z-index: 100; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.2s;
     }
+    .lightbox.open { opacity: 1; pointer-events: all; }
+    .lightbox img { max-width: 92vw; max-height: 88vh; object-fit: contain; border-radius: 8px; }
+    .lightbox-close {
+      position: absolute; top: 16px; right: 16px;
+      background: rgba(255,255,255,0.12); border: none; color: white;
+      border-radius: 50%; padding: 10px; cursor: pointer; font-size: 1.2rem;
+      display: flex; align-items: center; transition: background 0.15s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,0.25); }
+    .lightbox-caption {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      color: rgba(255,255,255,0.75); font-size: 0.75rem; text-align: center;
+      max-width: 80vw; background: rgba(0,0,0,0.4); padding: 6px 16px; border-radius: 20px;
+    }
+    .lightbox-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.12); border: none; color: white;
+      border-radius: 50%; padding: 12px; cursor: pointer; font-size: 1.2rem;
+      transition: background 0.15s;
+    }
+    .lightbox-nav:hover { background: rgba(255,255,255,0.25); }
+    .lightbox-prev { left: 16px; }
+    .lightbox-next { right: 16px; }
 
     /* ── TOAST ── */
     .toast {
@@ -254,12 +310,9 @@
     .maplibregl-ctrl-group { border-radius: 10px !important; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.08) !important; }
     .maplibregl-ctrl-attrib { font-size: 10px !important; }
 
-    /* ── Conteúdo da ficha ── */
+    /* ── Dimensões (ficha) ── */
     .dimensoes { display: flex; flex-direction: column; gap: 6px; }
-    .dim-item {
-      background: #f8fafc; border: 1px solid #f1f5f9;
-      border-radius: 10px; padding: 10px 14px;
-    }
+    .dim-item { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 10px; padding: 10px 14px; }
     .dim-item summary {
       cursor: pointer; font-weight: 600; font-size: 0.78rem; color: var(--text);
       list-style: none; display: flex; align-items: center; gap: 6px;
@@ -269,14 +322,10 @@
       transition: transform 0.15s; display: inline-block; width: 12px;
     }
     .dim-item[open] summary::before { content: '−'; }
-    .dim-item p {
-      margin-top: 8px; font-size: 0.75rem; line-height: 1.6;
-      color: var(--text-muted); font-weight: 300;
-    }
+    .dim-item p { margin-top: 8px; font-size: 0.75rem; line-height: 1.6; color: var(--text-muted); font-weight: 300; }
 
-    .ficha-fotos {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;
-    }
+    /* ── Galeria de fotos ── */
+    .ficha-fotos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
     .ficha-fotos figure {
       margin: 0; border-radius: 10px; overflow: hidden;
       background: #f1f5f9; position: relative; aspect-ratio: 4/3;
@@ -293,14 +342,11 @@
     .ficha-fotos figure:hover figcaption { opacity: 1; }
 
     .ficha-videos { display: flex; flex-direction: column; gap: 14px; }
-    .video-embed { position: relative; }
     .video-embed iframe {
       width: 100%; aspect-ratio: 16/9; border: none;
       border-radius: 10px; background: #000;
     }
-    .video-title {
-      margin-top: 6px; font-size: 0.72rem; color: var(--text-muted); font-weight: 500;
-    }
+    .video-title { margin-top: 6px; font-size: 0.72rem; color: var(--text-muted); font-weight: 500; }
 
     .ficha-list-mini { display: flex; flex-direction: column; gap: 6px; }
     .ficha-mini {
@@ -309,87 +355,82 @@
       transition: border-color 0.15s, background 0.15s;
     }
     .ficha-mini:hover { border-color: var(--amber); background: #fef3c7; }
-    .ficha-mini strong {
-      display: block; font-size: 0.78rem; color: var(--text); margin-bottom: 2px;
-    }
-    .ficha-mini span {
-      display: block; font-size: 0.7rem; color: var(--text-muted);
-    }
+    .ficha-mini strong { display: block; font-size: 0.78rem; color: var(--text); margin-bottom: 2px; }
+    .ficha-mini span { display: block; font-size: 0.7rem; color: var(--text-muted); }
 
     /* ── Pins ── */
     .irun-pin {
-      cursor: pointer; width: 22px; height: 22px;
-      color: #94a3b8; transition: transform 0.15s, color 0.15s;
-      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.25));
+      cursor: pointer; width: 26px; height: 26px;
+      transition: transform 0.15s, filter 0.15s;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
     }
     .irun-pin svg { width: 100%; height: 100%; }
-    .irun-pin:hover { transform: scale(1.25) translateY(-2px); color: #475569; z-index: 5; }
-    .irun-pin.pin-rede { color: var(--yellow); width: 28px; height: 28px; }
-    .irun-pin.pin-rede:hover { color: #d97706; }
+    .irun-pin:hover { transform: scale(1.3) translateY(-3px); z-index: 5; }
+    /* REDE IRUN: amarelo */
+    .pin-rede { color: #F5C800; width: 30px; height: 30px; }
+    /* Teia dos Povos: roxo */
+    .pin-teia { color: #7c3aed; width: 26px; height: 26px; }
+    /* Ponto de Cultura: verde */
+    .pin-pc { color: #15803d; width: 26px; height: 26px; }
+    /* Ponto extra simples: slate */
+    .pin-extra { color: #64748b; width: 20px; height: 20px; }
 
     /* Handle só aparece no mobile */
     .panel-handle-area { display: none; }
 
-    /* Peek = abinha flutuante para reabrir o painel (só mobile) */
+    /* Peek = abinha flutuante para reabrir o painel */
     .sheet-peek {
-      display: none;
-      position: fixed;
+      display: none; position: fixed;
       bottom: 16px; left: 50%; transform: translateX(-50%);
-      background: rgba(255,255,255,0.96);
-      backdrop-filter: blur(10px);
-      border: 1px solid #e2e8f0;
-      border-radius: 24px;
-      padding: 10px 28px;
-      box-shadow: 0 6px 24px rgba(0,0,0,0.15);
-      cursor: pointer;
-      z-index: 20;
+      background: rgba(255,255,255,0.96); backdrop-filter: blur(10px);
+      border: 1px solid #e2e8f0; border-radius: 24px;
+      padding: 10px 28px; box-shadow: 0 6px 24px rgba(0,0,0,0.15);
+      cursor: pointer; z-index: 20;
       animation: peek-in 0.25s ease-out;
     }
     @keyframes peek-in {
       from { opacity: 0; transform: translateX(-50%) translateY(20px); }
       to   { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
-    .sheet-peek .peek-bar {
-      display: block; width: 42px; height: 5px;
-      background: #94a3b8; border-radius: 3px;
-    }
+    .sheet-peek .peek-bar { display: block; width: 42px; height: 5px; background: #94a3b8; border-radius: 3px; }
     .sheet-peek.visible { display: block; }
 
     /* ── Mobile ── */
     @media (max-width: 768px) {
       .panel {
         top: auto; bottom: 0; left: 0; right: 0; width: 100%;
-        border-radius: 20px 20px 0 0;
-        max-height: 92vh; height: 92vh;
-        border-bottom: none;
+        border-radius: 20px 20px 0 0; border-bottom: none;
+        /* Mostra ~55% da tela, mapa visível acima */
+        height: 57vh; max-height: 57vh;
         will-change: transform;
         transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
       }
       .panel.dragging { transition: none; }
       .panel-handle-area {
-        display: flex;
-        padding: 10px 0 6px;
-        cursor: grab;
-        touch-action: none;
-        flex-shrink: 0;
-        display: flex;
-        justify-content: center;
-        background: rgba(255,255,255,0.96);
+        display: flex; padding: 10px 0 6px;
+        cursor: grab; touch-action: none; flex-shrink: 0;
+        justify-content: center; background: rgba(255,255,255,0.96);
       }
       .panel-handle-area:active { cursor: grabbing; }
       .panel-handle-bar {
-        width: 42px; height: 5px;
-        background: #cbd5e1; border-radius: 3px;
+        width: 42px; height: 5px; background: #cbd5e1; border-radius: 3px;
         transition: background 0.15s;
       }
       .panel-handle-area:hover .panel-handle-bar { background: #94a3b8; }
       .detail-panel {
         top: auto; bottom: 0; right: 0; left: 0; width: 100%;
-        border-radius: 20px 20px 0 0; max-height: 72vh; border-bottom: none;
+        border-radius: 20px 20px 0 0; border-bottom: none;
+        /* Ficha ocupa ~65vh: mapa visível nos 35% acima */
+        max-height: 65vh;
         transform: translateY(110%);
       }
       .detail-panel.visible { transform: translateY(0); }
-      .style-switcher { display: none; }
+      .style-switcher {
+        /* No mobile: posição inferior, acima do peek */
+        top: auto; right: auto;
+        bottom: 58vh; left: 50%; transform: translateX(-50%);
+        font-size: 0.6rem;
+      }
     }
   </style>
 </head>
@@ -397,12 +438,23 @@
 
 <div id="map"></div>
 
+<!-- Lightbox para galeria fullscreen -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lb-close">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <button class="lightbox-nav lightbox-prev" id="lb-prev">&#8249;</button>
+  <img id="lb-img" src="" alt="">
+  <button class="lightbox-nav lightbox-next" id="lb-next">&#8250;</button>
+  <div class="lightbox-caption" id="lb-cap"></div>
+</div>
+
 <div class="style-switcher">
-  <button class="style-btn active" data-style="positron">Mínimo</button>
+  <button class="style-btn active" data-style="positron">Normal</button>
   <div class="style-sep"></div>
   <button class="style-btn" data-style="voyager">Colorido</button>
   <div class="style-sep"></div>
-  <button class="style-btn" data-style="dark">Escuro</button>
+  <button class="style-btn" data-style="satellite">Satélite</button>
 </div>
 
 <div class="panel" id="panel">
@@ -428,15 +480,10 @@
         </button>
       </div>
     </div>
-    <h1 class="header-title">MOVIMENTO IRUN</h1>
-    <p class="header-sub">IDENTIDADE E TERRITÓRIO</p>
-  </div>
-
-  <div class="stats-bar">
-    <div class="stat"><span class="stat-num" id="stat-total">—</span><span class="stat-label">TIs</span></div>
-    <div class="stat"><span class="stat-num g" id="stat-rede">—</span><span class="stat-label">REDE</span></div>
-    <div class="stat"><span class="stat-num a" id="stat-fichas">—</span><span class="stat-label">Fichas</span></div>
-    <div class="stat"><span class="stat-num b" id="stat-pontos">—</span><span class="stat-label">Pontos</span></div>
+    <div class="header-brand" id="btn-about" title="Sobre o Mapa">
+      <h1 class="header-title">MOVIMENTO IRUN</h1>
+      <p class="header-sub">Design de Território · Programa Bem Viver</p>
+    </div>
   </div>
 
   <div class="search-wrap">
@@ -455,38 +502,26 @@
   </div>
 
   <div class="filters">
-    <button class="filter-pill fp-all" data-filter="todos">Territórios</button>
+    <button class="filter-pill fp-ti" data-filter="ti">TI</button>
     <button class="filter-pill" data-filter="rede">
       <span class="filter-dot" style="background:#F5C800"></span>REDE IRUN
     </button>
-    <button class="filter-pill" data-filter="fichas">
-      <span class="filter-dot" style="background:#15803d"></span>Lugares
+    <button class="filter-pill" data-filter="teia">
+      <span class="filter-dot" style="background:#7c3aed"></span>Teia dos Povos
     </button>
-    <button class="filter-pill" data-filter="sem">
-      <span class="filter-dot" style="background:#94a3b8"></span>Em mapeamento
+    <button class="filter-pill" data-filter="pc">
+      <span class="filter-dot" style="background:#15803d"></span>Pontos de Cultura
     </button>
   </div>
 
   <div class="panel-body" id="panel-body"></div>
 </div>
 
+<!-- Detail panel (TI ou Ficha) -->
 <div class="detail-panel" id="detail-panel">
-  <div class="detail-img-wrap">
-    <img id="d-img" src="" alt="">
-    <div class="detail-overlay">
-      <span class="detail-tag-img" id="d-tag"></span>
-      <span class="detail-name-img" id="d-name"></span>
-    </div>
-    <button class="detail-close" id="detail-close">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-      </svg>
-    </button>
-  </div>
-  <div class="detail-body" id="d-body"></div>
+  <!-- Preenchido dinamicamente por JS -->
 </div>
 
-<!-- Peek (reabrir painel mobile) -->
 <button class="sheet-peek" id="sheet-peek" aria-label="Abrir painel">
   <span class="peek-bar"></span>
 </button>
@@ -499,84 +534,125 @@
 <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
 <script>
 (function () {
-  /* Single source of truth: tudo vem de ../territorios/ (mapa actual).
-     Assim qualquer ficha editada para produção aparece automaticamente no v2. */
   const PROD_BASE   = '../territorios/';
   const DATA_BASE   = PROD_BASE + 'data/';
   const FICHA_BASE  = PROD_BASE + 'data/fichas/';
   const PONTOS_BASE = PROD_BASE + 'data/pontos/';
   const ASSETS_BASE = PROD_BASE + 'assets/';
   const GEO_URL     = PROD_BASE + 'geo/base/territorios.geojson';
+
   const STYLES = {
-    positron: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-    voyager:  'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
-    dark:     'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+    positron:  'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+    voyager:   'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
+    dark:      'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+    satellite: 'https://api.maptiler.com/maps/satellite/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL',
   };
+  /* Satélite gratuito via ESRI sem API key */
+  const SATELLITE_TILES = {
+    version: 8,
+    sources: { esri: {
+      type: 'raster',
+      tiles: ['https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'],
+      tileSize: 256, attribution: '© Esri, Maxar, Earthstar Geographics',
+    }},
+    layers: [{ id: 'esri-satellite', type: 'raster', source: 'esri' }],
+  };
+
   const BAHIA = { center: [-39.5, -13.2], zoom: 7.2 };
 
-  let allFeatures  = [];     // polígonos TI (GeoJSON)
-  let territorios  = [];     // metadata dos 27 TIs ({id, cod, nome, redeAtiva})
-  let fichas       = [];     // 21+ fichas completas
+  let allFeatures  = [];
+  let territorios  = [];
+  let fichas       = [];
   let fichasById   = {};
-  let pontosByTi   = {};     // ti-XX → [pontos]
-  let redeStats    = {};     // tiId → { fichas, pontos }
-  let pinMarkers   = [];     // markers no mapa (fichas + pontos)
+  let pontosByTi   = {};
+  let redeStats    = {};
+  let pinMarkers   = [];
   let hoveredId    = null;
   let activeId     = null;
-  let activeFicha  = null;   // ficha actualmente aberta no detail panel
-  let activeFilter = 'todos';
+  let activeFicha  = null;
+  let activeFilter = 'ti';
   let query        = '';
   let locating     = false;
   let userMarker   = null;
   let toastTimer   = null;
+  let lbPhotos     = [];
+  let lbIdx        = 0;
+  let configData   = null;
 
   const map = new maplibregl.Map({
     container: 'map',
     style: STYLES.positron,
     center: BAHIA.center, zoom: BAHIA.zoom,
-    minZoom: 4, maxZoom: 13,
+    minZoom: 4, maxZoom: 18,
   });
   map.addControl(new maplibregl.NavigationControl({ showCompass: true }), 'top-right');
 
+  /* ── Lightbox ── */
+  const lb      = document.getElementById('lightbox');
+  const lbImg   = document.getElementById('lb-img');
+  const lbCap   = document.getElementById('lb-cap');
+  document.getElementById('lb-close').addEventListener('click', () => lb.classList.remove('open'));
+  document.getElementById('lb-prev').addEventListener('click', () => lbNav(-1));
+  document.getElementById('lb-next').addEventListener('click', () => lbNav(+1));
+  lb.addEventListener('click', e => { if (e.target === lb) lb.classList.remove('open'); });
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') lb.classList.remove('open');
+    if (e.key === 'ArrowLeft') lbNav(-1);
+    if (e.key === 'ArrowRight') lbNav(+1);
+  });
+  function openLightbox(photos, idx) {
+    lbPhotos = photos; lbIdx = idx;
+    lbShow();
+    lb.classList.add('open');
+  }
+  function lbNav(dir) {
+    lbIdx = (lbIdx + dir + lbPhotos.length) % lbPhotos.length;
+    lbShow();
+  }
+  function lbShow() {
+    const p = lbPhotos[lbIdx];
+    lbImg.src = p.src; lbCap.textContent = p.cap || '';
+    document.getElementById('lb-prev').style.display = lbPhotos.length > 1 ? '' : 'none';
+    document.getElementById('lb-next').style.display = lbPhotos.length > 1 ? '' : 'none';
+  }
+
   async function fetchJSON(url, label) {
-    console.log('[IRUN] fetch:', label, url);
     const r = await fetch(url);
-    if (!r.ok) throw new Error(`${label} (${url}) → HTTP ${r.status}`);
+    if (!r.ok) throw new Error(`${label} → HTTP ${r.status}`);
     return r.json();
   }
 
   map.on('load', async () => {
-    console.log('[IRUN] map loaded, base location:', window.location.href);
     try {
-      const geo      = await fetchJSON(GEO_URL, 'GeoJSON');
-      const manifest = await fetchJSON(DATA_BASE + 'manifest.json', 'manifest');
-      const tisData  = await fetchJSON(DATA_BASE + 'territorios.json', 'territorios');
-      console.log('[IRUN] core OK:', geo.features.length, 'features,', manifest.fichas.length, 'fichas no manifest');
+      const [geo, manifest, tisData, cfg] = await Promise.all([
+        fetchJSON(GEO_URL, 'GeoJSON'),
+        fetchJSON(DATA_BASE + 'manifest.json', 'manifest'),
+        fetchJSON(DATA_BASE + 'territorios.json', 'territorios'),
+        fetchJSON(DATA_BASE + 'config.json', 'config').catch(() => null),
+      ]);
+      configData = cfg;
 
       geo.features.forEach((f, i) => { f.id = i; });
       allFeatures = geo.features;
       territorios = tisData.territorios || [];
 
-      // Carregar fichas e pontos em paralelo
       const [fichasArr, pontosArr] = await Promise.all([
         Promise.all((manifest.fichas || []).map(id =>
-          fetch(FICHA_BASE + id + '.json').then(r => r.json()).catch(()=>null)
+          fetch(FICHA_BASE + id + '.json').then(r => r.json()).catch(() => null)
         )),
         Promise.all((manifest.pontos || []).map(tiId =>
-          fetch(PONTOS_BASE + tiId + '.json').then(r => r.json()).catch(()=>null)
+          fetch(PONTOS_BASE + tiId + '.json').then(r => r.json()).catch(() => null)
         )),
       ]);
+
       fichas = fichasArr.filter(Boolean);
       fichas.forEach(f => { fichasById[f.id] = f; });
 
-      // Pontos por território
-      let totalPontosCount = 0;
       pontosArr.filter(Boolean).forEach(p => {
         pontosByTi[p.territorioId] = p.pontos || [];
-        totalPontosCount += (p.pontos || []).length;
       });
 
-      // Stats por TI: fichas e pontos da REDE
       fichas.forEach(f => {
         if (!f.rede) return;
         const t = f.territorioId;
@@ -587,19 +663,7 @@
         if (!redeStats[tiId]) redeStats[tiId] = { fichas: 0, pontos: 0 };
         redeStats[tiId].pontos = pts.length;
       });
-
-      // Marcar redeAtiva nos territórios baseado em fichas+pontos
-      territorios.forEach(t => {
-        t.redeAtiva = !!redeStats[t.id];
-      });
-
-      // Stats globais
-      const tisAtivos   = territorios.filter(t => t.redeAtiva).length;
-      const fichasRede  = fichas.filter(f => f.rede).length;
-      document.getElementById('stat-total').textContent  = allFeatures.length;
-      document.getElementById('stat-rede').textContent   = tisAtivos;
-      document.getElementById('stat-fichas').textContent = fichasRede;
-      document.getElementById('stat-pontos').textContent = totalPontosCount;
+      territorios.forEach(t => { t.redeAtiva = !!redeStats[t.id]; });
 
       addLayers(geo);
       wireMap();
@@ -612,66 +676,73 @@
 
       if (window.matchMedia('(pointer: fine)').matches)
         document.getElementById('kb-hint').style.display = 'block';
+
     } catch (e) {
-      console.error('[IRUN] Erro ao carregar dados:', e);
-      const body = document.getElementById('panel-body');
-      if (body) body.innerHTML = `<div class="empty-state">
+      console.error('[IRUN] Erro:', e);
+      document.getElementById('panel-body').innerHTML = `<div class="empty-state">
         <p style="color:#dc2626"><strong>Erro ao carregar:</strong></p>
-        <small>${String(e.message || e)}</small>
-        <small style="margin-top:8px">Abra Console (F12) para mais detalhes</small>
+        <small>${esc(String(e.message || e))}</small>
+        <small style="margin-top:8px">Abra Console (F12) para detalhes</small>
       </div>`;
     }
   });
 
-  /* ── Pins (fichas + pontos) ── */
+  /* ── Pins ── */
   function addPins() {
     pinMarkers.forEach(m => m.remove());
     pinMarkers = [];
 
-    // Pins das fichas com coordenadas
+    /* Fichas com coordenadas */
     fichas.forEach(f => {
       const c = f.meta?.coords;
       if (!c) return;
       const [lat, lng] = c;
-      addPin(lng, lat, {
-        nome: f.meta?.nome || f.id,
-        municipio: f.meta?.municipio || '',
-        tipo: f.tipo,
-        rede: f.rede,
-        fichaId: f.id,
-      });
+      let cls = 'irun-pin';
+      if (f.rede) cls += ' pin-rede';
+      else if (f.teiaDosPovos) cls += ' pin-teia';
+      else if (f.pontoCultura) cls += ' pin-pc';
+      addPin(lng, lat, { nome: f.meta?.nome || f.id, fichaId: f.id, cls });
     });
 
-    // Pins dos pontos extra
+    /* Fichas que têm pin representam o território — pontos extras são sub-locais */
+    const fichaCoords = new Set(fichas
+      .filter(f => f.meta?.coords)
+      .map(f => f.meta.coords.map(v => v.toFixed(4)).join(','))
+    );
+
     Object.values(pontosByTi).flat().forEach(p => {
       if (!p.coords) return;
       const [lat, lng] = p.coords;
+      const key = [lat, lng].map(v => Number(v).toFixed(4)).join(',');
+      /* Não duplicar pin se já há ficha nas mesmas coords */
+      if (fichaCoords.has(key)) return;
+      /* Pontos com entidadeId/fichaId já representados pela ficha (mesmo coords) — skip */
+      const fichaRef = p.fichaId || p.entidadeId
+        ? fichasById[p.fichaId || p.entidadeId]
+        : null;
+      if (fichaRef?.meta?.coords) {
+        const [flat, flng] = fichaRef.meta.coords;
+        if (Math.abs(flat - lat) < 0.0002 && Math.abs(flng - lng) < 0.0002) return;
+      }
       addPin(lng, lat, {
         nome: p.nome,
-        categorias: p.categorias,
-        fichaId: p.fichaId,
-        pontoCultura: p.pontoCultura,
+        fichaId: p.fichaId || p.entidadeId || null,
+        cls: 'irun-pin pin-extra',
       });
     });
   }
 
   function addPin(lng, lat, info) {
     const el = document.createElement('div');
-    el.className = 'irun-pin' + (info.rede ? ' pin-rede' : '');
+    el.className = info.cls || 'irun-pin';
     el.title = info.nome;
     el.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-3.87 0-7 3.13-7 7 0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>`;
-    el.addEventListener('click', (ev) => {
+    el.addEventListener('click', ev => {
       ev.stopPropagation();
-      if (info.fichaId && fichasById[info.fichaId]) {
-        openFicha(fichasById[info.fichaId]);
-      } else {
-        showToast(info.nome);
-      }
+      if (info.fichaId && fichasById[info.fichaId]) openFicha(fichasById[info.fichaId]);
+      else showToast(info.nome);
     });
-    const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
-      .setLngLat([lng, lat])
-      .addTo(map);
-    pinMarkers.push(marker);
+    pinMarkers.push(new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([lng, lat]).addTo(map));
   }
 
   function addLayers(geo) {
@@ -705,8 +776,7 @@
     map.on('mousemove','ti-fill', e => {
       map.getCanvas().style.cursor = 'pointer';
       const id = e.features[0].id;
-      if (hoveredId !== null && hoveredId !== id)
-        map.setFeatureState({source:'ti',id:hoveredId},{hover:false});
+      if (hoveredId !== null && hoveredId !== id) map.setFeatureState({source:'ti',id:hoveredId},{hover:false});
       hoveredId = id;
       map.setFeatureState({source:'ti',id},{hover:true});
     });
@@ -727,7 +797,7 @@
     if (activeId !== null) map.setFeatureState({source:'ti',id:activeId},{active:false});
     activeId = feat.id;
     map.setFeatureState({source:'ti',id:activeId},{active:true});
-    showDetail(feat);
+    showDetailTi(feat);
     fitFeature(feat);
     document.querySelectorAll('.ti-card').forEach(c =>
       c.classList.toggle('active', Number(c.dataset.fid) === feat.id));
@@ -735,38 +805,44 @@
 
   function deselect() {
     if (activeId !== null) { map.setFeatureState({source:'ti',id:activeId},{active:false}); activeId = null; }
+    document.getElementById('detail-panel').innerHTML = '';
     document.getElementById('detail-panel').classList.remove('visible');
     document.querySelectorAll('.ti-card').forEach(c => c.classList.remove('active'));
   }
 
   function getFiltered() {
     const q = query.toLowerCase();
-
-    // Em modo "rede" mostramos só territórios com mapeamento
-    // Em modo "fichas" mostramos as fichas (lugares)
-    if (activeFilter === 'fichas') {
-      return fichas.filter(f => {
-        if (!q) return true;
-        const n = (f.meta?.nome || '').toLowerCase();
-        const m = (f.meta?.municipio || '').toLowerCase();
-        const a = (f.sidebar?.apresentacao || '').toLowerCase();
-        return n.includes(q) || m.includes(q) || a.includes(q);
+    if (activeFilter === 'teia') {
+      return fichas.filter(f => f.teiaDosPovos && (!q || matchFicha(f, q)));
+    }
+    if (activeFilter === 'pc') {
+      return fichas.filter(f => f.pontoCultura && (!q || matchFicha(f, q)));
+    }
+    if (activeFilter === 'rede') {
+      return allFeatures.filter(f => {
+        const isRede = !!redeStats[f.properties.id];
+        if (!isRede) return false;
+        return !q || (f.properties.nome||'').toLowerCase().includes(q);
       });
     }
-
+    /* ti: todos os territórios */
     return allFeatures.filter(f => {
-      const nome  = (f.properties.nome || '').toLowerCase();
-      const cod   = String(f.properties.cod || '').toLowerCase();
-      const matchQ = !q || nome.includes(q) || cod.includes(q);
-      const isRede = !!redeStats[f.properties.id];
-      const matchF = activeFilter === 'todos' ? true : activeFilter === 'rede' ? isRede : !isRede;
-      return matchQ && matchF;
+      const nome = (f.properties.nome || '').toLowerCase();
+      const cod  = String(f.properties.cod || '').toLowerCase();
+      return !q || nome.includes(q) || cod.includes(q);
     });
+  }
+
+  function matchFicha(f, q) {
+    return (f.meta?.nome||'').toLowerCase().includes(q) ||
+           (f.meta?.municipio||'').toLowerCase().includes(q) ||
+           (f.sidebar?.apresentacao||'').toLowerCase().includes(q);
   }
 
   function renderList() {
     const body = document.getElementById('panel-body');
     const list = getFiltered();
+
     if (!list.length) {
       body.innerHTML = `<div class="empty-state">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
@@ -777,235 +853,317 @@
       return;
     }
 
-    // Modo fichas (lugares)
-    if (activeFilter === 'fichas') {
+    /* Listas de fichas (teia / pontos de cultura) */
+    if (activeFilter === 'teia' || activeFilter === 'pc') {
+      const barCls = activeFilter === 'teia' ? 'bar-teia' : 'bar-pc';
+      const tagFn  = f => activeFilter === 'teia'
+        ? (f.rede ? '<span class="ti-rede-tag">REDE</span>' : '<span class="ti-teia-tag">TEIA</span>')
+        : '<span class="ti-pc-tag">PC</span>';
       const sorted = [...list].sort((a,b) =>
-        (a.meta?.nome||'').localeCompare(b.meta?.nome||'', 'pt-BR'));
+        (a.meta?.nome||'').localeCompare(b.meta?.nome||'','pt-BR'));
       body.innerHTML = sorted.map(f => {
-        const nome = f.meta?.nome || f.id;
-        const mun  = f.meta?.municipio || '';
-        const ti   = territorios.find(t => t.id === f.territorioId);
-        const tipo = (f.tipo || '').replace(/^./, c => c.toUpperCase());
-        return `<div class="ti-card${activeFicha === f.id?' active':''}" data-fid="${esc(f.id)}" data-kind="ficha">
-          <div class="ti-card-bar bar-rede"></div>
+        const ti = territorios.find(t => t.id === f.territorioId);
+        return `<div class="ti-card" data-fid="${esc(f.id)}" data-kind="ficha">
+          <div class="ti-card-bar ${barCls}"></div>
           <div class="ti-card-top">
-            <span class="ti-card-name">${esc(nome)}</span>
-            ${f.pontoCultura ? '<span class="ti-rede-tag" style="background:#fef3c7;border-color:#fde68a;color:#92400e">★ PC</span>' : ''}
+            <span class="ti-card-name">${esc(f.meta?.nome||f.id)}</span>
+            ${tagFn(f)}
           </div>
           <div class="ti-card-foot">
-            <span>${esc(tipo)} · ${esc(mun)}${ti ? ' · TI '+ti.cod : ''}</span>
+            <span>${esc(f.tipo||'')} · ${esc(f.meta?.municipio||'')}${ti?' · TI '+ti.cod:''}</span>
             <span class="ti-card-arrow">Abrir →</span>
           </div>
         </div>`;
       }).join('');
-      body.querySelectorAll('.ti-card').forEach(card => {
-        card.addEventListener('click', () => {
-          const f = fichasById[card.dataset.fid];
-          if (f) openFicha(f);
-        });
-      });
+      body.querySelectorAll('.ti-card').forEach(c =>
+        c.addEventListener('click', () => { const f = fichasById[c.dataset.fid]; if (f) openFicha(f); }));
       return;
     }
 
-    // Modo territórios
+    /* Listas de territórios (ti / rede) */
     const sorted = [...list].sort((a,b)=>(parseInt(a.properties.cod)||0)-(parseInt(b.properties.cod)||0));
     body.innerHTML = sorted.map(f => {
-      const cod    = f.properties.cod || '';
-      const nome   = f.properties.nome || '—';
       const isRede = !!redeStats[f.properties.id];
       const info   = redeStats[f.properties.id] || {};
       return `<div class="ti-card${activeId===f.id?' active':''}" data-fid="${f.id}" data-kind="ti">
         <div class="ti-card-bar ${isRede?'bar-rede':'bar-sem'}"></div>
         <div class="ti-card-top">
-          <span class="ti-card-num">${esc(cod)}</span>
-          <span class="ti-card-name">${esc(nome)}</span>
+          <span class="ti-card-num">${esc(f.properties.cod||'')}</span>
+          <span class="ti-card-name">${esc(f.properties.nome||'—')}</span>
           ${isRede?'<span class="ti-rede-tag">REDE</span>':''}
         </div>
         <div class="ti-card-foot">
-          <span>${isRede?`${info.fichas||0} fichas · ${info.pontos||0} pontos`:'Em mapeamento'}</span>
+          <span>${isRede?`${info.fichas||0} fichas · ${info.pontos||0} pontos`:'Sem mapeamento'}</span>
           <span class="ti-card-arrow">Ver →</span>
         </div>
       </div>`;
     }).join('');
-    body.querySelectorAll('.ti-card').forEach(card => {
-      card.addEventListener('click', () => {
-        const feat = allFeatures.find(f => f.id === Number(card.dataset.fid));
+    body.querySelectorAll('.ti-card').forEach(c =>
+      c.addEventListener('click', () => {
+        const feat = allFeatures.find(f => f.id === Number(c.dataset.fid));
         if (feat) selectTi(feat);
-      });
-    });
+      }));
   }
 
-  function showDetail(feat) {
+  /* Foto de capa do TI: usa a primeira foto de qualquer ficha associada */
+  function getTiCover(tiId) {
+    for (const f of fichas) {
+      if (f.territorioId !== tiId) continue;
+      const foto = f.sidebar?.fotos?.[0];
+      if (!foto?.src) continue;
+      return { src: ASSETS_BASE + foto.src.replace(/^assets\//,''), leg: foto.legenda || '' };
+    }
+    return null;
+  }
+
+  function showDetailTi(feat) {
     activeFicha = null;
     const p = feat.properties;
     const isRede = !!redeStats[p.id];
     const info   = redeStats[p.id] || {};
     const fichasTi = fichas.filter(f => f.territorioId === p.id);
+    const cover  = getTiCover(p.id);
 
-    document.getElementById('d-img').src = `https://picsum.photos/seed/${esc(p.cod||'ba')}/600/300`;
-    document.getElementById('d-img').alt = p.nome || '';
-    document.getElementById('d-name').textContent = p.nome || '—';
-    const tag = document.getElementById('d-tag');
-    tag.textContent = isRede ? 'REDE IRUN' : 'Em mapeamento';
-    tag.className = `detail-tag-img ${isRede?'tag-rede':'tag-sem'}`;
+    const headerHtml = cover
+      ? `<div class="detail-img-wrap">
+           <img src="${esc(cover.src)}" alt="${esc(p.nome||'')}">
+           <div class="detail-overlay">
+             <span class="detail-tag-img ${isRede?'tag-rede':'tag-sem'}">${isRede?'REDE IRUN':'Território'}</span>
+             <span class="detail-name-img">${esc(p.nome||'—')}</span>
+           </div>
+           <button class="detail-close on-photo" id="detail-close">${closeSvg()}</button>
+         </div>`
+      : `<div class="detail-text-header">
+           <span class="detail-tag-img ${isRede?'tag-rede':'tag-sem'}" style="margin-bottom:8px">${isRede?'REDE IRUN':'Território de Identidade'}</span>
+           <div class="detail-name-text">TI ${esc(p.cod||'—')} — ${esc(p.nome||'—')}</div>
+           <button class="detail-close" id="detail-close">${closeSvg()}</button>
+         </div>`;
 
     const fichasHtml = fichasTi.length ? `
       <div class="detail-section">
         <div class="detail-section-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/>
-          </svg>Comunidades mapeadas (${fichasTi.length})
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+          Comunidades mapeadas (${fichasTi.length})
         </div>
         <div class="ficha-list-mini">
-          ${fichasTi.map(f => `
-            <button class="ficha-mini" data-ficha="${esc(f.id)}">
-              <strong>${esc(f.meta?.nome || f.id)}</strong>
-              <span>${esc(f.meta?.municipio || '')} · ${esc((f.tipo||'').replace(/^./, c => c.toUpperCase()))}</span>
-            </button>`).join('')}
+          ${fichasTi.map(f => `<button class="ficha-mini" data-ficha="${esc(f.id)}">
+            <strong>${esc(f.meta?.nome||f.id)}</strong>
+            <span>${esc(f.meta?.municipio||'')} · ${esc((f.tipo||'').replace(/^./,c=>c.toUpperCase()))}</span>
+          </button>`).join('')}
         </div>
       </div>` : '';
 
-    document.getElementById('d-body').innerHTML = `
-      <div class="detail-grid">
-        <div class="dg-item"><span>Território</span><span>TI ${esc(p.cod||'—')}</span></div>
-        <div class="dg-item"><span>Status</span><span>${isRede?'✓ Mapeado':'Aguardando'}</span></div>
-        ${isRede?`
-        <div class="dg-item"><span>Fichas</span><span>${info.fichas||0} comunidades</span></div>
-        <div class="dg-item"><span>Pontos</span><span>${info.pontos||0} lugares</span></div>`:`
-        <div class="dg-item" style="grid-column:1/-1"><span>Próximos passos</span><span>Mapeamento participativo</span></div>`}
-      </div>
-      <div class="detail-section">
-        <div class="detail-section-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>Sobre o Território
+    document.getElementById('detail-panel').innerHTML = `
+      ${headerHtml}
+      <div class="detail-body">
+        <div class="detail-grid">
+          <div class="dg-item"><span>Território</span><span>TI ${esc(p.cod||'—')}</span></div>
+          <div class="dg-item"><span>Status</span><span>${isRede?'✓ Mapeado':'Sem mapeamento'}</span></div>
+          ${isRede?`
+          <div class="dg-item"><span>Fichas</span><span>${info.fichas||0} comunidades</span></div>
+          <div class="dg-item"><span>Pontos</span><span>${info.pontos||0} lugares</span></div>`:`
+          <div class="dg-item" style="grid-column:1/-1"><span>Mapeamento</span><span>Participativo — em processo</span></div>`}
         </div>
-        <p>Território de Identidade da Bahia — unidade oficial de planejamento regional (SEI/SEPLAN · SecultBA).${isRede?` Conta com <strong>${info.fichas||0} fichas</strong> de mapeamento participativo do Movimento IRUN.`:' Ainda aguarda mapeamento.'}</p>
-      </div>
-      ${fichasHtml}
-      <div class="detail-coord">
-        <span>ID: <strong>${esc(p.id||p.cod||'—')}</strong></span>
-        <span style="color:#94a3b8">Território de Identidade</span>
-      </div>
-    `;
-
-    document.querySelectorAll('.ficha-mini').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const f = fichasById[btn.dataset.ficha];
-        if (f) openFicha(f);
-      });
-    });
+        <div class="detail-section">
+          <div class="detail-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Sobre o Território
+          </div>
+          <p>Território de Identidade da Bahia — unidade oficial de planejamento regional (SEI/SEPLAN · SecultBA).${isRede?` Conta com <strong>${info.fichas||0} fichas</strong> de mapeamento participativo do Movimento IRUN.`:' Aguarda mapeamento participativo.'}</p>
+        </div>
+        ${fichasHtml}
+      </div>`;
 
     document.getElementById('detail-panel').classList.add('visible');
+    document.getElementById('detail-close').addEventListener('click', () => {
+      deselect(); map.flyTo({center:BAHIA.center,zoom:BAHIA.zoom,duration:700});
+    });
+    document.querySelectorAll('.ficha-mini').forEach(btn =>
+      btn.addEventListener('click', () => { const f = fichasById[btn.dataset.ficha]; if (f) openFicha(f); }));
   }
 
-  /* ── Abrir ficha (lugar) ── */
   function openFicha(f) {
     activeFicha = f.id;
     const s = f.sidebar || {};
-    const m = f.meta || {};
+    const m = f.meta   || {};
     const ti = territorios.find(t => t.id === f.territorioId);
-    const foto = s.fotos?.[0]?.src ? (ASSETS_BASE + s.fotos[0].src.replace(/^assets\//, '')) : `https://picsum.photos/seed/${esc(f.id)}/600/300`;
 
-    document.getElementById('d-img').src = foto;
-    document.getElementById('d-img').alt = m.nome || f.id;
-    document.getElementById('d-name').textContent = m.nome || f.id;
-    const tag = document.getElementById('d-tag');
-    tag.textContent = f.rede ? 'REDE IRUN' : 'COMUNIDADE';
-    tag.className = `detail-tag-img tag-rede`;
+    const tagCls = f.rede ? 'tag-rede' : f.teiaDosPovos ? 'tag-teia' : f.pontoCultura ? 'tag-pc' : 'tag-sem';
+    const tagTxt = f.rede ? 'REDE IRUN' : f.teiaDosPovos ? 'TEIA DOS POVOS' : f.pontoCultura ? 'PONTO DE CULTURA' : 'COMUNIDADE';
+
+    const fotos   = (s.fotos  || []);
+    const videos  = (s.videos || []).filter(v => v.tipo === 'youtube' && v.id);
+    const dimAll  = (s.identidade || []);
+
+    /* Foto de capa: primeira foto real */
+    const coverSrc = fotos[0]?.src
+      ? ASSETS_BASE + fotos[0].src.replace(/^assets\//, '')
+      : null;
+
+    const headerHtml = coverSrc
+      ? `<div class="detail-img-wrap">
+           <img src="${esc(coverSrc)}" alt="${esc(m.nome||f.id)}">
+           <div class="detail-overlay">
+             <span class="detail-tag-img ${tagCls}">${tagTxt}</span>
+             <span class="detail-name-img">${esc(m.nome||f.id)}</span>
+           </div>
+           <button class="detail-close on-photo" id="detail-close">${closeSvg()}</button>
+         </div>`
+      : `<div class="detail-text-header">
+           <span class="detail-tag-img ${tagCls}" style="margin-bottom:8px">${tagTxt}</span>
+           <div class="detail-name-text">${esc(m.nome||f.id)}</div>
+           <button class="detail-close" id="detail-close">${closeSvg()}</button>
+         </div>`;
 
     if (m.coords) {
       const [lat, lng] = m.coords;
       map.flyTo({ center: [lng, lat], zoom: 11.5, duration: 1200 });
     }
 
-    const dimensoes = (s.identidade || []).slice(0, 10);
-    const fotos = (s.fotos || []).slice(0, 8);
-    const videos = (s.videos || []).filter(v => v.tipo === 'youtube' && v.id);
+    /* Galeria: todas as fotos com lightbox */
+    const fotoItems = fotos.map(p => {
+      const src = ASSETS_BASE + (p.src||'').replace(/^assets\//,'');
+      return { src, cap: p.legenda||'' };
+    });
 
-    document.getElementById('d-body').innerHTML = `
-      <div class="detail-grid">
-        <div class="dg-item"><span>Município</span><span>${esc(m.municipio || '—')}</span></div>
-        <div class="dg-item"><span>Tipo</span><span>${esc((f.tipo||'').replace(/^./, c => c.toUpperCase()))}</span></div>
-        ${ti ? `<div class="dg-item"><span>Território</span><span>TI ${esc(ti.cod)} · ${esc(ti.nome)}</span></div>` : ''}
-        ${f.pontoCultura ? `<div class="dg-item"><span>Ponto de Cultura</span><span>★ ${esc(typeof f.pontoCultura === 'string' ? f.pontoCultura : 'Sim')}</span></div>` : ''}
-        ${f.teiaDosPovos ? `<div class="dg-item" style="grid-column:1/-1"><span>Rede</span><span>🕸 Teia dos Povos</span></div>` : ''}
-      </div>
-
-      ${s.apresentacao ? `
+    const galeria = fotos.length ? `
       <div class="detail-section">
         <div class="detail-section-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>Apresentação
-        </div>
-        <p>${esc(s.apresentacao)}</p>
-      </div>` : ''}
-
-      ${dimensoes.length ? `
-      <div class="detail-section">
-        <div class="detail-section-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
-          </svg>Identidade territorial
-        </div>
-        <div class="dimensoes">
-          ${dimensoes.map(d => `
-            <details class="dim-item">
-              <summary>${esc(d.titulo || '')}</summary>
-              <p>${esc(d.conteudo || '')}</p>
-            </details>`).join('')}
-        </div>
-      </div>` : ''}
-
-      ${fotos.length ? `
-      <div class="detail-section">
-        <div class="detail-section-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
-          </svg>Galeria (${(s.fotos||[]).length})
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          Galeria (${fotos.length} fotos)
         </div>
         <div class="ficha-fotos">
-          ${fotos.map(p => {
-            const src = ASSETS_BASE + (p.src || '').replace(/^assets\//, '');
-            return `<figure><img loading="lazy" src="${esc(src)}" alt="${esc(p.legenda||'')}"><figcaption>${esc(p.legenda||'')}</figcaption></figure>`;
+          ${fotos.slice(0,8).map((p,i) => {
+            const src = ASSETS_BASE + (p.src||'').replace(/^assets\//,'');
+            return `<figure data-lbidx="${i}">
+              <img loading="lazy" src="${esc(src)}" alt="${esc(p.legenda||'')}">
+              <figcaption>${esc(p.legenda||'')}</figcaption>
+            </figure>`;
           }).join('')}
+          ${fotos.length > 8 ? `<div style="grid-column:1/-1;text-align:center;padding:8px;font-size:0.72rem;color:#64748b">+${fotos.length-8} fotos — clique para ver</div>` : ''}
         </div>
-      </div>` : ''}
+      </div>` : '';
 
-      ${videos.length ? `
+    const videosHtml = videos.length ? `
       <div class="detail-section">
         <div class="detail-section-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>
-          </svg>Vídeos (${videos.length})
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+          Vídeos (${videos.length})
         </div>
         <div class="ficha-videos">
           ${videos.map(v => `
             <div class="video-embed">
-              <iframe src="https://www.youtube-nocookie.com/embed/${esc(v.id)}?rel=0&modestbranding=1&playsinline=1" title="${esc(v.titulo||'')}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
-              ${v.titulo ? `<p class="video-title">${esc(v.titulo)}</p>` : ''}
+              <iframe src="https://www.youtube-nocookie.com/embed/${esc(v.id)}?rel=0&modestbranding=1&playsinline=1"
+                title="${esc(v.titulo||'')}" loading="lazy"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
+                allowfullscreen></iframe>
+              ${v.titulo?`<p class="video-title">${esc(v.titulo)}</p>`:''}
             </div>`).join('')}
         </div>
-      </div>` : ''}
+      </div>` : '';
 
-      ${s.contato ? `
-      <div class="detail-section">
-        <div class="detail-section-title">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
-          </svg>Contato
+    document.getElementById('detail-panel').innerHTML = `
+      ${headerHtml}
+      <div class="detail-body">
+        <div class="detail-grid">
+          <div class="dg-item"><span>Município</span><span>${esc(m.municipio||'—')}</span></div>
+          <div class="dg-item"><span>Tipo</span><span>${esc((f.tipo||'').replace(/^./,c=>c.toUpperCase()))}</span></div>
+          ${ti?`<div class="dg-item"><span>Território</span><span>TI ${esc(ti.cod)} · ${esc(ti.nome)}</span></div>`:''}
+          ${f.pontoCultura?`<div class="dg-item"><span>Ponto de Cultura</span><span>✓ ${esc(typeof f.pontoCultura==='string'?f.pontoCultura:'Reconhecido')}</span></div>`:''}
+          ${f.teiaDosPovos?`<div class="dg-item"><span>Teia dos Povos</span><span>✓ Membro</span></div>`:''}
         </div>
-        <p><strong>${esc(s.contato.organizacao||'')}</strong></p>
-        ${s.contato.gestores ? `<p style="margin-top:6px;font-size:0.78rem;color:#475569">${s.contato.gestores.map(esc).join(' · ')}</p>` : ''}
-      </div>` : ''}
 
-      <div class="detail-coord">
-        <span>ID: <strong>${esc(f.id)}</strong></span>
-        <span style="color:#94a3b8">Movimento IRUN</span>
-      </div>
-    `;
+        ${s.apresentacao?`
+        <div class="detail-section">
+          <div class="detail-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Apresentação
+          </div>
+          <p>${esc(s.apresentacao)}</p>
+        </div>` : ''}
+
+        ${dimAll.length?`
+        <div class="detail-section">
+          <div class="detail-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+            Identidade Territorial
+          </div>
+          <div class="dimensoes">
+            ${dimAll.map(d=>`
+              <details class="dim-item">
+                <summary>${esc(d.titulo||'')}</summary>
+                <p>${esc(d.conteudo||'')}</p>
+              </details>`).join('')}
+          </div>
+        </div>` : ''}
+
+        ${galeria}
+        ${videosHtml}
+
+        ${s.contato?`
+        <div class="detail-section">
+          <div class="detail-section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Contato
+          </div>
+          <p><strong>${esc(s.contato.organizacao||'')}</strong></p>
+          ${s.contato.gestores?`<p style="margin-top:6px;font-size:0.75rem;color:#475569">${s.contato.gestores.map(esc).join(' · ')}</p>`:''}
+        </div>` : ''}
+      </div>`;
+
     document.getElementById('detail-panel').classList.add('visible');
+    document.getElementById('detail-close').addEventListener('click', () => {
+      document.getElementById('detail-panel').innerHTML = '';
+      document.getElementById('detail-panel').classList.remove('visible');
+    });
+
+    /* Lightbox nas fotos */
+    document.querySelectorAll('.ficha-fotos figure[data-lbidx]').forEach(fig => {
+      fig.addEventListener('click', () => openLightbox(fotoItems, Number(fig.dataset.lbidx)));
+    });
+  }
+
+  /* ── About (info do mapa) ── */
+  function showAbout() {
+    const dp = document.getElementById('detail-panel');
+    const sobre = configData?.sobre || {};
+    const para = (sobre.paragrafos || [
+      'Mapa participativo das comunidades quilombolas e territórios de identidade da Bahia.',
+      'Resultado do Curso Design de Território — Programa Bem Viver (2026), iniciado em 2017.',
+    ]).map(p => `<p class="about-p">${esc(p)}</p>`).join('');
+    const secao = sobre.secao
+      ? `<p class="about-secao-title">${esc(sobre.secao.titulo)}</p><p class="about-p">${esc(sobre.secao.texto)}</p>`
+      : '';
+    const link = sobre.cursos
+      ? `<a class="about-link" href="${esc(sobre.cursos.href)}" target="_blank" rel="noopener">
+           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+           ${esc(sobre.cursos.label)}
+         </a>` : '';
+
+    dp.innerHTML = `
+      <div class="detail-text-header">
+        <span class="detail-tag-img tag-sem" style="margin-bottom:8px">SOBRE O MAPA</span>
+        <div class="detail-name-text">Mapa Identidade e Território</div>
+        <button class="detail-close" id="detail-close">${closeSvg()}</button>
+      </div>
+      <div class="detail-body">
+        <div class="about-wrap">
+          ${para}
+          ${secao}
+          ${link}
+          <div class="about-credits">
+            MOVIMENTO IRUN — Design de Território<br>
+            Curadoria e Design: Ines Grimaux<br>
+            Casa de Castro Alves · Programa Bem Viver<br>
+            Apoio: PNAB · Cultura Viva · SecultBA
+          </div>
+        </div>
+      </div>`;
+
+    dp.classList.add('visible');
+    document.getElementById('detail-close').addEventListener('click', () => {
+      dp.innerHTML = ''; dp.classList.remove('visible');
+    });
   }
 
   function wireSearch() {
@@ -1025,13 +1183,12 @@
   }
 
   function wireFilters() {
-    document.querySelectorAll('.filter-pill').forEach(btn => {
+    const pills = document.querySelectorAll('.filter-pill');
+    pills.forEach(btn => {
       btn.addEventListener('click', () => {
         activeFilter = btn.dataset.filter;
-        document.querySelectorAll('.filter-pill').forEach(b => {
-          b.className = 'filter-pill';
-        });
-        const cls = {todos:'fp-all',rede:'fp-rede',fichas:'fp-fichas',sem:'fp-sem'}[activeFilter] || 'fp-all';
+        pills.forEach(b => { b.className = 'filter-pill'; });
+        const cls = {ti:'fp-ti',rede:'fp-rede',teia:'fp-teia',pc:'fp-pc'}[activeFilter] || 'fp-ti';
         btn.classList.add(cls);
         renderList();
       });
@@ -1043,24 +1200,18 @@
       btn.addEventListener('click', () => {
         document.querySelectorAll('.style-btn').forEach(b=>b.classList.remove('active'));
         btn.classList.add('active');
-        map.setStyle(STYLES[btn.dataset.style]);
-        map.once('styledata', () => {
-          addLayers(null);
-          wireMap();
-          // Os pins (Marker DOM) sobrevivem à mudança de style, não precisamos re-adicionar.
-        });
+        const style = btn.dataset.style === 'satellite' ? SATELLITE_TILES : STYLES[btn.dataset.style];
+        map.setStyle(style);
+        map.once('styledata', () => { addLayers(null); wireMap(); });
       });
     });
   }
 
   function wireControls() {
     document.getElementById('btn-reset').addEventListener('click', () => {
-      map.flyTo({center:BAHIA.center,zoom:BAHIA.zoom,duration:900});
-      deselect();
+      map.flyTo({center:BAHIA.center,zoom:BAHIA.zoom,duration:900}); deselect();
     });
-    document.getElementById('detail-close').addEventListener('click', () => {
-      deselect(); map.flyTo({center:BAHIA.center,zoom:BAHIA.zoom,duration:700});
-    });
+    document.getElementById('btn-about').addEventListener('click', showAbout);
     document.getElementById('btn-locate').addEventListener('click', () => {
       if (!navigator.geolocation) { showToast('Geolocalização não suportada.'); return; }
       if (locating) return;
@@ -1076,10 +1227,9 @@
           if (userMarker) userMarker.remove();
           const el = document.createElement('div');
           el.style.cssText='width:16px;height:16px;background:#2563eb;border:3px solid white;border-radius:50%;box-shadow:0 0 0 5px rgba(37,99,235,0.22)';
-          userMarker = new maplibregl.Marker({element:el})
-            .setLngLat([longitude,latitude])
+          userMarker = new maplibregl.Marker({element:el}).setLngLat([longitude,latitude])
             .setPopup(new maplibregl.Popup({offset:12}).setHTML(
-              `<div style="font-size:11px;padding:4px"><strong>Sua posição</strong><br><span style="color:#6b7280">${latitude.toFixed(5)}, ${longitude.toFixed(5)}</span></div>`
+              `<div style="font-size:11px;padding:4px"><strong>Sua posição</strong></div>`
             )).addTo(map);
         },
         err => {
@@ -1107,7 +1257,11 @@
     let [w,s,e,n]=[Infinity,Infinity,-Infinity,-Infinity];
     pts.forEach(([lng,lat])=>{if(lng<w)w=lng;if(lat<s)s=lat;if(lng>e)e=lng;if(lat>n)n=lat;});
     const mob = window.innerWidth<=768;
-    map.fitBounds([[w,s],[e,n]],{padding:{top:60,bottom:60,left:mob?60:400,right:mob?60:400},duration:700,maxZoom:9});
+    map.fitBounds([[w,s],[e,n]],{padding:{top:mob?200:60,bottom:60,left:mob?60:400,right:mob?60:400},duration:700,maxZoom:9});
+  }
+
+  function closeSvg() {
+    return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
   }
 
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -1120,72 +1274,24 @@
     const peek   = document.getElementById('sheet-peek');
     if (!handle || !panel) return;
 
-    let startY = 0, startOffset = 0, dragging = false;
-
-    const readOffset = () => {
-      const m = new DOMMatrix(getComputedStyle(panel).transform);
-      return isNaN(m.m42) ? 0 : Math.max(0, m.m42);
-    };
-
-    const showPeek = (show) => {
-      if (peek) peek.classList.toggle('visible', show && isMobile());
-    };
-
-    const closeSheet = () => {
-      const h = panel.offsetHeight || Math.round(window.innerHeight * 0.7);
-      panel.style.transform = `translateY(${h}px)`;
-      showPeek(true);
-    };
-
-    const openSheet = () => {
-      panel.style.transform = 'translateY(0)';
-      showPeek(false);
-    };
-
+    let startY=0, startOffset=0, dragging=false;
+    const readOffset = () => { const m=new DOMMatrix(getComputedStyle(panel).transform); return isNaN(m.m42)?0:Math.max(0,m.m42); };
+    const showPeek   = (show) => { if(peek) peek.classList.toggle('visible', show && isMobile()); };
+    const closeSheet = () => { const h=panel.offsetHeight||Math.round(window.innerHeight*0.57); panel.style.transform=`translateY(${h}px)`; showPeek(true); };
+    const openSheet  = () => { panel.style.transform='translateY(0)'; showPeek(false); };
     if (peek) peek.addEventListener('click', openSheet);
 
-    const start = (e) => {
-      if (!isMobile()) return;
-      dragging = true;
-      startY = e.touches ? e.touches[0].clientY : e.clientY;
-      startOffset = readOffset();
-      panel.classList.add('dragging');
-    };
-    const move = (e) => {
-      if (!dragging) return;
-      const y = e.touches ? e.touches[0].clientY : e.clientY;
-      const newOffset = Math.max(0, startOffset + (y - startY));
-      panel.style.transform = `translateY(${newOffset}px)`;
-    };
-    const end = (e) => {
-      if (!dragging) return;
-      dragging = false;
-      panel.classList.remove('dragging');
-      const y = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
-      const finalOffset = Math.max(0, startOffset + (y - startY));
-      const h = panel.offsetHeight || Math.round(window.innerHeight * 0.7);
-      if (finalOffset > h * 0.5) {
-        closeSheet();
-      } else {
-        panel.style.transform = `translateY(${finalOffset}px)`;
-        showPeek(false);
-      }
-    };
+    const start=(e)=>{ if(!isMobile())return; dragging=true; startY=e.touches?e.touches[0].clientY:e.clientY; startOffset=readOffset(); panel.classList.add('dragging'); };
+    const move =(e)=>{ if(!dragging)return; const y=e.touches?e.touches[0].clientY:e.clientY; panel.style.transform=`translateY(${Math.max(0,startOffset+(y-startY))}px)`; };
+    const end  =(e)=>{ if(!dragging)return; dragging=false; panel.classList.remove('dragging'); const y=e.changedTouches?e.changedTouches[0].clientY:e.clientY; const off=Math.max(0,startOffset+(y-startY)); const h=panel.offsetHeight||Math.round(window.innerHeight*0.57); off>h*0.5?closeSheet():openSheet(); };
 
-    handle.addEventListener('touchstart', start, { passive: true });
-    window.addEventListener('touchmove', move, { passive: true });
-    window.addEventListener('touchend', end);
-    handle.addEventListener('mousedown', start);
-    window.addEventListener('mousemove', move);
-    window.addEventListener('mouseup', end);
-
-    /* Se sair de mobile (resize) → reset */
-    window.addEventListener('resize', () => {
-      if (!isMobile()) {
-        panel.style.transform = '';
-        showPeek(false);
-      }
-    });
+    handle.addEventListener('touchstart',start,{passive:true});
+    window.addEventListener('touchmove',move,{passive:true});
+    window.addEventListener('touchend',end);
+    handle.addEventListener('mousedown',start);
+    window.addEventListener('mousemove',move);
+    window.addEventListener('mouseup',end);
+    window.addEventListener('resize',()=>{ if(!isMobile()){panel.style.transform='';showPeek(false);} });
   })();
 })();
 </script>
