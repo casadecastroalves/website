@@ -1,0 +1,23 @@
+{
+  "name": "site-em-terra-astro",
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "node scripts/ver-site-live.mjs",
+    "build": "node scripts/build-search-index.mjs && astro build",
+    "live": "node scripts/ver-site-live.mjs",
+    "preview": "node scripts/ver-site-live.mjs",
+    "view": "node scripts/ver-site-live.mjs",
+    "view:build": "node scripts/ver-site-live.mjs",
+    "watch": "node scripts/ver-site-live.mjs",
+    "sync:oya-card": "node scripts/sync-oya-card.mjs",
+    "astro": "node scripts/astro-guard.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.0",
+    "astro": "^6.3.7"
+  }
+}

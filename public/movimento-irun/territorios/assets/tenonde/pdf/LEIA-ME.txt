@@ -1,0 +1,13 @@
+PDF / DOCUMENTOS — Kilombo Tenondé
+==================================
+
+Largue aqui os PDFs deste quilombo (cartilhas, relatórios, portfólios).
+
+O título mostrado no mapa vem do nome do ficheiro:
+    cartilha-do-territorio.pdf   ->   "cartilha do territorio"
+Use nomes claros (sem acentos é mais seguro para a web).
+
+Depois de adicionar/retirar PDFs, corra UMA vez (na pasta territorios/):
+    node tools/atualizar-midia.mjs
+
+Pronto — o mapa lista os documentos automaticamente. Não é preciso mexer no código.

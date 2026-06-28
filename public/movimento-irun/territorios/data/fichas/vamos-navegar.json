@@ -1,0 +1,46 @@
+{
+  "id": "vamos-navegar",
+  "version": "1.0.0",
+  "territorioId": "ti-26",
+  "tipo": "projeto",
+  "rede": true,
+  "meta": {
+    "nome": "Vamos Navegar",
+    "coords": [
+      -12.9744205,
+      -38.6216078
+    ],
+    "municipio": "Vera Cruz",
+    "uf": "BA",
+    "fonte": "Movimento Irun — cartografia REDE",
+    "responsavel": "Ademir Santana",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-15"
+  },
+  "sidebar": {
+    "apresentacao": "Réplicas de embarcações artesanais produzidas por Ademir Santana, na Gamboa, Ilha de Itaparica (Vera Cruz — BA). Agende a sua visita: (71) 99207-3600.",
+    "identidade": [],
+    "contato": {
+      "organizacao": "Vamos Navegar — Ademir Santana · Agende a sua visita: (71) 99207-3600",
+      "endereco": "Gamboa, Ilha de Itaparica — Vera Cruz, BA",
+      "maps": "https://maps.google.com/?q=Gamboa,+Vera+Cruz,+Ilha+de+Itaparica,+Bahia",
+      "whatsapp": "https://wa.me/5571992073600"
+    },
+    "videos": [
+      {
+        "tipo": "youtube",
+        "id": "Hd4UjhzXJy4",
+        "titulo": "Vamos Navegar — Embarcações Típicas da Bahia",
+        "embed": false
+      }
+    ],
+    "redes": [
+      {
+        "rede": "Instagram",
+        "handle": "@vamosnavegar",
+        "href": "https://www.instagram.com/vamosnavegar"
+      }
+    ],
+    "links": []
+  }
+}

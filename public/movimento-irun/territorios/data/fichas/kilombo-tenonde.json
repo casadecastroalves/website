@@ -1,0 +1,33 @@
+{
+  "id": "kilombo-tenonde",
+  "version": "1.0.0",
+  "territorioId": "ti-06",
+  "tipo": "instituicao",
+  "rede": false,
+  "stub": true,
+  "meta": {
+    "nome": "Ponto de Cultura Kilombo Tenonde / Associação Eco Educativa",
+    "coords": [
+      -13.3708,
+      -39.0731
+    ],
+    "municipio": "Valença",
+    "uf": "BA",
+    "fonte": "Movimento Irun — cartografia REDE (stub)",
+    "licenca": "CC BY-NC-SA 4.0",
+    "updatedAt": "2026-06-19"
+  },
+  "sidebar": {
+    "apresentacao": "Ponto de Cultura e Associação Eco Educativa que trabalha com a preservação ambiental, capoeira e educação decolonial em Valença.",
+    "identidade": [
+      {
+        "id": "historia",
+        "titulo": "História e memória",
+        "conteudo": "Ponto de Cultura e Associação Eco Educativa que trabalha com a preservação ambiental, capoeira e educação decolonial em Valença."
+      }
+    ],
+    "portfolio": [],
+    "pesquisas": []
+  },
+  "pontoCultura": true
+}

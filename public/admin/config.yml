@@ -1,0 +1,431 @@
+# Painel de conteúdo — Casa de Castro Alves
+# URL: https://casadecastroalves.com.br/admin/
+# Ajuda: https://casadecastroalves.com.br/admin/ajuda.html
+
+backend:
+  name: github
+  repo: casadecastroalves/website
+  branch: main
+  base_url: https://casadecastroalves.com.br
+  auth_endpoint: /api/auth
+
+locale: pt
+
+media_folder: public/images/uploads
+public_folder: /images/uploads
+
+publish_mode: simple
+
+collections:
+  - name: contato
+    label: Contato
+    files:
+      - name: contact
+        label: Informações de Contato
+        file: src/cms/contact.json
+        fields:
+          - { label: Telefone, name: telefone, widget: string }
+          - { label: WhatsApp (apenas números, ex. 5571991296555), name: whatsapp, widget: string }
+          - { label: E-mail, name: email, widget: string }
+          - { label: Endereço, name: endereco, widget: text }
+          - { label: Link Google Maps, name: googleMapsUrl, widget: string, required: false }
+
+  - name: edicoes
+    label: Edições
+    files:
+      - name: all
+        label: Todas as Edições
+        file: src/cms/edicoes.json
+        fields:
+          - label: Edições
+            name: edicoes
+            widget: list
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: Número (ou Oyás), name: num, widget: string, required: false }
+              - { label: Slug (URL, ex. edicao-11), name: slug, widget: string }
+              - { label: Título, name: titulo, widget: string }
+              - { label: Data, name: data, widget: string }
+              - { label: Artista, name: artista, widget: string }
+              - { label: Show, name: show, widget: string, required: false }
+              - { label: Descrição, name: descricao, widget: text }
+              - label: Programação (itens)
+                name: detalhes
+                widget: list
+                field: { label: Item, name: item, widget: text }
+                required: false
+              - { label: Poster (imagem), name: poster, widget: image, required: false }
+              - { label: Miniatura, name: thumb, widget: image, required: false }
+              - { label: Banner, name: banner, widget: image, required: false }
+              - { label: YouTube (embed URL), name: youtube, widget: string, required: false }
+              - { label: Título vídeo secundário, name: videoSecTitle, widget: string, required: false }
+              - { label: Link inscrição, name: inscricaoLink, widget: string, required: false }
+
+  - name: timeline
+    label: Linha do tempo (Shows / Edições)
+    files:
+      - name: timeline
+        label: Cards da linha do tempo
+        file: src/cms/timeline.json
+        fields:
+          - label: Edições
+            name: timeline
+            widget: list
+            summary: "{{fields.show}} — {{fields.artista}}"
+            fields:
+              - { label: Número, name: num, widget: string }
+              - { label: Data, name: data, widget: string }
+              - { label: Artista, name: artista, widget: string }
+              - { label: Show, name: show, widget: string }
+              - { label: Resumo curto, name: desc, widget: text }
+              - { label: Slug, name: slug, widget: string }
+              - { label: Imagem, name: img, widget: image }
+
+  - name: designers
+    label: Design Caboclo
+    files:
+      - name: all
+        label: Designers
+        file: src/cms/designers.json
+        fields:
+          - label: Designers
+            name: designers
+            widget: list
+            summary: "{{fields.nome}} — {{fields.artista}}"
+            fields:
+              - { label: ID (único, ex. itu-croma), name: id, widget: string }
+              - { label: Nome da marca, name: nome, widget: string }
+              - { label: Artista, name: artista, widget: string }
+              - { label: Projeto, name: projeto, widget: string, required: false }
+              - { label: Instagram, name: instagram, widget: string, required: false }
+              - { label: Especialidade, name: especialidade, widget: string }
+              - { label: Citação, name: citacao, widget: text }
+              - { label: Logo / foto perfil, name: thumb, widget: image, required: false }
+              - label: Obras (galeria do designer)
+                name: obras
+                widget: list
+                required: false
+                fields:
+                  - { label: Imagem, name: src, widget: image }
+                  - { label: Título, name: titulo, widget: string, required: false }
+                  - { label: Técnica, name: tecnica, widget: string, required: false }
+                  - { label: Detalhes, name: detalhes, widget: text, required: false }
+
+  - name: cursos
+    label: Cursos
+    files:
+      - name: page
+        label: Página de Cursos
+        file: src/cms/cursos.json
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Subtítulo, name: subtitulo, widget: string }
+              - { label: Imagem de fundo, name: imagem, widget: image }
+              - { label: Link inscrição, name: inscricaoUrl, widget: string }
+          - label: Programa Bem Viver
+            name: programaBemViver
+            widget: object
+            fields:
+              - { label: Badge, name: badge, widget: string }
+              - { label: Título, name: titulo, widget: string }
+              - label: Parágrafos
+                name: paragrafos
+                widget: list
+                field: { label: Parágrafo, name: p, widget: text }
+          - { label: Título dos eixos, name: eixosTitulo, widget: string }
+          - { label: Subtítulo dos eixos, name: eixosSubtitulo, widget: text }
+          - label: Eixos curriculares
+            name: eixos
+            widget: list
+            summary: "{{fields.numero}} — {{fields.facilitador}}"
+            fields:
+              - { label: Número, name: numero, widget: string }
+              - { label: Título, name: titulo, widget: text }
+              - { label: Facilitador(a), name: facilitador, widget: string }
+              - { label: Metodologia (opcional), name: metodologia, widget: string, required: false }
+              - label: Tópicos
+                name: topicos
+                widget: list
+                field: { label: Item, name: item, widget: text }
+          - { label: Título oficinas, name: oficinasTitulo, widget: string }
+          - { label: Subtítulo oficinas, name: oficinasSubtitulo, widget: text }
+          - label: Oficinas e cursos
+            name: oficinas
+            widget: list
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Badge, name: badge, widget: string }
+              - { label: Facilitador, name: facilitador, widget: string }
+              - { label: Descrição, name: descricao, widget: text }
+              - { label: Status, name: status, widget: select, options: [Concluído, Em andamento, Encerrado] }
+              - { label: Largura completa, name: larguraCompleta, widget: boolean, default: false }
+              - { label: Título galeria (opcional), name: galeriaTitulo, widget: string, required: false }
+              - label: Imagens
+                name: imagens
+                widget: list
+                required: false
+                fields:
+                  - { label: Foto, name: src, widget: image }
+                  - { label: Descrição, name: alt, widget: string }
+          - label: Cronograma
+            name: cronograma
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Intro, name: intro, widget: text }
+              - label: Ciclos
+                name: ciclos
+                widget: list
+                fields:
+                  - { label: Rótulo, name: label, widget: string }
+                  - { label: Período, name: periodo, widget: string }
+              - { label: Título status, name: statusTitulo, widget: string }
+              - { label: Texto status, name: statusTexto, widget: text }
+          - label: Apoio institucional
+            name: apoio
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Texto, name: texto, widget: text }
+              - { label: Banner, name: banner, widget: image }
+              - { label: Alt do banner, name: bannerAlt, widget: string }
+
+  - name: galeria
+    label: Galerias de Fotos
+    files:
+      - name: all
+        label: Galeria Movimento Irun
+        file: src/cms/galeria.json
+        fields:
+          - label: Exposição Design Caboclo
+            name: movimentoIrunExposicao
+            widget: list
+            summary: "{{fields.alt}}"
+            fields:
+              - { label: Foto, name: src, widget: image }
+              - { label: Descrição, name: alt, widget: string }
+
+  - name: a_casa
+    label: A Casa
+    files:
+      - name: page
+        label: Textos e Fotos
+        file: src/cms/a-casa.json
+        fields:
+          - label: Secções
+            name: secoes
+            widget: list
+            summary: "{{fields.titulo}}"
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Texto, name: texto, widget: text }
+              - { label: Foto, name: imagem, widget: image }
+              - { label: Descrição da foto, name: alt, widget: string }
+              - { label: Layout, name: layout, widget: select, options: [img-left, img-right] }
+              - { label: Cor de fundo, name: bg, widget: string, hint: "Ex: #ffffff" }
+          - label: Galeria de arte (slideshow)
+            name: galeriaArte
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Texto, name: texto, widget: text }
+              - label: Fotos
+                name: fotos
+                widget: list
+                fields:
+                  - { label: Foto, name: src, widget: image }
+                  - { label: Descrição, name: alt, widget: string }
+
+  - name: home
+    label: Página Inicial
+    files:
+      - name: page
+        label: Home
+        file: src/cms/home.json
+        fields:
+          - { label: Modo do hero, name: heroMode, widget: select, options: [default, promo], default: default }
+          - label: Hero (normal)
+            name: heroDefault
+            widget: object
+            fields:
+              - { label: Título, name: title, widget: string }
+              - { label: Destaque, name: highlight, widget: string }
+              - { label: Subtítulo, name: subtitle, widget: text }
+              - { label: Botão 1, name: primaryCtaLabel, widget: string }
+              - { label: Link botão 1, name: primaryCtaHref, widget: string }
+              - { label: Botão 2, name: secondaryCtaLabel, widget: string }
+              - { label: Link botão 2, name: secondaryCtaHref, widget: string }
+          - label: Hero (campanha)
+            name: heroPromo
+            widget: object
+            fields:
+              - { label: Título, name: title, widget: string }
+              - { label: Destaque, name: highlight, widget: string }
+              - { label: Subtítulo, name: subtitle, widget: text }
+              - { label: Botão inscrição, name: primaryCtaLabel, widget: string }
+              - { label: Link inscrição, name: primaryCtaHref, widget: string }
+              - { label: Botão 2, name: secondaryCtaLabel, widget: string }
+              - { label: Link botão 2, name: secondaryCtaHref, widget: string }
+              - { label: Alt imagem, name: imageAlt, widget: string }
+          - label: Citação Castro Alves
+            name: citacao
+            widget: object
+            fields:
+              - { label: Texto, name: texto, widget: text }
+              - { label: Autor, name: autor, widget: string }
+              - { label: Obra, name: obra, widget: string }
+          - { label: Título eixos, name: eixosTitulo, widget: string }
+          - { label: Subtítulo eixos, name: eixosSubtitulo, widget: text }
+          - label: Cards
+            name: cards
+            widget: list
+            max: 3
+            fields:
+              - { label: Categoria, name: categoria, widget: string }
+              - { label: Título, name: titulo, widget: string }
+              - { label: Texto, name: texto, widget: text }
+              - { label: Link, name: linkHref, widget: string }
+              - { label: Texto do link, name: linkLabel, widget: string }
+          - label: Banner eventos
+            name: eventoCta
+            widget: object
+            fields:
+              - { label: Badge, name: badge, widget: string }
+              - { label: Título, name: titulo, widget: string }
+              - { label: Texto, name: texto, widget: text }
+              - { label: Convidados, name: convidados, widget: string }
+              - { label: Área, name: area, widget: string }
+              - { label: Destaque, name: destaque, widget: string }
+              - { label: Legenda destaque, name: destaqueLabel, widget: string }
+
+  - name: movimento_irun_page
+    label: Movimento Irun (página)
+    files:
+      - name: page
+        label: Hero e conceito
+        file: src/cms/movimento-irun.json
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Subtítulo, name: subtitulo, widget: string }
+              - { label: Imagem, name: imagem, widget: image }
+              - { label: Crédito foto, name: credito, widget: string }
+          - label: Texto conceito
+            name: conceito
+            widget: list
+            field: { label: Parágrafo, name: p, widget: text }
+
+  - name: shows
+    label: Shows
+    files:
+      - name: page
+        label: Página Shows
+        file: src/cms/shows.json
+        fields:
+          - label: Hero
+            name: hero
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Subtítulo, name: subtitulo, widget: string }
+              - { label: Imagem, name: imagem, widget: image }
+          - label: Show em destaque
+            name: destaque
+            widget: object
+            fields:
+              - { label: Título, name: titulo, widget: string }
+              - { label: Data, name: data, widget: string }
+              - { label: Descrição, name: descricao, widget: text }
+              - { label: Info extra, name: info, widget: text }
+              - { label: Cartaz / foto, name: imagem, widget: image }
+              - { label: Alt da imagem, name: imagemAlt, widget: string }
+          - { label: Título histórico, name: historicoTitulo, widget: string }
+          - { label: Subtítulo histórico, name: historicoSubtitulo, widget: text }
+
+  - name: parsed_editions
+    label: Textos longos das edições
+    files:
+      - name: parsed
+        label: Descrições e programação (por edição romana)
+        file: src/cms/parsed-editions.json
+        fields:
+          - label: Edição I
+            name: I
+            widget: object
+            fields:
+              - label: Descrição (parágrafos)
+                name: desc
+                widget: list
+                field: { label: Parágrafo, name: p, widget: text }
+              - label: Programação
+                name: program
+                widget: list
+                field: { label: Item, name: p, widget: text }
+          - label: Edição II
+            name: II
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição III
+            name: III
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição IV
+            name: IV
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição V
+            name: V
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição VI
+            name: VI
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição VII
+            name: VII
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição VIII
+            name: VIII
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição IX
+            name: IX
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição X
+            name: X
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }
+          - label: Edição XI
+            name: XI
+            widget: object
+            fields:
+              - { label: Descrição, name: desc, widget: list, field: { label: Parágrafo, name: p, widget: text } }
+              - { label: Programação, name: program, widget: list, field: { label: Item, name: p, widget: text } }

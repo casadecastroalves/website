@@ -1,0 +1,7 @@
+﻿Coloque aqui as FOTOS desta ficha.
+
+- Formato: WebP ou JPG, lado maior ate 1600px, ~150-300 KB cada.
+- Nomeie em sequencia: 01.webp, 02.webp, 03.webp...
+- Depois liste em data/fichas/<id>.json no campo sidebar.fotos.
+
+Os PDFs (portfolios) vao na pasta irma "pdf".

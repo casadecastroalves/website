@@ -1,0 +1,7 @@
+# Cloudflare Pages — funções OAuth em /api/auth e /api/callback
+name = "website"
+compatibility_date = "2024-11-01"
+pages_build_output_dir = "./dist"
+
+[vars]
+GITHUB_CLIENT_ID = "Ov23liFHbgqMOHNNADnS"
