@@ -414,6 +414,18 @@
     .pop-nav-btn:hover { background: #e2e8f0; }
     .pop-nav-count { font-size: 0.7rem; color: var(--text-muted); font-family: monospace; text-align: center; flex: 1; }
 
+    /* ── Back button (← Litoral Sul) ── */
+    .detail-back {
+      display: flex !important; align-items: center; gap: 5px;
+      width: auto !important; border-radius: 20px !important; padding: 5px 12px !important;
+      white-space: nowrap;
+    }
+    .detail-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .detail-back-label { font-size: 0.7rem; font-weight: 700; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ── Conteúdo do detail panel ── */
+    #detail-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; min-height: 0; }
+
     /* Handle só aparece no mobile */
     .panel-handle-area { display: none; }
 
@@ -456,13 +468,13 @@
       .detail-panel {
         top: auto; bottom: 0; right: 0; left: 0; width: 100%;
         border-radius: 20px 20px 0 0; border-bottom: none;
-        /* Ficha ocupa ~65vh: mapa visível nos 35% acima */
-        max-height: 65vh;
+        max-height: 82vh;
         transform: translateY(110%);
+        transition: transform 0.35s cubic-bezier(0.34,1.2,0.64,1);
       }
       .detail-panel.visible { transform: translateY(0); }
+      .detail-panel .panel-handle-area { display: flex; }
       .style-switcher {
-        /* No mobile: posição inferior, acima do peek */
         top: auto; right: auto;
         bottom: 58vh; left: 50%; transform: translateX(-50%);
         font-size: 0.6rem;
@@ -555,7 +567,10 @@
 
 <!-- Detail panel (TI ou Ficha) -->
 <div class="detail-panel" id="detail-panel">
-  <!-- Preenchido dinamicamente por JS -->
+  <div class="panel-handle-area" id="detail-handle">
+    <div class="panel-handle-bar"></div>
+  </div>
+  <div id="detail-content"></div>
 </div>
 
 <button class="sheet-peek" id="sheet-peek" aria-label="Abrir painel">
@@ -613,7 +628,11 @@
   let toastTimer   = null;
   let lbPhotos     = [];
   let lbIdx        = 0;
-  let configData   = null;
+  let configData     = null;
+  let navStack       = [];   /* histórico: [{type:'map'}, {type:'ti',feat,nome}, …] */
+  let activeFeat     = null; /* feature do TI actualmente aberto */
+  let _fichaVidItems = [];   /* vídeos do carousel da ficha */
+  let _fichaVidIdx   = 0;
 
   const map = new maplibregl.Map({
     container: 'map',
@@ -739,6 +758,59 @@
     if (p) p.remove();
     if (f) openFicha(f);
   };
+  /* ── Carousel de vídeos dentro da ficha ── */
+  window.__fichaVidNav = function(dir) {
+    if (!_fichaVidItems.length) return;
+    _fichaVidIdx = (_fichaVidIdx + dir + _fichaVidItems.length) % _fichaVidItems.length;
+    const v = _fichaVidItems[_fichaVidIdx];
+    const iframe = document.getElementById('ficha-vid-frame');
+    const count  = document.getElementById('ficha-vid-count');
+    const cap    = document.getElementById('ficha-vid-cap');
+    if (iframe) iframe.src = `https://www.youtube-nocookie.com/embed/${esc(v.id)}?rel=0&modestbranding=1&playsinline=1`;
+    if (count)  count.textContent = `${_fichaVidIdx+1} de ${_fichaVidItems.length}`;
+    if (cap)    cap.textContent   = v.titulo || '';
+  };
+
+  /* ── Navegação com histórico ── */
+  function getBackLabel() {
+    const top = navStack[navStack.length - 1];
+    if (!top) return null;
+    if (top.type === 'map')   return 'Mapa';
+    if (top.type === 'ti')    return top.nome  || 'Território';
+    return 'Voltar';
+  }
+  function backOrCloseBtn(cls) {
+    const label = getBackLabel();
+    if (label) {
+      return `<button class="detail-close${cls?' '+cls:''} detail-back" id="detail-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <span class="detail-back-label">${esc(label)}</span>
+      </button>`;
+    }
+    return `<button class="detail-close${cls?' '+cls:''}" id="detail-close">${closeSvg()}</button>`;
+  }
+  function navBack() {
+    const prev = navStack.pop();
+    const dp   = document.getElementById('detail-panel');
+    const dc   = document.getElementById('detail-content');
+    if (!prev) {
+      dc.innerHTML = ''; dp.classList.remove('visible');
+      if (activeId !== null) { map.setFeatureState({source:'ti',id:activeId},{active:false}); activeId=null; activeFeat=null; }
+      document.querySelectorAll('.ti-card').forEach(c=>c.classList.remove('active'));
+      return;
+    }
+    if (prev.type === 'map') {
+      dc.innerHTML = ''; dp.classList.remove('visible');
+      activeFicha = null;
+      if (activeId !== null) { map.setFeatureState({source:'ti',id:activeId},{active:false}); activeId=null; activeFeat=null; }
+      document.querySelectorAll('.ti-card').forEach(c=>c.classList.remove('active'));
+      map.flyTo({ center: BAHIA.center, zoom: BAHIA.zoom, duration: 700 });
+    } else if (prev.type === 'ti') {
+      activeFicha = null;
+      showDetailTi(prev.feat, false);
+    }
+  }
+
   window.__popLb = function(fichaId, idx) {
     const f = fichasById[fichaId]; if (!f) return;
     const fotos = (f.sidebar?.fotos||[]).map(ph=>({
@@ -938,6 +1010,7 @@
   }
 
   function selectTi(feat) {
+    activeFeat = feat;
     if (activeId !== null) map.setFeatureState({source:'ti',id:activeId},{active:false});
     activeId = feat.id;
     map.setFeatureState({source:'ti',id:activeId},{active:true});
@@ -948,8 +1021,9 @@
   }
 
   function deselect() {
+    navStack = []; activeFeat = null; activeFicha = null;
     if (activeId !== null) { map.setFeatureState({source:'ti',id:activeId},{active:false}); activeId = null; }
-    document.getElementById('detail-panel').innerHTML = '';
+    document.getElementById('detail-content').innerHTML = '';
     document.getElementById('detail-panel').classList.remove('visible');
     document.querySelectorAll('.ti-card').forEach(c => c.classList.remove('active'));
   }
@@ -1060,8 +1134,9 @@
     return null;
   }
 
-  function showDetailTi(feat) {
+  function showDetailTi(feat, push = true) {
     activeFicha = null;
+    if (push) navStack.push({ type: 'map' });
     const p = feat.properties;
     const isRede = !!redeStats[p.id];
     const info   = redeStats[p.id] || {};
@@ -1075,12 +1150,12 @@
              <span class="detail-tag-img ${isRede?'tag-rede':'tag-sem'}">${isRede?'REDE IRUN':'Território'}</span>
              <span class="detail-name-img">${esc(p.nome||'—')}</span>
            </div>
-           <button class="detail-close on-photo" id="detail-close">${closeSvg()}</button>
+           ${backOrCloseBtn('on-photo')}
          </div>`
       : `<div class="detail-text-header">
            <span class="detail-tag-img ${isRede?'tag-rede':'tag-sem'}" style="margin-bottom:8px">${isRede?'REDE IRUN':'Território de Identidade'}</span>
            <div class="detail-name-text">TI ${esc(p.cod||'—')} — ${esc(p.nome||'—')}</div>
-           <button class="detail-close" id="detail-close">${closeSvg()}</button>
+           ${backOrCloseBtn()}
          </div>`;
 
     const fichasHtml = fichasTi.length ? `
@@ -1097,7 +1172,7 @@
         </div>
       </div>` : '';
 
-    document.getElementById('detail-panel').innerHTML = `
+    document.getElementById('detail-content').innerHTML = `
       ${headerHtml}
       <div class="detail-body">
         <div class="detail-grid">
@@ -1119,15 +1194,26 @@
       </div>`;
 
     document.getElementById('detail-panel').classList.add('visible');
-    document.getElementById('detail-close').addEventListener('click', () => {
-      deselect(); map.flyTo({center:BAHIA.center,zoom:BAHIA.zoom,duration:700});
-    });
+    document.getElementById('detail-close').addEventListener('click', navBack);
     document.querySelectorAll('.ficha-mini').forEach(btn =>
-      btn.addEventListener('click', () => { const f = fichasById[btn.dataset.ficha]; if (f) openFicha(f); }));
+      btn.addEventListener('click', () => {
+        const f = fichasById[btn.dataset.ficha];
+        if (f) openFicha(f);
+      }));
   }
 
-  function openFicha(f) {
+  function openFicha(f, push = true) {
     activeFicha = f.id;
+    _fichaVidIdx = 0;
+
+    if (push) {
+      if (activeFeat) {
+        navStack.push({ type: 'ti', feat: activeFeat, nome: activeFeat.properties?.nome || 'Território' });
+      } else {
+        navStack.push({ type: 'map' });
+      }
+    }
+
     const s = f.sidebar || {};
     const m = f.meta   || {};
     const ti = territorios.find(t => t.id === f.territorioId);
@@ -1135,14 +1221,12 @@
     const tagCls = f.rede ? 'tag-rede' : f.teiaDosPovos ? 'tag-teia' : f.pontoCultura ? 'tag-pc' : 'tag-sem';
     const tagTxt = f.rede ? 'REDE IRUN' : f.teiaDosPovos ? 'TEIA DOS POVOS' : f.pontoCultura ? 'PONTO DE CULTURA' : 'COMUNIDADE';
 
-    const fotos   = (s.fotos  || []);
-    const videos  = (s.videos || []).filter(v => v.tipo === 'youtube' && v.id);
-    const dimAll  = (s.identidade || []);
+    const fotos  = (s.fotos  || []);
+    const videos = (s.videos || []).filter(v => v.tipo === 'youtube' && v.id);
+    const dimAll = (s.identidade || []);
+    _fichaVidItems = videos;
 
-    /* Foto de capa: primeira foto real */
-    const coverSrc = fotos[0]?.src
-      ? ASSETS_BASE + fotos[0].src.replace(/^assets\//, '')
-      : null;
+    const coverSrc = fotos[0]?.src ? ASSETS_BASE + fotos[0].src.replace(/^assets\//, '') : null;
 
     const headerHtml = coverSrc
       ? `<div class="detail-img-wrap">
@@ -1151,12 +1235,12 @@
              <span class="detail-tag-img ${tagCls}">${tagTxt}</span>
              <span class="detail-name-img">${esc(m.nome||f.id)}</span>
            </div>
-           <button class="detail-close on-photo" id="detail-close">${closeSvg()}</button>
+           ${backOrCloseBtn('on-photo')}
          </div>`
       : `<div class="detail-text-header">
            <span class="detail-tag-img ${tagCls}" style="margin-bottom:8px">${tagTxt}</span>
            <div class="detail-name-text">${esc(m.nome||f.id)}</div>
-           <button class="detail-close" id="detail-close">${closeSvg()}</button>
+           ${backOrCloseBtn()}
          </div>`;
 
     if (m.coords) {
@@ -1164,11 +1248,9 @@
       map.flyTo({ center: [lng, lat], zoom: 11.5, duration: 1200 });
     }
 
-    /* Galeria: todas as fotos com lightbox */
-    const fotoItems = fotos.map(p => {
-      const src = ASSETS_BASE + (p.src||'').replace(/^assets\//,'');
-      return { src, cap: p.legenda||'' };
-    });
+    const fotoItems = fotos.map(p => ({
+      src: ASSETS_BASE + (p.src||'').replace(/^assets\//,''), cap: p.legenda||'',
+    }));
 
     const galeria = fotos.length ? `
       <div class="detail-section">
@@ -1184,29 +1266,34 @@
               <figcaption>${esc(p.legenda||'')}</figcaption>
             </figure>`;
           }).join('')}
-          ${fotos.length > 8 ? `<div style="grid-column:1/-1;text-align:center;padding:8px;font-size:0.72rem;color:#64748b">+${fotos.length-8} fotos — clique para ver</div>` : ''}
+          ${fotos.length > 8 ? `<div style="grid-column:1/-1;text-align:center;padding:8px;font-size:0.72rem;color:#64748b">+${fotos.length-8} fotos</div>` : ''}
         </div>
       </div>` : '';
 
+    /* Vídeos: carousel (1 por vez) em vez de lista empilhada */
     const videosHtml = videos.length ? `
       <div class="detail-section">
         <div class="detail-section-title">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
           Vídeos (${videos.length})
         </div>
-        <div class="ficha-videos">
-          ${videos.map(v => `
-            <div class="video-embed">
-              <iframe src="https://www.youtube-nocookie.com/embed/${esc(v.id)}?rel=0&modestbranding=1&playsinline=1"
-                title="${esc(v.titulo||'')}" loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
-                allowfullscreen></iframe>
-              ${v.titulo?`<p class="video-title">${esc(v.titulo)}</p>`:''}
-            </div>`).join('')}
+        <div class="pop-media">
+          <iframe id="ficha-vid-frame"
+            src="https://www.youtube-nocookie.com/embed/${esc(videos[0].id)}?rel=0&modestbranding=1&playsinline=1"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
+            allowfullscreen></iframe>
+          ${videos[0].titulo?`<div class="pop-media-cap" id="ficha-vid-cap">${esc(videos[0].titulo)}</div>`:'<div id="ficha-vid-cap" style="display:none"></div>'}
         </div>
+        ${videos.length > 1 ? `
+        <div class="pop-nav" style="border-top:1px solid #f1f5f9;padding:10px 14px 0">
+          <button class="pop-nav-btn" onclick="window.__fichaVidNav(-1)">←</button>
+          <span class="pop-nav-count" id="ficha-vid-count">1 de ${videos.length}</span>
+          <button class="pop-nav-btn" onclick="window.__fichaVidNav(+1)">→</button>
+        </div>` : ''}
       </div>` : '';
 
-    document.getElementById('detail-panel').innerHTML = `
+    document.getElementById('detail-content').innerHTML = `
       ${headerHtml}
       <div class="detail-body">
         <div class="detail-grid">
@@ -1216,16 +1303,14 @@
           ${f.pontoCultura?`<div class="dg-item"><span>Ponto de Cultura</span><span>✓ ${esc(typeof f.pontoCultura==='string'?f.pontoCultura:'Reconhecido')}</span></div>`:''}
           ${f.teiaDosPovos?`<div class="dg-item"><span>Teia dos Povos</span><span>✓ Membro</span></div>`:''}
         </div>
-
         ${s.apresentacao?`
         <div class="detail-section">
           <div class="detail-section-title">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
             Apresentação
           </div>
           <p>${esc(s.apresentacao)}</p>
         </div>` : ''}
-
         ${dimAll.length?`
         <div class="detail-section">
           <div class="detail-section-title">
@@ -1233,17 +1318,11 @@
             Identidade Territorial
           </div>
           <div class="dimensoes">
-            ${dimAll.map(d=>`
-              <details class="dim-item">
-                <summary>${esc(d.titulo||'')}</summary>
-                <p>${esc(d.conteudo||'')}</p>
-              </details>`).join('')}
+            ${dimAll.map(d=>`<details class="dim-item"><summary>${esc(d.titulo||'')}</summary><p>${esc(d.conteudo||'')}</p></details>`).join('')}
           </div>
         </div>` : ''}
-
-        ${galeria}
         ${videosHtml}
-
+        ${galeria}
         ${s.contato?`
         <div class="detail-section">
           <div class="detail-section-title">
@@ -1256,20 +1335,17 @@
       </div>`;
 
     document.getElementById('detail-panel').classList.add('visible');
-    document.getElementById('detail-close').addEventListener('click', () => {
-      document.getElementById('detail-panel').innerHTML = '';
-      document.getElementById('detail-panel').classList.remove('visible');
-    });
+    document.getElementById('detail-close').addEventListener('click', navBack);
 
-    /* Lightbox nas fotos */
-    document.querySelectorAll('.ficha-fotos figure[data-lbidx]').forEach(fig => {
-      fig.addEventListener('click', () => openLightbox(fotoItems, Number(fig.dataset.lbidx)));
-    });
+    document.querySelectorAll('.ficha-fotos figure[data-lbidx]').forEach(fig =>
+      fig.addEventListener('click', () => openLightbox(fotoItems, Number(fig.dataset.lbidx))));
   }
 
   /* ── About (info do mapa) ── */
   function showAbout() {
+    navStack.push({ type: 'map' });
     const dp = document.getElementById('detail-panel');
+    const dc = document.getElementById('detail-content');
     const sobre = configData?.sobre || {};
     const para = (sobre.paragrafos || [
       'Mapa participativo das comunidades quilombolas e territórios de identidade da Bahia.',
@@ -1284,11 +1360,11 @@
            ${esc(sobre.cursos.label)}
          </a>` : '';
 
-    dp.innerHTML = `
+    dc.innerHTML = `
       <div class="detail-text-header">
         <span class="detail-tag-img tag-sem" style="margin-bottom:8px">SOBRE O MAPA</span>
         <div class="detail-name-text">Mapa Identidade e Território</div>
-        <button class="detail-close" id="detail-close">${closeSvg()}</button>
+        ${backOrCloseBtn()}
       </div>
       <div class="detail-body">
         <div class="about-wrap">
@@ -1305,9 +1381,7 @@
       </div>`;
 
     dp.classList.add('visible');
-    document.getElementById('detail-close').addEventListener('click', () => {
-      dp.innerHTML = ''; dp.classList.remove('visible');
-    });
+    document.getElementById('detail-close').addEventListener('click', navBack);
   }
 
   function wireSearch() {
@@ -1490,6 +1564,54 @@
         lastH = DEFAULT_H(); applyH(lastH, false);
       }
     });
+  })();
+
+  /* ── Drag-close do detail panel (arrastar para baixo = voltar) ── */
+  (function initDetailDrag(){
+    const isMobile = () => window.innerWidth <= 768;
+    const handle = document.getElementById('detail-handle');
+    const panel  = document.getElementById('detail-panel');
+    if (!handle || !panel) return;
+
+    let startY = 0, startOff = 0, dragging = false;
+
+    const readOff = () => {
+      const m = new DOMMatrix(getComputedStyle(panel).transform);
+      return isNaN(m.m42) ? 0 : Math.max(0, m.m42);
+    };
+
+    const start = e => {
+      if (!isMobile() || !panel.classList.contains('visible')) return;
+      dragging = true;
+      startY   = e.touches ? e.touches[0].clientY : e.clientY;
+      startOff = readOff();
+      panel.style.transition = 'none';
+    };
+    const move = e => {
+      if (!dragging) return;
+      const y   = e.touches ? e.touches[0].clientY : e.clientY;
+      const off = Math.max(0, startOff + (y - startY));
+      panel.style.transform = `translateY(${off}px)`;
+    };
+    const end = () => {
+      if (!dragging) return;
+      dragging = false;
+      panel.style.transition = ''; /* restaura transição CSS */
+      const off = readOff();
+      if (off > panel.offsetHeight * 0.28) {
+        panel.style.transform = 'translateY(110%)';
+        setTimeout(() => { panel.style.transform = ''; navBack(); }, 300);
+      } else {
+        panel.style.transform = ''; /* remove inline → CSS .visible toma conta */
+      }
+    };
+
+    handle.addEventListener('touchstart', start, { passive: true });
+    window.addEventListener('touchmove',  move,  { passive: true });
+    window.addEventListener('touchend',   end);
+    handle.addEventListener('mousedown',  start);
+    window.addEventListener('mousemove',  move);
+    window.addEventListener('mouseup',    end);
   })();
 })();
 </script>
