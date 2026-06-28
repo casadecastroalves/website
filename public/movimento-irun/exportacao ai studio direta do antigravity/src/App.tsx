@@ -701,6 +701,12 @@ export default function App() {
       if (!matchSearch) return;
 
       const territoryName = v.territory?.name || 'Outros';
+      
+      // Ignore the generic "Rede Irun (todos)" if it appears as a territory to prevent duplicate shelves
+      if (territoryName.toLowerCase().includes('rede irun (todos)')) {
+        return;
+      }
+
       if (!result[territoryName]) {
         result[territoryName] = [];
       }

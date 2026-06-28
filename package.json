@@ -7,7 +7,8 @@
   },
   "scripts": {
     "dev": "node scripts/ver-site-live.mjs",
-    "build": "node scripts/build-search-index.mjs && astro build",
+    "build:map": "cd \"public/movimento-irun/exportacao ai studio direta do antigravity\" && npm install && npm run build && cp -r dist/* ../redeirun/",
+    "build": "npm run build:map && node scripts/build-search-index.mjs && astro build",
     "live": "node scripts/ver-site-live.mjs",
     "preview": "node scripts/ver-site-live.mjs",
     "view": "node scripts/ver-site-live.mjs",
