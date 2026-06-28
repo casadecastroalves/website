@@ -1586,70 +1586,59 @@ export default function App() {
               ))}
             </div>
 
-            {/* Videos Grid */}
-            <div className="flex-1 overflow-y-auto px-6 md:px-12 pb-12 scrollbar-thin">
+            {/* Videos Carousel (Netflix Style) */}
+            <div className="flex-1 overflow-y-auto pb-12 scrollbar-none bg-[#141414]">
               {filteredVideos.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-20 text-gray-500 gap-2">
                   <AlertCircle className="w-10 h-10 text-gray-600 animate-pulse" />
                   <p className="text-sm font-semibold">Nenhum vídeo localizado</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 gap-y-10">
-                  {filteredVideos.map((video: any, index: number) => (
-                    <div key={index} className="group rounded-md overflow-hidden bg-[#181818] transition-all duration-300 hover:scale-105 hover:z-10 hover:shadow-2xl hover:shadow-black/80 cursor-pointer flex flex-col relative">
-                      {/* Video Player Embed (Lazy loaded) */}
-                      <div className="relative aspect-video bg-[#141414] overflow-hidden shrink-0 group/vid" onClick={() => setPlayingVideo(video.id)}>
-                        {playingVideo === video.id ? (
-                          <iframe
-                            className="absolute inset-0 w-full h-full"
-                            src={`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                            title={video.title}
-                            frameBorder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                          />
-                        ) : (
-                          <>
-                            <img 
-                              src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`} 
-                              alt="Thumbnail" 
-                              className="w-full h-full object-cover opacity-90 group-hover/vid:opacity-100 transition-opacity duration-300" 
+                <div className="px-6 md:px-12 pb-8">
+                  <h3 className="text-xl font-bold text-white mb-4 tracking-wide">{activeVideoCategory === 'todos' ? 'Destaques' : activeVideoCategory}</h3>
+                  <div className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-none pb-8 pt-4 -mt-4 px-2 -mx-2 snap-x">
+                    {filteredVideos.map((video: any, index: number) => (
+                      <div key={index} className="shrink-0 w-36 md:w-48 group rounded-md overflow-hidden bg-[#181818] transition-all duration-300 hover:scale-110 hover:z-50 hover:shadow-2xl hover:shadow-black/100 cursor-pointer flex flex-col relative snap-start">
+                        {/* Video Player Embed (Lazy loaded) */}
+                        <div className="relative aspect-[2/3] bg-[#141414] overflow-hidden shrink-0 group/vid" onClick={() => setPlayingVideo(video.id)}>
+                          {playingVideo === video.id ? (
+                            <iframe
+                              className="absolute inset-0 w-full h-[150%] top-1/2 -translate-y-1/2"
+                              src={`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                              title={video.title}
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
                             />
-                            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/vid:opacity-100 bg-black/30 transition-all duration-300">
-                              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/50 group-hover/vid:bg-[#E50914] group-hover/vid:border-transparent transition-all duration-300">
-                                <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                          ) : (
+                            <>
+                              <img 
+                                src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`} 
+                                alt="Thumbnail" 
+                                className="w-full h-full object-cover opacity-90 group-hover/vid:opacity-100 transition-opacity duration-300" 
+                              />
+                              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/vid:opacity-100 bg-black/40 transition-all duration-300">
+                                <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/50 group-hover/vid:bg-[#E50914] group-hover/vid:border-transparent transition-all duration-300">
+                                  <svg className="w-4 h-4 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                </div>
                               </div>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                      
-                      {/* Info Footer on Card */}
-                      <div 
-                        className="p-3 flex-1 flex flex-col justify-between gap-2"
-                        onClick={() => {
-                          if (playingVideo === video.id) return;
-                          handleSelectTerritory(video.territory);
-                          setShowCineIrun(false);
-                          setPlayingVideo(null);
-                        }}
-                      >
-                        <div>
-                          <h4 className="font-semibold text-sm text-white leading-snug line-clamp-2">
+                            </>
+                          )}
+                        </div>
+                        
+                        {/* Info Footer on Card (Netflix style hover details) */}
+                        <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black via-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end">
+                          <h3 className="font-bold text-[11px] md:text-xs text-white leading-tight line-clamp-2 drop-shadow-md">
                             {video.title}
-                          </h4>
-                          <p className="text-[11px] text-gray-400 font-light mt-1 flex items-center gap-1.5">
-                            <span className="truncate">{video.city}</span>
-                          </p>
-                        </div>
-                        <div className="flex items-center justify-between pt-1">
-                          <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest border border-gray-600 px-1 rounded-sm">
-                            {video.category}
-                          </span>
+                          </h3>
+                          <div className="flex items-center gap-2 mt-1.5 opacity-80">
+                            <span className="text-[9px] font-semibold text-green-500">Novo</span>
+                            <span className="text-[9px] text-gray-300 px-1 border border-gray-500 rounded uppercase">{video.category}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
