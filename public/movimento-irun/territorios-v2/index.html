@@ -772,22 +772,24 @@
   };
 
   /* ── Navegação com histórico ── */
-  function getBackLabel() {
-    const top = navStack[navStack.length - 1];
-    if (!top) return null;
-    if (top.type === 'map')   return 'Mapa';
-    if (top.type === 'ti')    return top.nome  || 'Território';
-    return 'Voltar';
-  }
   function backOrCloseBtn(cls) {
-    const label = getBackLabel();
-    if (label) {
-      return `<button class="detail-close${cls?' '+cls:''} detail-back" id="detail-close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
-        <span class="detail-back-label">${esc(label)}</span>
-      </button>`;
-    }
     return `<button class="detail-close${cls?' '+cls:''}" id="detail-close">${closeSvg()}</button>`;
+  }
+  function filterMap(key) {
+    activeFilter = key;
+    document.querySelectorAll('.filter-pill').forEach(b => { b.className = 'filter-pill'; });
+    const cls = { ti:'fp-ti', rede:'fp-rede', teia:'fp-teia', pc:'fp-pc' }[key] || 'fp-ti';
+    document.querySelector(`.filter-pill[data-filter="${key}"]`)?.classList.add(cls);
+    renderList();
+  }
+  window.__filterMap = key => filterMap(key);
+  function addSwipe(el, onNext, onPrev) {
+    let sx = 0;
+    el.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, { passive: true });
+    el.addEventListener('touchend',   e => {
+      const dx = e.changedTouches[0].clientX - sx;
+      if (Math.abs(dx) > 44) dx < 0 ? onNext() : onPrev();
+    }, { passive: true });
   }
   function navBack() {
     const prev = navStack.pop();
@@ -853,16 +855,14 @@
            </div>`;
 
     const tagsHtml = [
-      f.rede         ? `<span class="pop-tag tag-rede">★ REDE IRUN</span>`         : '',
-      f.teiaDosPovos ? `<span class="pop-tag tag-teia">★ Teia dos Povos</span>`    : '',
-      f.pontoCultura ? `<span class="pop-tag tag-pc">★ Ponto de Cultura</span>`    : '',
+      f.rede         ? `<span class="pop-tag tag-rede" style="cursor:pointer" onclick="window.__filterMap('rede')">★ REDE IRUN</span>`      : '',
+      f.teiaDosPovos ? `<span class="pop-tag tag-teia" style="cursor:pointer" onclick="window.__filterMap('teia')">★ Teia dos Povos</span>` : '',
+      f.pontoCultura ? `<span class="pop-tag tag-pc"   style="cursor:pointer" onclick="window.__filterMap('pc')">★ Ponto de Cultura</span>` : '',
     ].filter(Boolean).join('');
 
     const navHtml = total > 1
-      ? `<div class="pop-nav">
-           <button class="pop-nav-btn" onclick="window.__popNav('${esc(f.id)}',-1)">←</button>
-           <span class="pop-nav-count">${idx+1} de ${total}</span>
-           <button class="pop-nav-btn" onclick="window.__popNav('${esc(f.id)}',+1)">→</button>
+      ? `<div class="pop-nav" style="justify-content:center">
+           <span class="pop-nav-count">${idx+1} / ${total}</span>
          </div>` : '';
 
     return `<div class="pop-card">
@@ -941,6 +941,13 @@
       }).setHTML(makePopupHtml(f));
 
       _popupRefs[f.id] = popup;
+
+      popup.on('open', () => {
+        const st = _popState[f.id];
+        if (!st || st.items.length <= 1) return;
+        const body = document.querySelector('.irun-popup .pop-body');
+        if (body) addSwipe(body, () => window.__popNav(f.id, +1), () => window.__popNav(f.id, -1));
+      });
 
       const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
         .setLngLat([lng, lat])
@@ -1143,17 +1150,19 @@
     const fichasTi = fichas.filter(f => f.territorioId === p.id);
     const cover  = getTiCover(p.id);
 
+    const tiTagTxt    = isRede ? 'REDE IRUN' : 'Território de Identidade';
+    const tiTagFilter = isRede ? 'rede' : 'ti';
     const headerHtml = cover
       ? `<div class="detail-img-wrap">
            <img src="${esc(cover.src)}" alt="${esc(p.nome||'')}">
            <div class="detail-overlay">
-             <span class="detail-tag-img ${isRede?'tag-rede':'tag-sem'}">${isRede?'REDE IRUN':'Território'}</span>
+             <span class="detail-tag-img ${isRede?'tag-rede':'tag-sem'}" id="detail-tag" style="cursor:pointer">${tiTagTxt}</span>
              <span class="detail-name-img">${esc(p.nome||'—')}</span>
            </div>
            ${backOrCloseBtn('on-photo')}
          </div>`
       : `<div class="detail-text-header">
-           <span class="detail-tag-img ${isRede?'tag-rede':'tag-sem'}" style="margin-bottom:8px">${isRede?'REDE IRUN':'Território de Identidade'}</span>
+           <span class="detail-tag-img ${isRede?'tag-rede':'tag-sem'}" id="detail-tag" style="cursor:pointer;margin-bottom:8px">${tiTagTxt}</span>
            <div class="detail-name-text">TI ${esc(p.cod||'—')} — ${esc(p.nome||'—')}</div>
            ${backOrCloseBtn()}
          </div>`;
@@ -1195,6 +1204,7 @@
 
     document.getElementById('detail-panel').classList.add('visible');
     document.getElementById('detail-close').addEventListener('click', navBack);
+    document.getElementById('detail-tag')?.addEventListener('click', () => filterMap(tiTagFilter));
     document.querySelectorAll('.ficha-mini').forEach(btn =>
       btn.addEventListener('click', () => {
         const f = fichasById[btn.dataset.ficha];
@@ -1218,8 +1228,12 @@
     const m = f.meta   || {};
     const ti = territorios.find(t => t.id === f.territorioId);
 
-    const tagCls = f.rede ? 'tag-rede' : f.teiaDosPovos ? 'tag-teia' : f.pontoCultura ? 'tag-pc' : 'tag-sem';
-    const tagTxt = f.rede ? 'REDE IRUN' : f.teiaDosPovos ? 'TEIA DOS POVOS' : f.pontoCultura ? 'PONTO DE CULTURA' : 'COMUNIDADE';
+    const fromCtx    = navStack[navStack.length - 1]; // onde viemos (já pushado)
+    const isTiCtx   = fromCtx?.type === 'ti';
+    const catCls    = f.rede ? 'tag-rede' : f.teiaDosPovos ? 'tag-teia' : f.pontoCultura ? 'tag-pc' : 'tag-sem';
+    const tagCls    = isTiCtx ? 'tag-sem' : catCls;
+    const tagTxt    = isTiCtx ? (fromCtx.nome || 'Território') : (f.rede ? 'REDE IRUN' : f.teiaDosPovos ? 'TEIA DOS POVOS' : f.pontoCultura ? 'PONTO DE CULTURA' : 'COMUNIDADE');
+    const fichaFilterKey = f.rede ? 'rede' : f.teiaDosPovos ? 'teia' : f.pontoCultura ? 'pc' : 'ti';
 
     const fotos  = (s.fotos  || []);
     const videos = (s.videos || []).filter(v => v.tipo === 'youtube' && v.id);
@@ -1232,13 +1246,13 @@
       ? `<div class="detail-img-wrap">
            <img src="${esc(coverSrc)}" alt="${esc(m.nome||f.id)}">
            <div class="detail-overlay">
-             <span class="detail-tag-img ${tagCls}">${tagTxt}</span>
+             <span class="detail-tag-img ${tagCls}" id="detail-tag" style="cursor:pointer">${esc(tagTxt)}</span>
              <span class="detail-name-img">${esc(m.nome||f.id)}</span>
            </div>
            ${backOrCloseBtn('on-photo')}
          </div>`
       : `<div class="detail-text-header">
-           <span class="detail-tag-img ${tagCls}" style="margin-bottom:8px">${tagTxt}</span>
+           <span class="detail-tag-img ${tagCls}" id="detail-tag" style="cursor:pointer;margin-bottom:8px">${esc(tagTxt)}</span>
            <div class="detail-name-text">${esc(m.nome||f.id)}</div>
            ${backOrCloseBtn()}
          </div>`;
@@ -1336,6 +1350,14 @@
 
     document.getElementById('detail-panel').classList.add('visible');
     document.getElementById('detail-close').addEventListener('click', navBack);
+    const tagEl = document.getElementById('detail-tag');
+    if (tagEl) tagEl.addEventListener('click', isTiCtx ? navBack : () => filterMap(fichaFilterKey));
+
+    /* Swipe horizontal no carousel de vídeos */
+    if (_fichaVidItems.length > 1) {
+      const navEl = document.querySelector('#detail-content .pop-nav');
+      if (navEl) addSwipe(navEl, () => window.__fichaVidNav(+1), () => window.__fichaVidNav(-1));
+    }
 
     document.querySelectorAll('.ficha-fotos figure[data-lbidx]').forEach(fig =>
       fig.addEventListener('click', () => openLightbox(fotoItems, Number(fig.dataset.lbidx))));
