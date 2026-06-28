@@ -375,6 +375,44 @@
     /* Ponto extra simples: slate */
     .pin-extra { color: #64748b; width: 20px; height: 20px; }
 
+    /* ── Popup do mapa (preview com fotos/vídeos) ── */
+    .irun-popup .maplibregl-popup-content {
+      padding: 0; border-radius: 16px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      min-width: 260px; max-width: 300px; border: none;
+    }
+    .irun-popup .maplibregl-popup-close-button {
+      color: white; font-size: 1.1rem; font-weight: 700;
+      width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.35); border-radius: 50%; top: 8px; right: 8px;
+      text-shadow: none; line-height: 1; transition: background 0.15s;
+    }
+    .irun-popup .maplibregl-popup-close-button:hover { background: rgba(0,0,0,0.6); }
+    .irun-popup .maplibregl-popup-tip { border-top-color: white; }
+    .pop-img { width: 100%; height: 148px; object-fit: cover; display: block; }
+    .pop-no-img {
+      height: 56px; background: linear-gradient(135deg,#0f172a,#1e293b);
+      display: flex; align-items: center; padding: 0 14px;
+      font-size: 0.65rem; font-family: monospace; letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.4); text-transform: uppercase;
+    }
+    .pop-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+    .pop-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; cursor: zoom-in; }
+    .pop-body { padding: 12px 14px 14px; }
+    .pop-tag { font-size: 0.56rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
+    .pop-name { font-size: 0.9rem; font-weight: 700; color: var(--text); line-height: 1.25; margin-bottom: 2px; }
+    .pop-sub  { font-size: 0.68rem; color: var(--text-muted); margin-bottom: 10px; }
+    .pop-videos { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+    .pop-video-wrap { border-radius: 10px; overflow: hidden; background: #000; }
+    .pop-video-wrap iframe { width: 100%; aspect-ratio: 16/9; border: none; display: block; }
+    .pop-vtitle { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; font-style: italic; }
+    .pop-open {
+      width: 100%; padding: 9px 12px; border-radius: 10px; border: none;
+      background: var(--yellow); color: #1a1a1a; font-weight: 700; font-size: 0.75rem;
+      cursor: pointer; margin-top: 4px; transition: background 0.15s; letter-spacing: 0.02em;
+    }
+    .pop-open:hover { background: #e6b800; }
+
     /* Handle só aparece no mobile */
     .panel-handle-area { display: none; }
 
@@ -687,12 +725,60 @@
     }
   });
 
+  /* ── Popup rico (fotos + vídeos no mapa) ── */
+  function makePopupHtml(f) {
+    const s = f.sidebar || {};
+    const m = f.meta   || {};
+    const fotos  = s.fotos  || [];
+    const videos = (s.videos || []).filter(v => v.tipo === 'youtube' && v.id);
+
+    const tagCls = f.rede ? 'tag-rede' : f.teiaDosPovos ? 'tag-teia' : f.pontoCultura ? 'tag-pc' : 'tag-sem';
+    const tagTxt = f.rede ? 'REDE IRUN' : f.teiaDosPovos ? 'TEIA DOS POVOS' : f.pontoCultura ? 'PONTO DE CULTURA' : 'COMUNIDADE';
+
+    const coverSrc = fotos[0]?.src
+      ? ASSETS_BASE + fotos[0].src.replace(/^assets\//, '') : null;
+
+    const coverHtml = coverSrc
+      ? `<img class="pop-img" src="${esc(coverSrc)}" alt="${esc(m.nome||'')}">`
+      : `<div class="pop-no-img">MOVIMENTO IRUN</div>`;
+
+    const extras = fotos.slice(1, 4);
+    const gridHtml = extras.length
+      ? `<div class="pop-grid">${extras.map(p => {
+          const src = ASSETS_BASE + (p.src||'').replace(/^assets\//, '');
+          return `<img loading="lazy" src="${esc(src)}" alt="${esc(p.legenda||'')}">`;
+        }).join('')}</div>` : '';
+
+    const videosHtml = videos.length
+      ? `<div class="pop-videos">${videos.map(v => `
+          <div class="pop-video-wrap">
+            <iframe
+              src="https://www.youtube-nocookie.com/embed/${esc(v.id)}?rel=0&modestbranding=1&playsinline=1"
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
+              allowfullscreen></iframe>
+            ${v.titulo ? `<p class="pop-vtitle">${esc(v.titulo)}</p>` : ''}
+          </div>`).join('')}
+        </div>` : '';
+
+    return `<div class="pop-card">
+      ${coverHtml}
+      ${gridHtml}
+      <div class="pop-body">
+        <span class="pop-tag ${tagCls}">${tagTxt}</span>
+        <h3 class="pop-name">${esc(m.nome||f.id)}</h3>
+        <p class="pop-sub">${esc(f.tipo||'')}${m.municipio?' · '+esc(m.municipio):''}</p>
+        ${videosHtml}
+        <button class="pop-open" data-ficha="${esc(f.id)}">Ver ficha completa →</button>
+      </div>
+    </div>`;
+  }
+
   /* ── Pins ── */
   function addPins() {
     pinMarkers.forEach(m => m.remove());
     pinMarkers = [];
 
-    /* Fichas com coordenadas */
     fichas.forEach(f => {
       const c = f.meta?.coords;
       if (!c) return;
@@ -704,7 +790,6 @@
       addPin(lng, lat, { nome: f.meta?.nome || f.id, fichaId: f.id, cls });
     });
 
-    /* Fichas que têm pin representam o território — pontos extras são sub-locais */
     const fichaCoords = new Set(fichas
       .filter(f => f.meta?.coords)
       .map(f => f.meta.coords.map(v => v.toFixed(4)).join(','))
@@ -714,12 +799,8 @@
       if (!p.coords) return;
       const [lat, lng] = p.coords;
       const key = [lat, lng].map(v => Number(v).toFixed(4)).join(',');
-      /* Não duplicar pin se já há ficha nas mesmas coords */
       if (fichaCoords.has(key)) return;
-      /* Pontos com entidadeId/fichaId já representados pela ficha (mesmo coords) — skip */
-      const fichaRef = p.fichaId || p.entidadeId
-        ? fichasById[p.fichaId || p.entidadeId]
-        : null;
+      const fichaRef = (p.fichaId || p.entidadeId) ? fichasById[p.fichaId || p.entidadeId] : null;
       if (fichaRef?.meta?.coords) {
         const [flat, flng] = fichaRef.meta.coords;
         if (Math.abs(flat - lat) < 0.0002 && Math.abs(flng - lng) < 0.0002) return;
@@ -737,12 +818,51 @@
     el.className = info.cls || 'irun-pin';
     el.title = info.nome;
     el.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-3.87 0-7 3.13-7 7 0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>`;
-    el.addEventListener('click', ev => {
-      ev.stopPropagation();
-      if (info.fichaId && fichasById[info.fichaId]) openFicha(fichasById[info.fichaId]);
-      else showToast(info.nome);
-    });
-    pinMarkers.push(new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([lng, lat]).addTo(map));
+
+    const f = info.fichaId ? fichasById[info.fichaId] : null;
+    const hasMedia = f && ((f.sidebar?.fotos?.length || 0) + (f.sidebar?.videos?.filter(v=>v.tipo==='youtube'&&v.id).length||0)) > 0;
+
+    if (hasMedia) {
+      /* Popup rico com fotos e vídeos */
+      const popup = new maplibregl.Popup({
+        closeButton: true,
+        maxWidth: '300px',
+        className: 'irun-popup',
+        offset: [0, -28],
+        focusAfterOpen: false,
+      }).setHTML(makePopupHtml(f));
+
+      const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
+        .setLngLat([lng, lat])
+        .setPopup(popup)
+        .addTo(map);
+
+      el.addEventListener('click', ev => { ev.stopPropagation(); marker.togglePopup(); });
+
+      /* Botão "Ver ficha" dentro do popup */
+      popup.on('open', () => {
+        setTimeout(() => {
+          const btn = document.querySelector(`.pop-open[data-ficha="${info.fichaId}"]`);
+          if (btn) btn.addEventListener('click', () => { popup.remove(); openFicha(f); });
+          /* Lightbox nas fotos do grid */
+          const allFotos = (f.sidebar?.fotos||[]).map(p=>({
+            src: ASSETS_BASE + (p.src||'').replace(/^assets\//,''), cap: p.legenda||'',
+          }));
+          document.querySelectorAll('.pop-grid img').forEach((img, i) =>
+            img.addEventListener('click', () => openLightbox(allFotos, i + 1)));
+        }, 50);
+      });
+
+      pinMarkers.push(marker);
+    } else {
+      /* Sem mídia: clique abre ficha ou toast */
+      el.addEventListener('click', ev => {
+        ev.stopPropagation();
+        if (f) openFicha(f);
+        else showToast(info.nome);
+      });
+      pinMarkers.push(new maplibregl.Marker({ element: el, anchor: 'bottom' }).setLngLat([lng, lat]).addTo(map));
+    }
   }
 
   function addLayers(geo) {
