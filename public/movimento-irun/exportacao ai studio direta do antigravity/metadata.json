@@ -1,6 +1,0 @@
-{
-  "name": "Movimento Irun",
-  "description": "Identidade e Território - Mapa interativo de quilombos, territórios tradicionais e manifestações culturais do Movimento Irun.",
-  "requestFramePermissions": ["geolocation"],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}

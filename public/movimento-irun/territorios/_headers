@@ -1,8 +1,0 @@
-/movimento-irun/territorios/js/*
-  Cache-Control: public, max-age=60
-
-/movimento-irun/territorios/css/*
-  Cache-Control: public, max-age=60
-
-/movimento-irun/territorios/data/*
-  Cache-Control: public, max-age=60
