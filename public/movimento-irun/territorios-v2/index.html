@@ -402,16 +402,17 @@
     .pop-tag { font-size: 0.56rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
     .pop-name { font-size: 0.9rem; font-weight: 700; color: var(--text); line-height: 1.25; margin-bottom: 2px; }
     .pop-sub  { font-size: 0.68rem; color: var(--text-muted); margin-bottom: 10px; }
-    .pop-videos { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
-    .pop-video-wrap { border-radius: 10px; overflow: hidden; background: #000; }
-    .pop-video-wrap iframe { width: 100%; aspect-ratio: 16/9; border: none; display: block; }
-    .pop-vtitle { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; font-style: italic; }
-    .pop-open {
-      width: 100%; padding: 9px 12px; border-radius: 10px; border: none;
-      background: var(--yellow); color: #1a1a1a; font-weight: 700; font-size: 0.75rem;
-      cursor: pointer; margin-top: 4px; transition: background 0.15s; letter-spacing: 0.02em;
-    }
-    .pop-open:hover { background: #e6b800; }
+    .pop-media { position: relative; background: #000; }
+    .pop-media iframe { width: 100%; aspect-ratio: 16/9; border: none; display: block; }
+    .pop-media img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+    .pop-media-cap { position: absolute; bottom: 0; left: 0; right: 0; padding: 6px 10px; font-size: 0.63rem; color: rgba(255,255,255,0.85); background: linear-gradient(to top,rgba(0,0,0,0.6),transparent); }
+    .pop-tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0 6px; }
+    .pop-open-link { display: inline-block; font-weight: 700; font-size: 0.76rem; color: #92400e; margin-bottom: 10px; text-decoration: none; border-bottom: 2px solid var(--yellow); padding-bottom: 1px; }
+    .pop-open-link:hover { color: #78350f; }
+    .pop-nav { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid #f1f5f9; padding-top: 10px; margin-top: 4px; gap: 8px; }
+    .pop-nav-btn { background: #f1f5f9; border: none; cursor: pointer; padding: 7px 14px; border-radius: 10px; font-size: 1rem; color: var(--text); transition: background 0.12s; line-height: 1; flex-shrink: 0; }
+    .pop-nav-btn:hover { background: #e2e8f0; }
+    .pop-nav-count { font-size: 0.7rem; color: var(--text-muted); font-family: monospace; text-align: center; flex: 1; }
 
     /* Handle só aparece no mobile */
     .panel-handle-area { display: none; }
@@ -722,53 +723,91 @@
     }
   });
 
-  /* ── Popup rico (fotos + vídeos no mapa) ── */
-  function makePopupHtml(f) {
+  /* ── Popup carousel (vídeos + fotos, 1 item por vez) ── */
+  const _popState  = {};  /* fichaId → { idx, items } */
+  const _popupRefs = {};  /* fichaId → Popup instance */
+
+  /* Funções globais chamadas pelo onclick inline dentro do popup */
+  window.__popNav = function(fichaId, dir) {
+    const st = _popState[fichaId]; const p = _popupRefs[fichaId];
+    if (!st || !p) return;
+    st.idx = (st.idx + dir + st.items.length) % st.items.length;
+    p.setHTML(_buildPopupHtml(fichasById[fichaId], st.idx));
+  };
+  window.__popOpen = function(fichaId) {
+    const f = fichasById[fichaId]; const p = _popupRefs[fichaId];
+    if (p) p.remove();
+    if (f) openFicha(f);
+  };
+  window.__popLb = function(fichaId, idx) {
+    const f = fichasById[fichaId]; if (!f) return;
+    const fotos = (f.sidebar?.fotos||[]).map(ph=>({
+      src: ASSETS_BASE+(ph.src||'').replace(/^assets\//,''), cap: ph.legenda||'',
+    }));
+    openLightbox(fotos, idx);
+  };
+
+  function _buildItems(f) {
     const s = f.sidebar || {};
-    const m = f.meta   || {};
-    const fotos  = s.fotos  || [];
-    const videos = (s.videos || []).filter(v => v.tipo === 'youtube' && v.id);
+    const videos = (s.videos||[]).filter(v=>v.tipo==='youtube'&&v.id);
+    const fotos  = (s.fotos ||[]);
+    return [
+      ...videos.map(v => ({ kind:'video', id:v.id,  cap:v.titulo||'' })),
+      ...fotos.map((p,i) => ({ kind:'photo', src: ASSETS_BASE+(p.src||'').replace(/^assets\//,''), cap:p.legenda||'', idx:i })),
+    ];
+  }
 
-    const tagCls = f.rede ? 'tag-rede' : f.teiaDosPovos ? 'tag-teia' : f.pontoCultura ? 'tag-pc' : 'tag-sem';
-    const tagTxt = f.rede ? 'REDE IRUN' : f.teiaDosPovos ? 'TEIA DOS POVOS' : f.pontoCultura ? 'PONTO DE CULTURA' : 'COMUNIDADE';
+  function _buildPopupHtml(f, idx) {
+    if (!f) return '';
+    const m = f.meta || {};
+    const items = _popState[f.id]?.items || _buildItems(f);
+    const total = items.length;
+    const item  = items[Math.min(idx, total-1)];
 
-    const coverSrc = fotos[0]?.src
-      ? ASSETS_BASE + fotos[0].src.replace(/^assets\//, '') : null;
+    const mediaHtml = !item
+      ? `<div class="pop-no-img">MOVIMENTO IRUN</div>`
+      : item.kind === 'video'
+        ? `<div class="pop-media">
+             <iframe
+               src="https://www.youtube-nocookie.com/embed/${esc(item.id)}?rel=0&modestbranding=1&playsinline=1"
+               loading="lazy"
+               allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
+               allowfullscreen></iframe>
+             ${item.cap?`<div class="pop-media-cap">${esc(item.cap)}</div>`:''}
+           </div>`
+        : `<div class="pop-media" onclick="window.__popLb('${esc(f.id)}',${item.idx})" style="cursor:zoom-in">
+             <img src="${esc(item.src)}" alt="${esc(item.cap)}">
+             ${item.cap?`<div class="pop-media-cap">${esc(item.cap)}</div>`:''}
+           </div>`;
 
-    const coverHtml = coverSrc
-      ? `<img class="pop-img" src="${esc(coverSrc)}" alt="${esc(m.nome||'')}">`
-      : `<div class="pop-no-img">MOVIMENTO IRUN</div>`;
+    const tagsHtml = [
+      f.rede         ? `<span class="pop-tag tag-rede">★ REDE IRUN</span>`         : '',
+      f.teiaDosPovos ? `<span class="pop-tag tag-teia">★ Teia dos Povos</span>`    : '',
+      f.pontoCultura ? `<span class="pop-tag tag-pc">★ Ponto de Cultura</span>`    : '',
+    ].filter(Boolean).join('');
 
-    const extras = fotos.slice(1, 4);
-    const gridHtml = extras.length
-      ? `<div class="pop-grid">${extras.map(p => {
-          const src = ASSETS_BASE + (p.src||'').replace(/^assets\//, '');
-          return `<img loading="lazy" src="${esc(src)}" alt="${esc(p.legenda||'')}">`;
-        }).join('')}</div>` : '';
-
-    const videosHtml = videos.length
-      ? `<div class="pop-videos">${videos.map(v => `
-          <div class="pop-video-wrap">
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/${esc(v.id)}?rel=0&modestbranding=1&playsinline=1"
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; picture-in-picture; fullscreen"
-              allowfullscreen></iframe>
-            ${v.titulo ? `<p class="pop-vtitle">${esc(v.titulo)}</p>` : ''}
-          </div>`).join('')}
-        </div>` : '';
+    const navHtml = total > 1
+      ? `<div class="pop-nav">
+           <button class="pop-nav-btn" onclick="window.__popNav('${esc(f.id)}',-1)">←</button>
+           <span class="pop-nav-count">${idx+1} de ${total}</span>
+           <button class="pop-nav-btn" onclick="window.__popNav('${esc(f.id)}',+1)">→</button>
+         </div>` : '';
 
     return `<div class="pop-card">
-      ${coverHtml}
-      ${gridHtml}
+      ${mediaHtml}
       <div class="pop-body">
-        <span class="pop-tag ${tagCls}">${tagTxt}</span>
         <h3 class="pop-name">${esc(m.nome||f.id)}</h3>
-        <p class="pop-sub">${esc(f.tipo||'')}${m.municipio?' · '+esc(m.municipio):''}</p>
-        ${videosHtml}
-        <button class="pop-open" data-ficha="${esc(f.id)}">Ver ficha completa →</button>
+        ${tagsHtml ? `<div class="pop-tags">${tagsHtml}</div>` : ''}
+        <a class="pop-open-link" href="#" onclick="event.preventDefault();window.__popOpen('${esc(f.id)}')">Ver ficha →</a>
+        ${navHtml}
       </div>
     </div>`;
+  }
+
+  function makePopupHtml(f) {
+    const items = _buildItems(f);
+    _popState[f.id] = { idx: 0, items };
+    return _buildPopupHtml(f, 0);
   }
 
   /* ── Pins ── */
@@ -820,7 +859,7 @@
     const hasMedia = f && ((f.sidebar?.fotos?.length || 0) + (f.sidebar?.videos?.filter(v=>v.tipo==='youtube'&&v.id).length||0)) > 0;
 
     if (hasMedia) {
-      /* Popup rico com fotos e vídeos */
+      /* Popup carousel com fotos e vídeos */
       const popup = new maplibregl.Popup({
         closeButton: true,
         maxWidth: '300px',
@@ -829,26 +868,14 @@
         focusAfterOpen: false,
       }).setHTML(makePopupHtml(f));
 
+      _popupRefs[f.id] = popup;
+
       const marker = new maplibregl.Marker({ element: el, anchor: 'bottom' })
         .setLngLat([lng, lat])
         .setPopup(popup)
         .addTo(map);
 
       el.addEventListener('click', ev => { ev.stopPropagation(); marker.togglePopup(); });
-
-      /* Botão "Ver ficha" dentro do popup */
-      popup.on('open', () => {
-        setTimeout(() => {
-          const btn = document.querySelector(`.pop-open[data-ficha="${info.fichaId}"]`);
-          if (btn) btn.addEventListener('click', () => { popup.remove(); openFicha(f); });
-          /* Lightbox nas fotos do grid */
-          const allFotos = (f.sidebar?.fotos||[]).map(p=>({
-            src: ASSETS_BASE + (p.src||'').replace(/^assets\//,''), cap: p.legenda||'',
-          }));
-          document.querySelectorAll('.pop-grid img').forEach((img, i) =>
-            img.addEventListener('click', () => openLightbox(allFotos, i + 1)));
-        }, 50);
-      });
 
       pinMarkers.push(marker);
     } else {
