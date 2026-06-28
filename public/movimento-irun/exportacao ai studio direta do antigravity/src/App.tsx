@@ -1109,7 +1109,10 @@ export default function App() {
                     Mídias e Vídeos
                   </h3>
                   <div className="space-y-3">
-                    {selectedTerritory.rawFicha?.videos?.map((vidId: string, idx: number) => (
+                    {selectedTerritory.rawFicha?.videos?.map((vid: any, idx: number) => {
+                      const vidId = typeof vid === 'string' ? vid : vid.id;
+                      if (!vidId) return null;
+                      return (
                       <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-slate-200 shadow-md">
                         <iframe
                           className="absolute inset-0 w-full h-full"
@@ -1120,7 +1123,8 @@ export default function App() {
                           allowFullScreen
                         />
                       </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -1208,14 +1212,20 @@ export default function App() {
 
               {/* Coordinates block */}
               <div className="p-3 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-between text-xs font-mono">
-                <span className="text-slate-500">Lat, Lng: <span className="text-slate-800">{selectedTerritory.coordinates[1].toFixed(5)}, {selectedTerritory.coordinates[0].toFixed(5)}</span></span>
-                <button 
-                  onClick={() => handleCopyCoords(selectedTerritory.coordinates)}
-                  className="p-1.5 text-slate-400 hover:text-amber-700 hover:bg-slate-200/50 rounded-lg transition-all cursor-pointer"
-                  title="Copiar Coordenadas"
-                >
-                  <Copy className="w-3.5 h-3.5" />
-                </button>
+                <span className="text-slate-500">Lat, Lng: <span className="text-slate-800">
+                  {selectedTerritory.coordinates && selectedTerritory.coordinates[1] !== undefined && selectedTerritory.coordinates[0] !== undefined 
+                    ? `${selectedTerritory.coordinates[1].toFixed(5)}, ${selectedTerritory.coordinates[0].toFixed(5)}`
+                    : 'Indisponível'}
+                </span></span>
+                {selectedTerritory.coordinates && selectedTerritory.coordinates[1] !== undefined && (
+                  <button 
+                    onClick={() => handleCopyCoords(selectedTerritory.coordinates)}
+                    className="p-1.5 text-slate-400 hover:text-amber-700 hover:bg-slate-200/50 rounded-lg transition-all cursor-pointer"
+                    title="Copiar Coordenadas"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                  </button>
+                )}
               </div>
 
             </div>
