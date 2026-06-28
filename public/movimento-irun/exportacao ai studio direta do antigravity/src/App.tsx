@@ -505,7 +505,13 @@ export default function App() {
   // Handler for selecting a territory
   const handleSelectTerritory = (t: Territory) => {
     setSelectedTerritory(t);
-    setIsSidebarOpen(true);
+    // On mobile, close the sidebar so it doesn't overlap the bottom sheet
+    if (window.innerWidth < 768) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+    
     if (mapRef.current) {
       mapRef.current.flyTo({
         center: t.coordinates,
