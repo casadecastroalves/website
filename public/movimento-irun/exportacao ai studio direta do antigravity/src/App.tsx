@@ -146,17 +146,24 @@ export default function App() {
         const mapped: Territory[] = loadedFichas.map((f: any) => {
           // Find pins that point to this Ficha
           const matchingPins = allPins.filter((p: any) => (p.fichaId === f.id || p.entidadeId === f.id));
-          // Extract YouTube videos from popup slides
-          const videos: string[] = [];
+          // Extract YouTube videos from popup slides and sidebar
+          const videos: any[] = [];
           matchingPins.forEach((p: any) => {
             if (p.popup && p.popup.slides) {
               p.popup.slides.forEach((s: any) => {
                 if (s.video && s.video.tipo === 'youtube' && s.video.id) {
-                  videos.push(s.video.id);
+                  videos.push({ id: s.video.id, titulo: s.titulo || s.video.titulo || f.meta?.nome || f.titulo || f.id });
                 }
               });
             }
           });
+          if (f.sidebar?.videos) {
+            f.sidebar.videos.forEach((v: any) => {
+              if (v.tipo === 'youtube' && v.id) {
+                videos.push(v);
+              }
+            });
+          }
 
           const historySection = f.sidebar?.identidade?.find((i: any) => i.id === 'historia')?.conteudo || '';
           const heritageStatus = f.sidebar?.identidade?.find((i: any) => i.id === 'patrimonio')?.conteudo || 'Certificado';
@@ -449,10 +456,13 @@ export default function App() {
       `;
 
       // Set up simple click callback on marker
-      el.addEventListener('click', (e) => {
+      const handleTap = (e: Event) => {
+        e.preventDefault();
         e.stopPropagation();
         handleSelectTerritory(t);
-      });
+      };
+      el.addEventListener('click', handleTap);
+      el.addEventListener('touchstart', handleTap, { passive: false });
 
       // MapLibre popup on hover (brief summary without photo)
       const popup = new maplibregl.Popup({
@@ -676,29 +686,21 @@ export default function App() {
 
   // Filter videos by category and search
   const categorizedVideos = useMemo(() => {
-    const cats = ['Rede Irun (todos)', 'Teia dos Povos', 'Pontos de Cultura', 'TI - Territórios de Identidade', 'Municípios'];
     const result: Record<string, typeof allVideos> = {};
-    cats.forEach(cat => {
-      result[cat] = allVideos.filter(v => {
-        const matchSearch = (v.title || '').toLowerCase().includes((videoSearchQuery || '').toLowerCase()) || 
-                            (v.city || '').toLowerCase().includes((videoSearchQuery || '').toLowerCase());
-        
-        let matchCategory = false;
-        if (cat === 'Rede Irun (todos)') {
-          matchCategory = true;
-        } else if (cat === 'Teia dos Povos') {
-          matchCategory = v.territory?.rawFicha?.teiaDosPovos === true;
-        } else if (cat === 'Pontos de Cultura') {
-          matchCategory = v.territory?.category === 'cultura' || !!v.territory?.rawFicha?.pontoCultura;
-        } else if (cat === 'TI - Territórios de Identidade') {
-          matchCategory = !!v.territory?.rawFicha?.territorioId;
-        } else if (cat === 'Municípios') {
-          matchCategory = v.territory?.category === 'municipio';
-        }
-        
-        return matchSearch && matchCategory;
-      });
+    
+    allVideos.forEach(v => {
+      const matchSearch = (v.title || '').toLowerCase().includes((videoSearchQuery || '').toLowerCase()) || 
+                          (v.city || '').toLowerCase().includes((videoSearchQuery || '').toLowerCase());
+                          
+      if (!matchSearch) return;
+
+      const territoryName = v.territory?.name || 'Outros';
+      if (!result[territoryName]) {
+        result[territoryName] = [];
+      }
+      result[territoryName].push(v);
     });
+
     return result;
   }, [allVideos, videoSearchQuery]);
 
@@ -987,18 +989,28 @@ export default function App() {
         {selectedTerritory && (
           <>
             <motion.aside
+              drag="y"
+              dragConstraints={{ top: -200, bottom: 0 }}
+              dragElastic={{ top: 0.1, bottom: 0.8 }}
+              onDragEnd={(e, info) => {
+                if (info.offset.y > 150) setSelectedTerritory(null);
+              }}
               initial={{ opacity: 0, y: 100 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 100 }}
+              exit={{ opacity: 0, y: "100%" }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed bottom-0 md:top-0 right-0 z-40 w-full md:w-[420px] lg:w-[480px] h-[65vh] md:h-full bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:shadow-2xl md:border-l border-slate-200 flex flex-col overflow-hidden text-slate-800 rounded-t-[2rem] md:rounded-none"
+              style={{ touchAction: "none" }}
+              className="fixed bottom-0 md:top-0 right-0 z-40 w-full md:w-[420px] lg:w-[480px] h-[75vh] md:h-full bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:shadow-2xl md:border-l border-slate-200 flex flex-col overflow-hidden text-slate-800 rounded-t-[2rem] md:rounded-none"
             >
             {/* Mobile Pull Handle bar */}
             <div 
-              className="w-full pt-4 pb-2 flex justify-center bg-white cursor-pointer md:hidden shrink-0"
-              onClick={() => setSelectedTerritory(null)} 
+              className="w-full pt-4 pb-2 flex justify-center bg-white cursor-grab active:cursor-grabbing md:hidden shrink-0"
+              onPointerDown={(e) => {
+                // Prevent scrolling when grabbing the handle
+                e.preventDefault();
+              }}
             >
-              <div className="w-12 h-1.5 bg-slate-300 hover:bg-slate-400 transition-colors rounded-full" />
+              <div className="w-12 h-1.5 bg-slate-300 hover:bg-slate-400 transition-colors rounded-full pointer-events-none" />
             </div>
             
             {/* Clean Light Text Header */}
