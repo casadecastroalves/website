@@ -1,0 +1,171 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Política de Cookies | Casa de Castro Alves" description="Política de Cookies do website da Casa de Castro Alves. Informações sobre uso de cookies de análise e funcionais.">
+  <section class="legal-page-section">
+    <div class="container legal-container">
+      <h1 class="legal-title">Política de Cookies</h1>
+      
+      <div class="legal-content">
+        <p class="last-updated">Última atualização: 24 de maio de 2026</p>
+        
+        <h2>1. O que são Cookies?</h2>
+        <p>
+          Cookies são pequenos arquivos de texto que são armazenados no seu computador ou dispositivo móvel quando você visita um website. Eles são amplamente utilizados para fazer com que os sites funcionem, ou funcionem de forma mais eficiente, bem como para fornecer informações aos proprietários do site.
+        </p>
+
+        <h2>2. Como utilizamos os Cookies?</h2>
+        <p>
+          O website da Casa de Castro Alves utiliza cookies para melhorar a sua experiência de navegação e analisar a nossa audiência. Classificamos os cookies utilizados em duas categorias:
+        </p>
+        <ul>
+          <li><strong>Cookies Necessários (Essenciais):</strong> São cookies indispensáveis para que o site funcione corretamente e permita a navegação por suas páginas. Sem estes cookies, o site pode apresentar falhas de carregamento.</li>
+          <li><strong>Cookies de Análise e Desempenho:</strong> Utilizamos serviços de análise de terceiros, especificamente o <strong>Google Analytics</strong> (por meio do Google Tag Manager), para coletar dados estatísticos sobre o tráfego do site. Esses cookies nos ajudam a entender quantas pessoas nos visitam, quais páginas são mais acessadas e de onde vem o nosso público, permitindo aprimorar a usabilidade do site. Esses dados são coletados de forma anônima e agregada.</li>
+        </ul>
+
+        <h2>3. Relação de Cookies Utilizados</h2>
+        <table class="cookies-table">
+          <thead>
+            <tr>
+              <th>Provedor</th>
+              <th>Finalidade</th>
+              <th>Tipo</th>
+              <th>Duração</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Google Analytics</td>
+              <td>Análise de tráfego e comportamento do usuário no site</td>
+              <td>Estatística / Desempenho</td>
+              <td>Persistente / Sessão</td>
+            </tr>
+            <tr>
+              <td>Google Tag Manager</td>
+              <td>Gerenciamento de scripts de análise de audiência</td>
+              <td>Necessário / Técnico</td>
+              <td>Sessão</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>4. Como gerenciar ou desativar Cookies?</h2>
+        <p>
+          Você pode desativar, rejeitar ou bloquear a instalação de cookies a qualquer momento através das configurações do seu navegador de internet. A maioria dos navegadores permite gerenciar suas preferências de cookies nas abas de "Privacidade" ou "Segurança".
+        </p>
+        <p>
+          Para saber como gerenciar cookies nos navegadores mais populares, consulte os links abaixo:
+        </p>
+        <ul>
+          <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Google Chrome</a></li>
+          <li><a href="https://support.apple.com/pt-br/guide/safari/sfri11471/mac" target="_blank" rel="noopener noreferrer">Apple Safari</a></li>
+          <li><a href="https://support.mozilla.org/pt-BR/kb/gerencie-configuracoes-de-armazenamento-local-de-sites" target="_blank" rel="noopener noreferrer">Mozilla Firefox</a></li>
+          <li><a href="https://support.microsoft.com/pt-br/microsoft-edge/excluir-cookies-no-microsoft-edge-63456c39-5050-b111-1e21-006d34b2655b" target="_blank" rel="noopener noreferrer">Microsoft Edge</a></li>
+        </ul>
+        <p>
+          Observe que, se você desativar ou recusar os cookies necessários, algumas áreas ou recursos deste site podem não funcionar como esperado.
+        </p>
+
+        <h2>5. Dúvidas e Informações</h2>
+        <p>
+          Caso necessite de mais informações sobre o nosso uso de cookies, você pode entrar em contato conosco diretamente pelo e-mail <a href="mailto:casadecastroalves@gmail.com">casadecastroalves@gmail.com</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .legal-page-section {
+    background-color: var(--color-creme);
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-2xl);
+  }
+
+  .legal-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .legal-title {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-lg);
+    border-bottom: 2px solid var(--color-amarelo-cca);
+    padding-bottom: var(--space-sm);
+  }
+
+  .last-updated {
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    color: var(--color-carvao);
+    margin-bottom: var(--space-lg);
+    font-style: italic;
+  }
+
+  .legal-content {
+    line-height: 1.8;
+  }
+
+  .legal-content h2 {
+    font-size: 1.5rem;
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-sm);
+    border: none;
+    padding-bottom: 0;
+  }
+
+  .legal-content p {
+    margin-bottom: var(--space-md);
+    font-size: 1.05rem;
+    color: var(--color-carvao);
+  }
+
+  .legal-content ul {
+    margin-bottom: var(--space-md);
+    padding-left: var(--space-lg);
+  }
+
+  .legal-content li {
+    margin-bottom: var(--space-sm);
+    font-size: 1.05rem;
+    color: var(--color-carvao);
+  }
+
+  .legal-content a {
+    color: var(--color-ouro);
+    text-decoration: underline;
+    transition: var(--transition-fast);
+  }
+
+  .legal-content a:hover {
+    color: var(--color-preto-editorial);
+  }
+
+  /* Table styling */
+  .cookies-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: var(--space-lg) 0;
+    font-family: var(--font-interface);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .cookies-table th, 
+  .cookies-table td {
+    padding: 12px;
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    text-align: left;
+  }
+
+  .cookies-table th {
+    background-color: var(--color-cinza-claro);
+    color: var(--color-preto-editorial);
+    font-weight: bold;
+  }
+
+  .cookies-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+</style>

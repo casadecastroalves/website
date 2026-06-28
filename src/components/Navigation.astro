@@ -1,0 +1,466 @@
+---
+import SiteSearch from './SiteSearch.astro';
+
+const moreLinks = [
+  {
+    label: 'Biblioteca',
+    href: 'https://drive.google.com/drive/folders/1w_wR8ilBnW_IRcWLG2VxQFx-Myx7oJ_E?usp=sharing',
+    external: true,
+  },
+  {
+    label: 'Instagram',
+    href: 'https://www.instagram.com/casadecastroalves/',
+    external: true,
+  },
+  {
+    label: 'YouTube',
+    href: 'https://www.youtube.com/@casadecastroalves',
+    external: true,
+  },
+];
+
+const primaryLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'A Casa', href: '/a-casa' },
+  { label: 'Shows', href: '/shows' },
+  { label: 'Movimento Irun', href: '/movimento-irun' },
+];
+
+---
+
+<header class="main-header">
+  <div class="container header-container">
+    <a href="/" class="logo-link" aria-label="Casa de Castro Alves Home">
+      <img src="/03_logo_horizontal_transparente.png" alt="Casa de Castro Alves" class="logo-image" />
+    </a>
+
+    <nav class="nav-desktop" aria-label="Menu principal">
+      {
+        primaryLinks.map((link) => (
+          <a href={link.href} class="nav-link">
+            {link.label}
+          </a>
+        ))
+      }
+
+      <details class="nav-more">
+        <summary class="nav-link nav-more-trigger">Mais</summary>
+        <div class="nav-more-panel" role="menu">
+          {
+            moreLinks.map((link) => (
+              <a
+                href={link.href}
+                class="nav-more-link"
+                role="menuitem"
+                target={link.external ? '_blank' : undefined}
+                rel={link.external ? 'noopener noreferrer' : undefined}
+              >
+                {link.label}
+              </a>
+            ))
+          }
+        </div>
+      </details>
+
+      <button type="button" class="search-toggle search-toggle--desktop" aria-label="Buscar no site" data-open-search>
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"></circle>
+          <path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </button>
+
+      <a href="/contato" class="btn btn-nav btn-sm">Contato</a>
+    </nav>
+
+    <div class="header-actions-mobile">
+      <button type="button" class="search-toggle search-toggle--mobile" aria-label="Buscar no site" data-open-search>
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"></circle>
+          <path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </button>
+
+      <button class="mobile-menu-toggle" aria-label="Abrir menu" aria-expanded="false" id="menuToggle">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    </div>
+  </div>
+
+  <nav class="nav-mobile" aria-label="Menu mobile" id="mobileMenu" hidden>
+    <button type="button" class="mobile-nav-search" data-open-search>
+      <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.5"></circle>
+        <path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+      </svg>
+      <span>Buscar no site</span>
+    </button>
+    <span class="mobile-nav-divider" aria-hidden="true"></span>
+    {
+      primaryLinks.map((link) => (
+        <a href={link.href} class="mobile-nav-link">
+          {link.label}
+        </a>
+      ))
+    }
+    <span class="mobile-nav-divider" aria-hidden="true"></span>
+    {
+      moreLinks.map((link) => (
+        <a
+          href={link.href}
+          class="mobile-nav-link mobile-nav-link-secondary"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+    <a href="/contato" class="mobile-nav-link mobile-nav-link-btn">Contato</a>
+  </nav>
+
+  <SiteSearch />
+</header>
+
+<style>
+  .main-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: rgba(245, 245, 245, 0.45);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+    transition: var(--transition-smooth);
+    height: 80px;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+  }
+
+  .logo-image {
+    height: 42px;
+    width: auto;
+    transition: var(--transition-smooth);
+  }
+
+  .nav-desktop {
+    display: none;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  @media (min-width: 768px) {
+    .nav-desktop {
+      display: flex;
+    }
+  }
+
+  .nav-link {
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-preto-editorial);
+    position: relative;
+    padding: var(--space-xs) 0;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: var(--color-preto-editorial);
+    transition: var(--transition-smooth);
+  }
+
+  .nav-link:hover::after,
+  .nav-more[open] .nav-more-trigger::after {
+    width: 100%;
+  }
+
+  .nav-more {
+    position: relative;
+  }
+
+  .nav-more-trigger {
+    list-style: none;
+    cursor: pointer;
+  }
+
+  .nav-more-trigger::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-more-panel {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+    min-width: 180px;
+    background: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    box-shadow: 0 8px 24px rgba(26, 26, 26, 0.08);
+    padding: var(--space-sm) 0;
+    z-index: 1010;
+  }
+
+  .nav-more-link {
+    display: block;
+    padding: var(--space-sm) var(--space-md);
+    font-family: var(--font-interface);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--color-preto-editorial);
+    transition: var(--transition-fast);
+  }
+
+  .nav-more-link:hover {
+    background: var(--color-creme);
+    color: var(--color-ouro);
+  }
+
+  .btn-nav {
+    padding: 8px 20px;
+    font-size: 0.8rem;
+    margin-left: var(--space-sm);
+  }
+
+  .search-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid rgba(26, 26, 26, 0.2);
+    background: transparent;
+    color: var(--color-preto-editorial);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .search-toggle:hover {
+    border-color: var(--color-preto-editorial);
+    background: rgba(26, 26, 26, 0.04);
+  }
+
+  .search-toggle--desktop {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .search-toggle--desktop {
+      display: inline-flex;
+    }
+  }
+
+  .header-actions-mobile {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  @media (min-width: 768px) {
+    .header-actions-mobile {
+      display: none;
+    }
+  }
+
+  .search-toggle--mobile {
+    display: inline-flex;
+  }
+
+  @media (min-width: 768px) {
+    .search-toggle--mobile {
+      display: none;
+    }
+  }
+
+  .mobile-nav-search {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 10px 16px;
+    border: 1px solid rgba(26, 26, 26, 0.15);
+    background: transparent;
+    font-family: var(--font-interface);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-preto-editorial);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .mobile-nav-search:hover {
+    border-color: var(--color-preto-editorial);
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1010;
+  }
+
+  @media (min-width: 768px) {
+    .mobile-menu-toggle {
+      display: none;
+    }
+  }
+
+  .bar {
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-preto-editorial);
+    transition: var(--transition-smooth);
+  }
+
+  .mobile-menu-toggle.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .mobile-menu-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .mobile-menu-toggle.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .nav-mobile {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 80px);
+    background-color: var(--color-creme);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-xl) var(--space-lg);
+    z-index: 1005;
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: var(--transition-smooth);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+    overflow-y: auto;
+  }
+
+  .nav-mobile.active {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  .nav-mobile[hidden] {
+    display: flex;
+  }
+
+  .mobile-nav-link {
+    font-family: var(--font-interface);
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-preto-editorial);
+    transition: var(--transition-fast);
+  }
+
+  .mobile-nav-link:hover {
+    color: var(--color-ouro);
+  }
+
+  .mobile-nav-link-secondary {
+    font-size: 1rem;
+    color: var(--color-carvao);
+  }
+
+  .mobile-nav-divider {
+    width: 48px;
+    height: 1px;
+    background: rgba(26, 26, 26, 0.15);
+    margin: var(--space-sm) 0;
+  }
+
+  .mobile-nav-link-btn {
+    margin-top: var(--space-md);
+    background-color: var(--color-amarelo-cca);
+    padding: 12px 40px;
+    border: 1px solid var(--color-preto-editorial);
+    font-weight: bold;
+  }
+</style>
+
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  if (menuToggle && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      const isActive = menuToggle.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+      mobileMenu.hidden = !isActive;
+      menuToggle.setAttribute('aria-expanded', isActive.toString());
+      menuToggle.setAttribute('aria-label', isActive ? 'Fechar menu' : 'Abrir menu');
+      document.body.classList.toggle('menu-open', isActive);
+    });
+
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        mobileMenu.hidden = true;
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Abrir menu');
+        document.body.classList.remove('menu-open');
+      });
+    });
+
+    mobileMenu.querySelectorAll('[data-open-search]').forEach((button) => {
+      button.addEventListener('click', () => {
+        menuToggle.classList.remove('active');
+        mobileMenu.classList.remove('active');
+        mobileMenu.hidden = true;
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Abrir menu');
+        document.body.classList.remove('menu-open');
+      });
+    });
+  }
+
+  document.querySelectorAll('.nav-more').forEach((details) => {
+    details.addEventListener('toggle', () => {
+      if (!details.open) return;
+      document.querySelectorAll('.nav-more').forEach((other) => {
+        if (other !== details) other.open = false;
+      });
+    });
+  });
+</script>

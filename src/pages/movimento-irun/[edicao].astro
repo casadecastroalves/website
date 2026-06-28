@@ -1,0 +1,970 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import parsedEditions from '../../cms/parsed-editions.json' with { type: 'json' };
+
+
+import { edicoesData } from '../../data/edicoesData.js';
+import { getEditionNav } from '../../data/edicaoNav.js';
+import CarouselEdicoes from '../../components/CarouselEdicoes.astro';
+
+export async function getStaticPaths() {
+  const pathsToGenerate = edicoesData.filter(ed => ed.slug !== '11-edicoes');
+  return pathsToGenerate.map((ed) => ({
+    params: { edicao: ed.slug },
+    props: {
+      edicaoInfo: ed,
+      allEdicoes: edicoesData
+    }
+  }));
+}
+
+const { edicaoInfo, allEdicoes } = Astro.props;
+
+const isExposition = edicaoInfo.slug.startsWith('expo-');
+const { prev: prevNav, next: nextNav } = getEditionNav(allEdicoes, edicaoInfo.slug, isExposition);
+const editionLabel =
+  typeof edicaoInfo.num === 'number' ? `Edição ${edicaoInfo.num}` : edicaoInfo.num;
+
+const romanNumerals = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI"];
+const romanKey = romanNumerals[edicaoInfo.num] || "";
+const parsedData = (parsedEditions as any)[romanKey] || { desc: [], program: [] };
+const descriptionParagraphs = parsedData.desc && parsedData.desc.length > 0 ? parsedData.desc : [edicaoInfo.descricao];
+
+// Dynamically split description paragraph text to limit visible intro text to ~550 characters.
+let visibleParagraphs: string[] = [];
+let hiddenParagraphs: string[] = [];
+let currentLen = 0;
+const LIMIT = 550;
+
+for (let i = 0; i < descriptionParagraphs.length; i++) {
+  const para = descriptionParagraphs[i];
+  if (currentLen >= LIMIT) {
+    hiddenParagraphs.push(para);
+  } else if (currentLen + para.length <= LIMIT) {
+    visibleParagraphs.push(para);
+    currentLen += para.length;
+  } else {
+    // This paragraph crosses the 1000-character mark
+    const remainingAllowed = LIMIT - currentLen;
+    let splitIndex = para.lastIndexOf(' ', remainingAllowed);
+    if (splitIndex === -1) {
+      splitIndex = para.indexOf(' ', remainingAllowed);
+    }
+    
+    if (splitIndex !== -1 && splitIndex > 0) {
+      const firstPart = para.substring(0, splitIndex).trim();
+      const secondPart = para.substring(splitIndex).trim();
+      if (firstPart) visibleParagraphs.push(firstPart);
+      if (secondPart) hiddenParagraphs.push(secondPart);
+    } else {
+      const firstPart = para.substring(0, remainingAllowed).trim();
+      const secondPart = para.substring(remainingAllowed).trim();
+      if (firstPart) visibleParagraphs.push(firstPart);
+      if (secondPart) hiddenParagraphs.push(secondPart);
+    }
+    currentLen = LIMIT;
+  }
+}
+
+const programItems = parsedData.program && parsedData.program.length > 0 ? parsedData.program : edicaoInfo.detalhes;
+const hasMainVideo = edicaoInfo.youtube && edicaoInfo.num !== 9 && edicaoInfo.num !== 10 && edicaoInfo.num !== 11;
+const posters = Array.isArray((edicaoInfo as any).posters) 
+  ? (edicaoInfo as any).posters 
+  : (edicaoInfo.poster ? [edicaoInfo.poster] : []);
+---
+
+<Layout 
+  title={`${edicaoInfo.titulo} | Movimento Irun`} 
+  description={isExposition 
+    ? `Confira os registros da exposição ${edicaoInfo.titulo} do Movimento Irun na Casa de Castro Alves.` 
+    : `Confira a programação e os registros da ${edicaoInfo.num}ª edição do Movimento Irun na Casa de Castro Alves. Convidado(a): ${edicaoInfo.artista}.`} 
+  ogImage={edicaoInfo.banner || edicaoInfo.poster}
+>
+  <!-- Header de Edição (Standardized Subpage Hero with Parallax) -->
+  <section class="subpage-hero" style="position: relative;">
+    <div class="subpage-hero-bg" style={`background-image: url('${edicaoInfo.banner || edicaoInfo.poster}');`}></div>
+    <div class="subpage-hero-overlay"></div>
+    
+    {prevNav && (
+      <a href={prevNav.href} class="nav-arrow left-arrow" aria-label={prevNav.label}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </a>
+    )}
+    {nextNav && (
+      <a href={nextNav.href} class="nav-arrow right-arrow" aria-label={nextNav.label}>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    )}
+
+    <div class="container subpage-hero-content">
+      {isExposition ? (
+        <>
+          <h1 class="subpage-hero-title">{edicaoInfo.titulo}</h1>
+          <p class="header-show-title">A Exposição</p>
+        </>
+      ) : (
+        <>
+          <h1 class="subpage-hero-title">{editionLabel}</h1>
+          <p class="header-show-title">{edicaoInfo.show}</p>
+          <p class="header-artist-name">{(edicaoInfo as any).heroSubtitle || edicaoInfo.artista}</p>
+        </>
+      )}
+      <div style="margin-top: 2rem;">
+        <span class="badge-edicao-dark">{edicaoInfo.data}</span>
+      </div>
+      {(edicaoInfo as any).inscricaoLink && (
+        <div style="margin-top: 1.5rem;">
+          <a href={(edicaoInfo as any).inscricaoLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary">INSCREVA-SE</a>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Detalhes da Edição -->
+  <section class="edicao-details-section">
+    <div class="container">
+      <div class="details-grid">
+        <!-- Poster Column -->
+        <div class="poster-column">
+          {posters.length > 1 ? (
+            <div class="edition-slideshow shadow-premium">
+              <div class="edition-slideshow-track-wrapper">
+                <div class="edition-slideshow-track">
+                  {posters.map((post, idx) => (
+                    <div class="edition-slide">
+                      <img src={post} alt={`Cartaz oficial ${idx + 1} - ${edicaoInfo.titulo}`} class="edicao-poster-img-contain" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              <!-- Navigation Controls -->
+              <button class="edition-nav-btn prev-btn" aria-label="Card anterior">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+              </button>
+              <button class="edition-nav-btn next-btn" aria-label="Próximo card">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+              </button>
+              
+              <!-- Dots Indicator -->
+              <div class="edition-slideshow-dots">
+                {posters.map((_, idx) => (
+                  <button class={`edition-dot ${idx === 0 ? 'active' : ''}`} aria-label={`Ir para card ${idx + 1}`}></button>
+                ))}
+              </div>
+              
+              {!isExposition && <div class="caption">Card de divulgação oficial (navegue pelas setas ou arraste para ver mais).</div>}
+            </div>
+          ) : (
+            <div class="poster-wrapper shadow-premium">
+              <img src={edicaoInfo.poster} alt={`Cartaz oficial - ${edicaoInfo.titulo}`} class="edicao-poster-img-contain" />
+              {!isExposition && <div class="caption">{(edicaoInfo as any).posterCaption || 'Card de divulgação oficial do show e artistas no palco da Casa de Castro Alves.'}</div>}
+            </div>
+          )}
+        </div>
+
+        <!-- Text Column -->
+        <div class="text-column">
+          <h2>{isExposition ? "A Exposição" : "Sobre esta Edição"}</h2>
+          {visibleParagraphs.length > 0 && (
+            <p class="lead-text">{visibleParagraphs[0]}</p>
+          )}
+          {visibleParagraphs.slice(1).map((para) => (
+            <p class="body-text">{para}</p>
+          ))}
+          {hiddenParagraphs.length > 0 && (
+            <>
+              <div class="description-expandable-content closed" id="description-expandable-wrapper">
+                {hiddenParagraphs.map((para) => (
+                  <p class="body-text">{para}</p>
+                ))}
+              </div>
+              <button class="btn-read-more" id="btn-toggle-description">Leia +</button>
+            </>
+          )}
+
+          {!isExposition && (
+            <>
+              <h3 class="program-title">Atividades e Destaques</h3>
+              <ul class="highlights-list" style="margin-bottom: 2rem;">
+                {programItems.map((det) => (
+                  <li>{det}</li>
+                ))}
+              </ul>
+            </>
+          )}
+
+          {(edicaoInfo as any).inscricaoLink && (
+            <div style="margin-bottom: 2.5rem;">
+              <a href={(edicaoInfo as any).inscricaoLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="padding: 12px 32px;">INSCREVA-SE</a>
+            </div>
+          )}
+
+          {!isExposition && (
+            <div class="artist-card">
+              <h4>{(edicaoInfo as any).cardLabel || 'Artista Convidado(a)'}</h4>
+              <p><strong>{edicaoInfo.artista}</strong></p>
+              <p class="artist-helper">{(edicaoInfo as any).cardDesc || 'Espetáculo musical, celebrando as nossas matrizes culturais e a resistência popular.'}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Video Section (if applicable) -->
+  {hasMainVideo && !isExposition && (
+    <section class="main-video-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2>{edicaoInfo.num}° Edição do Movimento Irun</h2>
+          <p class="section-subtitle">Acompanhe a apresentação e sinta a atmosfera única deste encontro.</p>
+        </div>
+
+        <div class="video-wrapper shadow-premium">
+          <iframe 
+            src={edicaoInfo.youtube} 
+            width="100%" 
+            style="border:0; aspect-ratio: 16/9; display: block;" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen
+            title={`Vídeo principal - ${edicaoInfo.titulo}`}
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Seção do Vídeo Secundário (se houver) -->
+  {edicaoInfo.youtubeSec && !isExposition && (
+    <section class="video-section">
+      <div class="container">
+        <div class="section-header text-center">
+          <h2>{edicaoInfo.videoSecTitle || "Registro Especial"}</h2>
+          <p class="section-subtitle">Assista à cobertura complementar e registro do encontro e exposição.</p>
+        </div>
+
+        <div class="video-iframe-wrapper shadow-premium">
+          <iframe 
+            src={edicaoInfo.youtubeSec} 
+            width="100%" 
+            height="500" 
+            style="border:0;" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            allowfullscreen
+            title={`Registro Especial - Exposição Irun`}
+          ></iframe>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Carousel de Outras Edições (Maratona) -->
+  <CarouselEdicoes edicaoAtualSlug={edicaoInfo.slug} isExposition={isExposition} />
+
+  <!-- Apoios e Logos Rodapé -->
+  <section class="apoio-section" style="padding-bottom: 2rem; padding-top: 3rem;">
+    <div class="container text-center">
+      <h3 style="margin-bottom: 1rem;">Apoio e Fomento</h3>
+      <p class="apoio-text">
+        Este projeto foi contemplado nos Editais da Política Nacional Aldir Blanc Bahia e tem apoio financeiro do Governo do Estado da Bahia, por meio da Secretaria de Cultura do Estado via PNAB, direcionada pelo Ministério da Cultura - Governo Federal. A iniciativa é também contemplada pela Política Nacional Cultura Viva.
+      </p>
+      <div class="apoio-banner-wrapper">
+        <img src="/REGUAS_PNAB_BA_CULTURA_VIVA.png" alt="Logos de apoio do Movimento Irun - Secult-BA, PNAB, Governo da Bahia, Ministério da Cultura, Cultura Viva" class="apoio-banner-img" />
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script is:inline>
+  (function() {
+    document.addEventListener('DOMContentLoaded', function() {
+  /* Carousel JS now handled by CarouselEdicoes component */
+
+      // 2. Edition Poster/Cards Slideshow
+      var edTrack = document.querySelector('.edition-slideshow-track');
+      var edSlides = document.querySelectorAll('.edition-slide');
+      var edPrevBtn = document.querySelector('.edition-nav-btn.prev-btn');
+      var edNextBtn = document.querySelector('.edition-nav-btn.next-btn');
+      var edDots = document.querySelectorAll('.edition-dot');
+
+      if (edTrack && edSlides.length > 0) {
+        var edIndex = 0;
+
+        var updateEdSlider = function() {
+          edTrack.style.transform = 'translateX(-' + (edIndex * 100) + '%)';
+          edDots.forEach(function(dot, idx) {
+            dot.classList.toggle('active', idx === edIndex);
+          });
+        };
+
+        var nextEdSlide = function() {
+          edIndex = (edIndex + 1) % edSlides.length;
+          updateEdSlider();
+        };
+
+        var prevEdSlide = function() {
+          edIndex = (edIndex - 1 + edSlides.length) % edSlides.length;
+          updateEdSlider();
+        };
+
+        if (edPrevBtn) {
+          edPrevBtn.addEventListener('click', prevEdSlide);
+        }
+
+        if (edNextBtn) {
+          edNextBtn.addEventListener('click', nextEdSlide);
+        }
+
+        edDots.forEach(function(dot, idx) {
+          dot.addEventListener('click', function() {
+            edIndex = idx;
+            updateEdSlider();
+          });
+        });
+
+        // Keyboard arrow navigation for edition slideshow (when in view)
+        document.addEventListener('keydown', function(e) {
+          if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+            return;
+          }
+          var rect = edTrack.getBoundingClientRect();
+          var inView = (rect.top < window.innerHeight && rect.bottom > 0);
+          if (inView) {
+            if (e.key === 'ArrowRight') {
+              e.preventDefault();
+              nextEdSlide();
+            } else if (e.key === 'ArrowLeft') {
+              e.preventDefault();
+              prevEdSlide();
+            }
+          }
+        });
+
+        // Swipe support
+        var touchStartX = 0;
+        var isTouchDragging = false;
+
+        edTrack.addEventListener('touchstart', function(e) {
+          touchStartX = e.touches[0].clientX;
+          isTouchDragging = true;
+        }, { passive: true });
+
+        edTrack.addEventListener('touchend', function(e) {
+          if (!isTouchDragging) return;
+          var touchEndX = e.changedTouches[0].clientX;
+          var diffX = touchStartX - touchEndX;
+
+          if (Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+              nextEdSlide();
+            } else {
+              prevEdSlide();
+            }
+          }
+          isTouchDragging = false;
+        }, { passive: true });
+      }
+    });
+  })();
+</script>
+
+<style>
+  /* Header Section Redesign */
+  .badge-edicao-dark {
+    background-color: transparent;
+    color: var(--color-amarelo-cca);
+    border: 1px solid var(--color-amarelo-cca);
+    padding: 4px 12px;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: block;
+    width: fit-content;
+    margin: 0 auto var(--space-sm) auto;
+  }
+
+  .back-link-dark {
+    display: inline-block;
+    font-family: var(--font-interface);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-md);
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: var(--transition-fast);
+  }
+
+  .back-link-dark:hover {
+    color: var(--color-amarelo-cca);
+    transform: translateY(-2px);
+  }
+
+  .header-show-title {
+    font-size: 1.5rem;
+    color: var(--color-amarelo-cca);
+    font-style: italic;
+    margin-bottom: var(--space-xs);
+    font-family: var(--font-display);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  .header-artist-name {
+    font-family: var(--font-interface);
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Header Navigation Arrows */
+  .subpage-hero {
+    position: relative;
+  }
+
+  .nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    z-index: 20;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .nav-arrow:hover {
+    background-color: var(--color-amarelo-cca);
+    color: var(--color-preto-editorial);
+    border-color: var(--color-amarelo-cca);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .left-arrow {
+    left: var(--space-xl);
+  }
+
+  .right-arrow {
+    right: var(--space-xl);
+  }
+
+  @media (max-width: 768px) {
+    .nav-arrow {
+      width: 40px;
+      height: 40px;
+    }
+
+    .left-arrow {
+      left: var(--space-sm);
+    }
+
+    .right-arrow {
+      right: var(--space-sm);
+    }
+  }
+
+  /* Dedicated main video section styles */
+  .main-video-section {
+    background-color: var(--color-branco);
+    padding: var(--space-xl) 0;
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .main-video-section .video-wrapper {
+    background-color: var(--color-branco);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    max-width: 900px;
+    margin: var(--space-lg) auto 0 auto;
+    border-radius: 4px;
+    box-shadow: 0 15px 35px rgba(26, 26, 26, 0.06);
+  }
+
+  .main-video-section .video-wrapper iframe {
+    display: block;
+    border-radius: 2px;
+  }
+
+  /* Carousel Drag styles */
+  .carousel-track {
+    cursor: grab;
+  }
+
+  .carousel-track.dragging {
+    scroll-behavior: auto;
+    cursor: grabbing;
+    user-select: none;
+  }
+
+  /* Details section */
+  .edicao-details-section {
+    background-color: var(--color-creme);
+  }
+
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    align-items: flex-start;
+  }
+
+  @media (min-width: 992px) {
+    .details-grid {
+      grid-template-columns: 0.8fr 1.2fr;
+    }
+  }
+
+  .poster-wrapper {
+    background-color: var(--color-branco);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 4px;
+  }
+
+  .edicao-poster-img {
+    width: 100%;
+    height: auto;
+    max-height: 650px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .caption {
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    color: var(--color-carvao);
+    margin-top: var(--space-sm);
+    font-style: italic;
+  }
+
+  .text-column h2 {
+    font-size: 2.25rem;
+    border: none;
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-md);
+    padding: 0;
+  }
+
+  /* Inherits global .section-badge styling for high-contrast accessibility */
+
+  .lead-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--color-preto-editorial);
+    margin-bottom: var(--space-lg);
+  }
+
+  .program-title {
+    font-size: 1.5rem;
+    margin-top: var(--space-lg);
+    margin-bottom: var(--space-md);
+  }
+
+  .highlights-list {
+    list-style-type: none;
+    margin-bottom: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .highlights-list li {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    position: relative;
+    padding-left: var(--space-lg);
+  }
+
+  .highlights-list li::before {
+    content: "•";
+    color: var(--color-amarelo-cca);
+    font-size: 1.5rem;
+    line-height: 1;
+    position: absolute;
+    left: 0;
+    top: -2px;
+  }
+
+  .artist-card {
+    background-color: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    padding: var(--space-lg);
+    border-left: 3px solid var(--color-ouro);
+  }
+
+  .artist-card h4 {
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-carvao);
+    margin-bottom: var(--space-xs);
+  }
+
+  .artist-card p {
+    font-size: 1.15rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .artist-card .artist-helper {
+    font-size: 0.9rem;
+    color: var(--color-carvao);
+    font-style: italic;
+    margin-bottom: 0;
+  }
+
+  .shadow-premium {
+    box-shadow: 0 15px 35px rgba(26, 26, 26, 0.06);
+  }
+
+  .card-highlight-label {
+    display: inline-block;
+    background-color: var(--color-preto-editorial);
+    color: var(--color-amarelo-cca);
+    padding: 6px 12px;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-sm);
+    border-radius: 2px;
+  }
+
+  /* Video Section */
+  .video-section {
+    background-color: var(--color-branco);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+    padding: var(--space-xl) 0;
+  }
+
+  .video-iframe-wrapper {
+    background-color: var(--color-branco);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    max-width: 900px;
+    margin: var(--space-xl) auto 0 auto;
+    border-radius: 4px;
+  }
+
+  .video-iframe-wrapper iframe {
+    display: block;
+    border-radius: 2px;
+  }
+
+/* Carousel CSS now handled by CarouselEdicoes component */
+
+  /* Edition Slideshow Styles */
+  .edition-slideshow {
+    position: relative;
+    background-color: var(--color-branco);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .edition-slideshow-track-wrapper {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+  }
+
+  .edition-slideshow-track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 100%;
+  }
+
+  .edition-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .edicao-poster-img-contain {
+    width: 100%;
+    height: auto;
+    max-height: 650px;
+    object-fit: contain;
+    display: block;
+  }
+
+  /* Edition Navigation Buttons */
+  .edition-nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(26, 26, 26, 0.8);
+    color: var(--color-amarelo-cca);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .edition-nav-btn:hover {
+    background-color: var(--color-preto-editorial);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .edition-nav-btn.prev-btn {
+    left: var(--space-md);
+  }
+
+  .edition-nav-btn.next-btn {
+    right: var(--space-md);
+  }
+
+  /* Edition Dots indicator */
+  .edition-slideshow-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: var(--space-md);
+    margin-bottom: var(--space-xs);
+  }
+
+  .edition-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(26, 26, 26, 0.2);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .edition-dot:hover {
+    background-color: rgba(26, 26, 26, 0.5);
+  }
+
+  .edition-dot.active {
+    background-color: var(--color-ouro);
+    transform: scale(1.2);
+  }
+
+  /* Apoio Section */
+  .apoio-section {
+    background-color: var(--color-branco);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .apoio-text {
+    font-size: 0.95rem;
+    color: var(--color-carvao);
+    max-width: 800px;
+    margin: 0 auto var(--space-xl) auto;
+    line-height: 1.6;
+  }
+
+  .apoio-banner-wrapper {
+    max-width: 850px;
+    margin: 0 auto;
+    background-color: var(--color-cinza-claro);
+    padding: var(--space-sm);
+    border: 1px solid rgba(26, 26, 26, 0.05);
+  }
+
+  .apoio-banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+    /* Collapsible / Expandable description text */
+    .description-expandable-content {
+      max-height: 1000px;
+      opacity: 1;
+      overflow: hidden;
+      transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+    }
+
+    .description-expandable-content.closed {
+      max-height: 0;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .btn-read-more {
+      background: none;
+      border: none;
+      color: var(--color-ouro);
+      font-family: var(--font-interface);
+      font-size: 0.85rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      cursor: pointer;
+      padding: var(--space-xs) 0;
+      margin-top: var(--space-xs);
+      margin-bottom: var(--space-md);
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      transition: color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-read-more::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: var(--color-ouro);
+      transform: scaleX(0.3);
+      transform-origin: left;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
+    }
+
+    .btn-read-more:hover {
+      color: var(--color-amarelo-cca);
+      transform: translateX(4px);
+    }
+
+    .btn-read-more:hover::after {
+      transform: scaleX(1);
+      background-color: var(--color-amarelo-cca);
+    }
+
+
+  </style>
+
+<script>
+  // Edition Slideshow Logic
+  const tracks = document.querySelectorAll('.edition-slideshow-track');
+  
+  tracks.forEach(track => {
+    const container = track.closest('.edition-slideshow');
+    if (!container) return;
+    
+    const slides = container.querySelectorAll('.edition-slide');
+    const dots = container.querySelectorAll('.edition-dot');
+    const prevBtn = container.querySelector('.edition-nav-btn.prev-btn');
+    const nextBtn = container.querySelector('.edition-nav-btn.next-btn');
+
+    if (slides.length > 1) {
+      let currentIndex = 0;
+      let startX = 0;
+      let isDragging = false;
+      let currentTranslate = 0;
+      let prevTranslate = 0;
+
+      const updateSlider = () => {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentIndex);
+        });
+        prevTranslate = currentIndex * -track.offsetWidth;
+      };
+
+      const nextSlide = () => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        updateSlider();
+      };
+
+      const prevSlide = () => {
+        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+        updateSlider();
+      };
+
+      if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+      if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          currentIndex = index;
+          updateSlider();
+        });
+      });
+
+      // Touch and Drag events
+      track.addEventListener('touchstart', (e) => touchStart(e.touches[0].clientX));
+      track.addEventListener('touchend', touchEnd);
+      track.addEventListener('touchmove', (e) => touchMove(e.touches[0].clientX));
+
+      track.addEventListener('mousedown', (e) => touchStart(e.clientX));
+      track.addEventListener('mouseup', touchEnd);
+      track.addEventListener('mouseleave', touchEnd);
+      track.addEventListener('mousemove', (e) => touchMove(e.clientX));
+
+      function touchStart(x) {
+        isDragging = true;
+        startX = x;
+        track.style.transition = 'none';
+      }
+
+      function touchMove(x) {
+        if (!isDragging) return;
+        const currentPosition = x - startX;
+        currentTranslate = prevTranslate + currentPosition;
+        track.style.transform = `translateX(${currentTranslate}px)`;
+      }
+
+      function touchEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        const movedBy = currentTranslate - prevTranslate;
+        track.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+        
+        if (movedBy < -50 && currentIndex < slides.length - 1) currentIndex += 1;
+        else if (movedBy > 50 && currentIndex > 0) currentIndex -= 1;
+        else if (movedBy < -50 && currentIndex === slides.length - 1) currentIndex = 0; // wrap
+        else if (movedBy > 50 && currentIndex === 0) currentIndex = slides.length - 1; // wrap
+        
+        updateSlider();
+      }
+
+      // Keyboard support
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') nextSlide();
+        if (e.key === 'ArrowLeft') prevSlide();
+      });
+      
+      // Update sizes on resize
+      window.addEventListener('resize', updateSlider);
+    }
+  });
+
+  // Leia + Toggle Logic
+  const toggleBtn = document.getElementById('btn-toggle-description');
+  const expandableContent = document.getElementById('description-expandable-wrapper');
+
+  if (toggleBtn && expandableContent) {
+    toggleBtn.addEventListener('click', () => {
+      const isClosed = expandableContent.classList.contains('closed');
+      if (isClosed) {
+        expandableContent.classList.remove('closed');
+        toggleBtn.textContent = 'Recolher';
+      } else {
+        expandableContent.classList.add('closed');
+        toggleBtn.textContent = 'Leia +';
+      }
+    });
+  }
+</script>

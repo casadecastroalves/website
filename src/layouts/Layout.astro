@@ -1,0 +1,141 @@
+---
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+import Analytics from '../components/Analytics.astro';
+import StructuredData from '../components/StructuredData.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  showSponsors?: boolean;
+  ogImage?: string;
+}
+
+const {
+  title = 'Casa de Castro Alves | Memória, Arte e Poesia',
+  description = 'A Casa de Castro Alves é um espaço de cultura e resistência em Salvador, Bahia. Dedicado ao diálogo entre a poesia e as artes, oferece galeria de arte contemporânea, eventos e o Movimento Irun.',
+  showSponsors = false,
+  ogImage = '/01_logo_amarelo_ig.png',
+} = Astro.props;
+
+const siteOrigin = 'https://casadecastroalves.com.br';
+const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
+
+const absoluteOgImage = ogImage.startsWith('http')
+  ? ogImage
+  : `${siteOrigin}${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`;
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/05_icone_amarelo.png" />
+    <link rel="canonical" href={canonicalURL.href} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="author" content="Casa de Castro Alves" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={absoluteOgImage} />
+    <meta property="og:locale" content="pt_BR" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={canonicalURL.href} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOgImage} />
+
+    <StructuredData type="webpage" pageTitle={title} pageDescription={description} />
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Ir para o conteúdo</a>
+
+    <Navigation />
+
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <Footer showSponsors={showSponsors} />
+
+    <CookieConsent />
+    <Analytics />
+
+    <script>
+      let ticking = false;
+
+      function updateParallax() {
+        const bgElements = document.querySelectorAll('.subpage-hero-bg');
+        bgElements.forEach((bg) => {
+          const parent = bg.parentElement;
+          if (parent) {
+            const rect = parent.getBoundingClientRect();
+            if (rect.bottom > 0 && rect.top < window.innerHeight) {
+              bg.style.transform = `translate3d(0, ${window.scrollY * 0.35}px, 0)`;
+            }
+          }
+        });
+        ticking = false;
+      }
+
+      function onScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('DOMContentLoaded', updateParallax);
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        updateParallax();
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: var(--space-md);
+    z-index: 10000;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--color-amarelo-cca);
+    color: var(--color-preto-editorial);
+    font-family: var(--font-interface);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+  }
+
+  .skip-link:focus {
+    top: var(--space-sm);
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-creme);
+  }
+
+  main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+</style>

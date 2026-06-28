@@ -1,0 +1,17 @@
+{
+  "hero": {
+    "titulo": "Programação de Shows",
+    "subtitulo": "Música e Performance",
+    "imagem": "/images/shows/movimento-irun-edicao-9-aqualtunes-mariella-santiago.jpg"
+  },
+  "destaque": {
+    "titulo": "Curumin na Casa",
+    "data": "Maio de 2026 — Sessão Especial",
+    "descricao": "O aclamado multi-instrumentista, cantor e produtor paulistano Curumin desembarca no Centro Histórico de Salvador para um show intimista e inesquecível no Jardim da Casa de Castro Alves. Unindo suas influências de samba, soul, funk clássico e hip-hop, o artista traz uma performance calorosa que sintoniza perfeitamente com a brisa da Baía de Todos os Santos.",
+    "info": "Um encontro singular entre a rítmica paulista e a pulsação baiana em um dos espaços mais poéticos da cidade. Ingressos limitados para garantir o clima intimista e afetivo do evento.",
+    "imagem": "/images/shows/CURUMIN-MAIO-2026-819x1024.jpg",
+    "imagemAlt": "Cartaz Oficial do Show de Curumin na Casa de Castro Alves"
+  },
+  "historicoTitulo": "Concertos e Apresentações Anteriores",
+  "historicoSubtitulo": "Relembre as performances e artistas que já passaram pelo palco da Casa de Castro Alves ao longo do Movimento Irun."
+}

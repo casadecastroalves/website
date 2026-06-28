@@ -1,0 +1,335 @@
+---
+import { edicoesData } from '../data/edicoesData.js';
+import { getFilteredEditions } from '../data/edicaoNav.js';
+
+export interface Props {
+  edicaoAtualSlug?: string;
+  isExposition?: boolean;
+}
+
+const { edicaoAtualSlug, isExposition = false } = Astro.props;
+
+const filteredEditions = getFilteredEditions(edicoesData, isExposition);
+---
+
+<section class="carousel-section">
+  <div class="container">
+    <div class="carousel-header">
+      <div>
+        <h2>{isExposition ? "Exposições do Bem Viver" : "Conheça as Edições"}</h2>
+        <p>{isExposition ? "Navegue pelas outras exposições do Movimento Irun na Casa." : "Navegue por todos os encontros do Movimento Irun na Casa."}</p>
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-arrow prev" aria-label={isExposition ? "Exposição anterior" : "Edição anterior"}>
+          <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+        <button class="carousel-arrow next" aria-label={isExposition ? "Próxima exposição" : "Próxima edição"}>
+          <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="carousel-container">
+      <div class="carousel-track">
+        {filteredEditions.map((ed) => {
+          const isCurrent = ed.slug === edicaoAtualSlug;
+          return (
+            <a href={`/movimento-irun/${ed.slug}`} class={`carousel-card ${isCurrent ? 'active' : ''}`}>
+              <div class="card-img-wrapper">
+                <img src={ed.thumb || ed.poster} alt={ed.titulo} />
+                {isCurrent && <span class="active-badge">Você está aqui</span>}
+              </div>
+              <div class="card-info">
+                <span class="card-num">{isExposition ? "Exposição" : (typeof ed.num === 'number' ? `Edição ${ed.num}` : ed.num)}</span>
+                <p class="card-title">{isExposition ? ed.titulo : ed.show}</p>
+                <p class="card-artist">{isExposition ? "" : ed.artista.split(" & ")[0].split(" (")[0]}</p>
+              </div>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .carousel-section {
+    background-color: var(--color-creme);
+    padding: var(--space-xl) 0 var(--space-2xl) 0;
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+    overflow: hidden;
+  }
+
+  .carousel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--space-lg);
+  }
+
+  .carousel-header h2 {
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+    border: none;
+    padding: 0;
+    font-family: var(--font-display);
+    color: var(--color-preto-editorial);
+  }
+
+  .carousel-header p {
+    color: var(--color-carvao);
+    margin: 0;
+  }
+
+  .carousel-controls {
+    display: none;
+  }
+
+  @media (min-width: 1025px) {
+    .carousel-controls {
+      display: flex;
+      gap: var(--space-xs);
+    }
+  }
+
+  .carousel-arrow {
+    background-color: var(--color-branco);
+    color: var(--color-preto-editorial);
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+
+  .carousel-arrow:hover {
+    background-color: var(--color-preto-editorial);
+    color: var(--color-branco);
+    border-color: var(--color-preto-editorial);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .carousel-arrow svg {
+    display: block;
+  }
+
+  .carousel-container {
+    position: relative;
+    width: 100%;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: var(--space-sm) 0;
+  }
+
+  .carousel-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-card {
+    flex: 0 0 80%;
+    scroll-snap-align: start;
+    background-color: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition-smooth);
+    box-shadow: 0 4px 12px rgba(26, 26, 26, 0.02);
+  }
+
+  @media (min-width: 576px) {
+    .carousel-card {
+      flex: 0 0 45%;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .carousel-card {
+      flex: 0 0 28%;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .carousel-card {
+      flex: 0 0 calc(100% / 6 - 14px);
+    }
+  }
+
+  .carousel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(26, 26, 26, 0.06);
+    border-color: rgba(26, 26, 26, 0.15);
+  }
+
+  .carousel-card.active {
+    border: 2px solid var(--color-ouro);
+  }
+
+  .carousel-card .card-img-wrapper {
+    height: 180px;
+    position: relative;
+    overflow: hidden;
+    background-color: var(--color-cinza-claro);
+  }
+
+  .carousel-card .card-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-smooth);
+  }
+
+  .carousel-card:hover .card-img-wrapper img {
+    transform: scale(1.03);
+  }
+
+  .active-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: var(--color-ouro);
+    color: var(--color-branco);
+    font-size: 0.65rem;
+    font-family: var(--font-interface);
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    letter-spacing: 0.05em;
+    border-radius: 2px;
+  }
+
+  .card-info {
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .card-num {
+    font-family: var(--font-interface);
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: var(--color-ouro);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+  }
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+    color: var(--color-preto-editorial);
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-artist {
+    font-family: var(--font-interface);
+    font-size: 0.8rem;
+    color: var(--color-carvao);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+
+<script>
+  function setupCarousel() {
+    var carousel = document.querySelector('.carousel-track');
+    var btnLeft = document.querySelector('.carousel-arrow.prev');
+    var btnRight = document.querySelector('.carousel-arrow.next');
+
+    if (carousel && btnLeft && btnRight) {
+      var getScrollAmount = function() {
+        var firstCard = carousel.firstElementChild;
+        if (!firstCard) return 300;
+        return (firstCard as HTMLElement).offsetWidth + 16;
+      };
+
+      btnLeft.addEventListener('click', function() {
+        carousel.scrollBy({ left: -getScrollAmount() * 2, behavior: 'smooth' });
+      });
+
+      btnRight.addEventListener('click', function() {
+        carousel.scrollBy({ left: getScrollAmount() * 2, behavior: 'smooth' });
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+          return;
+        }
+        var rect = carousel.getBoundingClientRect();
+        var inView = (rect.top < window.innerHeight && rect.bottom > 0);
+        if (inView) {
+          if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            carousel.scrollBy({ left: getScrollAmount() * 2, behavior: 'smooth' });
+          } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            carousel.scrollBy({ left: -getScrollAmount() * 2, behavior: 'smooth' });
+          }
+        }
+      });
+
+      var isDown = false;
+      var startX;
+      var scrollLeft;
+
+      carousel.addEventListener('mousedown', function(e: Event) {
+        const mouseEvent = e as MouseEvent;
+        isDown = true;
+        carousel.classList.add('dragging');
+        startX = mouseEvent.pageX - (carousel as HTMLElement).offsetLeft;
+        scrollLeft = carousel.scrollLeft;
+      });
+
+      carousel.addEventListener('mouseleave', function() {
+        isDown = false;
+        carousel.classList.remove('dragging');
+      });
+
+      carousel.addEventListener('mouseup', function() {
+        isDown = false;
+        carousel.classList.remove('dragging');
+      });
+
+      carousel.addEventListener('mousemove', function(e: Event) {
+        if (!isDown) return;
+        e.preventDefault();
+        const mouseEvent = e as MouseEvent;
+        var x = mouseEvent.pageX - (carousel as HTMLElement).offsetLeft;
+        var walk = (x - startX) * 1.5;
+        carousel.scrollLeft = scrollLeft - walk;
+      });
+    }
+  }
+
+  // Setup on initial load
+  document.addEventListener('DOMContentLoaded', setupCarousel);
+  
+  // Setup on astro page transitions
+  document.addEventListener('astro:page-load', setupCarousel);
+</script>

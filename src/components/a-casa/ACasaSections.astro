@@ -1,0 +1,387 @@
+---
+import { aCasaPage } from '../../data/aCasaData.js';
+
+const { secoes, galeriaArte } = aCasaPage;
+
+function sectionParagraphs(texto) {
+  return texto.split('\n').filter(Boolean);
+}
+---
+
+{secoes.map((sec) => (
+  <section class="acasa-section" style={`background-color: ${sec.bg};`}>
+    {sec.layout === 'img-left' ? (
+      <>
+        <div class="col-65 img-col">
+          <img src={sec.imagem} alt={sec.alt} />
+        </div>
+        <div class="col-35 text-col">
+          <h2>{sec.titulo}</h2>
+          {sectionParagraphs(sec.texto).map((p) => <p>{p}</p>)}
+        </div>
+      </>
+    ) : (
+      <>
+        <div class="col-35 text-col">
+          <h2>{sec.titulo}</h2>
+          {sectionParagraphs(sec.texto).map((p) => <p>{p}</p>)}
+        </div>
+        <div class="col-65 img-col">
+          <img src={sec.imagem} alt={sec.alt} />
+        </div>
+      </>
+    )}
+  </section>
+))}
+
+<section class="acasa-section" style="background-color: #e8e4db;">
+  <div class="col-35 text-col">
+    <h2>{galeriaArte.titulo}</h2>
+    <p>{galeriaArte.texto}</p>
+  </div>
+  <div class="col-65 img-col">
+    <div class="slideshow-container">
+      <div class="slideshow-track">
+        {galeriaArte.fotos.map((foto) => (
+          <div class="slide">
+            <img src={foto.src} alt={foto.alt} />
+          </div>
+        ))}
+      </div>
+
+      <button class="nav-btn prev-btn" aria-label="Anterior">&lsaquo;</button>
+      <button class="nav-btn next-btn" aria-label="Próximo">&rsaquo;</button>
+
+      <div class="dots-container">
+        {galeriaArte.fotos.map((_, index) => (
+          <div class:list={['dot', { active: index === 0 }]} data-index={index} />
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const track = document.querySelector('.slideshow-track') as HTMLElement;
+    const slides = Array.from(document.querySelectorAll('.slide'));
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    const dots = Array.from(document.querySelectorAll('.dot'));
+
+    if (!track || slides.length === 0) return;
+
+    let currentIndex = 0;
+    let autoplayTimer: ReturnType<typeof setInterval> | null = null;
+
+    const updateSlider = () => {
+      track.style.transform = `translateX(-${currentIndex * 100}%)`;
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentIndex);
+      });
+    };
+
+    const nextSlide = () => {
+      currentIndex = (currentIndex + 1) % slides.length;
+      updateSlider();
+    };
+
+    const prevSlide = () => {
+      currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+      updateSlider();
+    };
+
+    prevBtn?.addEventListener('click', prevSlide);
+    nextBtn?.addEventListener('click', nextSlide);
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        currentIndex = Number((dot as HTMLElement).dataset.index);
+        updateSlider();
+      });
+    });
+
+    autoplayTimer = setInterval(nextSlide, 5000);
+
+    const container = document.querySelector('.slideshow-container');
+    container?.addEventListener('mouseenter', () => {
+      if (autoplayTimer) clearInterval(autoplayTimer);
+    });
+    container?.addEventListener('mouseleave', () => {
+      autoplayTimer = setInterval(nextSlide, 5000);
+    });
+  });
+</script>
+<style is:global>
+  /* Hero Section styles */
+  .hero-section {
+    position: relative;
+    height: calc(100vh - 80px);
+    min-height: 550px;
+    display: flex;
+    align-items: center;
+    color: var(--color-branco);
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    transform: scale(1.05);
+    animation: acasaZoomOut 20s forwards;
+  }
+
+  @keyframes acasaZoomOut {
+    to {
+      transform: scale(1);
+    }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 5;
+    max-width: 800px;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    line-height: 1.15;
+    margin-bottom: var(--space-md);
+    color: var(--color-branco);
+  }
+
+  @media (min-width: 768px) {
+    .hero-title {
+      font-size: 4rem;
+    }
+  }
+
+  .hero-title .highlight {
+    color: var(--color-amarelo-cca);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: normal;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.6;
+    margin: 0 auto var(--space-lg);
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .animate-fade-in {
+    animation: acasaFadeInUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+  }
+
+  .animate-fade-in-delayed {
+    opacity: 0;
+    animation: acasaFadeInUp 0.8s cubic-bezier(0.25, 0.8, 0.25, 1) 0.3s forwards;
+  }
+
+  @keyframes acasaFadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .acasa-section {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    align-items: stretch;
+    overflow: hidden;
+    border: none;
+  }
+
+  .col-35 {
+    width: 35%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .col-65 {
+    width: 65%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .text-col {
+    padding: 6% 8%;
+  }
+
+  .text-col h2 {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: normal;
+    color: #162e58;
+    margin: 0 0 1.25rem 0;
+    padding: 0;
+    border-bottom: none;
+    line-height: 1.2;
+  }
+
+  .text-col p {
+    font-family: var(--font-body);
+    font-size: 1.15rem;
+    line-height: 1.65;
+    color: #2c3e50;
+    margin: 0;
+    padding: 0;
+  }
+
+  .text-col p + p {
+    margin-top: 1rem;
+  }
+
+  .img-col {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .img-col img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .slideshow-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .slideshow-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: grab;
+  }
+
+  .slideshow-track:active {
+    cursor: grabbing;
+  }
+
+  .slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+  }
+
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+
+  .nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 3.5rem;
+    font-weight: 300;
+    cursor: pointer;
+    padding: 1.5rem;
+    z-index: 10;
+    transition: color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+  }
+
+  .nav-btn:hover {
+    color: rgba(255, 255, 255, 1);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .prev-btn {
+    left: 10px;
+  }
+
+  .next-btn {
+    right: 10px;
+  }
+
+  .dots-container {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+
+  .dot.active {
+    background-color: rgba(255, 255, 255, 1);
+    transform: scale(1.2);
+  }
+
+  @media (max-width: 991px) {
+    .acasa-section {
+      flex-direction: column;
+    }
+
+    .col-35,
+    .col-65 {
+      width: 100%;
+    }
+
+    .slideshow-container {
+      aspect-ratio: 16 / 10;
+      height: auto;
+    }
+
+    .acasa-section:nth-of-type(even) {
+      flex-direction: column-reverse;
+    }
+  }
+</style>

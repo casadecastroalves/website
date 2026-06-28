@@ -1,0 +1,59 @@
+---
+const facadeImage = '/images/a_casa/voce-ja-visitou-a-gente.webp';
+const introTitle = 'A Casa';
+const introText =
+  'A Casa de Castro Alves é um espaço de cultura dedicado ao diálogo entre a poesia e as artes, em suas mais diversas manifestações';
+---
+
+<section class="hero-section">
+  <div
+    class="hero-bg hero-bg--facade"
+    style={`background-image: linear-gradient(to bottom, rgba(26, 26, 26, 0.25), rgba(26, 26, 26, 0.72)), url('${facadeImage}');`}
+  >
+  </div>
+  <div class="container hero-content">
+    <h1 class="hero-title animate-fade-in">
+      Onde a poesia se faz<br />
+      <span class="highlight">Aliança e Resistência</span>
+    </h1>
+    <p class="hero-subtitle animate-fade-in-delayed">
+      A antiga residência do poeta Castro Alves hoje abriga um espaço vivo de cultura, memória, arte contemporânea e saberes ancestrais no coração de Salvador.
+    </p>
+    <div class="hero-actions animate-fade-in-delayed">
+      <a href="/contato" class="btn btn-primary">Agendar Visita</a>
+    </div>
+  </div>
+</section>
+
+<section class="acasa-section acasa-intro" id="acasa-section" style="background-color: #f5f5f5;">
+  <div class="col-35 text-col">
+    <h2>{introTitle}</h2>
+    <p>{introText}</p>
+  </div>
+  <div class="col-65 img-col acasa-intro__photo">
+    <img src={facadeImage} alt="Fachada da Casa de Castro Alves" loading="eager" />
+  </div>
+</section>
+
+<style>
+  .hero-bg--facade {
+    background-size: cover;
+    background-position: center 22%;
+  }
+
+  .acasa-intro__photo {
+    min-height: 480px;
+    background-color: #ebe8e0;
+  }
+
+  .acasa-intro__photo img {
+    object-fit: contain;
+    object-position: center;
+  }
+
+  @media (min-width: 992px) {
+    .acasa-intro__photo {
+      min-height: 620px;
+    }
+  }
+</style>

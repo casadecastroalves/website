@@ -1,0 +1,544 @@
+---
+---
+
+<dialog class="site-search-dialog" id="siteSearchDialog" aria-label="Buscar no site">
+  <div class="site-search-panel">
+    <div class="site-search-header">
+      <p class="site-search-label">Buscar</p>
+      <button type="button" class="site-search-close" aria-label="Fechar busca" data-close-search>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+
+    <label class="site-search-field">
+      <span class="visually-hidden">Termo de busca</span>
+      <input
+        type="search"
+        id="siteSearchInput"
+        class="site-search-input"
+        placeholder="Edições, cursos, artistas…"
+        autocomplete="off"
+        spellcheck="false"
+      />
+    </label>
+
+    <div class="site-search-results" id="siteSearchResults" aria-live="polite"></div>
+    <p class="site-search-count" id="siteSearchCount" hidden></p>
+    <p class="site-search-hint">Esc para fechar</p>
+  </div>
+</dialog>
+
+<style>
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<style is:global>
+  .site-search-dialog {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    padding: var(--space-lg);
+    border: none;
+    background: rgba(26, 26, 26, 0.52);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1100;
+  }
+
+  .site-search-dialog::backdrop {
+    background: transparent;
+  }
+
+  .site-search-panel {
+    width: min(640px, 100%);
+    margin: 8vh auto 0;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(26, 26, 26, 0.1);
+    padding: var(--space-lg);
+  }
+
+  .site-search-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-md);
+  }
+
+  .site-search-label {
+    margin: 0;
+    font-family: var(--font-interface);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-carvao);
+  }
+
+  .site-search-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid rgba(26, 26, 26, 0.15);
+    background: transparent;
+    color: var(--color-preto-editorial);
+    cursor: pointer;
+    transition: var(--transition-fast);
+  }
+
+  .site-search-close:hover {
+    border-color: var(--color-preto-editorial);
+    background: rgba(26, 26, 26, 0.04);
+  }
+
+  .site-search-field {
+    display: block;
+  }
+
+  .site-search-input {
+    width: 100%;
+    box-sizing: border-box;
+    border: none;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.15);
+    background: transparent;
+    padding: var(--space-sm) 0;
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: var(--color-preto-editorial);
+  }
+
+  .site-search-input:focus {
+    outline: none;
+    border-bottom-color: var(--color-preto-editorial);
+  }
+
+  .site-search-input::placeholder {
+    color: rgba(26, 26, 26, 0.4);
+  }
+
+  .site-search-results {
+    margin-top: var(--space-md);
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+
+  .site-search-empty {
+    margin: var(--space-md) 0 0;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--color-carvao);
+  }
+
+  .site-search-result {
+    display: block;
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition-fast);
+  }
+
+  .site-search-result:last-child {
+    border-bottom: none;
+  }
+
+  .site-search-result:hover .site-search-result-title,
+  .site-search-result:focus-visible .site-search-result-title {
+    color: var(--color-ouro);
+  }
+
+  .site-search-result-meta {
+    display: block;
+    font-family: var(--font-interface);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(26, 26, 26, 0.45);
+    margin-bottom: 4px;
+  }
+
+  .site-search-result-title {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    line-height: 1.3;
+    color: var(--color-preto-editorial);
+    transition: var(--transition-fast);
+  }
+
+  .site-search-result-excerpt {
+    display: block;
+    margin-top: 4px;
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-carvao);
+  }
+
+  .site-search-mark {
+    background: rgba(212, 175, 55, 0.35);
+    color: var(--color-preto-editorial);
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: 700;
+  }
+
+  .site-search-hint {
+    margin: var(--space-md) 0 0;
+    font-family: var(--font-interface);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(26, 26, 26, 0.45);
+    text-align: right;
+  }
+
+  .site-search-count {
+    margin: var(--space-sm) 0 0;
+    font-family: var(--font-interface);
+    font-size: 0.72rem;
+    color: rgba(26, 26, 26, 0.55);
+  }
+</style>
+
+<script>
+  type SearchEntry = {
+    title: string;
+    url: string;
+    excerpt: string;
+    searchText?: string;
+    category: string;
+  };
+
+  const dialog = document.getElementById('siteSearchDialog') as HTMLDialogElement | null;
+  const input = document.getElementById('siteSearchInput') as HTMLInputElement | null;
+  const resultsEl = document.getElementById('siteSearchResults') as HTMLElement | null;
+  const countEl = document.getElementById('siteSearchCount') as HTMLElement | null;
+
+  const MAX_RESULTS = 30;
+  const CATEGORY_ORDER = ['Edição', 'Curso', 'Design Caboclo', 'Exposição', 'Movimento Irun', 'Contato', 'Página'];
+  const RELATED_TERMS = [
+    ['gira', 'giras', 'grias'],
+    ['grimaux', 'grimoux', 'grimau'],
+  ];
+
+  let index: SearchEntry[] = [];
+  let indexLoaded = false;
+
+  function normalize(value: string) {
+    return value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase();
+  }
+
+  async function loadIndex() {
+    if (indexLoaded) return;
+    const response = await fetch('/search-index.json');
+    if (!response.ok) return;
+    index = await response.json();
+    indexLoaded = true;
+  }
+
+  function escapeHtml(value: string) {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function escapeRegex(value: string) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  function levenshtein(a: string, b: string) {
+    if (a === b) return 0;
+    if (!a.length) return b.length;
+    if (!b.length) return a.length;
+
+    const row = Array.from({ length: b.length + 1 }, (_, index) => index);
+
+    for (let i = 1; i <= a.length; i++) {
+      let previous = i;
+      for (let j = 1; j <= b.length; j++) {
+        const cost = a[i - 1] === b[j - 1] ? row[j - 1] : Math.min(row[j - 1], row[j], previous) + 1;
+        row[j - 1] = previous;
+        previous = cost;
+      }
+      row[b.length] = previous;
+    }
+
+    return row[b.length];
+  }
+
+  function fuzzyFindTermIndex(haystack: string, term: string) {
+    if (term.length < 5) return -1;
+
+    const maxDistance = term.length >= 7 ? 2 : 1;
+    const words = haystack.match(/[a-z0-9]+/g) ?? [];
+
+    for (const word of words) {
+      if (Math.abs(word.length - term.length) > maxDistance) continue;
+      if (levenshtein(word, term) <= maxDistance) {
+        const index = haystack.indexOf(word);
+        if (index !== -1) return index;
+      }
+    }
+
+    return -1;
+  }
+
+  function findTermIndex(haystack: string, term: string) {
+    if (term.length <= 4) {
+      const re = new RegExp(`(?:^|[^a-z0-9])${escapeRegex(term)}(?:[^a-z0-9]|$)`);
+      const match = re.exec(` ${haystack} `);
+      if (match) return Math.max(0, match.index - 1);
+      return fuzzyFindTermIndex(haystack, term);
+    }
+
+    const exact = haystack.indexOf(term);
+    if (exact !== -1) return exact;
+
+    return fuzzyFindTermIndex(haystack, term);
+  }
+
+  function findTermMatch(haystack: string, term: string) {
+    const index = findTermIndex(haystack, term);
+    if (index === -1) return null;
+
+    const words = haystack.match(/[a-z0-9]+/g) ?? [];
+    let matchedLength = term.length;
+
+    for (const word of words) {
+      const wordIndex = haystack.indexOf(word, index);
+      if (wordIndex === index) {
+        matchedLength = word.length;
+        break;
+      }
+    }
+
+    return { start: index, length: matchedLength, term };
+  }
+
+  function termVariants(term: string) {
+    const variants = new Set([term]);
+
+    if (term.length > 4 && term.endsWith('s') && !term.endsWith('ss')) {
+      variants.add(term.slice(0, -1));
+    }
+
+    if (term.length >= 4 && !term.endsWith('s')) {
+      variants.add(`${term}s`);
+    }
+
+    for (const group of RELATED_TERMS) {
+      if (group.includes(term)) {
+        for (const related of group) variants.add(related);
+      }
+    }
+
+    return [...variants].sort((a, b) => b.length - a.length);
+  }
+
+  function expandedTerms(terms: string[]) {
+    const all = new Set<string>();
+    for (const term of terms) {
+      for (const variant of termVariants(term)) {
+        all.add(variant);
+      }
+    }
+    return [...all].sort((a, b) => b.length - a.length);
+  }
+
+  function findFirstMatch(source: string, terms: string[]) {
+    const normSource = normalize(source);
+
+    for (const term of expandedTerms(terms)) {
+      const match = findTermMatch(normSource, term);
+      if (match) return match;
+    }
+
+    return null;
+  }
+
+  function entryMatches(entry: SearchEntry, terms: string[]) {
+    const haystack = normalize(`${entry.title} ${entry.excerpt} ${entry.searchText ?? ''} ${entry.category}`);
+    return terms.every((term) =>
+      termVariants(term).some((variant) => findTermIndex(haystack, variant) !== -1)
+    );
+  }
+
+  function highlightParts(text: string, terms: string[]) {
+    let parts: Array<{ text: string; mark: boolean }> = [{ text, mark: false }];
+
+    for (const term of expandedTerms(terms)) {
+      const nextParts: Array<{ text: string; mark: boolean }> = [];
+
+      for (const part of parts) {
+        if (part.mark) {
+          nextParts.push(part);
+          continue;
+        }
+
+        const normPart = normalize(part.text);
+        let cursor = 0;
+
+        while (cursor < normPart.length) {
+          const slice = normPart.slice(cursor);
+          const match = findTermMatch(slice, term);
+          if (!match) break;
+
+          const start = cursor + match.start;
+          const end = start + match.length;
+
+          if (start > cursor) {
+            nextParts.push({ text: part.text.slice(cursor, start), mark: false });
+          }
+
+          nextParts.push({ text: part.text.slice(start, end), mark: true });
+          cursor = end;
+        }
+
+        if (cursor < part.text.length) {
+          nextParts.push({ text: part.text.slice(cursor), mark: false });
+        }
+      }
+
+      parts = nextParts.length ? nextParts : parts;
+    }
+
+    return parts
+      .map((part) =>
+        part.mark
+          ? `<mark class="site-search-mark">${escapeHtml(part.text)}</mark>`
+          : escapeHtml(part.text)
+      )
+      .join('');
+  }
+
+  function buildSnippet(entry: SearchEntry, terms: string[]) {
+    const source = entry.searchText || entry.excerpt || entry.title;
+    const match = findFirstMatch(source, terms);
+
+    if (!match) {
+      return highlightParts(entry.excerpt, terms);
+    }
+
+    const snippetStart = Math.max(0, match.start - 70);
+    const snippetEnd = Math.min(source.length, match.start + Math.max(match.length, 8) + 110);
+    let snippet = source.slice(snippetStart, snippetEnd);
+
+    if (snippetStart > 0) snippet = `…${snippet}`;
+    if (snippetEnd < source.length) snippet = `${snippet}…`;
+
+    return highlightParts(snippet, terms);
+  }
+
+  function renderResults(query: string) {
+    if (!resultsEl) return;
+
+    const trimmed = query.trim();
+    if (countEl) {
+      countEl.hidden = true;
+      countEl.textContent = '';
+    }
+
+    if (!trimmed) {
+      resultsEl.innerHTML = '<p class="site-search-empty">Digite para pesquisar páginas, edições e cursos.</p>';
+      return;
+    }
+
+    const terms = normalize(trimmed).split(/\s+/).filter(Boolean);
+    const allMatches = index
+      .filter((entry) => entryMatches(entry, terms))
+      .sort(
+        (a, b) =>
+          CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category) ||
+          a.title.localeCompare(b.title, 'pt-BR')
+      );
+    const matches = allMatches.slice(0, MAX_RESULTS);
+
+    if (matches.length === 0) {
+      resultsEl.innerHTML = '<p class="site-search-empty">Nenhum resultado encontrado.</p>';
+      return;
+    }
+
+    resultsEl.innerHTML = matches
+      .map(
+        (entry) => `
+          <a class="site-search-result" href="${entry.url}">
+            <span class="site-search-result-meta">${entry.category}</span>
+            <span class="site-search-result-title">${highlightParts(entry.title, terms)}</span>
+            <span class="site-search-result-excerpt">${buildSnippet(entry, terms)}</span>
+          </a>
+        `
+      )
+      .join('');
+
+    if (countEl && allMatches.length > 0) {
+      countEl.hidden = false;
+      countEl.textContent =
+        allMatches.length > MAX_RESULTS
+          ? `${allMatches.length} resultados — a mostrar ${MAX_RESULTS}. Refine a busca para ver menos.`
+          : `${allMatches.length} resultado${allMatches.length === 1 ? '' : 's'}`;
+    }
+  }
+
+  async function openSearch() {
+    if (!dialog) return;
+    await loadIndex();
+    dialog.showModal();
+    input?.focus();
+    renderResults(input?.value ?? '');
+  }
+
+  function closeSearch() {
+    dialog?.close();
+    if (input) input.value = '';
+    renderResults('');
+  }
+
+  document.querySelectorAll('[data-open-search]').forEach((button) => {
+    button.addEventListener('click', openSearch);
+  });
+
+  document.querySelectorAll('[data-close-search]').forEach((button) => {
+    button.addEventListener('click', closeSearch);
+  });
+
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) closeSearch();
+  });
+
+  dialog?.addEventListener('cancel', closeSearch);
+
+  input?.addEventListener('input', () => {
+    renderResults(input.value);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && dialog?.open) {
+      closeSearch();
+    }
+  });
+</script>

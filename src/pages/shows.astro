@@ -1,0 +1,122 @@
+---
+import Layout from '../layouts/Layout.astro';
+import EdicaoTimelineGrid from '../components/EdicaoTimelineGrid.astro';
+import { edicoesTimeline } from '../data/edicoesTimeline.js';
+import { showsPage } from '../data/showsData.js';
+
+const { hero, destaque, historicoTitulo, historicoSubtitulo } = showsPage;
+---
+
+<Layout title="Programação Cultural e Shows | Casa de Castro Alves" description="Confira os shows, espetáculos e apresentações musicais na Casa de Castro Alves. Destaque para Curumin e o registro histórico dos concertos do Movimento Irun." ogImage={hero.imagem}>
+  <section class="subpage-hero">
+    <div class="subpage-hero-bg" style={`background-image: url('${hero.imagem}');`}></div>
+    <div class="subpage-hero-overlay"></div>
+    <div class="container subpage-hero-content">
+      <h1 class="subpage-hero-title">{hero.titulo}</h1>
+      <p class="subpage-hero-subtitle">{hero.subtitulo}</p>
+    </div>
+  </section>
+
+  <section class="featured-show-section">
+    <div class="container">
+      <div class="featured-card">
+        <div class="featured-image-wrapper">
+          <img src={destaque.imagem} alt={destaque.imagemAlt} class="featured-show-img" />
+        </div>
+        <div class="featured-details">
+          <h2>{destaque.titulo}</h2>
+          <p class="show-date">{destaque.data}</p>
+          <p class="show-description">{destaque.descricao}</p>
+          <p class="show-info-text">{destaque.info}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="galeria-historica" class="past-shows-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="section-badge">Registro Histórico</span>
+        <h2>{historicoTitulo}</h2>
+        <p class="section-subtitle">{historicoSubtitulo}</p>
+      </div>
+
+      <EdicaoTimelineGrid edicoes={edicoesTimeline} />
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .featured-show-section {
+    background-color: var(--color-creme);
+  }
+
+  .featured-card {
+    background-color: var(--color-branco);
+    border: 1px solid rgba(26, 26, 26, 0.08);
+    display: grid;
+    grid-template-columns: 1fr;
+    box-shadow: 0 15px 35px rgba(26, 26, 26, 0.04);
+  }
+
+  @media (min-width: 992px) {
+    .featured-card {
+      grid-template-columns: 0.8fr 1.2fr;
+    }
+  }
+
+  .featured-image-wrapper {
+    overflow: hidden;
+    position: relative;
+    max-height: 500px;
+  }
+
+  .featured-show-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .featured-details {
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .featured-details h2 {
+    font-size: 2.5rem;
+    margin-top: 0;
+    margin-bottom: var(--space-sm);
+    border: none;
+    padding: 0;
+  }
+
+  .show-date {
+    font-family: var(--font-interface);
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: var(--space-xs);
+  }
+
+  .show-description {
+    font-size: 1.1rem;
+    color: var(--color-preto-editorial);
+    line-height: 1.6;
+    margin-bottom: var(--space-md);
+  }
+
+  .show-info-text {
+    font-size: 0.95rem;
+    color: var(--color-carvao);
+    font-style: italic;
+    margin-bottom: var(--space-lg);
+  }
+
+  .past-shows-section {
+    background-color: var(--color-creme);
+    border-top: 1px solid rgba(26, 26, 26, 0.05);
+    padding: var(--space-2xl) 0;
+  }
+</style>
