@@ -244,7 +244,7 @@ export default function App() {
         matchesCategory = t.rawFicha?.teiaDosPovos === true;
       } else if (activeCategory === 'pontos de cultura') {
         matchesCategory = t.category === 'cultura' || !!t.rawFicha?.pontoCultura;
-      } else if (activeCategory === 'territórios de identidade') {
+      } else if (activeCategory === 'lugares') {
         matchesCategory = !!t.rawFicha?.territorioId;
       } else if (activeCategory === 'municípios') {
         matchesCategory = t.category === 'municipio';
@@ -809,9 +809,9 @@ export default function App() {
                 : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-800'
             }`}
           >
-            Todos
+            Rede Irun
           </button>
-          {['Teia dos Povos', 'Pontos de Cultura', 'Territórios de Identidade', 'Municípios'].map(cat => (
+          {['Teia dos Povos', 'Pontos de Cultura', 'Lugares', 'Municípios'].map(cat => (
             <button 
               key={cat}
               onClick={() => setActiveCategory(cat.toLowerCase() as FilterCategory)}
@@ -1004,9 +1004,6 @@ export default function App() {
               onDragEnd={(e, info) => {
                 if (info.offset.y > 150) {
                   setSelectedTerritory(null);
-                  if (window.innerWidth < 768) {
-                    setIsSidebarOpen(true);
-                  }
                 }
               }}
               initial={{ opacity: 0, y: 100 }}
@@ -1040,9 +1037,6 @@ export default function App() {
               <button 
                 onClick={() => {
                   setSelectedTerritory(null);
-                  if (window.innerWidth < 768) {
-                    setIsSidebarOpen(true);
-                  }
                 }}
                 className="absolute top-4 right-4 p-2 md:p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-all cursor-pointer z-10"
               >
