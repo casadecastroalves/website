@@ -1,30 +1,31 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { 
-  Search, 
-  MapPin, 
-  Layers, 
-  Plus, 
-  BookOpen, 
-  Users, 
-  Award, 
-  Sparkles, 
-  X, 
-  Compass, 
-  Info, 
-  CheckCircle, 
-  Share2, 
-  Copy, 
-  Mail, 
-  PlusCircle, 
+import {
+  Search,
+  MapPin,
+  Layers,
+  Plus,
+  BookOpen,
+  Users,
+  Award,
+  Sparkles,
+  X,
+  Compass,
+  Info,
+  CheckCircle,
+  Share2,
+  Copy,
+  Mail,
+  PlusCircle,
   Heart,
   Globe,
   Map as MapIcon,
   Check,
   Locate,
   Video,
-  AlertCircle
+  AlertCircle,
+  ExternalLink
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { territoriesData } from './data/territories';
@@ -382,23 +383,19 @@ export default function App() {
 
     // Listen to click events on map for coordinates selection mode
     map.on('click', (e) => {
-      // Check if we are in selecting coordinates mode
-      if (setIsSelectingCoords) {
-        const { lng, lat } = e.lngLat;
-        // Check if we actually are active in coordinate selecting mode
-        // We use function state update to avoid stale closures
-        setIsSelectingCoords(current => {
-          if (current) {
-            setNewTerritory(prev => ({
-              ...prev,
-              coordinates: [parseFloat(lng.toFixed(5)), parseFloat(lat.toFixed(5))]
-            }));
-            triggerToast(`Coordenadas capturadas: ${lng.toFixed(5)}, ${lat.toFixed(5)}`);
-            return false; // Toggle off mode
-          }
-          return current;
-        });
-      }
+      const { lng, lat } = e.lngLat;
+      // Functional updater avoids stale closure — only acts when mode is active
+      setIsSelectingCoords(current => {
+        if (current) {
+          setNewTerritory(prev => ({
+            ...prev,
+            coordinates: [parseFloat(lng.toFixed(5)), parseFloat(lat.toFixed(5))]
+          }));
+          triggerToast(`Coordenadas capturadas: ${lng.toFixed(5)}, ${lat.toFixed(5)}`);
+          return false;
+        }
+        return current;
+      });
     });
 
 
@@ -741,14 +738,14 @@ export default function App() {
             exit={{ opacity: 0, x: -50 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
             id="panel-lateral"
-            className="absolute top-4 left-4 z-10 w-[calc(100%-2rem)] md:w-80 lg:w-96 max-h-[calc(100vh-2rem)] flex flex-col bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 overflow-hidden"
+            className="absolute top-4 left-4 z-10 w-[calc(100%-2rem)] md:w-64 lg:w-80 xl:w-96 max-h-[calc(100vh-2rem)] flex flex-col bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 overflow-hidden"
           >
             {/* Brand Header */}
             <div className="p-4 pb-4 border-b border-slate-100 bg-white/95 relative flex items-start justify-between gap-3">
               <div className="flex flex-col">
                 <h1 
                   onClick={handleResetView}
-                  className="text-[1.35rem] font-display font-bold tracking-tight text-slate-900 cursor-pointer hover:text-amber-800 transition-colors leading-none"
+                  className="text-base md:text-sm lg:text-[1.35rem] font-display font-bold tracking-tight text-slate-900 cursor-pointer hover:text-amber-800 transition-colors leading-none whitespace-nowrap"
                 >
                   MOVIMENTO IRUN
                 </h1>
@@ -803,7 +800,7 @@ export default function App() {
         </div>
 
         {/* Categorized Filter Tabs */}
-        <div className="px-4 py-3 bg-slate-50/50 border-b border-slate-100 flex flex-wrap gap-1.5 shrink-0">
+        <div className="px-4 py-3 bg-slate-50/50 border-b border-slate-100 flex overflow-x-auto gap-1.5 shrink-0 scrollbar-none pb-3">
           <button 
             onClick={() => setActiveCategory('todos')}
             className={`px-3.5 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all shrink-0 ${
@@ -940,14 +937,14 @@ export default function App() {
         <div className="p-4 border-t border-slate-100 bg-white/95 flex gap-2 shrink-0">
           <button 
             onClick={() => setShowCineIrun(true)}
-            className="flex-1 py-3 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 shadow-lg"
+            className="flex-1 py-3 px-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 shadow-lg whitespace-nowrap"
           >
             <Video className="w-4 h-4" />
             Cine Irun
           </button>
           <button 
             onClick={() => setShowAddModal(true)}
-            className="flex-1 py-3 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-all duration-300 cursor-pointer flex items-center justify-center gap-1 shadow-lg"
+            className="flex-1 py-3 px-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-all duration-300 cursor-pointer flex items-center justify-center gap-1 shadow-lg whitespace-nowrap"
           >
             <Plus className="w-4 h-4" />
             Novo Ponto
@@ -1017,7 +1014,7 @@ export default function App() {
               exit={{ opacity: 0, y: "100%" }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
               style={{ touchAction: "none" }}
-              className="fixed bottom-0 md:top-0 right-0 z-40 w-full md:w-[420px] lg:w-[480px] h-[75vh] md:h-full bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:shadow-2xl md:border-l border-slate-200 flex flex-col overflow-hidden text-slate-800 rounded-t-[2rem] md:rounded-none"
+              className="fixed bottom-0 md:top-0 right-0 z-40 w-full md:w-[360px] lg:w-[420px] xl:w-[480px] h-[75vh] md:h-full bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:shadow-2xl md:border-l border-slate-200 flex flex-col overflow-hidden text-slate-800 rounded-t-[2rem] md:rounded-none"
             >
             {/* Mobile Pull Handle bar */}
             <div 
@@ -1743,12 +1740,12 @@ export default function App() {
             className="fixed inset-0 z-[200] bg-black/95 flex flex-col backdrop-blur-sm"
           >
             <div className="absolute top-4 right-4 z-10 flex gap-3">
-              {fullscreenImage.title && (
+              {fullscreenImage.caption && (
                 <div className="bg-black/50 text-white/90 px-4 py-2 rounded-full text-sm font-medium backdrop-blur-md">
-                  {fullscreenImage.title}
+                  {fullscreenImage.caption}
                 </div>
               )}
-              <button 
+              <button
                 onClick={() => setFullscreenImage(null)}
                 className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-full backdrop-blur-md transition-colors"
               >
@@ -1756,9 +1753,9 @@ export default function App() {
               </button>
             </div>
             <div className="flex-1 p-4 flex items-center justify-center">
-              <img 
-                src={fullscreenImage.src} 
-                alt={fullscreenImage.title || "Fullscreen view"} 
+              <img
+                src={fullscreenImage.src}
+                alt={fullscreenImage.caption || "Imagem em ecrã cheio"}
                 className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
               />
             </div>
