@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "node scripts/ver-site-live.mjs",
-    "build:map": "cd \"public/movimento-irun/exportacao ai studio direta do antigravity\" && npm install && npm run build && cp -r dist/* ../redeirun/",
+    "build:map": "echo 'Mapa pre-compilado — assets em public/movimento-irun/redeirun/assets/'",
     "build": "npm run build:map && node scripts/build-search-index.mjs && astro build",
     "live": "node scripts/ver-site-live.mjs",
     "preview": "node scripts/ver-site-live.mjs",
