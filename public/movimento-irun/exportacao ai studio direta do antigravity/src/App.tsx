@@ -96,11 +96,13 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<FilterCategory>('todos');
   const [selectedTerritory, setSelectedTerritory] = useState<Territory | null>(null);
+  const activePopupRef = useRef<maplibregl.Popup | null>(null);
   const [mapStyle, setMapStyle] = useState<keyof typeof MAP_STYLES>('voyager');
   const [isLocating, setIsLocating] = useState(false);
   const [showCineIrun, setShowCineIrun] = useState(false);
   const [videoSearchQuery, setVideoSearchQuery] = useState('');
   const [activeVideoCategory, setActiveVideoCategory] = useState<string>('Rede Irun (todos)');
+  const [cineLayout, setCineLayout] = useState<'A' | 'B'>('A');
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
   const [fullscreenImage, setFullscreenImage] = useState<{src: string, caption: string} | null>(null);
   
@@ -452,37 +454,76 @@ export default function App() {
         </svg>
       `;
 
-      // Set up simple click callback on marker
+      // Click opens a MapLibre popup with media preview
       const handleTap = (e: Event) => {
         e.preventDefault();
         e.stopPropagation();
-        handleSelectTerritory(t);
+
+        // Close any existing popup
+        if (activePopupRef.current) {
+          activePopupRef.current.remove();
+          activePopupRef.current = null;
+        }
+
+        const firstVideo = (t as any).rawFicha?.sidebar?.videos?.find((v: any) => v.tipo === 'youtube' && v.id);
+        const firstPhoto = (t as any).rawFicha?.sidebar?.fotos?.[0];
+
+        let mediaHtml = '';
+        if (firstVideo) {
+          mediaHtml = `<div style="position:relative;aspect-ratio:16/9;background:#0f172a">
+            <iframe style="position:absolute;inset:0;width:100%;height:100%;border:none"
+              src="https://www.youtube.com/embed/${firstVideo.id}?playsinline=1&rel=0&modestbranding=1"
+              title="${firstVideo.titulo || t.name}"
+              allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture"
+              allowfullscreen></iframe>
+          </div>`;
+        } else if (firstPhoto) {
+          mediaHtml = `<img src="../territorios/${firstPhoto.src}"
+            style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block"
+            alt="${firstPhoto.legenda || t.name}" />`;
+        }
+
+        const popupEl = document.createElement('div');
+        popupEl.style.cssText = 'width:280px;font-family:system-ui,sans-serif';
+        popupEl.innerHTML = `
+          ${mediaHtml}
+          <div style="padding:10px 12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <div style="min-width:0;flex:1">
+              <p style="font-weight:700;font-size:13px;color:#0f172a;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${t.name}</p>
+              <p style="font-size:11px;color:#64748b;margin:3px 0 0">${t.city}</p>
+            </div>
+            <button id="popup-ver-mais" style="flex-shrink:0;padding:6px 14px;background:#f59e0b;color:white;font-size:12px;font-weight:700;border-radius:999px;border:none;cursor:pointer;white-space:nowrap">
+              Ver mais →
+            </button>
+          </div>
+        `;
+
+        popupEl.querySelector('#popup-ver-mais')?.addEventListener('click', () => {
+          handleSelectTerritory(t);
+        });
+
+        const mlPopup = new maplibregl.Popup({
+          offset: 20,
+          closeButton: true,
+          closeOnClick: false,
+          maxWidth: 'none',
+          className: 'irun-popup',
+        })
+          .setDOMContent(popupEl)
+          .setLngLat(t.coordinates)
+          .addTo(mapRef.current!);
+
+        activePopupRef.current = mlPopup;
+
+        mapRef.current?.flyTo({
+          center: t.coordinates,
+          zoom: Math.max(mapRef.current.getZoom(), 11),
+          duration: 500,
+        });
       };
+
       el.addEventListener('click', handleTap);
       el.addEventListener('touchstart', handleTap, { passive: false });
-
-      // MapLibre popup on hover (brief summary without photo)
-      const popup = new maplibregl.Popup({
-        offset: 15,
-        closeButton: false,
-        closeOnClick: false
-      }).setHTML(`
-        <div class="text-[11px] p-1.5 max-w-[190px] font-sans leading-normal text-center">
-          <p class="font-bold text-slate-900 leading-tight">${t.name}</p>
-          <p class="text-slate-500 mt-0.5">${t.city}</p>
-          <span class="inline-block mt-1.5 px-1.5 py-0.5 text-[9px] font-bold rounded uppercase tracking-wider bg-slate-100 border border-slate-200 text-slate-700">Clique para ver</span>
-        </div>
-      `);
-
-      el.addEventListener('mouseenter', () => {
-        if (mapRef.current) {
-          popup.setLngLat(t.coordinates).addTo(mapRef.current);
-        }
-      });
-
-      el.addEventListener('mouseleave', () => {
-        popup.remove();
-      });
 
       // Add to Map
       try {
@@ -666,13 +707,12 @@ export default function App() {
   const allVideos = useMemo(() => {
     const list: any[] = [];
     territories.forEach(t => {
-      if (t.rawFicha?.videos) {
-        t.rawFicha.videos.forEach((vid: any) => {
-          // Some JSON files have strings, some have objects
+      const vids = t.rawFicha?.sidebar?.videos;
+      if (vids) {
+        vids.forEach((vid: any) => {
           const vidId = typeof vid === 'string' ? vid : vid.id;
           const vidTitle = typeof vid === 'string' ? t.name : vid.titulo || t.name;
-          // Prevent duplicates
-          if (!list.some(v => v.id === vidId)) {
+          if (vidId && !list.some(v => v.id === vidId)) {
             list.push({
               id: vidId,
               title: vidTitle,
@@ -811,7 +851,7 @@ export default function App() {
           >
             Rede Irun
           </button>
-          {['Teia dos Povos', 'Pontos de Cultura', 'Lugares', 'Municípios'].map(cat => (
+          {['Teia dos Povos', 'Pontos de Cultura'].map(cat => (
             <button 
               key={cat}
               onClick={() => setActiveCategory(cat.toLowerCase() as FilterCategory)}
@@ -1115,28 +1155,44 @@ export default function App() {
               </div>
 
               {/* YouTube Video Slides */}
-              {selectedTerritory.rawFicha?.videos && selectedTerritory.rawFicha.videos.length > 0 && (
+              {selectedTerritory.rawFicha?.sidebar?.videos && selectedTerritory.rawFicha.sidebar.videos.length > 0 && (
                 <div className="space-y-3.5">
                   <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
-                    <Sparkles className="w-4 h-4 text-amber-600 shrink-0" />
+                    <Video className="w-4 h-4 text-amber-600 shrink-0" />
                     Mídias e Vídeos
                   </h3>
                   <div className="space-y-3">
-                    {selectedTerritory.rawFicha?.videos?.map((vid: any, idx: number) => {
-                      const vidId = typeof vid === 'string' ? vid : vid.id;
-                      if (!vidId) return null;
-                      return (
-                      <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-slate-200 shadow-md">
-                        <iframe
-                          className="absolute inset-0 w-full h-full"
-                          src={`https://www.youtube.com/embed/${vidId}?rel=0&modestbranding=1&playsinline=1`}
-                          title="Vídeo do Território"
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                        />
-                      </div>
-                      );
+                    {selectedTerritory.rawFicha.sidebar.videos.map((vid: any, idx: number) => {
+                      if (vid.tipo === 'youtube' && vid.id) {
+                        return (
+                          <div key={idx} className="space-y-1.5">
+                            {vid.titulo && <p className="text-[10px] font-medium text-slate-500 px-0.5">{vid.titulo}</p>}
+                            <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-200 shadow-md">
+                              <iframe
+                                className="absolute inset-0 w-full h-full"
+                                src={`https://www.youtube.com/embed/${vid.id}?rel=0&modestbranding=1&playsinline=1`}
+                                title={vid.titulo || 'Vídeo do Território'}
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                              />
+                            </div>
+                          </div>
+                        );
+                      }
+                      if (vid.tipo === 'drive' && vid.href) {
+                        return (
+                          <a key={idx} href={vid.href} target="_blank" rel="noopener noreferrer"
+                            className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/60 rounded-xl hover:bg-amber-50 hover:border-amber-200 transition-all text-xs text-slate-700 font-medium">
+                            <span className="flex items-center gap-2">
+                              <Video className="w-4 h-4 text-amber-600 shrink-0" />
+                              {vid.titulo || 'Ver vídeo'}
+                            </span>
+                            <ExternalLink className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                          </a>
+                        );
+                      }
+                      return null;
                     })}
                   </div>
                 </div>
@@ -1217,6 +1273,103 @@ export default function App() {
                       >
                         <span className="truncate pr-4">{doc.legenda || 'Ver PDF'}</span>
                         <span className="text-[10px] text-amber-700 font-semibold shrink-0">Baixar PDF →</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Portfolio / PDFs */}
+              {selectedTerritory.rawFicha?.sidebar?.portfolio && selectedTerritory.rawFicha.sidebar.portfolio.length > 0 && (
+                <div className="space-y-2.5">
+                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <BookOpen className="w-4 h-4 text-amber-600 shrink-0" />
+                    Portfólio e Documentos
+                  </h3>
+                  <div className="flex flex-col gap-2">
+                    {selectedTerritory.rawFicha.sidebar.portfolio.map((doc: any, idx: number) => (
+                      <a key={idx} href={doc.href ? doc.href : `../territorios/${doc.src}`} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/60 rounded-xl hover:bg-slate-100 hover:border-slate-300 transition-all text-xs text-slate-700 font-medium">
+                        <span className="truncate pr-4">{doc.titulo || 'Ver documento'}</span>
+                        <span className="text-[10px] text-amber-700 font-semibold shrink-0">Abrir PDF →</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Festas e Eventos */}
+              {selectedTerritory.rawFicha?.sidebar?.festas && selectedTerritory.rawFicha.sidebar.festas.length > 0 && (
+                <div className="space-y-2.5">
+                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <Heart className="w-4 h-4 text-amber-600 shrink-0" />
+                    Festas e Eventos
+                  </h3>
+                  <div className="flex flex-col gap-2">
+                    {selectedTerritory.rawFicha.sidebar.festas.map((festa: any, idx: number) => (
+                      <div key={idx} className="p-3 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <h4 className="text-xs font-semibold text-slate-800">{festa.nome}</h4>
+                          {festa.periodo && <span className="text-[10px] text-amber-700 font-medium shrink-0">{festa.periodo}</span>}
+                        </div>
+                        {festa.descricao && <p className="text-[11px] text-slate-500 leading-relaxed font-light">{festa.descricao}</p>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Notícias e Artigos */}
+              {selectedTerritory.rawFicha?.sidebar?.noticias && selectedTerritory.rawFicha.sidebar.noticias.length > 0 && (
+                <div className="space-y-2.5">
+                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <Globe className="w-4 h-4 text-amber-600 shrink-0" />
+                    Notícias e Artigos
+                  </h3>
+                  <div className="flex flex-col gap-2">
+                    {selectedTerritory.rawFicha.sidebar.noticias.map((noticia: any, idx: number) => (
+                      <a key={idx} href={noticia.href} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/60 rounded-xl hover:bg-amber-50 hover:border-amber-200 transition-all text-xs text-slate-700 font-medium group">
+                        <span className="truncate pr-4">{noticia.titulo}</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-amber-600 shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Redes Sociais */}
+              {selectedTerritory.rawFicha?.sidebar?.redes && selectedTerritory.rawFicha.sidebar.redes.length > 0 && (
+                <div className="space-y-2.5">
+                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <Share2 className="w-4 h-4 text-amber-600 shrink-0" />
+                    Redes Sociais
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedTerritory.rawFicha.sidebar.redes.map((rede: any, idx: number) => (
+                      <a key={idx} href={rede.href} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-full text-xs font-medium text-slate-700 hover:bg-amber-50 hover:border-amber-200 hover:text-amber-800 transition-all">
+                        <Globe className="w-3 h-3 text-amber-600" />
+                        {rede.handle || rede.rede}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Links */}
+              {selectedTerritory.rawFicha?.sidebar?.links && selectedTerritory.rawFicha.sidebar.links.length > 0 && (
+                <div className="space-y-2.5">
+                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <Globe className="w-4 h-4 text-amber-600 shrink-0" />
+                    Links
+                  </h3>
+                  <div className="flex flex-col gap-2">
+                    {selectedTerritory.rawFicha.sidebar.links.map((link: any, idx: number) => (
+                      <a key={idx} href={link.href} target="_blank" rel="noopener noreferrer"
+                        className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/60 rounded-xl hover:bg-amber-50 hover:border-amber-200 transition-all text-xs text-slate-700 font-medium group">
+                        <span className="truncate pr-4">{link.titulo}</span>
+                        <ExternalLink className="w-3.5 h-3.5 text-amber-600 shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" />
                       </a>
                     ))}
                   </div>
@@ -1597,127 +1750,165 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
-      {/* 7. Cine Irun (Netflix-style video library) Overlay Modal */}
+      {/* 7. Cine Irun — Overlay Modal com dois layouts */}
       <AnimatePresence>
         {showCineIrun && (
           <div className="fixed inset-0 z-50 bg-[#141414] flex flex-col overflow-hidden text-white font-sans">
-            {/* Modal Header */}
-            <div className="px-6 py-6 md:px-12 md:py-8 flex flex-col md:flex-row md:items-center justify-between gap-6 shrink-0 bg-[#141414]">
+            {/* Header */}
+            <div className="px-6 py-4 md:px-10 md:py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0 border-b border-white/5">
               <div>
-                <h2 className="text-3xl md:text-4xl font-display font-black tracking-tighter text-[#E50914] flex items-center gap-3">
-                  CINE IRUN 
-                </h2>
-                <p className="text-sm text-gray-400 font-light mt-1.5">
-                  Acervo de documentários e saberes.
-                </p>
+                <h2 className="text-3xl md:text-4xl font-display font-black tracking-tighter text-[#E50914]">CINE IRUN</h2>
+                <p className="text-xs text-gray-500 font-light mt-1">Acervo de documentários e saberes dos territórios</p>
               </div>
 
-              {/* Close button */}
-              <div className="flex items-center gap-4 w-full md:w-auto">
-                
-                <button 
-                  onClick={() => {
-                    setShowCineIrun(false);
-                    setVideoSearchQuery('');
-                    setPlayingVideo(null);
-                  }}
-                  className="p-2 text-gray-400 hover:text-white transition-colors cursor-pointer shrink-0"
+              <div className="flex items-center gap-3 w-full md:w-auto">
+                {/* Search */}
+                <div className="relative flex-1 md:w-56">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={videoSearchQuery}
+                    onChange={e => setVideoSearchQuery(e.target.value)}
+                    placeholder="Buscar..."
+                    className="w-full bg-[#1c1c1c] border border-white/10 rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder-gray-700 outline-none focus:border-[#E50914]/40 transition-colors"
+                  />
+                </div>
+
+                {/* Layout toggle */}
+                <div className="flex bg-[#1c1c1c] border border-white/10 rounded-lg p-0.5 shrink-0">
+                  <button
+                    onClick={() => setCineLayout('A')}
+                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${cineLayout === 'A' ? 'bg-[#E50914] text-white' : 'text-gray-500 hover:text-white'}`}
+                  >Grelha</button>
+                  <button
+                    onClick={() => setCineLayout('B')}
+                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${cineLayout === 'B' ? 'bg-[#E50914] text-white' : 'text-gray-500 hover:text-white'}`}
+                  >Destaque</button>
+                </div>
+
+                {/* Close */}
+                <button
+                  onClick={() => { setShowCineIrun(false); setVideoSearchQuery(''); setPlayingVideo(null); }}
+                  className="p-2 text-gray-500 hover:text-white transition-colors cursor-pointer shrink-0"
                   title="Fechar Cine Irun"
                 >
-                  <X className="w-8 h-8" />
+                  <X className="w-6 h-6" />
                 </button>
               </div>
             </div>
 
-            {/* Videos Carousel (Netflix Style) */}
-            <div className="flex-1 overflow-y-auto pb-12 scrollbar-none bg-[#141414]">
-              {Object.keys(categorizedVideos).every(cat => categorizedVideos[cat].length === 0) ? (
-                <div className="flex flex-col items-center justify-center py-20 text-gray-500 gap-2">
-                  <AlertCircle className="w-10 h-10 text-gray-600 animate-pulse" />
-                  <p className="text-sm font-semibold">Nenhum vídeo localizado para "{videoSearchQuery}"</p>
+            {/* Body */}
+            <div className="flex-1 overflow-y-auto pb-16 bg-[#141414]">
+              {allVideos.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-24 text-gray-600 gap-3">
+                  <AlertCircle className="w-10 h-10 animate-pulse" />
+                  <p className="text-sm font-semibold">Nenhum vídeo disponível no acervo</p>
+                </div>
+              ) : Object.keys(categorizedVideos).length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-24 text-gray-600 gap-3">
+                  <AlertCircle className="w-10 h-10 animate-pulse" />
+                  <p className="text-sm font-semibold">Sem resultados para "{videoSearchQuery}"</p>
+                </div>
+              ) : cineLayout === 'A' ? (
+                /* ── Layout A — Grelha de cards 16:9 ── */
+                <div className="px-6 md:px-10 pt-6 pb-12">
+                  {Object.entries(categorizedVideos)
+                    .sort(([a], [b]) => a.localeCompare(b, 'pt'))
+                    .map(([category, videos]) => {
+                      if (videos.length === 0) return null;
+                      return (
+                        <div key={category} className="mb-10">
+                          <h3 className="text-xs font-bold text-gray-500 tracking-widest uppercase mb-4 border-b border-white/5 pb-2">
+                            {category}
+                          </h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                            {videos.map((video: any, idx: number) => (
+                              <div key={idx} className="group cursor-pointer" onClick={() => setPlayingVideo(video.id)}>
+                                <div className="relative aspect-video bg-[#1a1a1a] rounded-xl overflow-hidden mb-3">
+                                  <img
+                                    src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
+                                    alt={video.title}
+                                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
+                                  />
+                                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-all duration-300">
+                                    <div className="w-14 h-14 bg-[#E50914] rounded-full flex items-center justify-center shadow-xl">
+                                      <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                    </div>
+                                  </div>
+                                </div>
+                                <p className="text-sm font-semibold text-white line-clamp-2 leading-tight group-hover:text-[#E50914] transition-colors">{video.title}</p>
+                                <p className="text-xs text-gray-600 mt-1">{video.city}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
                 </div>
               ) : (
-                <div className="flex flex-col gap-8 md:gap-12 pt-4">
-                  {Object.entries(categorizedVideos).map(([category, videos]) => {
-                    if (videos.length === 0) return null;
-                    return (
-                      <div key={category} className="relative group/row">
-                        <h3 className="text-lg md:text-xl font-bold text-white mb-2 md:mb-4 px-6 md:px-12 tracking-wide">
-                          {category}
-                        </h3>
-                        
-                        <div className="relative">
-                          {/* Left Scroll Button (Desktop) */}
-                          <button 
-                            className="hidden md:flex absolute left-0 top-0 bottom-0 z-40 w-12 items-center justify-center bg-gradient-to-r from-[#141414] to-transparent text-white opacity-0 group-hover/row:opacity-100 hover:scale-110 transition-all cursor-pointer"
-                            onClick={(e) => {
-                              const container = e.currentTarget.nextElementSibling;
-                              if (container) container.scrollBy({ left: -container.clientWidth * 0.75, behavior: 'smooth' });
-                            }}
-                          >
-                            <svg className="w-8 h-8 drop-shadow-xl" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
-                          </button>
+                /* ── Layout B — Vídeo em destaque + grelha ── */
+                (() => {
+                  const sortedVideos = Object.entries(categorizedVideos)
+                    .sort(([a], [b]) => a.localeCompare(b, 'pt'))
+                    .flatMap(([, vids]) => vids);
+                  const featured = sortedVideos[0];
+                  const rest = sortedVideos.slice(1);
+                  if (!featured) return null;
+                  return (
+                    <div className="px-6 md:px-10 pt-6 pb-12">
+                      {/* Hero featured */}
+                      <div
+                        className="relative group cursor-pointer rounded-2xl overflow-hidden mb-8 bg-[#1a1a1a]"
+                        style={{ aspectRatio: '21/7' }}
+                        onClick={() => setPlayingVideo(featured.id)}
+                      >
+                        <img
+                          src={`https://img.youtube.com/vi/${featured.id}/maxresdefault.jpg`}
+                          onError={(e) => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${featured.id}/hqdefault.jpg`; }}
+                          alt={featured.title}
+                          className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500"
+                        />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                          <div className="w-20 h-20 bg-[#E50914] rounded-full flex items-center justify-center shadow-2xl">
+                            <svg className="w-8 h-8 text-white ml-2" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                          </div>
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 p-5 md:p-7 bg-[#0a0a0a]/75">
+                          <span className="inline-block bg-[#E50914] text-white text-[9px] font-bold px-2 py-1 rounded-full mb-2 tracking-wider uppercase">Em destaque</span>
+                          <p className="text-xl md:text-2xl font-display font-bold text-white leading-tight line-clamp-2">{featured.title}</p>
+                          <p className="text-sm text-gray-400 mt-1">{featured.territory?.name} · {featured.city}</p>
+                        </div>
+                      </div>
 
-                          <div className="flex gap-3 md:gap-4 overflow-x-auto scrollbar-none px-6 md:px-12 pb-8 pt-4 -mt-4 snap-x scroll-smooth">
-                            {videos.map((video: any, index: number) => (
-                              <div key={index} className="shrink-0 w-36 md:w-48 group rounded-md overflow-hidden bg-[#181818] transition-all duration-300 hover:scale-110 hover:z-50 hover:shadow-2xl hover:shadow-black/100 cursor-pointer flex flex-col relative snap-start">
-                                {/* Video Player Embed (Lazy loaded) */}
-                                <div className="relative aspect-[2/3] bg-[#141414] overflow-hidden shrink-0 group/vid" onClick={() => setPlayingVideo(video.id)}>
-                                  {playingVideo === video.id ? (
-                                    <iframe
-                                      className="absolute inset-0 w-full h-[150%] top-1/2 -translate-y-1/2"
-                                      src={`https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                                      title={video.title}
-                                      frameBorder="0"
-                                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                      allowFullScreen
-                                    />
-                                  ) : (
-                                    <>
-                                      <img 
-                                        src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`} 
-                                        alt="Thumbnail" 
-                                        className="w-full h-full object-cover opacity-90 group-hover/vid:opacity-100 transition-opacity duration-300" 
-                                      />
-                                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover/vid:opacity-100 bg-black/40 transition-all duration-300">
-                                        <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/50 group-hover/vid:bg-[#E50914] group-hover/vid:border-transparent transition-all duration-300">
-                                          <svg className="w-4 h-4 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                        </div>
-                                      </div>
-                                    </>
-                                  )}
+                      {/* Grid dos restantes */}
+                      {rest.length > 0 && (
+                        <>
+                          <h3 className="text-xs font-bold text-gray-500 tracking-widest uppercase mb-4">Mais vídeos</h3>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
+                            {rest.map((video: any, idx: number) => (
+                              <div key={idx} className="group cursor-pointer" onClick={() => setPlayingVideo(video.id)}>
+                                <div className="relative aspect-video bg-[#1a1a1a] rounded-lg overflow-hidden mb-2">
+                                  <img
+                                    src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
+                                    alt={video.title}
+                                    className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity duration-300"
+                                  />
+                                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/50 transition-all duration-300">
+                                    <div className="w-10 h-10 bg-[#E50914] rounded-full flex items-center justify-center">
+                                      <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                    </div>
+                                  </div>
                                 </div>
-                                
-                                {/* Info Footer on Card (Netflix style hover details) */}
-                                <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black via-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end pointer-events-none">
-                                  <h3 className="font-bold text-[11px] md:text-xs text-white leading-tight line-clamp-2 drop-shadow-md">
-                                    {video.title}
-                                  </h3>
-                                  <div className="flex items-center gap-2 mt-1.5 opacity-80">
-
-                            <span className="text-[9px] font-semibold text-green-500">Novo</span>
-                            <span className="text-[9px] text-gray-300 px-1 border border-gray-500 rounded uppercase">{video.category}</span>
+                                <p className="text-xs font-semibold text-gray-300 line-clamp-2 leading-tight group-hover:text-white transition-colors">{video.title}</p>
+                                <p className="text-[10px] text-gray-600 mt-0.5">{video.territory?.name}</p>
+                              </div>
+                            ))}
                           </div>
-                        </div>
-                      </div>
-                    ))}
-                          </div>
-                          
-                          {/* Right Scroll Button (Desktop) */}
-                          <button 
-                            className="hidden md:flex absolute right-0 top-0 bottom-0 z-40 w-12 items-center justify-center bg-gradient-to-l from-[#141414] to-transparent text-white opacity-0 group-hover/row:opacity-100 hover:scale-110 transition-all cursor-pointer"
-                            onClick={(e) => {
-                              const container = e.currentTarget.previousElementSibling;
-                              if (container) container.scrollBy({ left: container.clientWidth * 0.75, behavior: 'smooth' });
-                            }}
-                          >
-                            <svg className="w-8 h-8 drop-shadow-xl" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                        </>
+                      )}
+                    </div>
+                  );
+                })()
               )}
             </div>
           </div>
