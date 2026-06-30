@@ -2,14 +2,19 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MOVIMENTO IRUN — Mapa Identidade e Território</title>
+  <meta name="description" content="Mapa participativo das comunidades quilombolas e territórios de identidade da Bahia — Curso Design de Território · Programa Bem Viver · Casa de Castro Alves.">
+  <link rel="canonical" href="https://casadecastroalves.com.br/movimento-irun/territorios-v2/">
   <meta property="og:title" content="MOVIMENTO IRUN — Mapa Identidade e Território">
   <meta property="og:description" content="Mapa participativo das comunidades quilombolas e territórios de identidade da Bahia — Curso Design de Território · Programa Bem Viver · Casa de Castro Alves.">
   <meta property="og:image" content="https://casadecastroalves.com.br/movimento-irun/territorios/assets/og-mapa-bahia.png">
   <meta property="og:url" content="https://casadecastroalves.com.br/movimento-irun/territorios-v2/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MOVIMENTO IRUN — Mapa Identidade e Território">
+  <meta name="twitter:description" content="Mapa participativo das comunidades quilombolas e territórios de identidade da Bahia — Curso Design de Território · Programa Bem Viver · Casa de Castro Alves.">
+  <meta name="twitter:image" content="https://casadecastroalves.com.br/movimento-irun/territorios/assets/og-mapa-bahia.png">
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -488,7 +493,7 @@
 
 <!-- Lightbox para galeria fullscreen -->
 <div class="lightbox" id="lightbox">
-  <button class="lightbox-close" id="lb-close">
+  <button class="lightbox-close" id="lb-close" aria-label="Fechar galeria">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
   </button>
   <button class="lightbox-nav lightbox-prev" id="lb-prev">&#8249;</button>
@@ -513,14 +518,14 @@
     <div class="header-top">
       <span class="header-tag">REDE IRUN</span>
       <div class="header-controls">
-        <button class="header-btn" id="btn-locate" title="Minha localização">
+        <button class="header-btn" id="btn-locate" title="Minha localização" aria-label="Minha localização">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="5"/>
             <line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/>
             <line x1="19" y1="12" x2="22" y2="12"/>
           </svg>
         </button>
-        <button class="header-btn" id="btn-reset" title="Ver toda a Bahia">
+        <button class="header-btn" id="btn-reset" title="Ver toda a Bahia" aria-label="Ver toda a Bahia">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
             <circle cx="12" cy="12" r="10"/>
             <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
@@ -541,7 +546,7 @@
       </svg>
       <input type="text" id="search" placeholder="Buscar território, comunidade, município…" aria-label="Pesquisar">
       <span class="search-shortcut" id="kb-hint" style="display:none">Ctrl+K</span>
-      <button class="search-clear" id="search-clear" style="display:none">
+      <button class="search-clear" id="search-clear" aria-label="Limpar busca" style="display:none">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
           <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
@@ -667,7 +672,7 @@
   }
   function lbShow() {
     const p = lbPhotos[lbIdx];
-    lbImg.src = p.src; lbCap.textContent = p.cap || '';
+    lbImg.src = p.src; lbImg.alt = p.cap || ''; lbCap.textContent = p.cap || '';
     document.getElementById('lb-prev').style.display = lbPhotos.length > 1 ? '' : 'none';
     document.getElementById('lb-next').style.display = lbPhotos.length > 1 ? '' : 'none';
   }
@@ -1504,7 +1509,7 @@
     return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`;
   }
 
-  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 
   /* ── Sheet livre (mobile) — arrasta para qualquer altura ── */
   (function initDrag(){
