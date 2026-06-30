@@ -1088,14 +1088,17 @@ export default function App() {
                 {selectedTerritory.name}
               </h2>
 
-              {/* Close Button */}
-              <button 
+              {/* Close Button — map icon makes it clear this returns to the map */}
+              <button
                 onClick={() => {
                   setSelectedTerritory(null);
+                  history.replaceState(null, '', window.location.pathname + window.location.search);
                 }}
-                className="absolute top-4 right-4 p-2 md:p-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 transition-all cursor-pointer z-10"
+                title="Voltar ao mapa"
+                className="absolute top-4 right-4 flex items-center gap-1 pl-2 pr-2.5 py-1.5 md:py-1 rounded-full bg-slate-100 hover:bg-amber-50 hover:border-amber-200 border border-transparent text-slate-400 hover:text-amber-700 transition-all cursor-pointer z-10"
               >
-                <X className="w-5 h-5 md:w-4 md:h-4" />
+                <MapIcon className="w-3.5 h-3.5" />
+                <X className="w-4 h-4 md:w-3.5 md:h-3.5" />
               </button>
             </div>
 
@@ -1334,12 +1337,12 @@ export default function App() {
                 </div>
               )}
 
-              {/* Notícias e Artigos */}
+              {/* Notícias */}
               {selectedTerritory.rawFicha?.sidebar?.noticias && selectedTerritory.rawFicha.sidebar.noticias.length > 0 && (
                 <div className="space-y-2.5">
                   <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
                     <Globe className="w-4 h-4 text-amber-600 shrink-0" />
-                    Notícias e Artigos
+                    Notícias
                   </h3>
                   <div className="flex flex-col gap-2">
                     {selectedTerritory.rawFicha.sidebar.noticias.map((noticia: any, idx: number) => (
@@ -1347,6 +1350,32 @@ export default function App() {
                         className="flex items-center justify-between p-3 bg-slate-50 border border-slate-200/60 rounded-xl hover:bg-amber-50 hover:border-amber-200 transition-all text-xs text-slate-700 font-medium group">
                         <span className="truncate pr-4">{noticia.titulo}</span>
                         <ExternalLink className="w-3.5 h-3.5 text-amber-600 shrink-0 opacity-60 group-hover:opacity-100 transition-opacity" />
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Artigos e Pesquisas */}
+              {selectedTerritory.rawFicha?.sidebar?.pesquisas && selectedTerritory.rawFicha.sidebar.pesquisas.length > 0 && (
+                <div className="space-y-2.5">
+                  <h3 className="font-display font-semibold text-sm text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+                    <BookOpen className="w-4 h-4 text-amber-600 shrink-0" />
+                    Artigos e Pesquisas
+                  </h3>
+                  <div className="flex flex-col gap-2">
+                    {selectedTerritory.rawFicha.sidebar.pesquisas.map((pesq: any, idx: number) => (
+                      <a key={idx} href={pesq.href || `../territorios/${pesq.src}`} target="_blank" rel="noopener noreferrer"
+                        className="flex flex-col gap-1 p-3 bg-slate-50 border border-slate-200/60 rounded-xl hover:bg-amber-50 hover:border-amber-200 transition-all text-xs text-slate-700 font-medium group">
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="leading-snug">{pesq.titulo}</span>
+                          <ExternalLink className="w-3.5 h-3.5 text-amber-600 shrink-0 opacity-60 group-hover:opacity-100 transition-opacity mt-0.5" />
+                        </div>
+                        {(pesq.autores || pesq.ano) && (
+                          <span className="text-[10px] text-slate-400 font-normal">
+                            {[pesq.autores, pesq.ano].filter(Boolean).join(' · ')}
+                          </span>
+                        )}
                       </a>
                     ))}
                   </div>
@@ -1773,7 +1802,7 @@ export default function App() {
             <div className="px-6 py-4 md:px-10 md:py-5 flex items-center justify-between gap-4 shrink-0 border-b border-white/5">
               <div>
                 <h2 className="text-3xl md:text-4xl font-display font-black tracking-tighter text-[#E50914]">CINE IRUN</h2>
-                <p className="text-xs text-gray-500 font-light mt-1">Acervo de documentários e saberes dos territórios</p>
+                <p className="text-xs text-gray-500 font-light mt-1">Acervo de documentários da Rede Irun</p>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <div className="flex bg-[#1c1c1c] border border-white/10 rounded-lg p-0.5">

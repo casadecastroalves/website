@@ -1,5 +1,5 @@
 # Ignorar builds antigos — manter apenas os dois assets activos referenciados no index.html
 *
 !.gitignore
-!index-BtGtzKys.js
-!index-B7FUo9Bo.css
+!index-yqKHI927.js
+!index-BQcSECci.css
