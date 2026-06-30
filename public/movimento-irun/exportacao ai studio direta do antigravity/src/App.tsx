@@ -101,8 +101,11 @@ export default function App() {
   const [isLocating, setIsLocating] = useState(false);
   const [showCineIrun, setShowCineIrun] = useState(false);
   const [videoSearchQuery, setVideoSearchQuery] = useState('');
-  const [activeVideoCategory, setActiveVideoCategory] = useState<string>('Rede Irun (todos)');
+  const [activeVideoCategory, setActiveVideoCategory] = useState<string>('Todos');
   const [cineLayout, setCineLayout] = useState<'A' | 'B'>('A');
+  const [showSharePanel, setShowSharePanel] = useState(false);
+  const [isEmbedMode] = useState(() => new URLSearchParams(window.location.search).get('embed') === '1');
+  const hasLoadedFromHash = useRef(false);
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
   const [fullscreenImage, setFullscreenImage] = useState<{src: string, caption: string} | null>(null);
   
@@ -543,6 +546,8 @@ export default function App() {
   // Handler for selecting a territory
   const handleSelectTerritory = (t: Territory) => {
     setSelectedTerritory(t);
+    const id = (t as any).rawFicha?.id;
+    if (id) window.location.hash = id;
     // On mobile, close the sidebar so it doesn't overlap the bottom sheet
     if (window.innerWidth < 768) {
       setIsSidebarOpen(false);
@@ -575,6 +580,7 @@ export default function App() {
     setSelectedTerritory(null);
     setSearchQuery('');
     setActiveCategory('todos');
+    history.replaceState(null, '', window.location.pathname + window.location.search);
     setIsSidebarOpen(true);
   };
 
@@ -661,6 +667,18 @@ export default function App() {
     handleSelectTerritory(formattedTerritory);
   };
 
+  // Open territory from URL hash on first load
+  useEffect(() => {
+    if (!territories.length || hasLoadedFromHash.current) return;
+    const hash = window.location.hash.replace(/^#/, '');
+    if (!hash) { hasLoadedFromHash.current = true; return; }
+    const match = territories.find(t => (t as any).rawFicha?.id === hash);
+    if (match) {
+      hasLoadedFromHash.current = true;
+      handleSelectTerritory(match);
+    }
+  }, [territories]);
+
   // Load custom territories from localStorage on mount
   useEffect(() => {
     try {
@@ -683,24 +701,21 @@ export default function App() {
     });
   };
 
-  const handleShare = (territory: Territory) => {
-    const url = 'https://casadecastroalves.com.br/movimento-irun/redeirun/';
-    const text = `Confira ${territory.name} no Mapa Movimento Irun! \n\nDescubra este e outros territórios de identidade: ${url}`;
-    
-    if (navigator.share) {
-      navigator.share({
-        title: territory.name,
-        text: text,
-      }).catch(() => {
-        navigator.clipboard.writeText(text).then(() => {
-          triggerToast('Link copiado para a área de transferência!');
-        });
-      });
-    } else {
-      navigator.clipboard.writeText(text).then(() => {
-        triggerToast('Link copiado para a área de transferência!');
-      });
-    }
+  const CANONICAL_BASE = 'https://casadecastroalves.com.br/movimento-irun/redeirun/';
+
+  const getShareUrl = (t?: Territory | null) => {
+    const id = t ? (t as any).rawFicha?.id : null;
+    return CANONICAL_BASE + (id ? '#' + id : '');
+  };
+
+  const getEmbedCode = (t?: Territory | null) => {
+    const id = t ? (t as any).rawFicha?.id : null;
+    const src = CANONICAL_BASE + '?embed=1' + (id ? '#' + id : '');
+    return `<iframe src="${src}" width="100%" height="480" style="border:0;border-radius:8px;max-width:100%" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin" title="MOVIMENTO IRUN — Mapa territorial da Bahia"></iframe>`;
+  };
+
+  const handleShare = (territory?: Territory | null) => {
+    setShowSharePanel(true);
   };
 
   // Get all unique videos mapped from territories data
@@ -727,31 +742,17 @@ export default function App() {
     return list;
   }, [territories]);
 
-  // Filter videos by category and search
+  // Group videos by territory
   const categorizedVideos = useMemo(() => {
     const result: Record<string, typeof allVideos> = {};
-    
     allVideos.forEach(v => {
-      const matchSearch = (v.title || '').toLowerCase().includes((videoSearchQuery || '').toLowerCase()) || 
-                          (v.city || '').toLowerCase().includes((videoSearchQuery || '').toLowerCase());
-                          
-      if (!matchSearch) return;
-
       const territoryName = v.territory?.name || 'Outros';
-      
-      // Ignore the generic "Rede Irun (todos)" if it appears as a territory to prevent duplicate shelves
-      if (territoryName.toLowerCase().includes('rede irun (todos)')) {
-        return;
-      }
-
-      if (!result[territoryName]) {
-        result[territoryName] = [];
-      }
+      if (territoryName.toLowerCase().includes('rede irun (todos)')) return;
+      if (!result[territoryName]) result[territoryName] = [];
       result[territoryName].push(v);
     });
-
     return result;
-  }, [allVideos, videoSearchQuery]);
+  }, [allVideos]);
 
   const stats = useMemo(() => {
     const s = { total: filteredTerritories.length, quilombos: 0, cultura: 0, tradicional: 0 };
@@ -1750,51 +1751,36 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
-      {/* 7. Cine Irun — Overlay Modal com dois layouts */}
+      {/* 7. Cine Irun — Overlay Modal */}
       <AnimatePresence>
         {showCineIrun && (
           <div className="fixed inset-0 z-50 bg-[#141414] flex flex-col overflow-hidden text-white font-sans">
             {/* Header */}
-            <div className="px-6 py-4 md:px-10 md:py-5 flex flex-col md:flex-row md:items-center justify-between gap-4 shrink-0 border-b border-white/5">
+            <div className="px-6 py-4 md:px-10 md:py-5 flex items-center justify-between gap-4 shrink-0 border-b border-white/5">
               <div>
                 <h2 className="text-3xl md:text-4xl font-display font-black tracking-tighter text-[#E50914]">CINE IRUN</h2>
                 <p className="text-xs text-gray-500 font-light mt-1">Acervo de documentários e saberes dos territórios</p>
               </div>
-
-              <div className="flex items-center gap-3 w-full md:w-auto">
-                {/* Search */}
-                <div className="relative flex-1 md:w-56">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600 pointer-events-none" />
-                  <input
-                    type="text"
-                    value={videoSearchQuery}
-                    onChange={e => setVideoSearchQuery(e.target.value)}
-                    placeholder="Buscar..."
-                    className="w-full bg-[#1c1c1c] border border-white/10 rounded-lg pl-9 pr-3 py-2 text-sm text-white placeholder-gray-700 outline-none focus:border-[#E50914]/40 transition-colors"
-                  />
+              <div className="flex items-center gap-3 shrink-0">
+                <div className="flex bg-[#1c1c1c] border border-white/10 rounded-lg p-0.5">
+                  <button onClick={() => setCineLayout('A')} className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${cineLayout === 'A' ? 'bg-[#E50914] text-white' : 'text-gray-500 hover:text-white'}`}>Grelha</button>
+                  <button onClick={() => setCineLayout('B')} className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${cineLayout === 'B' ? 'bg-[#E50914] text-white' : 'text-gray-500 hover:text-white'}`}>Destaque</button>
                 </div>
-
-                {/* Layout toggle */}
-                <div className="flex bg-[#1c1c1c] border border-white/10 rounded-lg p-0.5 shrink-0">
-                  <button
-                    onClick={() => setCineLayout('A')}
-                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${cineLayout === 'A' ? 'bg-[#E50914] text-white' : 'text-gray-500 hover:text-white'}`}
-                  >Grelha</button>
-                  <button
-                    onClick={() => setCineLayout('B')}
-                    className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${cineLayout === 'B' ? 'bg-[#E50914] text-white' : 'text-gray-500 hover:text-white'}`}
-                  >Destaque</button>
-                </div>
-
-                {/* Close */}
-                <button
-                  onClick={() => { setShowCineIrun(false); setVideoSearchQuery(''); setPlayingVideo(null); }}
-                  className="p-2 text-gray-500 hover:text-white transition-colors cursor-pointer shrink-0"
-                  title="Fechar Cine Irun"
-                >
+                <button onClick={() => { setShowCineIrun(false); setActiveVideoCategory('Todos'); setPlayingVideo(null); }} className="p-2 text-gray-500 hover:text-white transition-colors cursor-pointer" title="Fechar">
                   <X className="w-6 h-6" />
                 </button>
               </div>
+            </div>
+
+            {/* Filter chips */}
+            <div className="px-6 md:px-10 py-3 flex gap-2 overflow-x-auto scrollbar-none shrink-0 border-b border-white/5">
+              {['Todos', ...Object.keys(categorizedVideos).sort((a, b) => a.localeCompare(b, 'pt'))].map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => setActiveVideoCategory(cat)}
+                  className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${activeVideoCategory === cat ? 'bg-[#E50914] text-white' : 'bg-[#1e1e1e] text-gray-400 hover:text-white border border-white/10'}`}
+                >{cat}</button>
+              ))}
             </div>
 
             {/* Body */}
@@ -1804,83 +1790,62 @@ export default function App() {
                   <AlertCircle className="w-10 h-10 animate-pulse" />
                   <p className="text-sm font-semibold">Nenhum vídeo disponível no acervo</p>
                 </div>
-              ) : Object.keys(categorizedVideos).length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-24 text-gray-600 gap-3">
-                  <AlertCircle className="w-10 h-10 animate-pulse" />
-                  <p className="text-sm font-semibold">Sem resultados para "{videoSearchQuery}"</p>
-                </div>
               ) : cineLayout === 'A' ? (
-                /* ── Layout A — Grelha de cards 16:9 ── */
                 <div className="px-6 md:px-10 pt-6 pb-12">
                   {Object.entries(categorizedVideos)
                     .sort(([a], [b]) => a.localeCompare(b, 'pt'))
-                    .map(([category, videos]) => {
-                      if (videos.length === 0) return null;
-                      return (
-                        <div key={category} className="mb-10">
-                          <h3 className="text-xs font-bold text-gray-500 tracking-widest uppercase mb-4 border-b border-white/5 pb-2">
-                            {category}
-                          </h3>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-                            {videos.map((video: any, idx: number) => (
-                              <div key={idx} className="group cursor-pointer" onClick={() => setPlayingVideo(video.id)}>
-                                <div className="relative aspect-video bg-[#1a1a1a] rounded-xl overflow-hidden mb-3">
-                                  <img
-                                    src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
-                                    alt={video.title}
-                                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-                                  />
-                                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-all duration-300">
-                                    <div className="w-14 h-14 bg-[#E50914] rounded-full flex items-center justify-center shadow-xl">
-                                      <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                                    </div>
+                    .filter(([cat]) => activeVideoCategory === 'Todos' || cat === activeVideoCategory)
+                    .map(([category, videos]) => (
+                      <div key={category} className="mb-10">
+                        <h3 className="text-xs font-bold text-gray-500 tracking-widest uppercase mb-4 border-b border-white/5 pb-2">{category}</h3>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+                          {videos.map((video: any, idx: number) => (
+                            <div key={idx} className="group cursor-pointer" onClick={() => setPlayingVideo(video.id)}>
+                              <div className="relative aspect-video bg-[#1a1a1a] rounded-xl overflow-hidden mb-3">
+                                <img src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`} alt={video.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-300" />
+                                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/40 transition-all duration-300">
+                                  <div className="w-14 h-14 bg-[#E50914] rounded-full flex items-center justify-center shadow-xl">
+                                    <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                                   </div>
                                 </div>
-                                <p className="text-sm font-semibold text-white line-clamp-2 leading-tight group-hover:text-[#E50914] transition-colors">{video.title}</p>
-                                <p className="text-xs text-gray-600 mt-1">{video.city}</p>
                               </div>
-                            ))}
-                          </div>
+                              <p className="text-sm font-semibold text-white line-clamp-2 leading-tight group-hover:text-[#E50914] transition-colors">{video.title}</p>
+                              <p className="text-xs text-gray-600 mt-1">{video.city}</p>
+                            </div>
+                          ))}
                         </div>
-                      );
-                    })}
+                      </div>
+                    ))}
                 </div>
               ) : (
-                /* ── Layout B — Vídeo em destaque + grelha ── */
                 (() => {
                   const sortedVideos = Object.entries(categorizedVideos)
                     .sort(([a], [b]) => a.localeCompare(b, 'pt'))
+                    .filter(([cat]) => activeVideoCategory === 'Todos' || cat === activeVideoCategory)
                     .flatMap(([, vids]) => vids);
-                  const featured = sortedVideos[0];
-                  const rest = sortedVideos.slice(1);
-                  if (!featured) return null;
+                  const featured = sortedVideos[sortedVideos.length - 1];
+                  const rest = sortedVideos.slice(0, -1).reverse();
+                  if (!featured) return (
+                    <div className="flex flex-col items-center justify-center py-24 text-gray-600 gap-3">
+                      <AlertCircle className="w-10 h-10 animate-pulse" />
+                      <p className="text-sm font-semibold">Nenhum vídeo nesta categoria</p>
+                    </div>
+                  );
                   return (
                     <div className="px-6 md:px-10 pt-6 pb-12">
-                      {/* Hero featured */}
-                      <div
-                        className="relative group cursor-pointer rounded-2xl overflow-hidden mb-8 bg-[#1a1a1a]"
-                        style={{ aspectRatio: '21/7' }}
-                        onClick={() => setPlayingVideo(featured.id)}
-                      >
-                        <img
-                          src={`https://img.youtube.com/vi/${featured.id}/maxresdefault.jpg`}
-                          onError={(e) => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${featured.id}/hqdefault.jpg`; }}
-                          alt={featured.title}
-                          className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500"
-                        />
+                      <div className="relative group cursor-pointer rounded-2xl overflow-hidden mb-8 bg-[#1a1a1a]" style={{ aspectRatio: '21/7' }} onClick={() => setPlayingVideo(featured.id)}>
+                        <img src={`https://img.youtube.com/vi/${featured.id}/maxresdefault.jpg`} onError={(e) => { (e.target as HTMLImageElement).src = `https://img.youtube.com/vi/${featured.id}/hqdefault.jpg`; }} alt={featured.title} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
                         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
                           <div className="w-20 h-20 bg-[#E50914] rounded-full flex items-center justify-center shadow-2xl">
                             <svg className="w-8 h-8 text-white ml-2" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
                           </div>
                         </div>
                         <div className="absolute bottom-0 left-0 right-0 p-5 md:p-7 bg-[#0a0a0a]/75">
-                          <span className="inline-block bg-[#E50914] text-white text-[9px] font-bold px-2 py-1 rounded-full mb-2 tracking-wider uppercase">Em destaque</span>
+                          <span className="inline-block bg-[#E50914] text-white text-[9px] font-bold px-2 py-1 rounded-full mb-2 tracking-wider uppercase">Mais recente</span>
                           <p className="text-xl md:text-2xl font-display font-bold text-white leading-tight line-clamp-2">{featured.title}</p>
                           <p className="text-sm text-gray-400 mt-1">{featured.territory?.name} · {featured.city}</p>
                         </div>
                       </div>
-
-                      {/* Grid dos restantes */}
                       {rest.length > 0 && (
                         <>
                           <h3 className="text-xs font-bold text-gray-500 tracking-widest uppercase mb-4">Mais vídeos</h3>
@@ -1888,11 +1853,7 @@ export default function App() {
                             {rest.map((video: any, idx: number) => (
                               <div key={idx} className="group cursor-pointer" onClick={() => setPlayingVideo(video.id)}>
                                 <div className="relative aspect-video bg-[#1a1a1a] rounded-lg overflow-hidden mb-2">
-                                  <img
-                                    src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
-                                    alt={video.title}
-                                    className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity duration-300"
-                                  />
+                                  <img src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`} alt={video.title} className="w-full h-full object-cover opacity-75 group-hover:opacity-100 transition-opacity duration-300" />
                                   <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 bg-black/50 transition-all duration-300">
                                     <div className="w-10 h-10 bg-[#E50914] rounded-full flex items-center justify-center">
                                       <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -1915,7 +1876,120 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* 8. Fullscreen Image/Video Lightbox */}
+      {/* 8. Embed mode — "Abrir mapa completo" button */}
+      {isEmbedMode && (
+        <a
+          href={CANONICAL_BASE + window.location.hash}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="absolute bottom-4 right-4 z-30 px-4 py-2 bg-slate-900/90 hover:bg-slate-800 text-white text-xs font-semibold rounded-full backdrop-blur-md transition-colors shadow-xl"
+        >
+          Abrir mapa completo ↗
+        </a>
+      )}
+
+      {/* 9. Share panel */}
+      <AnimatePresence>
+        {showSharePanel && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={(e) => { if (e.target === e.currentTarget) setShowSharePanel(false); }}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 8 }}
+              transition={{ type: 'spring', damping: 28, stiffness: 380 }}
+              className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center justify-between mb-5">
+                <div>
+                  <h3 className="font-display font-bold text-slate-900 text-lg">Compartilhar</h3>
+                  {selectedTerritory && <p className="text-xs text-slate-500 mt-0.5">{selectedTerritory.name}</p>}
+                </div>
+                <button onClick={() => setShowSharePanel(false)} className="p-1.5 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-700 transition-colors cursor-pointer">
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {/* Link */}
+                <div>
+                  <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5 block">Link desta vista</label>
+                  <div className="flex gap-2">
+                    <input
+                      readOnly
+                      value={getShareUrl(selectedTerritory)}
+                      className="flex-1 text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-slate-700 outline-none select-all"
+                      onFocus={e => e.target.select()}
+                    />
+                    <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(getShareUrl(selectedTerritory));
+                        triggerToast('Link copiado!');
+                        setShowSharePanel(false);
+                      }}
+                      className="px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer shrink-0"
+                    >
+                      <Copy className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Embed */}
+                <div>
+                  <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1.5 block">Incorporar em site (iframe)</label>
+                  <textarea
+                    readOnly
+                    value={getEmbedCode(selectedTerritory)}
+                    rows={3}
+                    className="w-full text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-2.5 text-slate-600 outline-none resize-none font-mono"
+                    onFocus={e => e.target.select()}
+                  />
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(getEmbedCode(selectedTerritory));
+                      triggerToast('Código copiado!');
+                      setShowSharePanel(false);
+                    }}
+                    className="mt-1.5 w-full py-2 bg-slate-900 hover:bg-slate-700 text-white text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+                  >
+                    Copiar código iframe
+                  </button>
+                </div>
+
+                {/* Native share */}
+                {typeof navigator.share === 'function' && (
+                  <button
+                    onClick={() => {
+                      navigator.share({
+                        title: selectedTerritory ? selectedTerritory.name : 'MOVIMENTO IRUN — Identidade e Território',
+                        text: 'Descubra os territórios do Movimento Irun na Bahia',
+                        url: getShareUrl(selectedTerritory),
+                      }).catch(() => {});
+                      setShowSharePanel(false);
+                    }}
+                    className="w-full py-2.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-semibold rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-2"
+                  >
+                    <Share2 className="w-4 h-4" />
+                    Partilhar no dispositivo…
+                  </button>
+                )}
+
+                <p className="text-[10px] text-slate-400 text-center leading-relaxed">
+                  Mantenha o crédito <strong className="text-slate-500">MOVIMENTO IRUN · Casa de Castro Alves</strong>
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 10. Fullscreen Image/Video Lightbox */}
       <AnimatePresence>
         {fullscreenImage && (
           <motion.div 
