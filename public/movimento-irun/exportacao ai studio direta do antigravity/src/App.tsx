@@ -106,6 +106,7 @@ export default function App() {
   const [showSharePanel, setShowSharePanel] = useState(false);
   const [isEmbedMode] = useState(() => new URLSearchParams(window.location.search).get('embed') === '1');
   const hasLoadedFromHash = useRef(false);
+  const [sheetSnapY, setSheetSnapY] = useState(0);
   const [playingVideo, setPlayingVideo] = useState<string | null>(null);
   const [fullscreenImage, setFullscreenImage] = useState<{src: string, caption: string} | null>(null);
   
@@ -546,6 +547,7 @@ export default function App() {
   // Handler for selecting a territory
   const handleSelectTerritory = (t: Territory) => {
     setSelectedTerritory(t);
+    setSheetSnapY(0);
     const id = (t as any).rawFicha?.id;
     if (id) window.location.hash = id;
     // On mobile, close the sidebar so it doesn't overlap the bottom sheet
@@ -765,10 +767,10 @@ export default function App() {
   }, [filteredTerritories]);
 
   return (
-    <div id="mapa-container" className="relative w-screen h-screen overflow-hidden bg-slate-100 font-sans select-none">
+    <div id="mapa-container" className="relative w-screen h-screen overflow-hidden bg-slate-100 font-sans">
       
       {/* 1. Main Background Vector Map */}
-      <div id="map" ref={mapContainerRef} className="absolute inset-0 z-0" />
+      <div id="map" ref={mapContainerRef} className="absolute inset-0 z-0 select-none" />
 
       {/* 2. Brand Floating Sidebar (Left Panel) */}
       <AnimatePresence>
@@ -1040,17 +1042,29 @@ export default function App() {
           <>
             <motion.aside
               drag="y"
-              dragConstraints={{ top: -200, bottom: 0 }}
-              dragElastic={{ top: 0.1, bottom: 0.8 }}
-              onDragEnd={(e, info) => {
-                if (info.offset.y > 150) {
+              dragConstraints={{ top: -(window.innerHeight * 0.14), bottom: window.innerHeight * 0.55 }}
+              dragElastic={{ top: 0.05, bottom: 0.05 }}
+              onDragEnd={(_e, info) => {
+                const VH = window.innerHeight;
+                const projected = sheetSnapY + info.offset.y;
+                const velocity = info.velocity.y;
+                if (projected > VH * 0.45 || velocity > 700) {
                   setSelectedTerritory(null);
+                  history.replaceState(null, '', window.location.pathname + window.location.search);
+                  return;
+                }
+                if (velocity > 250 || projected > VH * 0.20) {
+                  setSheetSnapY(VH * 0.35); // low — ~40vh visible
+                } else if (velocity < -250 || projected < -(VH * 0.05)) {
+                  setSheetSnapY(-(VH * 0.14)); // high — ~89vh visible
+                } else {
+                  setSheetSnapY(0); // mid — 75vh visible (default)
                 }
               }}
-              initial={{ opacity: 0, y: 100 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: "100%" }}
+              animate={{ opacity: 1, y: sheetSnapY }}
               exit={{ opacity: 0, y: "100%" }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              transition={{ type: 'spring', damping: 28, stiffness: 220 }}
               style={{ touchAction: "none" }}
               className="fixed bottom-0 md:top-0 right-0 z-40 w-full md:w-[360px] lg:w-[420px] xl:w-[480px] h-[75vh] md:h-full bg-white shadow-[0_-10px_40px_rgba(0,0,0,0.1)] md:shadow-2xl md:border-l border-slate-200 flex flex-col overflow-hidden text-slate-800 rounded-t-[2rem] md:rounded-none"
             >
@@ -1086,7 +1100,7 @@ export default function App() {
             </div>
 
             {/* Scrollable Detailed Sections */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-5">
+            <div className="flex-1 overflow-y-auto p-5 space-y-5 select-text" style={{ userSelect: 'text' }}>
               
               {/* Quick Info Grid */}
               <div className="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100">
