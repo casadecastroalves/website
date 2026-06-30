@@ -1809,8 +1809,9 @@ export default function App() {
                   <button onClick={() => setCineLayout('A')} className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${cineLayout === 'A' ? 'bg-[#E50914] text-white' : 'text-gray-500 hover:text-white'}`}>Grelha</button>
                   <button onClick={() => setCineLayout('B')} className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all cursor-pointer ${cineLayout === 'B' ? 'bg-[#E50914] text-white' : 'text-gray-500 hover:text-white'}`}>Destaque</button>
                 </div>
-                <button onClick={() => { setShowCineIrun(false); setActiveVideoCategory('Todos'); setPlayingVideo(null); }} className="p-2 text-gray-500 hover:text-white transition-colors cursor-pointer" title="Fechar">
-                  <X className="w-6 h-6" />
+                <button onClick={() => { setShowCineIrun(false); setActiveVideoCategory('Todos'); setPlayingVideo(null); }} className="flex items-center gap-1.5 p-2 text-gray-500 hover:text-white transition-colors cursor-pointer" title="Voltar ao mapa">
+                  <MapIcon className="w-4 h-4" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             </div>
