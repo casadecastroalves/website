@@ -25,7 +25,8 @@ import {
   Locate,
   Video,
   AlertCircle,
-  ExternalLink
+  ExternalLink,
+  ChevronRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { territoriesData } from './data/territories';
@@ -784,19 +785,20 @@ export default function App() {
             className="absolute top-4 left-4 z-10 w-[calc(100%-2rem)] md:w-64 lg:w-80 xl:w-96 max-h-[calc(100vh-2rem)] flex flex-col bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-white/40 overflow-hidden"
           >
             {/* Brand Header */}
-            <div className="p-4 pb-4 border-b border-slate-100 bg-white/95 relative flex items-start justify-between gap-3">
-              <div className="flex flex-col">
-                <h1 
-                  onClick={handleResetView}
-                  className="text-base md:text-sm lg:text-[1.35rem] font-display font-bold tracking-tight text-slate-900 cursor-pointer hover:text-amber-800 transition-colors leading-none whitespace-nowrap"
-                >
+            <div className="p-4 pb-4 border-b border-slate-100 bg-white/95 relative flex items-center justify-center min-h-[76px]">
+              <div 
+                className="flex flex-col items-center text-center cursor-pointer hover:scale-[1.02] transition-transform" 
+                onClick={handleResetView}
+                title="Voltar ao mapa"
+              >
+                <h1 className="text-base md:text-sm lg:text-[1.35rem] font-display font-bold tracking-tight text-slate-900 transition-colors leading-none whitespace-nowrap">
                   MOVIMENTO IRUN
                 </h1>
                 <p className="text-[10px] text-slate-500 font-medium tracking-wider mt-1.5 uppercase">
                   IDENTIDADE E TERRITÓRIO
                 </p>
               </div>
-              <div className="flex items-center gap-1 shrink-0">
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1 shrink-0">
                 <button 
                   onClick={handleResetView}
                   className="p-1.5 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
@@ -842,11 +844,30 @@ export default function App() {
           </div>
         </div>
 
+        {/* Cine Irun Banner (UX Senior Design) */}
+        <div 
+          onClick={() => setShowCineIrun(true)}
+          className="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 border-b border-orange-700/50 flex items-center justify-between cursor-pointer hover:from-amber-600 hover:to-orange-700 transition-all group shrink-0"
+        >
+          <div className="flex items-center gap-3">
+            <div className="bg-white/20 p-1.5 rounded-lg group-hover:scale-110 transition-transform shadow-inner">
+              <Video className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-white leading-tight drop-shadow-sm">Cine Irun</h3>
+              <p className="text-[10px] text-amber-50 font-medium opacity-90">Acervo Audiovisual da Nossa Rede</p>
+            </div>
+          </div>
+          <div className="bg-white/20 rounded-full p-1 group-hover:translate-x-1 transition-transform shadow-inner">
+            <ChevronRight className="w-4 h-4 text-white" />
+          </div>
+        </div>
+
         {/* Categorized Filter Tabs */}
-        <div className="px-4 py-3 bg-slate-50/50 border-b border-slate-100 flex overflow-x-auto gap-1.5 shrink-0 scrollbar-none pb-3">
+        <div className="px-3 py-3 bg-slate-50/50 border-b border-slate-100 flex flex-wrap gap-1 shrink-0 pb-3 justify-center">
           <button 
             onClick={() => setActiveCategory('todos')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all shrink-0 ${
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all shrink-0 cursor-pointer ${
               activeCategory === 'todos' 
                 ? 'bg-slate-900 text-white shadow-sm' 
                 : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-slate-800'
@@ -858,13 +879,13 @@ export default function App() {
             <button 
               key={cat}
               onClick={() => setActiveCategory(cat.toLowerCase() as FilterCategory)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-all flex items-center gap-1.5 shrink-0 ${
+              className={`px-2.5 py-1.5 rounded-full text-[11px] font-medium cursor-pointer transition-all flex items-center gap-1 shrink-0 ${
                 activeCategory === cat.toLowerCase() 
                   ? 'bg-amber-600 text-white shadow-sm' 
                   : 'bg-white border border-slate-200 text-slate-600 hover:bg-amber-50 hover:text-amber-800'
               }`}
             >
-              <span className={`w-2 h-2 rounded-full border border-white ${activeCategory === cat.toLowerCase() ? 'bg-amber-400' : 'bg-slate-300'}`}></span>
+              <span className={`w-1.5 h-1.5 rounded-full border border-white ${activeCategory === cat.toLowerCase() ? 'bg-amber-400' : 'bg-slate-300'}`}></span>
               {cat}
             </button>
           ))}
