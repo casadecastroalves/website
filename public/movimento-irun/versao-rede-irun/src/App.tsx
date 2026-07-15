@@ -1838,7 +1838,7 @@ export default function App() {
             </div>
 
             {/* Filter chips */}
-            <div className="px-6 md:px-10 py-3 flex gap-2 overflow-x-auto scrollbar-none shrink-0 border-b border-white/5">
+            <div className="px-6 md:px-10 py-3 flex flex-wrap justify-center gap-2 shrink-0 border-b border-white/5">
               {['Todos', ...Object.keys(categorizedVideos).sort((a, b) => a.localeCompare(b, 'pt'))].map(cat => (
                 <button
                   key={cat}
