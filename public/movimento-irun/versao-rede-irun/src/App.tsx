@@ -1888,8 +1888,18 @@ export default function App() {
                     .sort(([a], [b]) => a.localeCompare(b, 'pt'))
                     .filter(([cat]) => activeVideoCategory === 'Todos' || cat === activeVideoCategory)
                     .flatMap(([, vids]) => vids);
-                  const featured = sortedVideos[sortedVideos.length - 1];
-                  const rest = sortedVideos.slice(0, -1).reverse();
+                  
+                  // Force the featured video to be 's9w44W419Co' (Edição 1 Casa de Castro Alves) if present in the current filter, otherwise use the last video
+                  const explicitFeatured = sortedVideos.find(v => v.id === 's9w44W419Co');
+                  let featured = explicitFeatured;
+                  let rest = sortedVideos;
+                  
+                  if (featured) {
+                    rest = sortedVideos.filter(v => v.id !== 's9w44W419Co');
+                  } else {
+                    featured = sortedVideos[sortedVideos.length - 1];
+                    rest = sortedVideos.slice(0, -1).reverse();
+                  }
                   if (!featured) return (
                     <div className="flex flex-col items-center justify-center py-24 text-gray-600 gap-3">
                       <AlertCircle className="w-10 h-10 animate-pulse" />
