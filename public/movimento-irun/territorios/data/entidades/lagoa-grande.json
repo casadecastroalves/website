@@ -101,8 +101,6 @@
       { "src": "assets/lagoa-grande/fotos/Encontro-de-formacao-na-Teia-dos-Povos-2.jpg", "legenda": "Encontro de formação na Teia dos Povos" }
     ],
     "videos": [
-      { "tipo": "youtube", "id": "Z_xr3JTQzyg", "titulo": "Documentário — Os Guardiões da Lagoa" },
-      { "tipo": "youtube", "id": "JJJUScrmlFs", "titulo": "Feira Quilombola da Lagoa movimenta comércio local" },
       { "tipo": "youtube", "id": "c_mW3zFYE10", "titulo": "Quilombo da Lagoa — Feira de Santana" },
       { "tipo": "drive", "href": "https://drive.google.com/file/d/1zlF_eS7z7dftqoFVYTOuxrqBWzjsVgKG/view", "titulo": "Minidocumentário — Itinerante de escuta aos jovens" }
     ],

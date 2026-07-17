@@ -182,18 +182,6 @@
     "videos": [
       {
         "tipo": "youtube",
-        "id": "Z_xr3JTQzyg",
-        "titulo": "Documentário — Os Guardiões da Lagoa",
-        "embed": false
-      },
-      {
-        "tipo": "youtube",
-        "id": "JJJUScrmlFs",
-        "titulo": "Feira Quilombola da Lagoa movimenta comércio local",
-        "embed": false
-      },
-      {
-        "tipo": "youtube",
         "id": "c_mW3zFYE10",
         "titulo": "Quilombo da Lagoa — Feira de Santana",
         "embed": false

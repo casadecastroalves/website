@@ -119,25 +119,6 @@
             "legenda": "Comunidade quilombola de Lagoa Grande"
           },
           {
-            "titulo": "Os Guardiões da Lagoa",
-            "texto": "Documentário sobre a juventude quilombola na luta por identidade e soberania popular no território.",
-            "video": {
-              "tipo": "youtube",
-              "id": "Z_xr3JTQzyg",
-              "legenda": "Documentário — Os Guardiões da Lagoa",
-              "embed": false
-            }
-          },
-          {
-            "titulo": "Feira Quilombola",
-            "video": {
-              "tipo": "youtube",
-              "id": "JJJUScrmlFs",
-              "legenda": "Feira Quilombola da Lagoa movimenta comércio local",
-              "embed": false
-            }
-          },
-          {
             "titulo": "Quilombo da Lagoa",
             "video": {
               "tipo": "youtube",
