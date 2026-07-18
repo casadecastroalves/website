@@ -1823,7 +1823,7 @@ export default function App() {
             <div className="px-6 py-4 md:px-10 md:py-5 flex items-center justify-between gap-4 shrink-0 border-b border-white/5">
               <div>
                 <h2 className="text-3xl md:text-4xl font-display font-black tracking-tighter text-[#E50914]">CINE IRUN</h2>
-                <p className="text-xs text-gray-500 font-light mt-1">Acervo de documentários da Rede Irun</p>
+                <p className="text-xs text-gray-500 font-light mt-1">Acervo e produção audiovisual de documentários da Rede Irun</p>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <div className="flex bg-[#1c1c1c] border border-white/10 rounded-lg p-0.5">
