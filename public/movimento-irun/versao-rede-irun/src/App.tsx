@@ -32,6 +32,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { territoriesData } from './data/territories';
 import { Territory, FilterCategory } from './types';
 
+export const CINE_IRUN_SUBTITLE = "Acervo e produção audiovisual de documentários da Rede Irun";
 // Map Styles mapping using reliable raster tile layers to prevent WebGL/CORS tile loading issues
 const MAP_STYLES = {
   voyager: {
@@ -855,7 +856,7 @@ export default function App() {
             </div>
             <div>
               <h3 className="text-sm font-bold text-white leading-tight drop-shadow-sm">Cine Irun</h3>
-              <p className="text-[10px] text-amber-50 font-medium opacity-90">Acervo Audiovisual da Nossa Rede</p>
+              <p className="text-[10px] text-amber-50 font-medium opacity-90">{CINE_IRUN_SUBTITLE}</p>
             </div>
           </div>
           <div className="bg-white/20 rounded-full p-1 group-hover:translate-x-1 transition-transform shadow-inner">
@@ -1823,7 +1824,7 @@ export default function App() {
             <div className="px-6 py-4 md:px-10 md:py-5 flex items-center justify-between gap-4 shrink-0 border-b border-white/5">
               <div>
                 <h2 className="text-3xl md:text-4xl font-display font-black tracking-tighter text-[#E50914]">CINE IRUN</h2>
-                <p className="text-xs text-gray-500 font-light mt-1">Acervo e produção audiovisual de documentários da Rede Irun</p>
+                <p className="text-xs text-gray-500 font-light mt-1">{CINE_IRUN_SUBTITLE}</p>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 <div className="flex bg-[#1c1c1c] border border-white/10 rounded-lg p-0.5">
