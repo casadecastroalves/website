@@ -10,7 +10,7 @@
     "titulo": "Programa Bem Viver",
     "paragrafos": [
       "O Programa Bem Viver é uma ação de formação pensada para fortalecer territórios indígenas, quilombolas e comunidades do campo e da cidade, articulando cultura, organização comunitária e acesso a direitos e políticas públicas.",
-      "Organizado em quatro eixos integrados, o programa ajuda a mapear saberes, práticas culturais e potencialidades de cada localidade, apoiando na realização de diagnósticos territoriais e na sistematização dessas informações em portfólios que facilitem a captação de recursos e a autogestão.",
+      "Organizado em quatro eixos integrados, o programa ajuda a mapear saberes, práticas culturais e potencialidades de cada localidade, apoiando na realização de diagnósticos territoriais e na sistematização dessas informações in portfólios que facilitem a captação de recursos e a autogestão.",
       "O programa estimula a articulação direta com órgãos governamentais e instituições do terceiro setor, ensinando caminhos práticos para captação e sustentabilidade de projetos, complementado por atividades presenciais como Giras de Saberes e Diálogos Institucionais."
     ]
   },
@@ -74,7 +74,7 @@
       "badge": "Ciclo Formativo",
       "facilitador": "Facilitadora: Maura Cristina da Silva (MSTB)",
       "descricao": "Formação voltada à reflexão e prática de cidadania cultural ativa, instrumentando cidadãos e coletivos na formulação, fiscalização e acompanhamento de políticas públicas, direitos humanos e defesa do patrimônio imaterial. Utilizando a Pedagogia do Chão e a Rotatividade de Saberes, a formação aborda a moradia como direito fundamental, a preservação dos quilombos urbanos e a luta contra a gentrificação no Centro Antigo de Salvador.",
-      "status": "Concluído",
+      "status": "Curso",
       "larguraCompleta": false,
       "imagens": []
     },
@@ -83,7 +83,7 @@
       "badge": "Ciclo Formativo",
       "facilitador": "Teoria e Prática Comunitária",
       "descricao": "Curso teórico-prático que ensina conceitos de permacultura aplicada ao meio urbano com foco nas lutas decoloniais, feministas e periféricas no coração do Centro Histórico. Tópicos abordados incluem compostagem urbana, captação de água de chuva, eficiência energética residencial, hortas comunitárias e a valorização das pessoas e da terra como patrimônio vivo do território.",
-      "status": "Concluído",
+      "status": "Curso",
       "larguraCompleta": false,
       "imagens": []
     },
@@ -92,7 +92,7 @@
       "badge": "Giras",
       "facilitador": "Saberes e Ecologias",
       "descricao": "Espaço de intercâmbio, compartilhamento e transmissão de conhecimentos tradicionais e saberes ecológicos. As Giras promovem o debate sobre sustentabilidade comunitária, preservação de sementes crioulas e o fortalecimento de redes territoriais voltadas ao bem viver coletivo.",
-      "status": "Concluído",
+      "status": "Curso",
       "larguraCompleta": false,
       "imagens": []
     },
@@ -101,7 +101,7 @@
       "badge": "Oficina",
       "facilitador": "Manufatura e Engajamento",
       "descricao": "Prática formativa e político-cultural que articula manufatura, engajamento social e construção de narrativas coletivas sobre direitos humanos, memória e território através do ensino do bordado manual e da cartografia afetiva.",
-      "status": "Concluído",
+      "status": "Curso",
       "larguraCompleta": false,
       "imagens": []
     },
@@ -110,7 +110,7 @@
       "badge": "Oficina",
       "facilitador": "Brígida Salgado, Mestre Gervásio e Mestra Lili",
       "descricao": "Oficina prática que resgata e valoriza as artes manuais tradicionais da fiação e tecelagem de algodão. Trazendo mestres e mestras artesãs da cidade de Piatã, na Chapada Diamantina, a formação ensina as técnicas ancestrais da tecelagem em tear de pedal e fiação manual, fortalecendo a autonomia produtiva e a preservação de ofícios tradicionais da Bahia.",
-      "status": "Concluído",
+      "status": "Curso",
       "larguraCompleta": false,
       "imagens": []
     },
@@ -119,7 +119,7 @@
       "badge": "Diálogos",
       "facilitador": "Sustentabilidade e Gestão",
       "descricao": "Atividade voltada à instrumentação de coletivos na interlocução com órgãos governamentais e poder público. Aborda caminhos práticos para estruturação de parcerias e estratégias de fortalecimento institucional.",
-      "status": "Concluído",
+      "status": "Curso",
       "larguraCompleta": false,
       "imagens": []
     },
@@ -128,7 +128,7 @@
       "badge": "Ação Social",
       "facilitador": "Facilitadora: Assistente Social Eliane Rodrigues",
       "descricao": "Formação fundamental voltada ao debate, acolhimento e desenvolvimento de estratégias de combate à violência doméstica nas comunidades. Ação realizada no CSU de Valéria e no CSU do Nordeste de Amaralina com distribuição de informativos sobre a rede de apoio.",
-      "status": "Concluído",
+      "status": "Curso",
       "larguraCompleta": true,
       "galeriaTitulo": "Informativos distribuídos nas localidades:",
       "imagens": [
