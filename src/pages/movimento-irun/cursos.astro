@@ -97,7 +97,11 @@ const {
                   <p class="course-instructor">{curso.facilitador}</p>
                   <p>{curso.descricao}</p>
                   <div class="course-footer">
-                    <span class={`status-badge ${statusClass(curso.status)}`}>{curso.status}</span>
+                    {curso.url ? (
+                      <a href={curso.url} class={`status-badge ${statusClass(curso.status)}`}>{curso.status}</a>
+                    ) : (
+                      <span class={`status-badge ${statusClass(curso.status)}`}>{curso.status}</span>
+                    )}
                   </div>
                 </div>
                 <div class="csu-gallery-content">
@@ -122,7 +126,11 @@ const {
                   <p>{curso.descricao}</p>
                 </div>
                 <div class="course-footer">
-                  <span class={`status-badge ${statusClass(curso.status)}`}>{curso.status}</span>
+                  {curso.url ? (
+                    <a href={curso.url} class={`status-badge ${statusClass(curso.status)}`}>{curso.status}</a>
+                  ) : (
+                    <span class={`status-badge ${statusClass(curso.status)}`}>{curso.status}</span>
+                  )}
                 </div>
               </>
             )}
@@ -381,6 +389,20 @@ const {
     border: 1px solid var(--color-ouro);
     color: var(--color-ouro);
     background-color: rgba(135, 103, 0, 0.05);
+  }
+
+  a.status-badge {
+    text-decoration: none;
+    transition: var(--transition-smooth);
+  }
+
+  a.status-badge:hover {
+    cursor: pointer;
+  }
+
+  a.status-badge.finished:hover {
+    background-color: var(--color-ouro);
+    color: var(--color-branco);
   }
 
   /* Gallery within cards */
