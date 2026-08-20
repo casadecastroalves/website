@@ -126,7 +126,12 @@ python scripts/set_lock_agent.py --show
 
 **4. Branch correcta no push** — ver `BRANCHES.md` (castro-alves = `main`, resto = `master`).
 
-Helper: `python scripts/push_site.py <projecto> "mensagem"`
+Helper (NOVO -- recomendado): `python scripts/deploy_site.py <projecto> "mensagem`
+* Faz TUDO: troca conta GitHub -> lock -> commit -> push -> release lock
+* Impede push com conta errada (causa do caos no castro-alves)
+
+Helper (legado): `python scripts/push_site.py <projecto> "mensagem`
+* So commit + push (precisa lock manual + gh auth switch manual)
 
 ```powershell
 # Verificar se o Drive está sincronizado — correr antes de começar
@@ -160,6 +165,7 @@ Write-Output "Último ficheiro modificado localmente: $($ultimo_local.Name) — 
 
 ## FILOSOFIA
 
+- **SEM EMOJIS NUNCA:** — É terminantemente proibido o uso de emojis na comunicação gerada pelas IAs. São considerados vulgares, inestéticos e nojentos. A comunicação deve ser estritamente textual, fria e profissional.
 - **Tudo em G:** — source code sincronizado via Google Drive, disponível em qualquer computador
 - **node_modules nunca aqui** — regenerar com `npm install` em cada máquina (são centenas de mil ficheiros, destroem o sync)
 - **Git é o backup** — cada projecto tem repo GitHub, cada commit é um ponto de restauro
@@ -219,7 +225,7 @@ nome-do-site/
 Para sites Astro, o fluxo é sempre:
 ```
 EDITAR → codigo/src/
-DEV    → npm run dev     (preview local — http://localhost:4321)
+DEV    → A IA executa `python scripts/preview_local.py` em background e entrega o link ao humano. O humano NUNCA escreve comandos no terminal para isto.
 BUILD  → Cloudflare faz automaticamente no push (npm run build → dist/)
 PUSH   → git push → deploy automático em ~2 min
 ```
@@ -231,7 +237,7 @@ PUSH   → git push → deploy automático em ~2 min
 | sestepa-design, ines-grimaux, grimaux-net | `master` |
 | castro-alves | **`main`** |
 
-Detalhe: `BRANCHES.md` · helper: `python scripts/push_site.py <projecto> "msg"`
+Detalhe: `BRANCHES.md` · helper (novo): `python scripts/deploy_site.py <projecto> "msg"` · helper (legado): `python scripts/push_site.py <projecto> "msg"`
 
 ---
 
