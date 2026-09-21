@@ -50,8 +50,8 @@
     "titulo": "Galeria de Arte Contemporânea",
     "texto": "Exposições de fotografia, pintura, instalações e novas linguagens.",
     "fotos": [
-      { "src": "/images/a_casa/casa-de-castro-alves-3.png", "alt": "Galeria de Arte 1" },
-      { "src": "/images/a_casa/casa-de-castro-alves-2.png", "alt": "Galeria de Arte 2" },
+      { "src": "/images/a_casa/casa-de-castro-alves-3.jpg", "alt": "Galeria de Arte 1" },
+      { "src": "/images/a_casa/casa-de-castro-alves-2.jpg", "alt": "Galeria de Arte 2" },
       { "src": "/images/a_casa/casa-de-castro-alves-galeria-arte.jpg", "alt": "Galeria de Arte 3" }
     ]
   }

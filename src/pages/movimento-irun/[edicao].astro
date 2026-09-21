@@ -67,7 +67,7 @@ for (let i = 0; i < descriptionParagraphs.length; i++) {
 }
 
 const programItems = parsedData.program && parsedData.program.length > 0 ? parsedData.program : edicaoInfo.detalhes;
-const hasMainVideo = edicaoInfo.youtube && edicaoInfo.num !== 9 && edicaoInfo.num !== 10 && edicaoInfo.num !== 11;
+const hasMainVideo = Boolean(edicaoInfo.youtube);
 const posters = Array.isArray((edicaoInfo as any).posters) 
   ? (edicaoInfo as any).posters 
   : (edicaoInfo.poster ? [edicaoInfo.poster] : []);

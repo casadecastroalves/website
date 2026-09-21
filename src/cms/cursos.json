@@ -133,8 +133,8 @@
       "larguraCompleta": true,
       "galeriaTitulo": "Informativos distribuídos nas localidades:",
       "imagens": [
-        { "src": "/images/cursos/csu/violencia-card-1.png", "alt": "Informativo Localidade Valéria" },
-        { "src": "/images/cursos/csu/violencia-card-2.png", "alt": "Informativo Localidade Nordeste de Amaralina" }
+        { "src": "/images/cursos/csu/violencia-card-1.jpg", "alt": "Informativo Localidade Valéria" },
+        { "src": "/images/cursos/csu/violencia-card-2.jpg", "alt": "Informativo Localidade Nordeste de Amaralina" }
       ]
     }
   ],

@@ -104,7 +104,7 @@
       "data": "02 de Dezembro de 2025 · 9h às 13h",
       "artista": "Confraria de Oyá",
       "show": "Oyá, Mãe do Vento e do Poder de Transformação",
-      "poster": "/images/edicoes/confraria-de-oya/confraria-de-oya-card-v4.png",
+      "poster": "/images/edicoes/confraria-de-oya/confraria-de-oya-card-v4.jpg",
       "thumb": "/images/edicoes/confraria-de-oya/confraria-de-oya.jpg",
       "banner": "/images/edicoes/confraria-de-oya/confraria-de-oya.jpg",
       "youtube": "",
@@ -129,9 +129,9 @@
       "show": "Ocupação Manifesto",
       "posters": [
         "/images/edicoes/edicao-6/cards/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-card-2.jpg",
-        "/images/edicoes/edicao-6/cards/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-card-1.png"
+        "/images/edicoes/edicao-6/cards/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-card-1.jpg"
       ],
-      "poster": "/images/edicoes/edicao-6/cards/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-card-1.png",
+      "poster": "/images/edicoes/edicao-6/cards/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-card-1.jpg",
       "thumb": "/images/edicoes/edicao-6/header/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-header.jpg",
       "banner": "/images/edicoes/edicao-6/header/cabuloso-trio-ocupacao-manifesto-movimento-irun-edicao-6-header.jpg",
       "youtube": "https://www.youtube.com/embed/RNx5kS9YRwA",
@@ -152,7 +152,7 @@
       "data": "25 de Janeiro de 2026",
       "artista": "Ícaro Santiago & Eric Mazzone",
       "show": "Jangada",
-      "poster": "/images/edicoes/edicao-7/cards/icaro-santiago-eric-mazzone-jangada-movimento-irun-edicao-7-card-1.png",
+      "poster": "/images/edicoes/edicao-7/cards/icaro-santiago-eric-mazzone-jangada-movimento-irun-edicao-7-card-1.jpg",
       "thumb": "/images/edicoes/edicao-7/header/icaro-santiago-eric-mazzone-jangada-movimento-irun-edicao-7-header.jpg",
       "banner": "/images/edicoes/edicao-7/header/icaro-santiago-eric-mazzone-jangada-movimento-irun-edicao-7-header.jpg",
       "youtube": "https://www.youtube.com/embed/z2eHDjU_oUw",
@@ -192,10 +192,10 @@
       "data": "26 de Abril de 2026",
       "artista": "Mariella Santiago",
       "show": "Aqualtunes",
-      "poster": "/images/edicoes/edicao-9/cards/mariella-santiago-aqualtunes-movimento-irun-edicao-9-card-1.png",
+      "poster": "/images/edicoes/edicao-9/cards/mariella-santiago-aqualtunes-movimento-irun-edicao-9-card-1.jpg",
       "thumb": "/images/edicoes/edicao-9/header/mariella-santiago-aqualtunes-movimento-irun-edicao-9-header.jpg",
       "banner": "/images/edicoes/edicao-9/header/mariella-santiago-aqualtunes-movimento-irun-edicao-9-header.jpg",
-      "youtube": "https://www.youtube.com/embed/GcVCVR7_7A4",
+      "youtube": "https://www.youtube.com/embed/hkmdSnzV7AQ",
       "descricao": "Dedicada inteiramente aos povos originários e à cura ancestral da terra. O Jardim da Casa serviu de palco para o Toré da Aliança, ritual coletivo reunindo etnias em torno do bem viver e da soberania alimentar.",
       "detalhes": [
         "Toré da Aliança: Ritual de resistência e espiritualidade com a presença de lideranças Pataxó, Tupinambá e Payayá.",
@@ -212,13 +212,13 @@
       "artista": "Denise Correia & Banda Naveiadanêga",
       "show": "Black Tudo",
       "posters": [
-        "/images/edicoes/edicao-10/cards/denise-correia-black-tudo-movimento-irun-edicao-10-card-1.png",
+        "/images/edicoes/edicao-10/cards/denise-correia-black-tudo-movimento-irun-edicao-10-card-1.jpg",
         "/images/edicoes/edicao-10/cards/denise-correia-black-tudo-movimento-irun-edicao-10-card-2.jpg"
       ],
-      "poster": "/images/edicoes/edicao-10/cards/denise-correia-black-tudo-movimento-irun-edicao-10-card-1.png",
+      "poster": "/images/edicoes/edicao-10/cards/denise-correia-black-tudo-movimento-irun-edicao-10-card-1.jpg",
       "thumb": "/images/edicoes/edicao-10/header/denise-correia-black-tudo-movimento-irun-edicao-10-header.jpg",
       "banner": "/images/edicoes/edicao-10/header/denise-correia-black-tudo-movimento-irun-edicao-10-header.jpg",
-      "youtube": "",
+      "youtube": "https://www.youtube.com/embed/hZ5eV7dYWp4",
       "descricao": "A décima edição marcou o encerramento del primeiro grande ciclo de encontros do Movimento Irun na Casa de Castro Alves. Reuniu ativistas, lideranças e artistas para celebrar a continuidade da aliança preta, indígena e popular e os portfólios sistematizados das comunidades.",
       "detalhes": [
         "Feira de encerramento Design Caboclo trazendo vestuário e biojoias produzidos durante as oficinas dialógicas.",
@@ -234,11 +234,11 @@
       "artista": "Maíra e Ícaro Santiago",
       "show": "Águas Nascentes: Tempo de Recomeços",
       "posters": [
-        "/images/edicoes/edicao-11/cards/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-card-1.png",
-        "/images/edicoes/edicao-11/cards/exposicao-olhe-bem-movimento-irun-edicao-11-card-1.png",
-        "/images/edicoes/edicao-11/cards/exposicao-olhe-bem-movimento-irun-edicao-11-card-2.png"
+        "/images/edicoes/edicao-11/cards/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-card-1.jpg",
+        "/images/edicoes/edicao-11/cards/exposicao-olhe-bem-movimento-irun-edicao-11-card-1.jpg",
+        "/images/edicoes/edicao-11/cards/exposicao-olhe-bem-movimento-irun-edicao-11-card-2.jpg"
       ],
-      "poster": "/images/edicoes/edicao-11/cards/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-card-1.png",
+      "poster": "/images/edicoes/edicao-11/cards/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-card-1.jpg",
       "thumb": "/images/edicoes/edicao-11/header/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-header.jpg",
       "banner": "/images/edicoes/edicao-11/header/duo-ire-ire-sente-o-tempo-passar-movimento-irun-edicao-11-header.jpg",
       "youtube": "",
@@ -288,9 +288,9 @@
       "data": "Junho de 2026",
       "artista": "",
       "show": "EXPO II",
-      "poster": "/images/exposicoes/expo-2.png",
-      "thumb": "/images/exposicoes/expo-2.png",
-      "banner": "/images/exposicoes/expo-2.png",
+      "poster": "/images/exposicoes/expo-2.jpg",
+      "thumb": "/images/exposicoes/expo-2.jpg",
+      "banner": "/images/exposicoes/expo-2.jpg",
       "youtube": "",
       "descricao": "Exposição do Bem Viver mapeando as identidades culturais e os ativos locais da Bahia.",
       "detalhes": []
