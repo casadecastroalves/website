@@ -16,49 +16,23 @@ export function getEditionNav(allEdicoes, currentSlug, isExposition = false) {
     return { prev: null, next: null, filtered, currentIndex };
   }
 
-  const prevEdition = currentIndex > 0 ? filtered[currentIndex - 1] : null;
+  const prevEdition =
+    currentIndex > 0 ? filtered[currentIndex - 1] : filtered[filtered.length - 1];
   const nextEdition =
-    currentIndex < filtered.length - 1 ? filtered[currentIndex + 1] : null;
+    currentIndex < filtered.length - 1 ? filtered[currentIndex + 1] : filtered[0];
 
-  if (isExposition) {
-    return {
-      filtered,
-      currentIndex,
-      prev: prevEdition
-        ? {
-            href: `/movimento-irun/${prevEdition.slug}`,
-            label: 'Exposição Anterior',
-          }
-        : null,
-      next: nextEdition
-        ? {
-            href: `/movimento-irun/${nextEdition.slug}`,
-            label: 'Próxima Exposição',
-          }
-        : null,
-    };
-  }
+  const labelPrefix = isExposition ? 'Exposição' : 'Edição';
 
   return {
     filtered,
     currentIndex,
-    prev: prevEdition
-      ? {
-          href: `/movimento-irun/${prevEdition.slug}`,
-          label: 'Edição Anterior',
-        }
-      : {
-          href: EDICOES_LIST_URL,
-          label: 'Todas as Edições',
-        },
-    next: nextEdition
-      ? {
-          href: `/movimento-irun/${nextEdition.slug}`,
-          label: 'Próxima Edição',
-        }
-      : {
-          href: EDICOES_LIST_URL,
-          label: 'Todas as Edições',
-        },
+    prev: {
+      href: `/movimento-irun/${prevEdition.slug}`,
+      label: `${labelPrefix} Anterior (${prevEdition.num || prevEdition.titulo})`,
+    },
+    next: {
+      href: `/movimento-irun/${nextEdition.slug}`,
+      label: `Próxima ${labelPrefix} (${nextEdition.num || nextEdition.titulo})`,
+    },
   };
 }

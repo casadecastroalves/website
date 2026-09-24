@@ -2,6 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import EdicaoTimelineGrid from '../../components/EdicaoTimelineGrid.astro';
 import { edicoesTimeline } from '../../data/edicoesTimeline.js';
+
+const firstEdition = edicoesTimeline[0];
+const lastEdition = edicoesTimeline[edicoesTimeline.length - 1];
 ---
 
 <Layout title="Edições do Movimento Irun | Casa de Castro Alves" description="Confira o registro histórico de todas as edições do Movimento Irun na Casa de Castro Alves." ogImage="/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg">
@@ -10,11 +13,11 @@ import { edicoesTimeline } from '../../data/edicoesTimeline.js';
     <div class="subpage-hero-bg" style="background-image: url('/images/movimento_irun/TAMANDUA-TUPINAMBA-FOTO-LUCIANO-PAYAYA-BX.jpg');"></div>
     <div class="subpage-hero-overlay"></div>
     
-    <!-- Header Navigation Arrows -->
-    <a href="/movimento-irun" class="nav-arrow left-arrow" aria-label="Voltar para Movimento Irun">
+    <!-- Header Navigation Arrows (Loop Infinito) -->
+    <a href={`/movimento-irun/${lastEdition.slug}`} class="nav-arrow left-arrow" aria-label={`Ir para a ${lastEdition.titulo}`}>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
     </a>
-    <a href="/movimento-irun/edicao-1" class="nav-arrow right-arrow" aria-label="Ir para a Primeira Edição">
+    <a href={`/movimento-irun/${firstEdition.slug}`} class="nav-arrow right-arrow" aria-label={`Ir para a ${firstEdition.titulo}`}>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
     </a>
 
